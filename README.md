@@ -283,6 +283,18 @@ Arguments object:
 },
 ```
 
+### `editor.emmet.action.wrapWithAbbreviation` Wrap text with emmet
+
+```js
+"Wrap in div": {
+	"command": "editor.emmet.action.wrapWithAbbreviation",
+	"args": {
+		"abbreviation": "div",
+		"language": "html",
+	},
+},
+```
+
 <!-- ### `vscode.openIssueReporter` Opens the issue reporter with the provided extension id as the selected source.
 
 - **extensionId** - extensionId to report an issue on
