@@ -1,6 +1,6 @@
 import { commands } from 'vscode';
-import { run } from './commands';
 import { extensionConfig, registeredCommandsList } from './extension';
+import { run } from './run';
 import { TopLevelCommands } from './types';
 import { forEachItem } from './utils';
 
