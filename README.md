@@ -360,6 +360,15 @@ Arguments object:
 },
 ```
 
+### `commands.setEditorLanguage` Change active editor language
+
+```js
+"Set Language JavaScript": {
+	"command": "commands.setEditorLanguage",
+	"args": "javascript",
+},
+```
+
 ### `commands.clipboardWrite` Write text to clipboard
 
 ```js
