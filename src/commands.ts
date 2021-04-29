@@ -203,7 +203,7 @@ export function registerExtensionCommands() {
 		await languages.setTextDocumentLanguage(window.activeTextEditor.document, languageId);
 	});
 	commands.registerCommand(`${EXTENSION_NAME}.openFolder`, async (path: string) => {
-		await commands.executeCommand('openFolder', Uri.file(path));
+		await commands.executeCommand('vscode.openFolder', Uri.file(path));
 	});
 	commands.registerCommand(`${EXTENSION_NAME}.notify`, (message: string) => {
 		window.showInformationMessage(message);

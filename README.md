@@ -360,6 +360,19 @@ Arguments object:
 },
 ```
 
+### `commands.openFolder` Open file/folder in vscode
+
+```js
+"Open file": {
+	"command": "commands.openFolder",
+	"args": "C:\\temp\\temp.txt",
+},
+"Open folder": {
+	"command": "commands.openFolder",
+	"args": "C:\\temp",
+},
+```
+
 ### `commands.setEditorLanguage` Change active editor [language id](https://code.visualstudio.com/docs/languages/identifiers#_known-language-identifiers)
 
 ```js
