@@ -6,7 +6,7 @@
 	"publisher": "usernamehw",
 	"license": "MIT",
 	"engines": {
-		"vscode": "^1.53.0"
+		"vscode": "^1.55.0"
 	},
 	"extensionKind": [
 		"ui",
@@ -422,7 +422,7 @@
 	"devDependencies": {
 		"@types/lodash": "^4.14.168",
 		"@types/node": "^12.20.11",
-		"@types/vscode": "^1.53.0",
+		"@types/vscode": "^1.55.0",
 		"@typescript-eslint/eslint-plugin": "^4.22.0",
 		"@typescript-eslint/parser": "^4.22.0",
 		"eslint": "^7.25.0",
