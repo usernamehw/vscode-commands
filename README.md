@@ -12,7 +12,7 @@
 - Execute commands from Quick Pick
 - Add items to Status Bar
 - Add items to Command Palette
-- Register a sequence of commands to execute from a keybinding
+- Register command to execute from a keybinding
 - Additional commands contributed by this extension
 
 ```ts
