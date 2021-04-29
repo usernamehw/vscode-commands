@@ -110,7 +110,7 @@ interface CommandObject {
 	"label": "hello",
 	"type": "shell",
 	"command": "echo Hello",
-}
+},
 // commands
 "Run task": {
 	"command": "workbench.action.tasks.runTask",
@@ -293,3 +293,57 @@ Arguments object:
 	"args": "usernamehw.commands",
 },
 ``` -->
+
+## Additional commands
+
+### `commands.toggleSetting` Toggle settings
+
+```js
+"Toggle indent guides": {
+	"command": "commands.toggleSetting",
+	"args": "editor.renderIndentGuides",// string - toggle boolean
+},
+```
+
+```js
+"Switch themes": {
+	"command": "commands.toggleSetting",
+	"args": {
+		"setting": "workbench.colorTheme",
+		"value": ["Monokai", "Kimbie Dark"],
+	},
+	"icon": "symbol-color",
+},
+```
+
+```js
+"Set/reset setting": {
+	"command": "commands.toggleSetting",
+	"args": {
+		"setting": "window.zoomLevel",
+		"value": [0],
+	},
+},
+```
+
+### `commands.incrementSetting` Increment/decrement setting
+
+```js
+"Font size += 2": {
+	"command": "commands.incrementSetting",
+	"args": {
+		"setting": "editor.fontSize",
+		"value": 2,
+	},
+},
+```
+
+```js
+"Font size -= 2": {
+	"command": "commands.incrementSetting",
+	"args": {
+		"setting": "editor.fontSize",
+		"value": -2,
+	},
+},
+```

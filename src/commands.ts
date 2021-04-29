@@ -1,4 +1,3 @@
-import merge from 'lodash/merge';
 import { commands, ConfigurationTarget, Uri, window, workspace } from 'vscode';
 import { extensionConfig, EXTENSION_NAME, RUN_COMMAND_ID } from './extension';
 import { run } from './run';
@@ -166,40 +165,26 @@ export function registerExtensionCommands() {
 		}
 		incrementSetting(setting, value);
 	});
-	commands.registerCommand(`${EXTENSION_NAME}.decrementSetting`, (arg: IToggleSetting | string) => {
-		let setting;
-		let value;
-		if (typeof arg === 'string') {
-			setting = arg;
-		} else if (isSimpleObject(arg)) {
-			setting = arg.setting;
-			value = arg.value;
-		}
-		if (typeof value === 'undefined') {
-			value = 1;
-		}
-		incrementSetting(setting, -value);
-	});
-	commands.registerCommand(`${EXTENSION_NAME}.settingsMerge`, (arg: any) => {
-		if (!isSimpleObject(arg)) {
-			window.showWarningMessage('Argument must be an object');
-			return;
-		}
-		const settings = workspace.getConfiguration(undefined, null);
-		const settingName = arg.setting;
-		if (typeof settingName !== 'string') {
-			window.showWarningMessage('Must provide `setting`');
-			return;
-		}
-		const objectToMerge = arg.value;
-		if (!isSimpleObject(objectToMerge)) {
-			window.showWarningMessage('`value` must be an Object');
-			return;
-		}
-		const oldValue = settings.get(settingName);
-		const newValue = merge(oldValue, objectToMerge);
-		settings.update(settingName, newValue, true);
-	});
+	// commands.registerCommand(`${EXTENSION_NAME}.settingsMerge`, (arg: any) => {
+	// 	if (!isSimpleObject(arg)) {
+	// 		window.showWarningMessage('Argument must be an object');
+	// 		return;
+	// 	}
+	// 	const settings = workspace.getConfiguration(undefined, null);
+	// 	const settingName = arg.setting;
+	// 	if (typeof settingName !== 'string') {
+	// 		window.showWarningMessage('Must provide `setting`');
+	// 		return;
+	// 	}
+	// 	const objectToMerge = arg.value;
+	// 	if (!isSimpleObject(objectToMerge)) {
+	// 		window.showWarningMessage('`value` must be an Object');
+	// 		return;
+	// 	}
+	// 	const oldValue = settings.get(settingName);
+	// 	const newValue = merge(oldValue, objectToMerge);
+	// 	settings.update(settingName, newValue, true);
+	// });
 	commands.registerCommand(`${EXTENSION_NAME}.openFolder`, async (path: string) => {
 		await commands.executeCommand('openFolder', Uri.file(path));
 	});
