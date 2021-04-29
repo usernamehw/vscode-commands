@@ -360,7 +360,7 @@ Arguments object:
 },
 ```
 
-### `commands.setEditorLanguage` Change active editor language
+### `commands.setEditorLanguage` Change active editor [language id](https://code.visualstudio.com/docs/languages/identifiers#_known-language-identifiers)
 
 ```js
 "Set Language JavaScript": {
