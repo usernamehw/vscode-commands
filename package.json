@@ -1,0 +1,423 @@
+{
+	"name": "commands",
+	"displayName": "Commands",
+	"description": "Run commands from Tree View / Status Bar / Quick Pick.",
+	"version": "0.0.1",
+	"publisher": "usernamehw",
+	"license": "MIT",
+	"engines": {
+		"vscode": "^1.53.0"
+	},
+	"extensionKind": [
+		"ui",
+		"workspace"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/usernamehw/vscode-commands"
+	},
+	"icon": "img/icon.png",
+	"qna": false,
+	"bugs": {
+		"url": "https://github.com/usernamehw/vscode-commands/issues"
+	},
+	"keywords": [
+		"run",
+		"multiple",
+		"command",
+		"commands",
+		"args",
+		"arguments",
+		"tree",
+		"view",
+		"keybinding",
+		"macro",
+		"toggle",
+		"setting",
+		"delay",
+		"status",
+		"bar"
+	],
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"*",
+		"onCommand:commands.openAsQuickPick",
+		"onCommand:commands.revealCommand",
+		"onCommand:commands.assignKeybinding",
+		"onCommand:commands.addToStatusBar",
+		"onCommand:commands.suggestCommands"
+	],
+	"main": "./dist/extension",
+	"contributes": {
+		"configuration": {
+			"type": "object",
+			"title": "Commands",
+			"properties": {
+				"commands.commands": {
+					"type": "object",
+					"description": "Commands that will be rendered in the View.",
+					"patternProperties": {
+						"^.*$": {
+							"type": "object",
+							"properties": {
+								"command": {
+									"type": "string",
+									"description": "Command id to execute."
+								},
+								"args": {},
+								"delay": {
+									"type": "number",
+									"description": "Delay BEFORE executing this command."
+								},
+								"registerCommand": {
+									"type": "string",
+									"description": "Register command id to assign it later to a keybinding."
+								},
+								"icon": {
+									"type": "string",
+									"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
+								},
+								"iconColor": {
+									"type": "string",
+									"markdownDescription": "Use existing colors for icon [Color id list](https://code.visualstudio.com/api/references/theme-color)"
+								},
+								"statusBar": {
+									"type": "object",
+									"description": "Add this command to Status Bar.",
+									"properties": {
+										"alignment": {
+											"type": "string",
+											"enum": [
+												"left",
+												"right"
+											]
+										},
+										"text": {
+											"type": "string"
+										},
+										"priority": {
+											"type": "number"
+										},
+										"tooltip": {
+											"type": "string"
+										},
+										"color": {
+											"type": "string"
+										}
+									}
+								},
+								"sequence": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"command": {
+												"type": "string",
+												"description": "Command id to execute."
+											},
+											"args": {},
+											"delay": {
+												"type": "number",
+												"description": "Delay BEFORE executing this command."
+											},
+											"registerCommand": {
+												"type": "string",
+												"description": "Register command id to assign it later to a keybinding."
+											},
+											"icon": {
+												"type": "string",
+												"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
+											},
+											"iconColor": {
+												"type": "string",
+												"markdownDescription": "Use existing colors for icon [Color id list](https://code.visualstudio.com/api/references/theme-color)"
+											},
+											"statusBar": {
+												"type": "object",
+												"description": "Add this command to Status Bar.",
+												"properties": {
+													"alignment": {
+														"type": "string",
+														"enum": [
+															"left",
+															"right"
+														]
+													},
+													"text": {
+														"type": "string"
+													},
+													"priority": {
+														"type": "number"
+													},
+													"tooltip": {
+														"type": "string"
+													},
+													"color": {
+														"type": "string"
+													}
+												}
+											}
+										}
+									}
+								},
+								"nestedItems": {
+									"type": "object",
+									"description": "Commands that will be rendered in the View.",
+									"patternProperties": {
+										"^.*$": {
+											"type": "object",
+											"properties": {
+												"command": {
+													"type": "string",
+													"description": "Command id to execute."
+												},
+												"args": {},
+												"delay": {
+													"type": "number",
+													"description": "Delay BEFORE executing this command."
+												},
+												"registerCommand": {
+													"type": "string",
+													"description": "Register command id to assign it later to a keybinding."
+												},
+												"icon": {
+													"type": "string",
+													"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
+												},
+												"iconColor": {
+													"type": "string",
+													"markdownDescription": "Use existing colors for icon [Color id list](https://code.visualstudio.com/api/references/theme-color)"
+												},
+												"statusBar": {
+													"type": "object",
+													"description": "Add this command to Status Bar.",
+													"properties": {
+														"alignment": {
+															"type": "string",
+															"enum": [
+																"left",
+																"right"
+															]
+														},
+														"text": {
+															"type": "string"
+														},
+														"priority": {
+															"type": "number"
+														},
+														"tooltip": {
+															"type": "string"
+														},
+														"color": {
+															"type": "string"
+														}
+													}
+												},
+												"sequence": {
+													"type": "array",
+													"items": {
+														"type": "object",
+														"properties": {
+															"command": {
+																"type": "string",
+																"description": "Command id to execute."
+															},
+															"args": {},
+															"delay": {
+																"type": "number",
+																"description": "Delay BEFORE executing this command."
+															},
+															"registerCommand": {
+																"type": "string",
+																"description": "Register command id to assign it later to a keybinding."
+															},
+															"icon": {
+																"type": "string",
+																"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
+															},
+															"iconColor": {
+																"type": "string",
+																"markdownDescription": "Use existing colors for icon [Color id list](https://code.visualstudio.com/api/references/theme-color)"
+															},
+															"statusBar": {
+																"type": "object",
+																"description": "Add this command to Status Bar.",
+																"properties": {
+																	"alignment": {
+																		"type": "string",
+																		"enum": [
+																			"left",
+																			"right"
+																		]
+																	},
+																	"text": {
+																		"type": "string"
+																	},
+																	"priority": {
+																		"type": "number"
+																	},
+																	"tooltip": {
+																		"type": "string"
+																	},
+																	"color": {
+																		"type": "string"
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									},
+									"default": {}
+								}
+							}
+						}
+					},
+					"default": {}
+				},
+				"commands.treeViewCollapseFolders": {
+					"type": "boolean",
+					"description": "Requires reload before being applied.",
+					"default": false
+				},
+				"commands.statusBarDefaultText": {
+					"type": "string",
+					"enum": [
+						"pick",
+						"same"
+					],
+					"default": "same",
+					"description": "Controls the text of Status Bar item when adding from Tree View context menu."
+				},
+				"commands.statusBarDefaultPosition": {
+					"type": "string",
+					"enum": [
+						"left",
+						"right"
+					],
+					"default": "left",
+					"description": "Where to put command on Status Bar (left or right)."
+				},
+				"commands.alias": {
+					"type": "object",
+					"description": "Use shorter command ids.",
+					"default": {},
+					"patternProperties": {
+						"^.*$": {
+							"type": "string"
+						}
+					}
+				},
+				"commands.populateCommandPalette": {
+					"type": "boolean",
+					"description": "Adds all items to Command Palette (Requires editor reload after every change of configuration).",
+					"default": false
+				}
+			}
+		},
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "commands",
+					"icon": "$(play-circle)",
+					"title": "Commands"
+				}
+			]
+		},
+		"views": {
+			"commands": [
+				{
+					"id": "commands.tree",
+					"name": "View"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "commands.openAsQuickPick",
+				"title": "Open as Quick Pick",
+				"category": "Commands"
+			},
+			{
+				"command": "commands.suggestCommands",
+				"title": "Suggest (autocomplete) commands.",
+				"category": "Commands"
+			},
+			{
+				"command": "commands.revealCommand",
+				"title": "Reveal Command",
+				"category": "Commands"
+			},
+			{
+				"command": "commands.assignKeybinding",
+				"title": "Assign Keybinding",
+				"category": "Commands"
+			},
+			{
+				"command": "commands.addToStatusBar",
+				"title": "Toggle Status Bar Item",
+				"category": "Commands"
+			}
+		],
+		"menus": {
+			"view/item/context": [
+				{
+					"command": "commands.revealCommand",
+					"when": "view == commands.tree && viewItem =~ /command|folder/",
+					"group": "1_reveal"
+				},
+				{
+					"command": "commands.addToStatusBar",
+					"when": "view == commands.tree && viewItem == command",
+					"group": "2_status"
+				},
+				{
+					"command": "commands.assignKeybinding",
+					"when": "view == commands.tree && viewItem == command",
+					"group": "3_keybinding"
+				}
+			],
+			"commandPalette": [
+				{
+					"command": "commands.revealCommand",
+					"when": "false"
+				},
+				{
+					"command": "commands.assignKeybinding",
+					"when": "false"
+				},
+				{
+					"command": "commands.addToStatusBar",
+					"when": "false"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "webpack --mode production --color",
+		"watch": "webpack --mode development --watch --stats minimal",
+		"generateJsonSchema": "tsc scripts\\generateJsonSchema.ts && node scripts\\generateJsonSchema.js"
+	},
+	"devDependencies": {
+		"@types/lodash": "^4.14.168",
+		"@types/node": "^12.20.11",
+		"@types/vscode": "^1.53.0",
+		"@typescript-eslint/eslint-plugin": "^4.22.0",
+		"@typescript-eslint/parser": "^4.22.0",
+		"eslint": "^7.25.0",
+		"eslint-plugin-no-autofix": "^1.1.2",
+		"friendly-errors-webpack-plugin": "^1.7.0",
+		"ts-loader": "^9.1.1",
+		"typescript": "^4.2.4",
+		"typescript-json-schema": "^0.50.0",
+		"webpack": "^5.36.1",
+		"webpack-cli": "^4.6.0"
+	},
+	"dependencies": {
+		"lodash": "^4.17.21"
+	}
+}
