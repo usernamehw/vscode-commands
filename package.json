@@ -23,6 +23,7 @@
 	},
 	"keywords": [
 		"run",
+		"execute",
 		"multiple",
 		"command",
 		"commands",
@@ -361,9 +362,21 @@
 				"command": "commands.addToStatusBar",
 				"title": "Toggle Status Bar Item",
 				"category": "Commands"
+			},
+			{
+				"command": "commands.revealCommandsInSettignsGUI",
+				"title": "Open Settings GUI",
+				"icon": "$(gear)",
+				"category": "Commands"
 			}
 		],
 		"menus": {
+			"view/title": [
+				{
+					"command": "commands.revealCommandsInSettignsGUI",
+					"group": "navigation"
+				}
+			],
 			"view/item/context": [
 				{
 					"command": "commands.revealCommand",
@@ -392,6 +405,10 @@
 				},
 				{
 					"command": "commands.addToStatusBar",
+					"when": "false"
+				},
+				{
+					"command": "commands.revealCommandsInSettignsGUI",
 					"when": "false"
 				}
 			]

@@ -1,11 +1,15 @@
 import merge from 'lodash/merge';
 import { commands, ConfigurationTarget, Uri, window, workspace } from 'vscode';
 import { extensionConfig, EXTENSION_NAME, RUN_COMMAND_ID } from './extension';
+import { run } from './run';
 import { RunCommandTreeItem } from './TreeViewProvider';
 import { CommandObject, IToggleSetting, Runnable, TopLevelCommands } from './types';
-import { delay, goToSymbol, isSimpleObject, openKeybindingsGuiAt, openSettingGuiAt } from './utils';
+import { goToSymbol, isSimpleObject, openKeybindingsGuiAt, openSettingGuiAt } from './utils';
 
 export function registerExtensionCommands() {
+	// ──────────────────────────────────────────────────────────────────────
+	// ──── Core commands ───────────────────────────────────────────────────
+	// ──────────────────────────────────────────────────────────────────────
 	commands.registerCommand(RUN_COMMAND_ID, async (runnable: Runnable) => {
 		await run(runnable);
 	});
@@ -42,7 +46,6 @@ export function registerExtensionCommands() {
 	});
 	commands.registerCommand(`${EXTENSION_NAME}.addToStatusBar`, async (treeItem: RunCommandTreeItem) => {
 		const labelName = treeItem.getLabelName();
-
 		let newStatusBarItemText = '';
 		if (extensionConfig.statusBarDefaultText === 'pick') {
 			const text = await window.showInputBox({
@@ -55,9 +58,7 @@ export function registerExtensionCommands() {
 		} else {
 			newStatusBarItemText = labelName;
 		}
-		let newCommandObject: CommandObject;
 		const configCommands: TopLevelCommands = JSON.parse(JSON.stringify(extensionConfig.commands));// config is readonly, get a copy
-		let newStatusBarItem: CommandObject['statusBar'];
 		for (const key in configCommands) {
 			const commandObject = configCommands[key];
 			if (key === labelName) {
@@ -89,7 +90,7 @@ export function registerExtensionCommands() {
 		updateSetting(`${EXTENSION_NAME}.${EXTENSION_NAME}`, configCommands, 'global');
 	});
 	commands.registerCommand(`${EXTENSION_NAME}.revealCommandsInSettignsGUI`, () => {
-		openSettingGuiAt(`${EXTENSION_NAME}.tree`);
+		openSettingGuiAt(`@ext:usernamehw.commands`);
 	});
 	commands.registerCommand(`${EXTENSION_NAME}.openAsQuickPick`, async () => {
 		const treeAsOneLevelMap: {
@@ -224,38 +225,6 @@ function incrementSetting(settingName: any, n: any): void {
 		return;
 	}
 	settings.update(settingName, currentSettingValue + n, true);
-}
-
-export async function run(runnable: Runnable) {
-	if (Array.isArray(runnable)) {
-		await runArray(runnable);
-	} else if (isSimpleObject(runnable)) {
-		if (Array.isArray(runnable.sequence)) {
-			await runArray(runnable.sequence);
-		} else {
-			await runObject(runnable);
-		}
-		return undefined;
-	}
-	throw Error('Unknown Command type');
-}
-async function runArray(arr: CommandObject[]) {
-	for (const item of arr) {
-		await runObject(item);
-	}
-}
-async function runObject(object: CommandObject) {
-	if (object.delay) {
-		await delay(object.delay);
-	}
-	let commandId = object.command;
-	if (extensionConfig.alias[commandId]) {
-		commandId = extensionConfig.alias[commandId];
-	}
-	if (!commandId) {
-		window.showErrorMessage('Missing `command` property.');
-	}
-	return await commands.executeCommand(commandId, object.args);
 }
 /**
  * TODO: use this function in other places

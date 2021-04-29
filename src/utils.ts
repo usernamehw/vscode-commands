@@ -1,7 +1,7 @@
 import vscode, { commands, DocumentSymbol, Selection, TextDocument, TextEditor } from 'vscode';
 import { TopLevelCommands } from './types';
 
-export const delay = async (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms));
+export const sleep = async (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms));
 /**
  * Return `true` when item is an object (NOT Array, NOT null)
  */
@@ -48,11 +48,11 @@ export function forEachItem(f: (item: TopLevelCommands['anykey'], key: string)=>
 async function getSymbols(document: TextDocument): Promise<DocumentSymbol[]> {
 	let symbols = await commands.executeCommand<DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', document.uri);
 	if (!symbols || symbols.length === 0) {
-		await delay(1200);
+		await sleep(1200);
 		symbols = await commands.executeCommand<DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', document.uri);
 	}
 	if (!symbols || symbols.length === 0) {
-		await delay(2000);
+		await sleep(2000);
 		symbols = await commands.executeCommand<DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', document.uri);
 	}
 	return symbols || [];
