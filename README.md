@@ -390,3 +390,19 @@ Arguments object:
 	"args": "||||||||",
 },
 ```
+
+### `commands.showNotification` Show VSCode notification
+
+```js
+"Msg": {
+	"command": "commands.showNotification",
+	"args": "info msg",
+},
+"Msg error": {
+	"command": "commands.showNotification",
+	"args": {
+		"severity": "error",// "warning" | "info"
+		"message": "bad",
+	},
+},
+```

@@ -205,8 +205,18 @@ export function registerExtensionCommands() {
 	commands.registerCommand(`${EXTENSION_NAME}.openFolder`, async (path: string) => {
 		await commands.executeCommand('vscode.openFolder', Uri.file(path));
 	});
-	commands.registerCommand(`${EXTENSION_NAME}.notify`, (message: string) => {
-		window.showInformationMessage(message);
+	commands.registerCommand(`${EXTENSION_NAME}.showNotification`, (messageArg: string | { message: string; severity?: 'error' | 'info' | 'warning' }) => {
+		if (typeof messageArg === 'string') {
+			window.showInformationMessage(messageArg);
+		} else {
+			if (messageArg.severity === 'error') {
+				window.showErrorMessage(messageArg.message);
+			} else if (messageArg.severity === 'warning') {
+				window.showWarningMessage(messageArg.message);
+			} else {
+				window.showInformationMessage(messageArg.message);
+			}
+		}
 	});
 }
 // ──────────────────────────────────────────────────────────────────────
