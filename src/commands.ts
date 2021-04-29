@@ -1,4 +1,4 @@
-import { commands, ConfigurationTarget, Uri, window, workspace } from 'vscode';
+import { commands, ConfigurationTarget, env, Uri, window, workspace } from 'vscode';
 import { extensionConfig, EXTENSION_NAME, RUN_COMMAND_ID } from './extension';
 import { run } from './run';
 import { RunCommandTreeItem } from './TreeViewProvider';
@@ -185,6 +185,13 @@ export function registerExtensionCommands() {
 	// 	const newValue = merge(oldValue, objectToMerge);
 	// 	settings.update(settingName, newValue, true);
 	// });
+	commands.registerCommand(`${EXTENSION_NAME}.clipboardWrite`, async (text: string) => {
+		if (typeof text !== 'string') {
+			window.showErrorMessage('Argument is not a string.');
+			return;
+		}
+		await env.clipboard.writeText(text);
+	});
 	commands.registerCommand(`${EXTENSION_NAME}.openFolder`, async (path: string) => {
 		await commands.executeCommand('openFolder', Uri.file(path));
 	});

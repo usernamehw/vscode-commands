@@ -347,3 +347,12 @@ Arguments object:
 	},
 },
 ```
+
+### `commands.clipboardWrite` Write text to clipboard
+
+```js
+"Populate clipboard": {
+	"command": "commands.clipboardWrite",
+	"args": "||||||||",
+},
+```
