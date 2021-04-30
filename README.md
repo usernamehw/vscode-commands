@@ -391,6 +391,15 @@ Arguments object:
 },
 ```
 
+### `` Start debugging by "name" property from **launch.json**
+
+```js
+"Debug extension": {
+	"command": "commands.startDebugging",
+	"args": "Extension",
+},
+```
+
 ### `commands.setEditorLanguage` Change active editor [language id](https://code.visualstudio.com/docs/languages/identifiers#_known-language-identifiers)
 
 ```js

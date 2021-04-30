@@ -1,4 +1,4 @@
-import { commands, ConfigurationTarget, env, languages, Uri, window, workspace } from 'vscode';
+import { commands, ConfigurationTarget, debug, env, languages, Uri, window, workspace } from 'vscode';
 import { extensionConfig, EXTENSION_NAME, RUN_COMMAND_ID } from './extension';
 import { run } from './run';
 import { RunCommandTreeItem } from './TreeViewProvider';
@@ -236,6 +236,9 @@ export function registerExtensionCommands() {
 				newTerm.show();
 			}
 		}
+	});
+	commands.registerCommand(`${EXTENSION_NAME}.startDebugging`, async (name: string) => {
+		await debug.startDebugging(workspace.workspaceFolders?.[0], name);
 	});
 }
 // ──────────────────────────────────────────────────────────────────────
