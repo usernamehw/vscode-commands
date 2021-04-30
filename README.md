@@ -373,6 +373,24 @@ Arguments object:
 },
 ```
 
+### `commands.runInTerminal` Create new terminal and send text
+
+```js
+"Terminal => watch (string argument)": {
+	"command": "commands.runInTerminal",
+	"args": "npm run watch"
+},
+"Terminal => watch": {
+	"command": "commands.runInTerminal",
+	"args": {
+		"text": "npm run watch",
+		"name": "watch",
+		"reveal": true,
+		// "cwd": "",
+	},
+},
+```
+
 ### `commands.setEditorLanguage` Change active editor [language id](https://code.visualstudio.com/docs/languages/identifiers#_known-language-identifiers)
 
 ```js

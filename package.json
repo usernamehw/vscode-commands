@@ -37,7 +37,8 @@
 		"setting",
 		"delay",
 		"status",
-		"bar"
+		"bar",
+		"terminal"
 	],
 	"categories": [
 		"Other"
