@@ -71,6 +71,16 @@ export async function goToSymbol(editor: TextEditor, symbolName: string) {
 	if (foundSymbol) {
 		editor.selection = new Selection(foundSymbol.range.start, foundSymbol.range.start);
 		editor.revealRange(foundSymbol.range, vscode.TextEditorRevealType.AtTop);
+		// Highlight for a short time revealed range
+		const range = new vscode.Range(foundSymbol.range.start.line, 0, foundSymbol.range.start.line, 0);
+		const lineHighlightDecorationType = vscode.window.createTextEditorDecorationType({
+			backgroundColor: '#ffb12948',
+			isWholeLine: true,
+		});
+		editor.setDecorations(lineHighlightDecorationType, [range]);
+		setTimeout(() => {
+			editor.setDecorations(lineHighlightDecorationType, []);
+		}, 700);
 	}
 }
 
