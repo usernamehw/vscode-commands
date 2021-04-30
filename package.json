@@ -350,6 +350,12 @@
 				"category": "Commands"
 			},
 			{
+				"command": "commands.newCommand",
+				"title": "Add new command to the list.",
+				"icon": "$(add)",
+				"category": "Commands"
+			},
+			{
 				"command": "commands.revealCommand",
 				"title": "Reveal Command",
 				"category": "Commands"
@@ -375,6 +381,10 @@
 			"view/title": [
 				{
 					"command": "commands.revealCommandsInSettignsGUI",
+					"group": "navigation"
+				},
+				{
+					"command": "commands.newCommand",
 					"group": "navigation"
 				}
 			],

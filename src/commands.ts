@@ -34,8 +34,7 @@ export function registerExtensionCommands() {
 		await run(runnable);
 	});
 	commands.registerTextEditorCommand(CommandIds.suggestCommands, async editor => {
-		const allCommands = await commands.getCommands();
-		const picked = await window.showQuickPick(allCommands.filter(c => c[0] !== '_'));
+		const picked = await window.showQuickPick(await getAllVscodeCommands());
 		if (!picked) {
 			return;
 		}
@@ -45,7 +44,7 @@ export function registerExtensionCommands() {
 	});
 	commands.registerCommand(CommandIds.revealCommand, async (commandTreeItem: RunCommandTreeItem) => {
 		const symbolName = commandTreeItem.getLabelName();
-		await commands.executeCommand('workbench.action.openSettingsJson');
+		await openSettingsJSON();
 		const activeTextEditor = window.activeTextEditor;
 		if (!activeTextEditor) {
 			return;
@@ -107,7 +106,7 @@ export function registerExtensionCommands() {
 			}
 		}
 
-		updateSetting(`${Constants.extensionName}.${Constants.extensionName}`, configCommands, 'global');
+		updateSetting(Constants.commandsSettingId, configCommands, 'global');
 	});
 	commands.registerCommand(CommandIds.revealCommandsInSettignsGUI, () => {
 		openSettingGuiAt(`@ext:usernamehw.commands`);
@@ -131,6 +130,24 @@ export function registerExtensionCommands() {
 		if (pickedCommandTitle) {
 			run(treeAsOneLevelMap[pickedCommandTitle]);
 		}
+	});
+	commands.registerCommand(CommandIds.newCommand, async () => {
+		const pickedCommand = await window.showQuickPick(await getAllVscodeCommands());
+		if (!pickedCommand) {
+			return;
+		}
+		// @ts-ignore
+		const newCommandsSetting: TopLevelCommands = {
+			...extensionConfig.commands,
+			...{
+				[pickedCommand]: {
+					command: pickedCommand,
+				},
+			},
+		};
+		await updateSetting(Constants.commandsSettingId, newCommandsSetting, 'global');
+		await openSettingsJSON();
+		await goToSymbol(window.activeTextEditor!, pickedCommand);
 	});
 	// ──────────────────────────────────────────────────────────────────────
 	// ──── Additional Commands ─────────────────────────────────────────────
@@ -285,4 +302,13 @@ async function updateSetting(settingName: string, newValue: unknown, target: 'gl
 	const settings = workspace.getConfiguration(undefined, null);
 	const configurationTarget = target === 'workspace' ? ConfigurationTarget.Workspace : ConfigurationTarget.Global;
 	await settings.update(settingName, newValue, configurationTarget);
+}
+
+export async function getAllVscodeCommands() {
+	const allCommands = await commands.getCommands();
+	return allCommands.filter(c => c[0] !== '_');// remove internal commands
+}
+
+export async function openSettingsJSON() {
+	return await commands.executeCommand('workbench.action.openSettingsJson');
 }
