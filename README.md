@@ -391,7 +391,7 @@ Arguments object:
 },
 ```
 
-### `` Start debugging by "name" property from **launch.json**
+### `commands.startDebugging` Start debugging by "name" property from **launch.json**
 
 ```js
 "Debug extension": {
