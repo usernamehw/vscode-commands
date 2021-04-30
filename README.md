@@ -341,21 +341,21 @@ Arguments object:
 ### `commands.incrementSetting` Increment/decrement setting
 
 ```js
-"Font size += 2": {
+"Font size ++": {
 	"command": "commands.incrementSetting",
 	"args": {
 		"setting": "editor.fontSize",
-		"value": 2,
+		"value": 0.5,
 	},
 },
 ```
 
 ```js
-"Font size -= 2": {
+"Font size --": {
 	"command": "commands.incrementSetting",
 	"args": {
 		"setting": "editor.fontSize",
-		"value": -2,
+		"value": -0.5,
 	},
 },
 ```
