@@ -1,18 +1,39 @@
 import { commands, ConfigurationTarget, debug, env, languages, Uri, window, workspace } from 'vscode';
-import { extensionConfig, EXTENSION_NAME, RUN_COMMAND_ID } from './extension';
+import { Constants, extensionConfig } from './extension';
 import { run } from './run';
 import { RunCommandTreeItem } from './TreeViewProvider';
 import { CommandObject, IToggleSetting, Runnable, TopLevelCommands } from './types';
 import { goToSymbol, isSimpleObject, openKeybindingsGuiAt, openSettingGuiAt } from './utils';
 
+export const enum CommandIds {
+	// Core
+	'run' = 'commands.run',
+	'newCommand' = 'commands.newCommand',
+	'suggestCommands' = 'commands.suggestCommands',
+	'revealCommand' = 'commands.revealCommand',
+	'openAsQuickPick' = 'commands.openAsQuickPick',
+	'assignKeybinding' = 'commands.assignKeybinding',
+	'addToStatusBar' = 'commands.addToStatusBar',
+	'revealCommandsInSettignsGUI' = 'commands.revealCommandsInSettignsGUI',
+	// Additional
+	'toggleSetting' = 'commands.toggleSetting',
+	'incrementSetting' = 'commands.incrementSetting',
+	'clipboardWrite' = 'commands.clipboardWrite',
+	'setEditorLanguage' = 'commands.setEditorLanguage',
+	'openFolder' = 'commands.openFolder',
+	'showNotification' = 'commands.showNotification',
+	'runInTerminal' = 'commands.runInTerminal',
+	'startDebugging' = 'commands.startDebugging',
+}
+
 export function registerExtensionCommands() {
 	// ──────────────────────────────────────────────────────────────────────
 	// ──── Core commands ───────────────────────────────────────────────────
 	// ──────────────────────────────────────────────────────────────────────
-	commands.registerCommand(RUN_COMMAND_ID, async (runnable: Runnable) => {
+	commands.registerCommand(CommandIds.run, async (runnable: Runnable) => {
 		await run(runnable);
 	});
-	commands.registerTextEditorCommand(`${EXTENSION_NAME}.suggestCommands`, async editor => {
+	commands.registerTextEditorCommand(CommandIds.suggestCommands, async editor => {
 		const allCommands = await commands.getCommands();
 		const picked = await window.showQuickPick(allCommands.filter(c => c[0] !== '_'));
 		if (!picked) {
@@ -22,7 +43,7 @@ export function registerExtensionCommands() {
 			builder.insert(editor.selection.active, picked);
 		});
 	});
-	commands.registerCommand(`${EXTENSION_NAME}.revealCommand`, async (commandTreeItem: RunCommandTreeItem) => {
+	commands.registerCommand(CommandIds.revealCommand, async (commandTreeItem: RunCommandTreeItem) => {
 		const symbolName = commandTreeItem.getLabelName();
 		await commands.executeCommand('workbench.action.openSettingsJson');
 		const activeTextEditor = window.activeTextEditor;
@@ -31,7 +52,7 @@ export function registerExtensionCommands() {
 		}
 		goToSymbol(activeTextEditor, symbolName);
 	});
-	commands.registerCommand(`${EXTENSION_NAME}.assignKeybinding`, (commandTreeItem: RunCommandTreeItem) => {
+	commands.registerCommand(CommandIds.assignKeybinding, (commandTreeItem: RunCommandTreeItem) => {
 		const runnable = commandTreeItem.runnable;
 		if (Array.isArray(runnable)) {
 			window.showWarningMessage('Can only assign keybinding to an object with "registerCommand" key.');
@@ -43,7 +64,7 @@ export function registerExtensionCommands() {
 			openKeybindingsGuiAt(runnable.registerCommand);
 		}
 	});
-	commands.registerCommand(`${EXTENSION_NAME}.addToStatusBar`, async (treeItem: RunCommandTreeItem) => {
+	commands.registerCommand(CommandIds.addToStatusBar, async (treeItem: RunCommandTreeItem) => {
 		const labelName = treeItem.getLabelName();
 		let newStatusBarItemText = '';
 		if (extensionConfig.statusBarDefaultText === 'pick') {
@@ -86,12 +107,12 @@ export function registerExtensionCommands() {
 			}
 		}
 
-		updateSetting(`${EXTENSION_NAME}.${EXTENSION_NAME}`, configCommands, 'global');
+		updateSetting(`${Constants.extensionName}.${Constants.extensionName}`, configCommands, 'global');
 	});
-	commands.registerCommand(`${EXTENSION_NAME}.revealCommandsInSettignsGUI`, () => {
+	commands.registerCommand(CommandIds.revealCommandsInSettignsGUI, () => {
 		openSettingGuiAt(`@ext:usernamehw.commands`);
 	});
-	commands.registerCommand(`${EXTENSION_NAME}.openAsQuickPick`, async () => {
+	commands.registerCommand(CommandIds.openAsQuickPick, async () => {
 		const treeAsOneLevelMap: {
 			[key: string]: Runnable;
 		} = {};
@@ -114,7 +135,7 @@ export function registerExtensionCommands() {
 	// ──────────────────────────────────────────────────────────────────────
 	// ──── Additional Commands ─────────────────────────────────────────────
 	// ──────────────────────────────────────────────────────────────────────
-	commands.registerCommand(`${EXTENSION_NAME}.toggleSetting`, (arg: IToggleSetting | string) => {
+	commands.registerCommand(CommandIds.toggleSetting, (arg: IToggleSetting | string) => {
 		const settings = workspace.getConfiguration(undefined, null);
 
 		if (typeof arg === 'string') {
@@ -151,7 +172,7 @@ export function registerExtensionCommands() {
 			return idx === arr.length - 1 ? arr[0] : arr[idx + 1];
 		}
 	});
-	commands.registerCommand(`${EXTENSION_NAME}.incrementSetting`, (arg: IToggleSetting | string) => {
+	commands.registerCommand(CommandIds.incrementSetting, (arg: IToggleSetting | string) => {
 		let setting;
 		let value;
 		if (typeof arg === 'string') {
@@ -185,14 +206,14 @@ export function registerExtensionCommands() {
 	// 	const newValue = merge(oldValue, objectToMerge);
 	// 	settings.update(settingName, newValue, true);
 	// });
-	commands.registerCommand(`${EXTENSION_NAME}.clipboardWrite`, async (text: string) => {
+	commands.registerCommand(CommandIds.clipboardWrite, async (text: string) => {
 		if (typeof text !== 'string') {
 			window.showErrorMessage('Argument is not a string.');
 			return;
 		}
 		await env.clipboard.writeText(text);
 	});
-	commands.registerCommand(`${EXTENSION_NAME}.setEditorLanguage`, async (languageId: string) => {
+	commands.registerCommand(CommandIds.setEditorLanguage, async (languageId: string) => {
 		if (typeof languageId !== 'string') {
 			window.showErrorMessage('Argument is not a string.');
 			return;
@@ -202,10 +223,10 @@ export function registerExtensionCommands() {
 		}
 		await languages.setTextDocumentLanguage(window.activeTextEditor.document, languageId);
 	});
-	commands.registerCommand(`${EXTENSION_NAME}.openFolder`, async (path: string) => {
+	commands.registerCommand(CommandIds.openFolder, async (path: string) => {
 		await commands.executeCommand('vscode.openFolder', Uri.file(path));
 	});
-	commands.registerCommand(`${EXTENSION_NAME}.showNotification`, (messageArg: string | { message: string; severity?: 'error' | 'info' | 'warning' }) => {
+	commands.registerCommand(CommandIds.showNotification, (messageArg: string | { message: string; severity?: 'error' | 'info' | 'warning' }) => {
 		if (typeof messageArg === 'string') {
 			window.showInformationMessage(messageArg);
 		} else {
@@ -218,7 +239,7 @@ export function registerExtensionCommands() {
 			}
 		}
 	});
-	commands.registerCommand(`${EXTENSION_NAME}.runInTerminal`, (arg: string | {text?: string; name?: string; cwd?: string; reveal?: boolean}) => {
+	commands.registerCommand(CommandIds.runInTerminal, (arg: string | {text?: string; name?: string; cwd?: string; reveal?: boolean}) => {
 		if (typeof arg === 'string') {
 			const newTerm = window.createTerminal();
 			newTerm.sendText(arg);
@@ -237,7 +258,7 @@ export function registerExtensionCommands() {
 			}
 		}
 	});
-	commands.registerCommand(`${EXTENSION_NAME}.startDebugging`, async (name: string) => {
+	commands.registerCommand(CommandIds.startDebugging, async (name: string) => {
 		await debug.startDebugging(workspace.workspaceFolders?.[0], name);
 	});
 }

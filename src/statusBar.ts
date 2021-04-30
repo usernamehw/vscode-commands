@@ -1,5 +1,6 @@
 import { StatusBarAlignment, window } from 'vscode';
-import { RUN_COMMAND_ID, statusBarItems } from './extension';
+import { CommandIds } from './commands';
+import { statusBarItems } from './extension';
 import { TopLevelCommands } from './types';
 import { forEachItem } from './utils';
 
@@ -17,7 +18,7 @@ export function updateStatusBarItems(items: TopLevelCommands) {
 			newStatusBarItem.text = icon + statusBarUserObject.text;
 			newStatusBarItem.show();
 			newStatusBarItem.command = {
-				command: RUN_COMMAND_ID,
+				command: CommandIds.run,
 				title: 'Run Command',
 				arguments: [item],
 			};

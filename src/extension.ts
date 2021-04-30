@@ -6,9 +6,10 @@ import { updateStatusBarItems } from './statusBar';
 import { CommandsTreeViewProvider } from './TreeViewProvider';
 import { ExtensionConfig } from './types';
 
-export const EXTENSION_NAME = 'commands';
-export const RUN_COMMAND_ID = `${EXTENSION_NAME}.run`;
-export let extensionConfig = workspace.getConfiguration(EXTENSION_NAME) as any as ExtensionConfig;
+export const enum Constants {
+	extensionName = 'commands',
+}
+export let extensionConfig = workspace.getConfiguration(Constants.extensionName) as any as ExtensionConfig;
 export const registeredCommandsList: vscode.Disposable[] = [];
 export const commandPaletteCommandsList: vscode.Disposable[] = [];
 export const statusBarItems: vscode.Disposable[] = [];
@@ -20,17 +21,17 @@ export function activate(extensionContext: ExtensionContext) {
 	updateCommandPalette(extensionConfig.commands, extensionContext);
 
 	const commandsTreeViewProvider = new CommandsTreeViewProvider(extensionConfig);
-	const commandsTreeView = vscode.window.createTreeView(`${EXTENSION_NAME}.tree`, {
+	const commandsTreeView = vscode.window.createTreeView(`${Constants.extensionName}.tree`, {
 		treeDataProvider: commandsTreeViewProvider,
 		showCollapseAll: true,
 	});
 
 	function updateConfig(e: ConfigurationChangeEvent) {
-		if (!e.affectsConfiguration(EXTENSION_NAME)) {
+		if (!e.affectsConfiguration(Constants.extensionName)) {
 			return;
 		}
 
-		extensionConfig = workspace.getConfiguration(EXTENSION_NAME) as any as ExtensionConfig;
+		extensionConfig = workspace.getConfiguration(Constants.extensionName) as any as ExtensionConfig;
 		commandsTreeViewProvider.updateConfig(extensionConfig);
 		commandsTreeViewProvider.refresh();
 
@@ -44,7 +45,7 @@ export function activate(extensionContext: ExtensionContext) {
 	}
 
 	extensionContext.subscriptions.push(commandsTreeView);
-	extensionContext.subscriptions.push(workspace.onDidChangeConfiguration(updateConfig, EXTENSION_NAME));
+	extensionContext.subscriptions.push(workspace.onDidChangeConfiguration(updateConfig, Constants.extensionName));
 }
 
 export function deactivate() { }

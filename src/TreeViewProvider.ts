@@ -1,5 +1,6 @@
 import { Command, Event, EventEmitter, ThemeColor, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
-import { extensionConfig, RUN_COMMAND_ID } from './extension';
+import { CommandIds } from './commands';
+import { extensionConfig } from './extension';
 import { ExtensionConfig, NestedItems, Runnable, TopLevelCommands } from './types';
 import { isSimpleObject } from './utils';
 
@@ -92,7 +93,7 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 				result.push(new RunCommandTreeItem(
 					key,
 					{
-						command: RUN_COMMAND_ID,
+						command: CommandIds.run,
 						title: 'Run Command',
 						arguments: [runnable],
 					},
