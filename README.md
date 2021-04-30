@@ -5,6 +5,8 @@
 [![Rating](https://vsmarketplacebadge.apphb.com/rating-short/usernamehw.commands.svg)](https://marketplace.visualstudio.com/items?itemName=usernamehw.commands)
 [![Trending](https://vsmarketplacebadge.apphb.com/trending-monthly/usernamehw.commands.svg)](https://marketplace.visualstudio.com/items?itemName=usernamehw.commands)
 
+![extension_demo_gif](./img/extension_demo.gif)
+
 ## Features
 
 - Execute multiple commands; Execute commands with arguments
