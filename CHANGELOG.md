@@ -1,3 +1,7 @@
+## 0.0.3 `01 May 2021`
+
+- ✨ New command icon
+
 ## 0.0.2 `30 Apr 2021`
 
 - ✨ Add more commands with args
