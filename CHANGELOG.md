@@ -1,3 +1,7 @@
+## 0.0.5 `01 May 2021`
+
+- 🐛 Fix icons in other tree views
+
 ## 0.0.4 `01 May 2021`
 
 - 💥 Remove `registerCommand` - use key as command id
