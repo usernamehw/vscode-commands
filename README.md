@@ -362,6 +362,18 @@ Arguments object:
 },
 ```
 
+### `commands.toggleTheme` Toggle themes by groups (depending on active theme kind)
+
+```js
+"Toggle Themes": {
+	"command": "commands.toggleTheme",
+	"args": {
+		"dark": "Default Dark+,GitHub Dark",
+		"light": "Default Light+,GitHub Light",
+	},
+},
+```
+
 ### `commands.openFolder` Open file/folder in vscode
 
 ```js

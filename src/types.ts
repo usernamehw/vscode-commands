@@ -58,7 +58,7 @@ export interface CommandFolder {
 export type NestedItems = TopLevelCommands;
 
 // ──────────────────────────────────────────────────────────────────────
-export interface IToggleSetting {
-	setting: 'string';
+export interface ToggleSetting {
+	setting: string;
 	value: unknown[] | string;
 }
