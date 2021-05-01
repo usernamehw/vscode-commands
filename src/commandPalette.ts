@@ -47,7 +47,7 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 /**
  * Dispose user defined commands.
  */
-export function unregisterCommandPalette(): void {
+export function unregisterCommandPalette() {
 	for (const command of commandPaletteCommandsList) {
 		command.dispose();
 	}
