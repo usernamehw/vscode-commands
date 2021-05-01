@@ -222,7 +222,7 @@ Can open Quick Pick with prefilled prefix (`@...` - symbol, `view ...` - open vi
 },
 ```
 
-<!-- ### `search.action.openNewEditor` Open search editor with specified args
+### `search.action.openNewEditor` Open search editor with specified args
 
 ```js
 "Open search editor with args": {
@@ -241,7 +241,7 @@ Can open Quick Pick with prefilled prefix (`@...` - symbol, `view ...` - open vi
 		// "filesToExclude": "",
 	},
 },
-``` -->
+```
 
 ### `cursorMove` Move cursor to a logical position in the view
 
