@@ -365,11 +365,13 @@
 			"view/title": [
 				{
 					"command": "commands.revealCommandsInSettignsGUI",
-					"group": "navigation"
+					"group": "navigation",
+					"when": "view == commands.tree"
 				},
 				{
 					"command": "commands.newCommand",
-					"group": "navigation"
+					"group": "navigation",
+					"when": "view == commands.tree"
 				}
 			],
 			"view/item/context": [
