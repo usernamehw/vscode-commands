@@ -48,6 +48,10 @@ export function forEachItem(f: (item: TopLevelCommands['anykey'], key: string)=>
 async function getSymbols(document: TextDocument): Promise<DocumentSymbol[]> {
 	let symbols = await commands.executeCommand<DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', document.uri);
 	if (!symbols || symbols.length === 0) {
+		await sleep(700);
+		symbols = await commands.executeCommand<DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', document.uri);
+	}
+	if (!symbols || symbols.length === 0) {
 		await sleep(1200);
 		symbols = await commands.executeCommand<DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', document.uri);
 	}
