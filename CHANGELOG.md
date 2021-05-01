@@ -1,6 +1,10 @@
+## 0.0.4 `01 May 2021`
+
+- 💥 Remove `registerCommand` - use key as command id
+
 ## 0.0.3 `01 May 2021`
 
-- ✨ New command icon
+- ✨ New command action
 
 ## 0.0.2 `30 Apr 2021`
 
