@@ -1,0 +1,8 @@
+{
+	"contributions.commands.excludeById": [
+		"commands.revealCommand",
+		"commands.assignKeybinding",
+		"commands.addToStatusBar",
+		"commands.revealCommandsInSettignsGUI",
+	],
+}

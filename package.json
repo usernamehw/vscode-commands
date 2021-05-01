@@ -267,7 +267,7 @@
 				},
 				"commands.treeViewCollapseFolders": {
 					"type": "boolean",
-					"description": "Requires reload before being applied.",
+					"description": "Collapse folders by default. Requires reload before being applied.",
 					"default": false
 				},
 				"commands.statusBarDefaultText": {

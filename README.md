@@ -17,6 +17,29 @@
 - Register command to execute from a keybinding
 - Additional commands contributed by this extension
 
+<!-- COMMANDS_START -->
+## Commands (3)
+
+|Command|Description|
+|-|-|
+|commands.openAsQuickPick|Commands: Open as Quick Pick|
+|commands.suggestCommands|Commands: Suggest (autocomplete) commands.|
+|commands.newCommand|Commands: Add new command to the list.|
+<!-- COMMANDS_END -->
+
+<!-- SETTINGS_START -->
+## Settings (6)
+
+|Setting|Default|Description|
+|-|-|-|
+|commands.commands|{}|Commands that will be rendered in the View.|
+|commands.treeViewCollapseFolders|**false**|Collapse folders by default. Requires reload before being applied.|
+|commands.statusBarDefaultText|"same"|Controls the text of Status Bar item when adding from Tree View context menu.|
+|commands.statusBarDefaultPosition|"left"|Where to put command on Status Bar (left or right).|
+|commands.alias|{}|Use shorter command ids.|
+|commands.populateCommandPalette|**false**|Adds all items to Command Palette (Requires editor reload after every change of configuration).|
+<!-- SETTINGS_END -->
+
 ```ts
 // Command object structure
 interface CommandObject {
