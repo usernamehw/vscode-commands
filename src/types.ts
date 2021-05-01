@@ -39,7 +39,6 @@ export interface CommandObject {
 	command: string;
 	args?: unknown;
 	delay?: number;
-	registerCommand?: string;
 	icon?: string;
 	iconColor?: string;
 	statusBar?: {

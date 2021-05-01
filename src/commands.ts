@@ -53,16 +53,7 @@ export function registerExtensionCommands() {
 		goToSymbol(activeTextEditor, symbolName);
 	});
 	commands.registerCommand(CommandIds.assignKeybinding, (commandTreeItem: RunCommandTreeItem) => {
-		const runnable = commandTreeItem.runnable;
-		if (Array.isArray(runnable)) {
-			window.showWarningMessage('Can only assign keybinding to an object with "registerCommand" key.');
-			return;
-		}
-		if (!runnable.registerCommand) {
-			window.showWarningMessage('You need to specify "registerCommand" property to be able to assign this command a keybinding.');// TODO: reveal button
-		} else {
-			openKeybindingsGuiAt(runnable.registerCommand);
-		}
+		openKeybindingsGuiAt(commandTreeItem.getLabelName());
 	});
 	commands.registerCommand(CommandIds.addToStatusBar, async (treeItem: RunCommandTreeItem) => {
 		const labelName = treeItem.getLabelName();

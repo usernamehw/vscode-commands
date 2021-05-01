@@ -9,11 +9,9 @@ import { forEachItem } from './utils';
  */
 export function registerUserCommands(items: TopLevelCommands): void {
 	forEachItem((item, key) => {
-		if (item.registerCommand) {
-			registeredCommandsList.push(commands.registerCommand(item.registerCommand, () => {
-				run(item);
-			}));
-		}
+		registeredCommandsList.push(commands.registerCommand(key, () => {
+			run(item);
+		}));
 		if (extensionConfig.populateCommandPalette) {
 			registeredCommandsList.push(commands.registerCommand(key, () => {
 				run(item);

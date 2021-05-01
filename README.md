@@ -23,7 +23,6 @@ interface CommandObject {
 	command: string;// command id to execute
 	args?: unknown;// command arguments to execute
 	delay?: number;// delay BEFORE execution
-	registerCommand?: string;// register command to execute it from a keybinding
 	icon?: string;// icon id https://code.visualstudio.com/api/references/icons-in-labels#icon-listing
 	iconColor?: string;// color id https://code.visualstudio.com/api/references/theme-color
 	statusBar?: {// add to status bar

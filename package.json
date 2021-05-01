@@ -73,10 +73,6 @@
 									"type": "number",
 									"description": "Delay BEFORE executing this command."
 								},
-								"registerCommand": {
-									"type": "string",
-									"description": "Register command id to assign it later to a keybinding."
-								},
 								"icon": {
 									"type": "string",
 									"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
@@ -123,10 +119,6 @@
 											"delay": {
 												"type": "number",
 												"description": "Delay BEFORE executing this command."
-											},
-											"registerCommand": {
-												"type": "string",
-												"description": "Register command id to assign it later to a keybinding."
 											},
 											"icon": {
 												"type": "string",
@@ -180,10 +172,6 @@
 													"type": "number",
 													"description": "Delay BEFORE executing this command."
 												},
-												"registerCommand": {
-													"type": "string",
-													"description": "Register command id to assign it later to a keybinding."
-												},
 												"icon": {
 													"type": "string",
 													"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
@@ -230,10 +218,6 @@
 															"delay": {
 																"type": "number",
 																"description": "Delay BEFORE executing this command."
-															},
-															"registerCommand": {
-																"type": "string",
-																"description": "Register command id to assign it later to a keybinding."
 															},
 															"icon": {
 																"type": "string",

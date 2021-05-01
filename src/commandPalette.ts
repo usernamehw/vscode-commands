@@ -25,9 +25,8 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 		if (item.nestedItems) {
 			return;
 		}
-		const commandId = item.registerCommand ? item.registerCommand : key;
 		additionalCommands.push({
-			command: commandId,
+			command: key,
 			title: key,
 			category: 'Commands',
 		});
