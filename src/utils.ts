@@ -78,7 +78,7 @@ export async function goToSymbol(editor: TextEditor, symbolName: string) {
 		// Highlight for a short time revealed range
 		const range = new vscode.Range(foundSymbol.range.start.line, 0, foundSymbol.range.start.line, 0);
 		const lineHighlightDecorationType = vscode.window.createTextEditorDecorationType({
-			backgroundColor: '#ffb12948',
+			backgroundColor: '#ffb12938',
 			isWholeLine: true,
 		});
 		editor.setDecorations(lineHighlightDecorationType, [range]);
