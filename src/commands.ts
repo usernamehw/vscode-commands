@@ -313,18 +313,20 @@ export async function getAllVscodeCommands() {
 }
 
 export function commandsToQuickPickItems(commandList: string[]): QuickPickItem[] {
-	return commandList.map(command => {
-		if (command in commandArgs) {
-			return {
-				label: command,
-				details: 'args',
-			};
+	const result: QuickPickItem[] = [];
+	for (const com of commandList) {
+		if (com in commandArgs) {
+			result.push({
+				label: com,
+				detail: 'args',
+			});
 		} else {
-			return {
-				label: command,
-			};
+			result.push({
+				label: com,
+			});
 		}
-	});
+	}
+	return result;
 }
 
 export async function openSettingsJSON() {
