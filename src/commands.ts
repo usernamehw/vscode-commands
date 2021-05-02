@@ -1,8 +1,9 @@
-import { ColorThemeKind, commands, ConfigurationTarget, debug, env, languages, Uri, window, workspace } from 'vscode';
+import { ColorThemeKind, commands, ConfigurationTarget, debug, env, languages, QuickPickItem, Uri, window, workspace } from 'vscode';
+import { addArgs, commandArgs } from './args';
 import { Constants, extensionConfig } from './extension';
 import { run } from './run';
 import { RunCommandTreeItem } from './TreeViewProvider';
-import { CommandObject, ToggleSetting, Runnable, TopLevelCommands } from './types';
+import { CommandObject, Runnable, ToggleSetting, TopLevelCommands } from './types';
 import { goToSymbol, isSimpleObject, openKeybindingsGuiAt, openSettingGuiAt } from './utils';
 
 export const enum CommandIds {
@@ -124,22 +125,22 @@ export function registerExtensionCommands() {
 		}
 	});
 	commands.registerCommand(CommandIds.newCommand, async () => {
-		const pickedCommand = await window.showQuickPick(await getAllVscodeCommands());
+		const quickPickItems = commandsToQuickPickItems(await getAllVscodeCommands());
+		const pickedCommand = await window.showQuickPick(quickPickItems);
 		if (!pickedCommand) {
 			return;
 		}
+		const newCommand = addArgs(pickedCommand.label);
 		// @ts-ignore
 		const newCommandsSetting: TopLevelCommands = {
 			...extensionConfig.commands,
 			...{
-				[pickedCommand]: {
-					command: pickedCommand,
-				},
+				[pickedCommand.label]: newCommand,
 			},
 		};
 		await updateSetting(Constants.commandsSettingId, newCommandsSetting, 'global');
 		await openSettingsJSON();
-		await goToSymbol(window.activeTextEditor!, pickedCommand);
+		await goToSymbol(window.activeTextEditor!, pickedCommand.label);
 	});
 	// ──────────────────────────────────────────────────────────────────────
 	// ──── Additional Commands ─────────────────────────────────────────────
@@ -308,8 +309,22 @@ async function updateSetting(settingName: string, newValue: unknown, target: 'gl
 }
 
 export async function getAllVscodeCommands() {
-	const allCommands = await commands.getCommands();
-	return allCommands.filter(c => c[0] !== '_');// remove internal commands
+	return (await commands.getCommands()).filter(command => command[0] !== '_');// remove internal commands
+}
+
+export function commandsToQuickPickItems(commandList: string[]): QuickPickItem[] {
+	return commandList.map(command => {
+		if (command in commandArgs) {
+			return {
+				label: command,
+				details: 'args',
+			};
+		} else {
+			return {
+				label: command,
+			};
+		}
+	});
 }
 
 export async function openSettingsJSON() {
