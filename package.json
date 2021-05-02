@@ -107,6 +107,7 @@
 									}
 								},
 								"sequence": {
+									"description": "Execute multiple commands.",
 									"type": "array",
 									"items": {
 										"type": "object",
@@ -206,6 +207,7 @@
 													}
 												},
 												"sequence": {
+													"description": "Execute multiple commands.",
 													"type": "array",
 													"items": {
 														"type": "object",
