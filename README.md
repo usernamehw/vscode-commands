@@ -319,7 +319,7 @@ Arguments object:
 },
 ```
 
-<!-- ### `vscode.openIssueReporter` Opens the issue reporter with the provided extension id as the selected source.
+### `vscode.openIssueReporter` Opens the issue reporter with the provided extension id as the selected source.
 
 - **extensionId** - extensionId to report an issue on
 
@@ -328,7 +328,7 @@ Arguments object:
 	"command": "vscode.openIssueReporter",
 	"args": "usernamehw.commands",
 },
-``` -->
+```
 
 ## Additional commands
 
