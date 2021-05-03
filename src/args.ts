@@ -15,6 +15,18 @@ export const commandArgs: {
 	'workbench.action.openSettings': '',
 	'workbench.action.openGlobalKeybindings': '',
 	'workbench.extensions.search': '',
+	'vscode.openIssueReporter': '',
+	'vscode.setEditorLayout': {
+		 orientation: 0,
+		 groups: [{
+			 groups: [{}, {}],
+			 size: 0.5,
+		},
+		{
+			groups: [{}, {}],
+			size: 0.5,
+		}],
+	},
 	'workbench.action.findInFiles': {
 		query: '',
 		isRegex: false,

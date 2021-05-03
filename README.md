@@ -307,6 +307,17 @@ Arguments object:
 },
 ```
 
+### `vscode.setEditorLayout` Sets the editor layout.
+
+Example for a 2x2 grid:
+
+```js
+"2x2 grid": {
+	"command": "vscode.setEditorLayout",
+	"args": { "orientation": 0, "groups": [{ "groups": [{}, {}], "size": 0.5 }, { "groups": [{}, {}], "size": 0.5 }] },
+},
+```
+
 ### `editor.emmet.action.wrapWithAbbreviation` Wrap text with emmet
 
 ```js
@@ -469,3 +480,22 @@ Arguments object:
 	},
 },
 ```
+
+<!--
+
+Open in default app
+vscode.env.openExternal (Open link)
+vscode.workspace.findFiles
+id = can use id to install = workbench.extensions.installExtension
+
+workbench.action.terminal.newWithCwd
+editor.action.codeAction
+editor.action.refactor
+editor.action.sourceAction
+workbench.action.files.newUntitledFile (arg `viewType` eg `vscode.markdown.preview.editor`)
+vscode.diff
+vscode.openWith
+editor.unfold
+editor.fold
+
+-->
