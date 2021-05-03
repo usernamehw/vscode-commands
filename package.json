@@ -342,6 +342,12 @@
 				"category": "Commands"
 			},
 			{
+				"command": "commands.newCommandInFolder",
+				"title": "Add new command to this folder",
+				"icon": "$(add)",
+				"category": "Commands"
+			},
+			{
 				"command": "commands.revealCommand",
 				"title": "Reveal Command",
 				"category": "Commands"
@@ -391,6 +397,11 @@
 					"command": "commands.assignKeybinding",
 					"when": "view == commands.tree && viewItem == command",
 					"group": "3_keybinding"
+				},
+				{
+					"command": "commands.newCommandInFolder",
+					"when": "view == commands.tree && viewItem == folder",
+					"group": "inline"
 				}
 			],
 			"commandPalette": [
@@ -408,6 +419,10 @@
 				},
 				{
 					"command": "commands.revealCommandsInSettignsGUI",
+					"when": "false"
+				},
+				{
+					"command": "commands.newCommandInFolder",
 					"when": "false"
 				}
 			]

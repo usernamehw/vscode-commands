@@ -2,7 +2,7 @@ import { ColorThemeKind, commands, ConfigurationTarget, debug, env, languages, Q
 import { addArgs, commandArgs } from './args';
 import { Constants, extensionConfig } from './extension';
 import { run } from './run';
-import { RunCommandTreeItem } from './TreeViewProvider';
+import { FolderTreeItem, RunCommandTreeItem } from './TreeViewProvider';
 import { CommandObject, Runnable, ToggleSetting, TopLevelCommands } from './types';
 import { goToSymbol, isSimpleObject, openKeybindingsGuiAt, openSettingGuiAt } from './utils';
 
@@ -15,6 +15,7 @@ export const enum CommandIds {
 	'openAsQuickPick' = 'commands.openAsQuickPick',
 	'assignKeybinding' = 'commands.assignKeybinding',
 	'addToStatusBar' = 'commands.addToStatusBar',
+	'newCommandInFolder' = 'commands.newCommandInFolder',
 	'revealCommandsInSettignsGUI' = 'commands.revealCommandsInSettignsGUI',
 	// Additional
 	'toggleSetting' = 'commands.toggleSetting',
@@ -125,23 +126,49 @@ export function registerExtensionCommands() {
 		}
 	});
 	commands.registerCommand(CommandIds.newCommand, async () => {
+		await addNewCommand();
+	});
+	commands.registerCommand(CommandIds.newCommandInFolder, async (folderTreeItem: FolderTreeItem) => {
+		await addNewCommand(folderTreeItem);
+	});
+	async function addNewCommand(folderTreeItem?: FolderTreeItem) {
 		const quickPickItems = commandsToQuickPickItems(await getAllVscodeCommands());
 		const pickedCommand = await window.showQuickPick(quickPickItems);
 		if (!pickedCommand) {
 			return;
 		}
 		const newCommand = addArgs(pickedCommand.label);
-		// @ts-ignore
-		const newCommandsSetting: TopLevelCommands = {
-			...extensionConfig.commands,
-			...{
-				[pickedCommand.label]: newCommand,
-			},
-		};
+
+		let newCommandsSetting: TopLevelCommands = {};
+		if (folderTreeItem) {
+			for (const key in extensionConfig.commands) {
+				const item = extensionConfig.commands[key];
+				if (key === folderTreeItem.getLabelName()) {
+					// @ts-ignore
+					newCommandsSetting[key] = {
+						nestedItems: {
+							...item.nestedItems,
+							...{
+								[pickedCommand.label]: newCommand,
+							},
+						},
+					};
+				} else {
+					newCommandsSetting[key] = item;
+				}
+			}
+		} else {
+			newCommandsSetting = {
+				...extensionConfig.commands,
+				...{
+					[pickedCommand.label]: newCommand,
+				},
+			};
+		}
 		await updateSetting(Constants.commandsSettingId, newCommandsSetting, 'global');
 		await openSettingsJSON();
 		await goToSymbol(window.activeTextEditor!, pickedCommand.label);
-	});
+	}
 	// ──────────────────────────────────────────────────────────────────────
 	// ──── Additional Commands ─────────────────────────────────────────────
 	// ──────────────────────────────────────────────────────────────────────

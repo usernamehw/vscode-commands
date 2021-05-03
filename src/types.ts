@@ -48,10 +48,10 @@ export interface CommandObject {
 		tooltip?: string;
 		color?: string;
 	};
-	sequence: CommandObject[];
+	sequence?: CommandObject[];
 }
 export interface CommandFolder {
-	nestedItems: NestedItems;
+	nestedItems?: NestedItems;
 }
 
 export type NestedItems = TopLevelCommands;
