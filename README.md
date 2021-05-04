@@ -487,6 +487,7 @@ Open in default app
 vscode.env.openExternal (Open link)
 vscode.workspace.findFiles
 id = can use id to install = workbench.extensions.installExtension
+go to symbol in file
 
 workbench.action.terminal.newWithCwd
 editor.action.codeAction

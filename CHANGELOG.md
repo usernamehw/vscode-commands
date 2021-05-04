@@ -1,3 +1,8 @@
+## 0.0.6 `04 May 2021`
+
+- ✨ New command action automatically adds `args` property
+- ✨ New command icon is present in folders
+
 ## 0.0.5 `01 May 2021`
 
 - 🐛 Fix icons in other tree views
