@@ -89,7 +89,7 @@ export const commandArgs: {
 	'commands.runInTerminal': {
 		text: '',
 		name: '',
-		reveal: false,
+		reveal: true,
 		cwd: '',
 	},
 	'commands.startDebugging': '',

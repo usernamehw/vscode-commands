@@ -7,7 +7,7 @@ import { CommandObject, Runnable, ToggleSetting, TopLevelCommands } from './type
 import { goToSymbol, isSimpleObject, openKeybindingsGuiAt, openSettingGuiAt } from './utils';
 
 export const enum CommandIds {
-	// Core
+	// ──── Core ────────────────────────────────────────────────────────────
 	'run' = 'commands.run',
 	'newCommand' = 'commands.newCommand',
 	'suggestCommands' = 'commands.suggestCommands',
@@ -17,7 +17,7 @@ export const enum CommandIds {
 	'addToStatusBar' = 'commands.addToStatusBar',
 	'newCommandInFolder' = 'commands.newCommandInFolder',
 	'revealCommandsInSettignsGUI' = 'commands.revealCommandsInSettignsGUI',
-	// Additional
+	// ──── Additional ──────────────────────────────────────────────────────
 	'toggleSetting' = 'commands.toggleSetting',
 	'incrementSetting' = 'commands.incrementSetting',
 	'clipboardWrite' = 'commands.clipboardWrite',
@@ -246,6 +246,7 @@ export function registerExtensionCommands() {
 		if (typeof arg === 'string') {
 			const newTerm = window.createTerminal();
 			newTerm.sendText(arg);
+			newTerm.show();
 		} else {
 			if (!arg.text) {
 				window.showErrorMessage('No "text" property provided.');
