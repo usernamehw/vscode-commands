@@ -1,3 +1,7 @@
+## 0.0.7 `28 May 2021`
+
+- ✨ New command `commands.openExternal` - open link in default browser
+
 ## 0.0.6 `04 May 2021`
 
 - ✨ New command action automatically adds `args` property
