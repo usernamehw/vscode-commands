@@ -134,7 +134,10 @@ export function registerExtensionCommands() {
 	});
 	async function addNewCommand(folderTreeItem?: FolderTreeItem) {
 		const quickPickItems = commandsToQuickPickItems(await getAllVscodeCommands());
-		const pickedCommand = await window.showQuickPick(quickPickItems);
+		const quickPickTitle = `Add command to ${folderTreeItem ? `"${folderTreeItem.getLabelName()}"` : 'root'}.`;
+		const pickedCommand = await window.showQuickPick(quickPickItems, {
+			title: quickPickTitle,
+		});
 		if (!pickedCommand) {
 			return;
 		}
