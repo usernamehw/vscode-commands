@@ -93,6 +93,7 @@ export const commandArgs: {
 		cwd: '',
 	},
 	'commands.startDebugging': '',
+	'commands.openExternal': '',
 	'commands.setEditorLanguage': '',
 	'commands.clipboardWrite': '',
 	'commands.showNotification': {
@@ -100,8 +101,11 @@ export const commandArgs: {
 		severity: 'error',
 	},
 };
+/**
+ * Add arguments if command can accept them (even if they are optional).
+ */
 export function addArgs(commandId: string) {
-	if (commandArgs[commandId]) {
+	if (commandId in commandArgs) {
 		return {
 			command: commandId,
 			args: commandArgs[commandId],

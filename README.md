@@ -481,13 +481,26 @@ Example for a 2x2 grid:
 },
 ```
 
+### `commands.openExternal` Open link in default browser
+
+```js
+"Open google.com": {
+	"command": "commands.openExternal",
+	"args": "https://www.google.com",
+},
+"Open Extension Preview": {
+	"command": "commands.openExternal",
+	"args": "vscode:extension/usernamehw.commands",
+},
+```
+
 <!--
 
 Open in default app
-vscode.env.openExternal (Open link)
 vscode.workspace.findFiles
 id = can use id to install = workbench.extensions.installExtension
 go to symbol in file
+activate extension
 
 workbench.action.terminal.newWithCwd
 editor.action.codeAction

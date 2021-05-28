@@ -27,6 +27,7 @@ export const enum CommandIds {
 	'runInTerminal' = 'commands.runInTerminal',
 	'startDebugging' = 'commands.startDebugging',
 	'toggleTheme' = 'commands.toggleTheme',
+	'openExternal' = 'commands.openExternal',
 }
 
 export function registerExtensionCommands() {
@@ -270,6 +271,10 @@ export function registerExtensionCommands() {
 			setting: 'workbench.colorTheme',
 			value: window.activeColorTheme.kind === ColorThemeKind.Light ? themes.light : themes.dark,
 		});
+	});
+	commands.registerCommand(CommandIds.openExternal, async (linkText: string) => {
+		const callableUri = await env.asExternalUri(Uri.parse(linkText));
+		await env.openExternal(callableUri);
 	});
 }
 // ──────────────────────────────────────────────────────────────────────
