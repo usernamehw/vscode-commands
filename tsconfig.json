@@ -9,12 +9,10 @@
 		"sourceMap": true,
 		"rootDir": "src",
 		"strict": true,
-		"alwaysStrict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
-		"importHelpers": true,
-		"removeComments": true
+		"importHelpers": true
 	},
 	"exclude": [
 		"node_modules",
