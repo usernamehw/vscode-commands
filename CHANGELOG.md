@@ -1,3 +1,8 @@
+## 0.0.8 `07 Jun 2021`
+
+- ✨ Install extension by id command `commands.installExtension`
+- 🐛 Fix `populateCommandPalette` setting duplicating commands
+
 ## 0.0.7 `28 May 2021`
 
 - ✨ New command `commands.openExternal` - open link in default browser
