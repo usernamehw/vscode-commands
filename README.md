@@ -494,13 +494,20 @@ Example for a 2x2 grid:
 },
 ```
 
+### `commands.installExtension` Install extension by id
+
+```js
+"Install extension": {
+	"command": "commands.installExtension",
+	"args": "usernamehw.errorlens",
+},
+```
+
 <!--
 
 Open in default app
 vscode.workspace.findFiles
-id = can use id to install = workbench.extensions.installExtension
 go to symbol in file
-activate extension
 
 workbench.action.terminal.newWithCwd
 editor.action.codeAction
