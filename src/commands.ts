@@ -278,8 +278,7 @@ export function registerExtensionCommands() {
 		});
 	});
 	commands.registerCommand(CommandIds.openExternal, async (linkText: string) => {
-		const callableUri = await env.asExternalUri(Uri.parse(linkText));
-		await env.openExternal(callableUri);
+		await env.openExternal(Uri.parse(linkText));
 	});
 	commands.registerCommand(CommandIds.installExtension, async (extensionId: string) => {
 		await commands.executeCommand('workbench.extensions.installExtension', extensionId);
