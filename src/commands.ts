@@ -352,7 +352,7 @@ async function updateSetting(settingName: string, newValue: unknown, target: 'gl
 }
 
 export async function getAllVscodeCommands() {
-	return (await commands.getCommands()).filter(command => command[0] !== '_');// remove internal commands
+	return await commands.getCommands(true);
 }
 
 export function commandsToQuickPickItems(commandList: string[]): QuickPickItem[] {
