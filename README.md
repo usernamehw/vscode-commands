@@ -248,7 +248,7 @@ Can open Quick Pick with prefilled prefix (`@...` - symbol, `view ...` - open vi
 Arguments object:
 
 - **to** A mandatory logical position value providing where to move the cursor.
-> 'left', 'right', 'up', 'down'
+> 'left', 'right', 'up', 'down', 'prevBlankLine', 'nextBlankLine',
 > 'wrappedLineStart', 'wrappedLineEnd', 'wrappedLineColumnCenter'
 > 'wrappedLineFirstNonWhitespaceCharacter', 'wrappedLineLastNonWhitespaceCharacter'
 > 'viewPortTop', 'viewPortCenter', 'viewPortBottom', 'viewPortIfOutside'
@@ -494,6 +494,15 @@ Example for a 2x2 grid:
 },
 ```
 
+### `commands.revealFileInOS` Open OS file explorer and reveal the specified path
+
+```js
+"commands.revealFileInOS": {
+	"command": "commands.revealFileInOS",
+	"args": "C:/Users",
+},
+```
+
 ### `commands.installExtension` Install extension by id
 
 ```js
@@ -519,4 +528,5 @@ vscode.openWith
 editor.unfold
 editor.fold
 
+TODO: https://github.com/microsoft/vscode-docs/blob/main/api/references/commands.md Sync changes periodically
 -->

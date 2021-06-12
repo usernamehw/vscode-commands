@@ -97,6 +97,7 @@ export const commandArgs: {
 	'commands.setEditorLanguage': '',
 	'commands.clipboardWrite': '',
 	'commands.installExtension': '',
+	'commands.revealFileInOS': '',
 	'commands.showNotification': {
 		message: '',
 		severity: 'error',
