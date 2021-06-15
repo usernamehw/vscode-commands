@@ -11,8 +11,9 @@ export function updateStatusBarItems(items: TopLevelCommands) {
 		if (item.statusBar) {
 			const statusBarUserObject = item.statusBar;
 			const alignment = statusBarUserObject.alignment === 'right' ? StatusBarAlignment.Right : StatusBarAlignment.Left;
-			const newStatusBarItem = window.createStatusBarItem(alignment, statusBarUserObject.priority);
+			const newStatusBarItem = window.createStatusBarItem(statusBarUserObject.text, alignment, statusBarUserObject.priority);
 			const icon = item.icon ? `$(${item.icon}) ` : '';
+			newStatusBarItem.name = statusBarUserObject.text;
 			newStatusBarItem.color = statusBarUserObject.color;
 			newStatusBarItem.tooltip = statusBarUserObject.tooltip;
 			newStatusBarItem.text = icon + statusBarUserObject.text;
