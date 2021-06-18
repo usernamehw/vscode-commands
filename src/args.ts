@@ -1,3 +1,5 @@
+import { CommandIds } from './commands';
+
 export const commandArgs: {
 	[commandId: string]: unknown;
 } = {
@@ -73,35 +75,36 @@ export const commandArgs: {
 		abbreviation: 'div',
 		language: 'html',
 	},
-	'commands.toggleSetting': {
+	[CommandIds.toggleSetting]: {
 		setting: '',
 		value: [],
 	},
-	'commands.incrementSetting': {
+	[CommandIds.incrementSetting]: {
 		setting: '',
 		value: 1,
 	},
-	'commands.toggleTheme': {
+	[CommandIds.toggleTheme]: {
 		dark: 'Default Dark+,Abyss',
 		light: 'Default Light+,Quiet Light',
 	},
-	'commands.openFolder': '',
-	'commands.runInTerminal': {
+	[CommandIds.openFolder]: '',
+	[CommandIds.runInTerminal]: {
 		text: '',
 		name: '',
 		reveal: true,
 		cwd: '',
 	},
-	'commands.startDebugging': '',
-	'commands.openExternal': '',
-	'commands.setEditorLanguage': '',
-	'commands.clipboardWrite': '',
-	'commands.installExtension': '',
-	'commands.revealFileInOS': '',
-	'commands.showNotification': {
+	[CommandIds.startDebugging]: '',
+	[CommandIds.openExternal]: '',
+	[CommandIds.setEditorLanguage]: '',
+	[CommandIds.clipboardWrite]: '',
+	[CommandIds.installExtension]: '',
+	[CommandIds.revealFileInOS]: '',
+	[CommandIds.showNotification]: {
 		message: '',
 		severity: 'error',
 	},
+	[CommandIds.openInApp]: '',
 };
 /**
  * Add arguments if command can accept them (even if they are optional).

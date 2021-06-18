@@ -450,6 +450,7 @@
 		"webpack-cli": "^4.7.2"
 	},
 	"dependencies": {
-		"lodash": "^4.17.21"
+		"lodash": "^4.17.21",
+		"open": "^8.2.0"
 	}
 }

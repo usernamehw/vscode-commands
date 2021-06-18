@@ -494,6 +494,15 @@ Example for a 2x2 grid:
 },
 ```
 
+### `commands.openInApp` Open file in default app
+
+```js
+"Open in default app": {
+	"command": "commands.openInApp",
+	"args": "C:\\temp\\img.png",
+},
+```
+
 ### `commands.revealFileInOS` Open OS file explorer and reveal the specified path
 
 ```js

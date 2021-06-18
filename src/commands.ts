@@ -30,6 +30,7 @@ export const enum CommandIds {
 	'openExternal' = 'commands.openExternal',
 	'installExtension' = 'commands.installExtension',
 	'revealFileInOS' = 'commands.revealFileInOS',
+	'openInApp' = 'commands.openInApp',
 }
 
 export function registerExtensionCommands() {
@@ -285,6 +286,10 @@ export function registerExtensionCommands() {
 	});
 	commands.registerCommand(CommandIds.revealFileInOS, async (path: string) => {
 		await commands.executeCommand('revealFileInOS', Uri.file(path));
+	});
+	commands.registerCommand(CommandIds.openInApp, async (path: string) => {
+		const open = (await import('open')).default;
+		await open(path);
 	});
 }
 // ──────────────────────────────────────────────────────────────────────
