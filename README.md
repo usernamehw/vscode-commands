@@ -350,6 +350,15 @@ Example for a 2x2 grid:
 },
 ```
 
+### `workbench.extensions.uninstallExtension` Uninstall extension by id
+
+```js
+"Uninstall extension": {
+	"command": "workbench.extensions.uninstallExtension",
+	"args": "usernamehw.errorlens",
+},
+```
+
 ## Additional commands
 
 ### `commands.toggleSetting` Toggle settings
