@@ -341,6 +341,15 @@ Example for a 2x2 grid:
 },
 ```
 
+### `workbench.extensions.installExtension` Install extension by id
+
+```js
+"Install extension": {
+	"command": "workbench.extensions.installExtension",
+	"args": "usernamehw.errorlens",
+},
+```
+
 ## Additional commands
 
 ### `commands.toggleSetting` Toggle settings
@@ -509,15 +518,6 @@ Example for a 2x2 grid:
 "commands.revealFileInOS": {
 	"command": "commands.revealFileInOS",
 	"args": "C:/Users",
-},
-```
-
-### `commands.installExtension` Install extension by id
-
-```js
-"Install extension": {
-	"command": "commands.installExtension",
-	"args": "usernamehw.errorlens",
 },
 ```
 

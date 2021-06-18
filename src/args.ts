@@ -75,6 +75,7 @@ export const commandArgs: {
 		abbreviation: 'div',
 		language: 'html',
 	},
+	'workbench.extensions.installExtension': '',
 	[CommandIds.toggleSetting]: {
 		setting: '',
 		value: [],
@@ -98,7 +99,6 @@ export const commandArgs: {
 	[CommandIds.openExternal]: '',
 	[CommandIds.setEditorLanguage]: '',
 	[CommandIds.clipboardWrite]: '',
-	[CommandIds.installExtension]: '',
 	[CommandIds.revealFileInOS]: '',
 	[CommandIds.showNotification]: {
 		message: '',

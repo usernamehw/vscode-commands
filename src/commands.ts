@@ -28,7 +28,6 @@ export const enum CommandIds {
 	'startDebugging' = 'commands.startDebugging',
 	'toggleTheme' = 'commands.toggleTheme',
 	'openExternal' = 'commands.openExternal',
-	'installExtension' = 'commands.installExtension',
 	'revealFileInOS' = 'commands.revealFileInOS',
 	'openInApp' = 'commands.openInApp',
 }
@@ -280,9 +279,6 @@ export function registerExtensionCommands() {
 	});
 	commands.registerCommand(CommandIds.openExternal, async (linkText: string) => {
 		await env.openExternal(Uri.parse(linkText));
-	});
-	commands.registerCommand(CommandIds.installExtension, async (extensionId: string) => {
-		await commands.executeCommand('workbench.extensions.installExtension', extensionId);
 	});
 	commands.registerCommand(CommandIds.revealFileInOS, async (path: string) => {
 		await commands.executeCommand('revealFileInOS', Uri.file(path));
