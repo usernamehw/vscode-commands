@@ -9,7 +9,7 @@ import { goToSymbol, isSimpleObject, openKeybindingsGuiAt, openSettingGuiAt } fr
 export const enum CommandIds {
 	// ──── Core ────────────────────────────────────────────────────────────
 	'run' = 'commands.run',
-	'pickAndRun' = 'commands.pickAndRun',
+	'selectAndRun' = 'commands.selectAndRun',
 	'newCommand' = 'commands.newCommand',
 	'suggestCommands' = 'commands.suggestCommands',
 	'revealCommand' = 'commands.revealCommand',
@@ -40,7 +40,7 @@ export function registerExtensionCommands() {
 	commands.registerCommand(CommandIds.run, async (runnable: Runnable) => {
 		await run(runnable);
 	});
-	commands.registerCommand(CommandIds.pickAndRun, async () => {
+	commands.registerCommand(CommandIds.selectAndRun, async () => {
 		const pickedCommand = await window.showQuickPick(await getAllVscodeCommands());
 		if (!pickedCommand) {
 			return;

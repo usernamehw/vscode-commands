@@ -23,7 +23,7 @@
 |Command|Description|
 |-|-|
 |commands.openAsQuickPick|Commands: Open as Quick Pick|
-|commands.commands.pickAndRun|Commands: Pick and run command.|
+|commands.selectAndRun|Commands: Select and run command.|
 |commands.suggestCommands|Commands: Suggest (autocomplete) commands.|
 |commands.newCommand|Commands: Add new command to the list.|
 <!-- COMMANDS_END -->
