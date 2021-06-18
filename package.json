@@ -46,6 +46,7 @@
 	"activationEvents": [
 		"*",
 		"onCommand:commands.run",
+		"onCommand:commands.pickAndRun",
 		"onCommand:commands.openAsQuickPick",
 		"onCommand:commands.revealCommand",
 		"onCommand:commands.assignKeybinding",
@@ -329,6 +330,11 @@
 			{
 				"command": "commands.openAsQuickPick",
 				"title": "Open as Quick Pick",
+				"category": "Commands"
+			},
+			{
+				"command": "commands.pickAndRun",
+				"title": "Pick and run command.",
 				"category": "Commands"
 			},
 			{

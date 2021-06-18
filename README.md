@@ -18,11 +18,12 @@
 - Additional commands contributed by this extension
 
 <!-- COMMANDS_START -->
-## Commands (3)
+## Commands (4)
 
 |Command|Description|
 |-|-|
 |commands.openAsQuickPick|Commands: Open as Quick Pick|
+|commands.commands.pickAndRun|Commands: Pick and run command.|
 |commands.suggestCommands|Commands: Suggest (autocomplete) commands.|
 |commands.newCommand|Commands: Add new command to the list.|
 <!-- COMMANDS_END -->

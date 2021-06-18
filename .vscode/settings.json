@@ -4,5 +4,6 @@
 		"commands.assignKeybinding",
 		"commands.addToStatusBar",
 		"commands.revealCommandsInSettignsGUI",
+		"commands.newCommandInFolder"
 	],
 }
