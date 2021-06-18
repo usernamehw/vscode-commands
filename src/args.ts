@@ -76,6 +76,11 @@ export const commandArgs: {
 		language: 'html',
 	},
 	'workbench.extensions.installExtension': '',
+	'editor.action.codeAction': {
+		kind: '',
+		apply: 'first',
+		preferred: false,
+	},
 	[CommandIds.toggleSetting]: {
 		setting: '',
 		value: [],

@@ -203,6 +203,17 @@ Can open Quick Pick with prefilled prefix (`@...` - symbol, `view ...` - open vi
 },
 ```
 
+### `editor.action.codeAction` Execute [code action](https://code.visualstudio.com/docs/editor/refactoring#_keybindings-for-code-actions)
+
+```js
+"Organize imports": {
+	"command": "editor.action.codeAction",
+	"args": {
+		"kind": "source.organizeImports",
+	},
+},
+```
+
 ### `workbench.action.findInFiles` Open search with specified args
 
 ```js
@@ -533,14 +544,12 @@ Example for a 2x2 grid:
 
 <!--
 
-Open in default app
-vscode.workspace.findFiles
+Open files by glob? vscode.workspace.findFiles
 go to symbol in file
+vscode.commands.executeCommand('workbench.action.openWalkthrough', 'jakearl.md-to-html#exampleProject', true);// bool - toSide
 
 workbench.action.terminal.newWithCwd
-editor.action.codeAction
-editor.action.refactor
-editor.action.sourceAction
+`editor.action.refactor` & `editor.action.sourceAction` - both covered by `editor.action.codeAction`
 workbench.action.files.newUntitledFile (arg `viewType` eg `vscode.markdown.preview.editor`)
 vscode.diff
 vscode.openWith
