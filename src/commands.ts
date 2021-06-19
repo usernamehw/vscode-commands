@@ -11,6 +11,7 @@ export const enum CommandIds {
 	'run' = 'commands.run',
 	'selectAndRun' = 'commands.selectAndRun',
 	'newCommand' = 'commands.newCommand',
+	'newFolder' = 'commands.newFolder',
 	'suggestCommands' = 'commands.suggestCommands',
 	'revealCommand' = 'commands.revealCommand',
 	'openAsQuickPick' = 'commands.openAsQuickPick',
@@ -144,6 +145,27 @@ export function registerExtensionCommands() {
 	commands.registerCommand(CommandIds.newCommandInFolder, async (folderTreeItem: FolderTreeItem) => {
 		await addNewCommand(folderTreeItem);
 	});
+	commands.registerCommand(CommandIds.newFolder, async () => {
+		await newFolder();
+	});
+	async function newFolder() {
+		const newFolderName = await window.showInputBox({
+			title: 'Add folder',
+			placeHolder: 'Enter new folder name',
+		});
+		if (!newFolderName) {
+			return;
+		}
+		const newCommandsSetting = {
+			...extensionConfig.commands,
+			...{
+				[newFolderName]: {
+					nestedItems: {},
+				},
+			},
+		};
+		await updateSetting(Constants.commandsSettingId, newCommandsSetting, 'global');
+	}
 	async function addNewCommand(folderTreeItem?: FolderTreeItem) {
 		const quickPickItems = commandsToQuickPickItems(await getAllVscodeCommands());
 		const quickPickTitle = `Add command to ${folderTreeItem ? `"${folderTreeItem.getLabelName()}"` : 'root'}.`;

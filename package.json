@@ -349,6 +349,12 @@
 				"category": "Commands"
 			},
 			{
+				"command": "commands.newFolder",
+				"title": "New Folder",
+				"icon": "$(new-folder)",
+				"category": "Commands"
+			},
+			{
 				"command": "commands.newCommandInFolder",
 				"title": "Add new command to this folder",
 				"icon": "$(add)",
@@ -380,12 +386,17 @@
 			"view/title": [
 				{
 					"command": "commands.revealCommandsInSettignsGUI",
-					"group": "navigation",
+					"group": "navigation@3",
 					"when": "view == commands.tree"
 				},
 				{
 					"command": "commands.newCommand",
-					"group": "navigation",
+					"group": "navigation@1",
+					"when": "view == commands.tree"
+				},
+				{
+					"command": "commands.newFolder",
+					"group": "navigation@2",
 					"when": "view == commands.tree"
 				}
 			],
@@ -430,6 +441,10 @@
 				},
 				{
 					"command": "commands.newCommandInFolder",
+					"when": "false"
+				},
+				{
+					"command": "commands.newFolder",
 					"when": "false"
 				}
 			]

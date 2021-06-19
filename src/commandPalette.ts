@@ -14,6 +14,8 @@ const coreCommandIds = [
 	'commands.openAsQuickPick',
 	'commands.suggestCommands',
 	'commands.newCommand',
+	'commands.newFolder',
+	'commands.selectAndRun',
 	'commands.newCommandInFolder',
 	'commands.revealCommand',
 	'commands.assignKeybinding',
