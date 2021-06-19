@@ -45,7 +45,7 @@
 
 ![sequence](img/sequence.gif)
 
-## Tree View icons
+## Tree View icons [list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing) | [colors](https://code.visualstudio.com/api/references/theme-color)
 
 ```js
 "GitHub": {
