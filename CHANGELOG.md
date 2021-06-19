@@ -1,6 +1,8 @@
 ## 0.0.10 `19 Jun 2021`
 
-- ✨ Rename `commands.openInApp` to `commands.open`
+- ✨ Show command as json on hover
+- ✨ New folder icon
+- 💥 Rename `commands.openInApp` to `commands.open`
 
 ## 0.0.9 `19 Jun 2021`
 
