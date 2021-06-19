@@ -1,4 +1,4 @@
-import { Command, Event, EventEmitter, ThemeColor, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
+import { Command, Event, EventEmitter, MarkdownString, ThemeColor, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { CommandIds } from './commands';
 import { extensionConfig } from './extension';
 import { ExtensionConfig, NestedItems, Runnable, TopLevelCommands } from './types';
@@ -22,6 +22,13 @@ export class RunCommandTreeItem extends TreeItem {
 	}
 	getLabelName(): string {
 		return typeof this.label === 'string' ? this.label : '';
+	}
+	// @ts-ignore
+	get tooltip() {
+		const markdown = new MarkdownString(undefined, true);
+		markdown.isTrusted = true;
+		markdown.appendCodeblock(JSON.stringify(this.runnable, null, '  '), 'json');
+		return markdown;
 	}
 }
 
