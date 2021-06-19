@@ -109,7 +109,7 @@ export const commandArgs: {
 		message: '',
 		severity: 'error',
 	},
-	[CommandIds.openInApp]: '',
+	[CommandIds.open]: '',
 };
 /**
  * Add arguments if command can accept them (even if they are optional).

@@ -1,3 +1,7 @@
+## 0.0.10 `19 Jun 2021`
+
+- ✨ Rename `commands.openInApp` to `commands.open`
+
 ## 0.0.9 `19 Jun 2021`
 
 - ✨ Open file in default app `commands.openInApp`

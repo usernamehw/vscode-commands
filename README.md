@@ -563,11 +563,11 @@ Example for a 2x2 grid:
 },
 ```
 
-### `commands.openInApp` Open file in default app
+### `commands.open` Open file in default app
 
 ```js
 "Open in default app": {
-    "command": "commands.openInApp",
+    "command": "commands.open",
     "args": "C:\\temp\\img.png",
 },
 ```
