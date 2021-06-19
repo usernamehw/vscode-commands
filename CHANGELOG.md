@@ -1,3 +1,9 @@
+## 0.0.9 `19 Jun 2021`
+
+- ✨ Open file in default app `commands.openInApp`
+- ✨ Reveal item in OS file explorer `commands.revealFileInOS`
+- ✨ Select and run any command (without args) `commands.selectAndRun`
+
 ## 0.0.8 `07 Jun 2021`
 
 - ✨ Install extension by id command `commands.installExtension`
