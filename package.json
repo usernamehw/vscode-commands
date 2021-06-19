@@ -61,7 +61,7 @@
 			"properties": {
 				"commands.commands": {
 					"type": "object",
-					"description": "Commands that will be rendered in the View.",
+					"description": "Main extension property. Commands that will be rendered in the View.",
 					"patternProperties": {
 						"^.*$": {
 							"type": "object",
