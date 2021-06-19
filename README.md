@@ -9,7 +9,7 @@
 
 ```js
 "Toggle minimap": {
-	"command": "editor.action.toggleMinimap",
+    "command": "editor.action.toggleMinimap",
 },
 ```
 
@@ -19,10 +19,10 @@
 
 ```js
 "Typing": {
-	"command": "editor.action.insertSnippet",
-	"args": {
-		"snippet": "Typing... ",
-	},
+    "command": "editor.action.insertSnippet",
+    "args": {
+        "snippet": "Typing... ",
+    },
 },
 ```
 
@@ -32,14 +32,14 @@
 
 ```js
 "Toggle multiple settings": {
-	"sequence": [
-		{
-			"command": "editor.action.toggleMinimap"
-		},
-		{
-			"command": "workbench.action.toggleStatusbarVisibility"
-		}
-	]
+    "sequence": [
+        {
+            "command": "editor.action.toggleMinimap"
+        },
+        {
+            "command": "workbench.action.toggleStatusbarVisibility"
+        }
+    ]
 },
 ```
 
@@ -49,11 +49,11 @@
 
 ```js
 "GitHub": {
-	"icon": "github",
+    "icon": "github",
 },
 "Flame": {
-	"icon": "flame",
-	"iconColor": "errorForeground",
+    "icon": "flame",
+    "iconColor": "errorForeground",
 },
 ```
 
@@ -132,24 +132,24 @@
 ```ts
 // Command object structure
 interface CommandObject {
-	command: string;// command id to execute
-	args?: unknown;// command arguments to execute
-	delay?: number;// delay BEFORE execution
-	icon?: string;// icon id https://code.visualstudio.com/api/references/icons-in-labels#icon-listing
-	iconColor?: string;// color id https://code.visualstudio.com/api/references/theme-color
-	statusBar?: {// add to status bar
-		alignment: 'left' | 'right';
-		text: string;
-		priority?: number;
-		tooltip?: string;
-		color?: string;
-	};
+    command: string;// command id to execute
+    args?: unknown;// command arguments to execute
+    delay?: number;// delay BEFORE execution
+    icon?: string;// icon id https://code.visualstudio.com/api/references/icons-in-labels#icon-listing
+    iconColor?: string;// color id https://code.visualstudio.com/api/references/theme-color
+    statusBar?: {// add to status bar
+        alignment: 'left' | 'right';
+        text: string;
+        priority?: number;
+        tooltip?: string;
+        color?: string;
+    };
 
-	sequence?: CommandObject[];// execute multipe commands
+    sequence?: CommandObject[];// execute multipe commands
 
-	nestedItems: {// Group items into a folder (1 lvl max)
-		[key: string]: CommandObject
-	}
+    nestedItems: {// Group items into a folder (1 lvl max)
+        [key: string]: CommandObject
+    }
 }
 ```
 
@@ -159,10 +159,10 @@ interface CommandObject {
 
 ```js
 "Typing": {
-	"command": "type",
-	"args": {
-		"text": "---",
-	},
+    "command": "type",
+    "args": {
+        "text": "---",
+    },
 },
 ```
 
@@ -171,14 +171,14 @@ interface CommandObject {
 ```js
 // tasks.json
 {
-	"label": "hello",
-	"type": "shell",
-	"command": "echo Hello",
+    "label": "hello",
+    "type": "shell",
+    "command": "echo Hello",
 },
 // commands
 "Run task": {
-	"command": "workbench.action.tasks.runTask",
-	"args": "hello",
+    "command": "workbench.action.tasks.runTask",
+    "args": "hello",
 },
 ```
 
@@ -186,10 +186,10 @@ interface CommandObject {
 
 ```js
 "Insert snippet": {
-	"command": "editor.action.insertSnippet",
-	"args": {
-		"snippet": "$BLOCK_COMMENT_START ${0:?} $BLOCK_COMMENT_END",
-	},
+    "command": "editor.action.insertSnippet",
+    "args": {
+        "snippet": "$BLOCK_COMMENT_START ${0:?} $BLOCK_COMMENT_END",
+    },
 },
 ```
 
@@ -197,10 +197,10 @@ interface CommandObject {
 
 ```js
 "Terminal: Run Watch": {
-	"command": "workbench.action.terminal.sendSequence",
-	"args": {
-		"text": "npm run watch\r",
-	},
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+        "text": "npm run watch\r",
+    },
 },
 ```
 
@@ -210,8 +210,8 @@ Can open Quick Pick with prefilled prefix (`@...` - symbol, `view ...` - open vi
 
 ```js
 "Quick open (symbol)": {
-	"command": "workbench.action.quickOpen",
-	"args": "?",
+    "command": "workbench.action.quickOpen",
+    "args": "?",
 },
 ```
 
@@ -219,8 +219,8 @@ Can open Quick Pick with prefilled prefix (`@...` - symbol, `view ...` - open vi
 
 ```js
 "Open Settings": {
-	"command": "workbench.action.openSettings",
-	"args": "commands",
+    "command": "workbench.action.openSettings",
+    "args": "commands",
 },
 ```
 
@@ -228,8 +228,8 @@ Can open Quick Pick with prefilled prefix (`@...` - symbol, `view ...` - open vi
 
 ```js
 "Quick Keybindings Editor": {
-	"command": "workbench.action.openGlobalKeybindings",
-	"args": "commands.",
+    "command": "workbench.action.openGlobalKeybindings",
+    "args": "commands.",
 },
 ```
 
@@ -237,8 +237,8 @@ Can open Quick Pick with prefilled prefix (`@...` - symbol, `view ...` - open vi
 
 ```js
 "Quick Extensions View": {
-	"command": "workbench.extensions.search",
-	"args": "@builtin",
+    "command": "workbench.extensions.search",
+    "args": "@builtin",
 },
 ```
 
@@ -246,10 +246,10 @@ Can open Quick Pick with prefilled prefix (`@...` - symbol, `view ...` - open vi
 
 ```js
 "Organize imports": {
-	"command": "editor.action.codeAction",
-	"args": {
-		"kind": "source.organizeImports",
-	},
+    "command": "editor.action.codeAction",
+    "args": {
+        "kind": "source.organizeImports",
+    },
 },
 ```
 
@@ -257,19 +257,19 @@ Can open Quick Pick with prefilled prefix (`@...` - symbol, `view ...` - open vi
 
 ```js
 "Search with args": {
-	"command": "workbench.action.findInFiles",
-	"args": {
-		"query": "TODO",
-		"isRegex": false,
-		"isCaseSensitive": false,
-		"matchWholeWord": false,
-		"preserveCase": false,
-		"excludeSettingAndIgnoreFiles": true,
-		"triggerSearch": true,
-		// "replace": "",
-		// "filesToInclude": "",
-		// "filesToExclude": "",
-	},
+    "command": "workbench.action.findInFiles",
+    "args": {
+        "query": "TODO",
+        "isRegex": false,
+        "isCaseSensitive": false,
+        "matchWholeWord": false,
+        "preserveCase": false,
+        "excludeSettingAndIgnoreFiles": true,
+        "triggerSearch": true,
+        // "replace": "",
+        // "filesToInclude": "",
+        // "filesToExclude": "",
+    },
 },
 ```
 
@@ -277,20 +277,20 @@ Can open Quick Pick with prefilled prefix (`@...` - symbol, `view ...` - open vi
 
 ```js
 "Open search editor with args": {
-	"command": "search.action.openNewEditor",
-	"args": {
-		"query": "TODO",
-		"isRegexp": false,
-		"isCaseSensitive": false,
-		"matchWholeWord": false,
-		"preserveCase": false,
-		"excludeSettingAndIgnoreFiles": true,
-		"triggerSearch": true,
-		"contextLines": 2,
-		"showIncludesExcludes": true,
-		// "filesToInclude": "",
-		// "filesToExclude": "",
-	},
+    "command": "search.action.openNewEditor",
+    "args": {
+        "query": "TODO",
+        "isRegexp": false,
+        "isCaseSensitive": false,
+        "matchWholeWord": false,
+        "preserveCase": false,
+        "excludeSettingAndIgnoreFiles": true,
+        "triggerSearch": true,
+        "contextLines": 2,
+        "showIncludesExcludes": true,
+        // "filesToInclude": "",
+        // "filesToExclude": "",
+    },
 },
 ```
 
@@ -310,12 +310,12 @@ Arguments object:
 
 ```js
 "Cursor move 10 down": {
-	"command": "cursorMove",
-	"args": {
-		"to": "down",
-		"by": "line",
-		"value": 10,
-	},
+    "command": "cursorMove",
+    "args": {
+        "to": "down",
+        "by": "line",
+        "value": 10,
+    },
 },
 ```
 
@@ -330,13 +330,13 @@ Arguments object:
 
 ```js
 "Scroll 10 lines down": {
-	"command": "editorScroll",
-	"args": {
-		"to": "down",
-		"by": "line",
-		"value": 10,
-		"revealCursor": true,
-	},
+    "command": "editorScroll",
+    "args": {
+        "to": "down",
+        "by": "line",
+        "value": 10,
+        "revealCursor": true,
+    },
 },
 ```
 
@@ -349,12 +349,12 @@ Arguments object:
 
 ```js
 "Move editor to the left": {
-	"command": "moveActiveEditor",
-	"args": {
-		"to": "left",
-		"by": "tab",
-		"value": 50,
-	},
+    "command": "moveActiveEditor",
+    "args": {
+        "to": "left",
+        "by": "tab",
+        "value": 50,
+    },
 },
 ```
 
@@ -364,8 +364,8 @@ Example for a 2x2 grid:
 
 ```js
 "2x2 grid": {
-	"command": "vscode.setEditorLayout",
-	"args": { "orientation": 0, "groups": [{ "groups": [{}, {}], "size": 0.5 }, { "groups": [{}, {}], "size": 0.5 }] },
+    "command": "vscode.setEditorLayout",
+    "args": { "orientation": 0, "groups": [{ "groups": [{}, {}], "size": 0.5 }, { "groups": [{}, {}], "size": 0.5 }] },
 },
 ```
 
@@ -373,11 +373,11 @@ Example for a 2x2 grid:
 
 ```js
 "Wrap in div": {
-	"command": "editor.emmet.action.wrapWithAbbreviation",
-	"args": {
-		"abbreviation": "div",
-		"language": "html",
-	},
+    "command": "editor.emmet.action.wrapWithAbbreviation",
+    "args": {
+        "abbreviation": "div",
+        "language": "html",
+    },
 },
 ```
 
@@ -387,8 +387,8 @@ Example for a 2x2 grid:
 
 ```js
 "Issue: preselect extension": {
-	"command": "vscode.openIssueReporter",
-	"args": "usernamehw.commands",
+    "command": "vscode.openIssueReporter",
+    "args": "usernamehw.commands",
 },
 ```
 
@@ -396,8 +396,8 @@ Example for a 2x2 grid:
 
 ```js
 "Install extension": {
-	"command": "workbench.extensions.installExtension",
-	"args": "usernamehw.errorlens",
+    "command": "workbench.extensions.installExtension",
+    "args": "usernamehw.errorlens",
 },
 ```
 
@@ -405,8 +405,8 @@ Example for a 2x2 grid:
 
 ```js
 "Uninstall extension": {
-	"command": "workbench.extensions.uninstallExtension",
-	"args": "usernamehw.errorlens",
+    "command": "workbench.extensions.uninstallExtension",
+    "args": "usernamehw.errorlens",
 },
 ```
 
@@ -416,29 +416,29 @@ Example for a 2x2 grid:
 
 ```js
 "Toggle indent guides": {
-	"command": "commands.toggleSetting",
-	"args": "editor.renderIndentGuides",// string - toggle boolean
+    "command": "commands.toggleSetting",
+    "args": "editor.renderIndentGuides",// string - toggle boolean
 },
 ```
 
 ```js
 "Switch themes": {
-	"command": "commands.toggleSetting",
-	"args": {
-		"setting": "workbench.colorTheme",
-		"value": ["Monokai", "Kimbie Dark"],
-	},
-	"icon": "symbol-color",
+    "command": "commands.toggleSetting",
+    "args": {
+        "setting": "workbench.colorTheme",
+        "value": ["Monokai", "Kimbie Dark"],
+    },
+    "icon": "symbol-color",
 },
 ```
 
 ```js
 "Set/reset setting": {
-	"command": "commands.toggleSetting",
-	"args": {
-		"setting": "window.zoomLevel",
-		"value": [0],
-	},
+    "command": "commands.toggleSetting",
+    "args": {
+        "setting": "window.zoomLevel",
+        "value": [0],
+    },
 },
 ```
 
@@ -446,21 +446,21 @@ Example for a 2x2 grid:
 
 ```js
 "Font size ++": {
-	"command": "commands.incrementSetting",
-	"args": {
-		"setting": "editor.fontSize",
-		"value": 0.5,
-	},
+    "command": "commands.incrementSetting",
+    "args": {
+        "setting": "editor.fontSize",
+        "value": 0.5,
+    },
 },
 ```
 
 ```js
 "Font size --": {
-	"command": "commands.incrementSetting",
-	"args": {
-		"setting": "editor.fontSize",
-		"value": -0.5,
-	},
+    "command": "commands.incrementSetting",
+    "args": {
+        "setting": "editor.fontSize",
+        "value": -0.5,
+    },
 },
 ```
 
@@ -468,11 +468,11 @@ Example for a 2x2 grid:
 
 ```js
 "Toggle Themes": {
-	"command": "commands.toggleTheme",
-	"args": {
-		"dark": "Default Dark+,GitHub Dark",
-		"light": "Default Light+,GitHub Light",
-	},
+    "command": "commands.toggleTheme",
+    "args": {
+        "dark": "Default Dark+,GitHub Dark",
+        "light": "Default Light+,GitHub Light",
+    },
 },
 ```
 
@@ -480,12 +480,12 @@ Example for a 2x2 grid:
 
 ```js
 "Open file": {
-	"command": "commands.openFolder",
-	"args": "C:\\temp\\temp.txt",
+    "command": "commands.openFolder",
+    "args": "C:\\temp\\temp.txt",
 },
 "Open folder": {
-	"command": "commands.openFolder",
-	"args": "C:\\temp",
+    "command": "commands.openFolder",
+    "args": "C:\\temp",
 },
 ```
 
@@ -493,17 +493,17 @@ Example for a 2x2 grid:
 
 ```js
 "Terminal => watch (string argument)": {
-	"command": "commands.runInTerminal",
-	"args": "npm run watch"
+    "command": "commands.runInTerminal",
+    "args": "npm run watch"
 },
 "Terminal => watch": {
-	"command": "commands.runInTerminal",
-	"args": {
-		"text": "npm run watch",
-		"name": "watch",
-		"reveal": true,
-		// "cwd": "",
-	},
+    "command": "commands.runInTerminal",
+    "args": {
+        "text": "npm run watch",
+        "name": "watch",
+        "reveal": true,
+        // "cwd": "",
+    },
 },
 ```
 
@@ -511,8 +511,8 @@ Example for a 2x2 grid:
 
 ```js
 "Debug extension": {
-	"command": "commands.startDebugging",
-	"args": "Extension",
+    "command": "commands.startDebugging",
+    "args": "Extension",
 },
 ```
 
@@ -520,8 +520,8 @@ Example for a 2x2 grid:
 
 ```js
 "Set Language JavaScript": {
-	"command": "commands.setEditorLanguage",
-	"args": "javascript",
+    "command": "commands.setEditorLanguage",
+    "args": "javascript",
 },
 ```
 
@@ -529,8 +529,8 @@ Example for a 2x2 grid:
 
 ```js
 "Populate clipboard": {
-	"command": "commands.clipboardWrite",
-	"args": "||||||||",
+    "command": "commands.clipboardWrite",
+    "args": "||||||||",
 },
 ```
 
@@ -538,15 +538,15 @@ Example for a 2x2 grid:
 
 ```js
 "Msg": {
-	"command": "commands.showNotification",
-	"args": "info msg",
+    "command": "commands.showNotification",
+    "args": "info msg",
 },
 "Msg error": {
-	"command": "commands.showNotification",
-	"args": {
-		"severity": "error",// "warning" | "info"
-		"message": "bad",
-	},
+    "command": "commands.showNotification",
+    "args": {
+        "severity": "error",// "warning" | "info"
+        "message": "bad",
+    },
 },
 ```
 
@@ -554,12 +554,12 @@ Example for a 2x2 grid:
 
 ```js
 "Open google.com": {
-	"command": "commands.openExternal",
-	"args": "https://www.google.com",
+    "command": "commands.openExternal",
+    "args": "https://www.google.com",
 },
 "Open Extension Preview": {
-	"command": "commands.openExternal",
-	"args": "vscode:extension/usernamehw.commands",
+    "command": "commands.openExternal",
+    "args": "vscode:extension/usernamehw.commands",
 },
 ```
 
@@ -567,8 +567,8 @@ Example for a 2x2 grid:
 
 ```js
 "Open in default app": {
-	"command": "commands.openInApp",
-	"args": "C:\\temp\\img.png",
+    "command": "commands.openInApp",
+    "args": "C:\\temp\\img.png",
 },
 ```
 
@@ -576,8 +576,8 @@ Example for a 2x2 grid:
 
 ```js
 "commands.revealFileInOS": {
-	"command": "commands.revealFileInOS",
-	"args": "C:/Users",
+    "command": "commands.revealFileInOS",
+    "args": "C:/Users",
 },
 ```
 
