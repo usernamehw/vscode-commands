@@ -20,5 +20,7 @@ webpack.config.js
 scripts
 
 dist/extension.js.LICENSE.txt
-img/extension_demo.gif
 LICENSE
+
+img/*.*
+!img/icon.png

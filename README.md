@@ -5,17 +5,105 @@
 [![Rating](https://vsmarketplacebadge.apphb.com/rating-short/usernamehw.commands.svg)](https://marketplace.visualstudio.com/items?itemName=usernamehw.commands)
 [![Trending](https://vsmarketplacebadge.apphb.com/trending-monthly/usernamehw.commands.svg)](https://marketplace.visualstudio.com/items?itemName=usernamehw.commands)
 
-![extension_demo_gif](img/extension_demo.gif)
+## Simple command
 
-## Features
+```js
+"Toggle minimap": {
+	"command": "editor.action.toggleMinimap",
+},
+```
 
-- Execute multiple commands; Execute commands with arguments
-- Execute commands from Tree View
-- Execute commands from Quick Pick
-- Add items to Status Bar
-- Add items to Command Palette
-- Register command to execute from a keybinding
-- Additional commands contributed by this extension
+![simple](img/simple.gif)
+
+## Command with arguments
+
+```js
+"Typing": {
+	"command": "editor.action.insertSnippet",
+	"args": {
+		"snippet": "Typing... ",
+	},
+},
+```
+
+![arguments](img/args.gif)
+
+## Multiple commands (sequence)
+
+```js
+"Toggle multiple settings": {
+	"sequence": [
+		{
+			"command": "editor.action.toggleMinimap"
+		},
+		{
+			"command": "workbench.action.toggleStatusbarVisibility"
+		}
+	]
+},
+```
+
+![sequence](img/sequence.gif)
+
+## Tree View icons
+
+```js
+"GitHub": {
+	"icon": "github",
+},
+"Flame": {
+	"icon": "flame",
+	"iconColor": "errorForeground",
+},
+```
+
+![icons](img/tree_icon.png)
+
+## Folders (nested items)
+
+```js
+"folder": {
+    "nestedItems": {
+        "Flame": {
+            "icon": "flame",
+            "iconColor": "errorForeground",
+        },
+        "Trusted": {
+            "icon": "workspace-trusted",
+            "iconColor": "terminal.ansiGreen",
+        },
+    },
+},
+```
+
+![folder](img/folder.gif)
+
+## Quick Pick `commands.openAsQuickPick`
+
+![quick_pick](img/quick_pick.gif)
+
+## Status Bar
+
+```js
+"Toggle line numbers": {
+    "command": "commands.toggleSetting",
+    "args": {
+        "setting": "editor.lineNumbers",
+        "value": [
+            "on",
+            "off",
+        ],
+    },
+    "statusBar": {
+        "alignment": "left",
+        "text": "🔢",
+        "priority": -9999,
+    },
+},
+```
+
+![status_bar](img/status_bar.gif)
+
 
 <!-- COMMANDS_START -->
 ## Commands (4)
@@ -64,55 +152,6 @@ interface CommandObject {
 	}
 }
 ```
-
-## Examples
-
-```js
-"commands.commands": {
-	"Object with \"args\"": {
-		"command": "type",
-		"args": {
-			"text": "!!!",
-		},
-	},
-	// ──────────────────────────────
-	"Mutliple Commands": {
-		"sequence": [
-			{
-				"command": "editor.action.toggleMinimap",
-			},
-			{
-				"command": "workbench.action.toggleStatusbarVisibility",
-			},
-		]
-	},
-	// ──────────────────────────────
-	"Folder": {
-		"nestedItems": {
-			"togge minimap (nested item)": {
-				"command": "editor.action.toggleMinimap",
-			},
-		},
-	},
-	// ──────────────────────────────
-	"Icon": {
-		"command": "help.tweetFeedback",
-		"icon": "heart",
-		"iconColor": "editorError.foreground",
-	},
-	// ──────────────────────────────
-	"Status Bar Item": {
-		"icon": "gear",
-		"command": "editor.action.toggleMinimap",
-		"statusBar": {
-			"alignment": "left",
-			"text": "🗺",
-			"priority": -9999,
-		},
-	},
-},
-```
-
 
 ## [Builtin commands (with args)](https://code.visualstudio.com/api/references/commands)
 
