@@ -117,16 +117,17 @@
 <!-- COMMANDS_END -->
 
 <!-- SETTINGS_START -->
-## Settings (6)
+## Settings (7)
 
 |Setting|Default|Description|
 |-|-|-|
-|commands.commands|{}|Main extension property. Commands that will be rendered in the View.|
+|commands.commands|\{\}|Main extension property. Commands that will be rendered in the View.|
 |commands.treeViewCollapseFolders|**false**|Collapse folders by default. Requires reload before being applied.|
 |commands.statusBarDefaultText|"same"|Controls the text of Status Bar item when adding from Tree View context menu.|
 |commands.statusBarDefaultPosition|"left"|Where to put command on Status Bar (left or right).|
-|commands.alias|{}|Use shorter command ids.|
+|commands.alias|\{\}|Use shorter command ids.|
 |commands.populateCommandPalette|**false**|Adds all items to Command Palette (Requires editor reload after every change of configuration).|
+|commands.toggleSettings.showNotification|**false**|When enabled - show notification after using `commands.toggleSetting` or `commands.incrementSetting`.|
 <!-- SETTINGS_END -->
 
 ```ts
@@ -591,7 +592,7 @@ workbench.action.terminal.newWithCwd
 `editor.action.refactor` & `editor.action.sourceAction` - both covered by `editor.action.codeAction`
 workbench.action.files.newUntitledFile (arg `viewType` eg `vscode.markdown.preview.editor`)
 vscode.diff
-vscode.openWith
+vscode.openWith `commands.executeCommand("vscode.openWith", uri, MyCustomEditor.viewType);`
 editor.unfold
 editor.fold
 

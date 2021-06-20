@@ -23,6 +23,12 @@ export type ExtensionConfig = Readonly<{
 	 * Where to put command on Status Bar (left of right).
 	 */
 	statusBarDefaultPosition: 'left' | 'right';
+	toggleSettings: {
+		/**
+		* When enabled - show notification after using `commands.toggleSetting` or `commands.incrementSetting`.
+		*/
+		showNotification: boolean;
+	};
 }>;
 
 export interface Alias {

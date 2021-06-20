@@ -227,7 +227,7 @@ export function registerExtensionCommands() {
 		}
 		incrementSetting(setting, value);
 	});
-	// commands.registerCommand(`${EXTENSION_NAME}.settingsMerge`, (arg: any) => {
+	// commands.registerCommand(`${EXTENSION_NAME}.settingsMerge`, (arg: unknown) => {
 	// 	if (!isSimpleObject(arg)) {
 	// 		window.showWarningMessage('Argument must be an object');
 	// 		return;
@@ -323,45 +323,49 @@ export function registerExtensionCommands() {
 // ──────────────────────────────────────────────────────────────────────
 async function toggleSetting(arg: ToggleSetting | string) {
 	const settings = workspace.getConfiguration(undefined, null);
+	let newValue;
 
 	if (typeof arg === 'string') {
 		// Passed only string, assume that's a boolean settings' name and try to toggle it
-		const currentSettingValue = settings.get<any>(arg);
+		const currentSettingValue = settings.get<unknown>(arg);
 		if (typeof currentSettingValue !== 'boolean') {
 			window.showWarningMessage('Passing a string only works with type Boolean');
 			return;
 		}
-		await settings.update(arg, !currentSettingValue, true);
+		newValue = !currentSettingValue;
 	} else if (isSimpleObject(arg)) {
 		const settingName = arg.setting;
 		const currentSettingValue = settings.get(settingName);
 		const settingValues = arg.value;
 
 		if (Array.isArray(settingValues)) {
-			const next = getNextOrFirstElement(settingValues, currentSettingValue);
-			await settings.update(settingName, next, true);
+			newValue = getNextOrFirstElement(settingValues, currentSettingValue);
 		} else if (typeof settingValues === 'string') {
 			// Handle comma separated string here (assume it's an array of strings)
 			if (settingValues.indexOf(',')) {
 				const allValues = settingValues.split(',');
 				if (allValues.length === 1) {
-					await settings.update(settingName, allValues[0], true);
+					newValue = allValues[0];
 				} else {
-					const next = getNextOrFirstElement(allValues, currentSettingValue);
-					await settings.update(settingName, next, true);
+					newValue = getNextOrFirstElement(allValues, currentSettingValue);
 				}
 			}
+		}
+
+		await settings.update(settingName, newValue, ConfigurationTarget.Global);
+		if (extensionConfig.toggleSettings.showNotification) {
+			window.showInformationMessage(`"${settingName}": ${JSON.stringify(newValue)}`);
 		}
 	}
 }
 /**
  * Get next item in array. If there is no next - return the first item.
  */
-function getNextOrFirstElement<T>(arr: T[], target: any): T {
+function getNextOrFirstElement<T>(arr: T[], target: unknown): T {
 	const idx = arr.findIndex(el => el === target);
 	return idx === arr.length - 1 ? arr[0] : arr[idx + 1];
 }
-function incrementSetting(settingName: any, n: any): void {
+async function incrementSetting(settingName: unknown, n: unknown) {
 	if (typeof settingName !== 'string') {
 		window.showWarningMessage('Setting name must be a string');
 		return;
@@ -371,19 +375,25 @@ function incrementSetting(settingName: any, n: any): void {
 		return;
 	}
 	const settings = workspace.getConfiguration(undefined, null);
-	const currentSettingValue = settings.get<any>(settingName);
+	const currentSettingValue = settings.get<unknown>(settingName);
 	if (typeof currentSettingValue !== 'number') {
 		window.showWarningMessage('Only works for settings of type `number`');
 		return;
 	}
-	settings.update(settingName, currentSettingValue + n, true);
+	const newValue = currentSettingValue + n;
+	await settings.update(settingName, newValue, true);
+	if (extensionConfig.toggleSettings.showNotification) {
+		window.showInformationMessage(`"${settingName}": ${JSON.stringify(newValue)}`);
+	}
 }
 async function updateSetting(settingName: string, newValue: unknown, target: 'global' | 'workspace') {
 	const settings = workspace.getConfiguration(undefined, null);
 	const configurationTarget = target === 'workspace' ? ConfigurationTarget.Workspace : ConfigurationTarget.Global;
 	await settings.update(settingName, newValue, configurationTarget);
 }
-
+/**
+ * Return all registered vscode commands (excluding internal).
+ */
 export async function getAllVscodeCommands() {
 	return await commands.getCommands(true);
 }

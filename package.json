@@ -306,6 +306,11 @@
 					"type": "boolean",
 					"description": "Adds all items to Command Palette (Requires editor reload after every change of configuration).",
 					"default": false
+				},
+				"commands.toggleSettings.showNotification": {
+					"type": "boolean",
+					"markdownDescription": "When enabled - show notification after using `commands.toggleSetting` or `commands.incrementSetting`.",
+					"default": false
 				}
 			}
 		},
