@@ -39,7 +39,7 @@ export interface TopLevelCommands {
 	[key: string]: CommandFolder & CommandObject;
 }
 
-export type Runnable = CommandObject | CommandObject[];
+export type Runnable = CommandObject | Sequence;
 
 export interface CommandObject {
 	command: string;
@@ -54,8 +54,10 @@ export interface CommandObject {
 		tooltip?: string;
 		color?: string;
 	};
-	sequence?: CommandObject[];
+	sequence?: Sequence;
 }
+export type Sequence = (CommandObject | string)[];
+
 export interface CommandFolder {
 	nestedItems?: NestedItems;
 }

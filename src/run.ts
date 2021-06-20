@@ -1,6 +1,6 @@
 import { commands, window } from 'vscode';
 import { extensionConfig } from './extension';
-import { CommandObject, Runnable } from './types';
+import { CommandObject, Runnable, Sequence } from './types';
 import { isSimpleObject, sleep } from './utils';
 
 export async function run(runnable: Runnable) {
@@ -16,10 +16,17 @@ export async function run(runnable: Runnable) {
 	}
 	throw Error('Unknown Command type');
 }
-async function runArray(arr: CommandObject[]) {
+async function runArray(arr: Sequence) {
 	for (const item of arr) {
-		await runObject(item);
+		if (typeof item === 'string') {
+			await runString(item);
+		} else {
+			await runObject(item);
+		}
 	}
+}
+async function runString(str: string) {
+	return await commands.executeCommand(str);
 }
 async function runObject(object: CommandObject) {
 	if (object.delay) {

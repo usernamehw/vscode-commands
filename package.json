@@ -112,51 +112,58 @@
 									"description": "Execute multiple commands.",
 									"type": "array",
 									"items": {
-										"type": "object",
-										"properties": {
-											"command": {
-												"type": "string",
-												"description": "Command id to execute."
+										"oneOf": [
+											{
+												"type": "string"
 											},
-											"args": {},
-											"delay": {
-												"type": "number",
-												"description": "Delay BEFORE executing this command."
-											},
-											"icon": {
-												"type": "string",
-												"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
-											},
-											"iconColor": {
-												"type": "string",
-												"markdownDescription": "Use existing colors for icon [Color id list](https://code.visualstudio.com/api/references/theme-color)"
-											},
-											"statusBar": {
+											{
 												"type": "object",
-												"description": "Add this command to Status Bar.",
 												"properties": {
-													"alignment": {
+													"command": {
 														"type": "string",
-														"enum": [
-															"left",
-															"right"
-														]
+														"description": "Command id to execute."
 													},
-													"text": {
-														"type": "string"
+													"args": {},
+													"delay": {
+														"type": "number",
+														"description": "Delay BEFORE executing this command."
 													},
-													"priority": {
-														"type": "number"
+													"icon": {
+														"type": "string",
+														"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
 													},
-													"tooltip": {
-														"type": "string"
+													"iconColor": {
+														"type": "string",
+														"markdownDescription": "Use existing colors for icon [Color id list](https://code.visualstudio.com/api/references/theme-color)"
 													},
-													"color": {
-														"type": "string"
+													"statusBar": {
+														"type": "object",
+														"description": "Add this command to Status Bar.",
+														"properties": {
+															"alignment": {
+																"type": "string",
+																"enum": [
+																	"left",
+																	"right"
+																]
+															},
+															"text": {
+																"type": "string"
+															},
+															"priority": {
+																"type": "number"
+															},
+															"tooltip": {
+																"type": "string"
+															},
+															"color": {
+																"type": "string"
+															}
+														}
 													}
 												}
 											}
-										}
+										]
 									}
 								},
 								"nestedItems": {
@@ -212,51 +219,58 @@
 													"description": "Execute multiple commands.",
 													"type": "array",
 													"items": {
-														"type": "object",
-														"properties": {
-															"command": {
-																"type": "string",
-																"description": "Command id to execute."
+														"oneOf": [
+															{
+																"type": "string"
 															},
-															"args": {},
-															"delay": {
-																"type": "number",
-																"description": "Delay BEFORE executing this command."
-															},
-															"icon": {
-																"type": "string",
-																"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
-															},
-															"iconColor": {
-																"type": "string",
-																"markdownDescription": "Use existing colors for icon [Color id list](https://code.visualstudio.com/api/references/theme-color)"
-															},
-															"statusBar": {
+															{
 																"type": "object",
-																"description": "Add this command to Status Bar.",
 																"properties": {
-																	"alignment": {
+																	"command": {
 																		"type": "string",
-																		"enum": [
-																			"left",
-																			"right"
-																		]
+																		"description": "Command id to execute."
 																	},
-																	"text": {
-																		"type": "string"
+																	"args": {},
+																	"delay": {
+																		"type": "number",
+																		"description": "Delay BEFORE executing this command."
 																	},
-																	"priority": {
-																		"type": "number"
+																	"icon": {
+																		"type": "string",
+																		"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
 																	},
-																	"tooltip": {
-																		"type": "string"
+																	"iconColor": {
+																		"type": "string",
+																		"markdownDescription": "Use existing colors for icon [Color id list](https://code.visualstudio.com/api/references/theme-color)"
 																	},
-																	"color": {
-																		"type": "string"
+																	"statusBar": {
+																		"type": "object",
+																		"description": "Add this command to Status Bar.",
+																		"properties": {
+																			"alignment": {
+																				"type": "string",
+																				"enum": [
+																					"left",
+																					"right"
+																				]
+																			},
+																			"text": {
+																				"type": "string"
+																			},
+																			"priority": {
+																				"type": "number"
+																			},
+																			"tooltip": {
+																				"type": "string"
+																			},
+																			"color": {
+																				"type": "string"
+																			}
+																		}
 																	}
 																}
 															}
-														}
+														]
 													}
 												}
 											}
