@@ -7,7 +7,7 @@ import { forEachItem } from './utils';
 export function updateStatusBarItems(items: TopLevelCommands) {
 	disposeStatusBarItems();
 
-	forEachItem(item => {
+	forEachItem((item, key) => {
 		if (item.statusBar) {
 			const statusBarUserObject = item.statusBar;
 			const alignment = statusBarUserObject.alignment === 'right' ? StatusBarAlignment.Right : StatusBarAlignment.Left;
@@ -15,7 +15,7 @@ export function updateStatusBarItems(items: TopLevelCommands) {
 			const icon = item.icon ? `$(${item.icon}) ` : '';
 			newStatusBarItem.name = statusBarUserObject.text;
 			newStatusBarItem.color = statusBarUserObject.color;
-			newStatusBarItem.tooltip = statusBarUserObject.tooltip;
+			newStatusBarItem.tooltip = statusBarUserObject.tooltip || key;
 			newStatusBarItem.text = icon + statusBarUserObject.text;
 			newStatusBarItem.show();
 			newStatusBarItem.command = {
