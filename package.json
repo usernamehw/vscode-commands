@@ -381,7 +381,7 @@
 			},
 			{
 				"command": "commands.revealCommand",
-				"title": "Reveal Command",
+				"title": "Reveal in settings.json",
 				"category": "Commands"
 			},
 			{
