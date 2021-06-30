@@ -1,6 +1,7 @@
 import { ColorThemeKind, commands, ConfigurationTarget, debug, env, languages, QuickPickItem, Uri, window, workspace } from 'vscode';
 import { addArgs, commandArgs } from './args';
 import { Constants, extensionConfig } from './extension';
+import { showQuickPick } from './quickPick';
 import { run } from './run';
 import { FolderTreeItem, RunCommandTreeItem } from './TreeViewProvider';
 import { CommandObject, Runnable, ToggleSetting, TopLevelCommands } from './types';
@@ -77,7 +78,7 @@ export function registerExtensionCommands() {
 	commands.registerCommand(CommandIds.assignKeybinding, (commandTreeItem: RunCommandTreeItem) => {
 		openKeybindingsGuiAt(commandTreeItem.getLabelName());
 	});
-	commands.registerCommand(CommandIds.addToStatusBar, async (treeItem: RunCommandTreeItem) => {
+	commands.registerCommand(CommandIds.addToStatusBar, async (treeItem: FolderTreeItem | RunCommandTreeItem) => {
 		const labelName = treeItem.getLabelName();
 		let newStatusBarItemText = '';
 		if (extensionConfig.statusBarDefaultText === 'pick') {
@@ -126,24 +127,7 @@ export function registerExtensionCommands() {
 		openSettingGuiAt(`@ext:usernamehw.commands`);
 	});
 	commands.registerCommand(CommandIds.openAsQuickPick, async () => {
-		const treeAsOneLevelMap: {
-			[key: string]: Runnable;
-		} = {};
-		function traverseCommands(items: TopLevelCommands): void {
-			for (const key in items) {
-				const command = items[key];
-				if (command.nestedItems) {
-					traverseCommands(command.nestedItems);
-				} else {
-					treeAsOneLevelMap[key] = command;
-				}
-			}
-		}
-		traverseCommands(extensionConfig.commands);
-		const pickedCommandTitle = await window.showQuickPick(Object.keys(treeAsOneLevelMap));
-		if (pickedCommandTitle) {
-			run(treeAsOneLevelMap[pickedCommandTitle]);
-		}
+		await showQuickPick(extensionConfig.commands);
 	});
 	commands.registerCommand(CommandIds.newCommand, async () => {
 		await addNewCommand();
@@ -328,7 +312,7 @@ export function registerExtensionCommands() {
 }
 // ──────────────────────────────────────────────────────────────────────
 /**
- * Toggle global user setting.
+ * Toggle global user setting. TODO: move settings to a separate file
  */
 async function toggleSetting(arg: ToggleSetting | string) {
 	const settings = workspace.getConfiguration(undefined, null);

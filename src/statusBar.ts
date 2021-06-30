@@ -14,7 +14,10 @@ export function updateStatusBarItems(items: TopLevelCommands) {
 			const statusBarUserObject = item.statusBar;
 			const alignment = statusBarUserObject.alignment === 'right' ? StatusBarAlignment.Right : StatusBarAlignment.Left;
 			const newStatusBarItem = window.createStatusBarItem(statusBarUserObject.text, alignment, statusBarUserObject.priority);
-			const icon = item.icon ? `$(${item.icon}) ` : '';
+			let icon = item.icon ? `$(${item.icon}) ` : '';
+			if (item.nestedItems) {
+				icon = '$(folder) ';
+			}
 			newStatusBarItem.name = statusBarUserObject.text;
 			newStatusBarItem.color = statusBarUserObject.color;
 			newStatusBarItem.tooltip = statusBarUserObject.tooltip || key;

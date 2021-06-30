@@ -1,9 +1,17 @@
 import { commands, window } from 'vscode';
 import { extensionConfig } from './extension';
-import { CommandObject, Runnable, Sequence } from './types';
+import { showQuickPick } from './quickPick';
+import { CommandFolder, CommandObject, Runnable, Sequence } from './types';
 import { isSimpleObject, sleep } from './utils';
-
-export async function run(runnable: Runnable) {
+/**
+ * Execute runnable or folder.
+ * Executing a folder - is to show Quick Pick to choose one of the commands inside that folder.
+ */
+export async function run(runnable: CommandFolder & Runnable) {
+	if (runnable.nestedItems) {
+		await runFolder(runnable);
+		return;
+	}
 	if (Array.isArray(runnable)) {
 		await runArray(runnable);
 	} else if (isSimpleObject(runnable)) {
@@ -12,22 +20,22 @@ export async function run(runnable: Runnable) {
 		} else {
 			await runObject(runnable);
 		}
-		return undefined;
+		return;
 	}
 	throw Error('Unknown Command type');
 }
 async function runArray(arr: Sequence) {
 	for (const item of arr) {
 		if (typeof item === 'string') {
-			await runString(item);
+			await runObject({
+				command: item,
+			});
 		} else {
 			await runObject(item);
 		}
 	}
 }
-async function runString(str: string) {
-	return await commands.executeCommand(str);
-}
+
 async function runObject(object: CommandObject) {
 	if (object.delay) {
 		await sleep(object.delay);
@@ -40,4 +48,8 @@ async function runObject(object: CommandObject) {
 		window.showErrorMessage('Missing `command` property.');
 	}
 	return await commands.executeCommand(commandId, object.args);
+}
+
+async function runFolder(folder: CommandFolder) {
+	await showQuickPick(folder.nestedItems!);
 }

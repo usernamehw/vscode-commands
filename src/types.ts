@@ -46,14 +46,18 @@ export interface CommandObject {
 	delay?: number;
 	icon?: string;
 	iconColor?: string;
-	statusBar?: {
-		alignment: 'left' | 'right';
-		text: string;
-		priority?: number;
-		tooltip?: string;
-		color?: string;
-	};
+	statusBar?: StatusBar;
 	sequence?: Sequence;
+}
+/**
+ * Add command/folder to status bar
+ */
+interface StatusBar {
+	alignment: 'left' | 'right';
+	text: string;
+	priority?: number;
+	tooltip?: string;
+	color?: string;
 }
 export type Sequence = (CommandObject | string)[];
 /**
@@ -61,6 +65,7 @@ export type Sequence = (CommandObject | string)[];
  */
 export interface CommandFolder {
 	nestedItems?: TopLevelCommands;
+	statusBar?: StatusBar;
 }
 
 // ──────────────────────────────────────────────────────────────────────

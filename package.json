@@ -427,7 +427,7 @@
 				},
 				{
 					"command": "commands.addToStatusBar",
-					"when": "view == commands.tree && viewItem == command",
+					"when": "view == commands.tree && viewItem =~ /command|folder/",
 					"group": "2_status"
 				},
 				{
