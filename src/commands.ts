@@ -286,9 +286,18 @@ export function registerExtensionCommands() {
 	commands.registerCommand(CommandIds.revealFileInOS, async (path: string) => {
 		await commands.executeCommand('revealFileInOS', Uri.file(path));
 	});
-	commands.registerCommand(CommandIds.open, async (path: string) => {
+	commands.registerCommand(CommandIds.open, async (arg: string | { target: string; app: string; arguments?: string[] }) => {
 		const open = (await import('open')).default;
-		await open(path);
+		if (typeof arg === 'string') {
+			await open(arg);
+		} else if (isSimpleObject(arg)) {
+			await open(arg.target, {
+				app: {
+					name: arg.app,
+					arguments: arg.arguments || [],
+				},
+			});
+		}
 	});
 }
 // ────────────────────────────────────────────────────────────

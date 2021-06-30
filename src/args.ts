@@ -1,8 +1,8 @@
 import { CommandIds } from './commands';
-
-export const commandArgs: {
-	[commandId: string]: unknown;
-} = {
+/**
+ * Map commands with arguments;
+ */
+export const commandArgs: Record<string, unknown> = {
 	type: {
 		text: '',
 	},
@@ -109,7 +109,11 @@ export const commandArgs: {
 		message: '',
 		severity: 'error',
 	},
-	[CommandIds.open]: '',
+	[CommandIds.open]: {
+		target: '',
+		app: '',
+		arguments: [],
+	},
 };
 /**
  * Add arguments if command can accept them (even if they are optional).

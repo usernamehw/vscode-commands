@@ -561,12 +561,20 @@ Example for a 2x2 grid:
 },
 ```
 
-### `commands.open` Open file in default app
+### `commands.open` Open file in default app (Uses [open](https://github.com/sindresorhus/open#readme))
 
 ```js
 "Open in default app": {
     "command": "commands.open",
     "args": "C:\\temp\\img.png",
+},
+"Open in specified app": {
+    "command": "commands.open",
+    "args": {
+        "target": "C:\\temp\\img.png",
+        "app": "firefox",// Or absolute path
+        "arguments": ["-devtools"],
+    },
 },
 ```
 
