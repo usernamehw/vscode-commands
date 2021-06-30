@@ -579,6 +579,13 @@ Example for a 2x2 grid:
 },
 ```
 
+## Upstream issues
+
+Please upvote the following VS Code issues:
+
+- [Provide some richer (optional) UI for custom tree views](https://github.com/microsoft/vscode/issues/97190)
+- [Allow TreeItem.label to support MarkdownString](https://github.com/microsoft/vscode/issues/115365)
+
 <details><summary><kbd><code>Miscellaneous . . . . . . . . . . . . . . . . .</code></kbd></summary>
 
 ## Keyboard shortcuts
