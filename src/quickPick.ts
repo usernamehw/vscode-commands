@@ -1,4 +1,5 @@
-import { window } from 'vscode';
+import { QuickPickItem, window } from 'vscode';
+import { commandArgs } from './args';
 import { run } from './run';
 import { Runnable, TopLevelCommands } from './types';
 /**
@@ -21,4 +22,24 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands) {
 	if (pickedCommandTitle) {
 		await run(treeAsOneLevelMap[pickedCommandTitle]);
 	}
+}
+
+/**
+ * Convert command ids to {@link QuickPickItem `QuickPickItem[]`}
+ */
+export function commandsToQuickPickItems(commandList: string[]): QuickPickItem[] {
+	const result: QuickPickItem[] = [];
+	for (const com of commandList) {
+		if (com in commandArgs) {
+			result.push({
+				label: com,
+				detail: 'args',
+			});
+		} else {
+			result.push({
+				label: com,
+			});
+		}
+	}
+	return result;
 }

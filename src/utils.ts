@@ -107,3 +107,9 @@ export function forEachSymbol(f: (symbol: DocumentSymbol)=> void, symbols: Docum
 		}
 	}
 }
+/**
+ * Return all registered vscode commands (excluding internal).
+ */
+export async function getAllVscodeCommands() {
+	return await commands.getCommands(true);
+}
