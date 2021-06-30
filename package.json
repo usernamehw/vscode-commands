@@ -2,7 +2,7 @@
 	"name": "commands",
 	"displayName": "Commands",
 	"description": "Run commands from Tree View / Status Bar / Quick Pick.",
-	"version": "0.0.10",
+	"version": "0.0.11",
 	"publisher": "usernamehw",
 	"license": "MIT",
 	"engines": {
