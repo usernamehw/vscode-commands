@@ -151,7 +151,7 @@ interface CommandObject {
 }
 ```
 
-# [Built-in commands (with args)](https://code.visualstudio.com/api/references/commands)
+## [Built-in commands (with args)](https://code.visualstudio.com/api/references/commands)
 
 ### `type` Type text into active editor
 

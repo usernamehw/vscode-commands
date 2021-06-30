@@ -1,3 +1,8 @@
+## 0.0.11 `30 Jun 2021`
+
+- ✨ Allow `sequence` to accept strings
+- ✨ Allow adding folders to status bar
+
 ## 0.0.10 `19 Jun 2021`
 
 - ✨ Show command as json on hover
