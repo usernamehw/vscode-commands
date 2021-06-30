@@ -1,9 +1,12 @@
 import { Command, Event, EventEmitter, MarkdownString, ThemeColor, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { CommandIds } from './commands';
 import { extensionConfig } from './extension';
-import { ExtensionConfig, NestedItems, Runnable, TopLevelCommands } from './types';
+import { ExtensionConfig, Runnable, TopLevelCommands } from './types';
 import { isSimpleObject } from './utils';
-
+/**
+ * Ordinary tree item. Can have icon (with or without color).
+ * Shows markdown tooltip on hover with json version of it's contents.
+ */
 export class RunCommandTreeItem extends TreeItem {
 	collapsibleState = TreeItemCollapsibleState.None;
 	contextValue = 'command';
@@ -31,16 +34,18 @@ export class RunCommandTreeItem extends TreeItem {
 		return markdown;
 	}
 }
-
+/**
+ * Folder uses icons from active file icon theme.
+ */
 export class FolderTreeItem extends TreeItem {
 	collapsibleState = extensionConfig.treeViewCollapseFolders ? TreeItemCollapsibleState.Collapsed : TreeItemCollapsibleState.Expanded;
 	contextValue = 'folder';
 	iconPath = ThemeIcon.Folder;
-	nestedItems: NestedItems;
+	nestedItems: TopLevelCommands;
 
 	constructor(
 		label: string,
-		nestedItems: NestedItems,
+		nestedItems: TopLevelCommands,
 	) {
 		super(label);
 		this.nestedItems = nestedItems;
@@ -49,6 +54,7 @@ export class FolderTreeItem extends TreeItem {
 	getLabelName(): string {
 		return typeof this.label === 'string' ? this.label : '';
 	}
+	// TODO: maybe tooltip should show all nested items?
 }
 
 
@@ -80,8 +86,10 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 			return this.commandsToTreeItems(allCommands);
 		}
 	}
-
-	private commandsToTreeItems(items: NestedItems & TopLevelCommands): (FolderTreeItem | RunCommandTreeItem)[] {
+	/**
+	 * Convert extension config to `TreeItem` (`FolderTreeItem` or `RunCommandTreeItem`)
+	 */
+	private commandsToTreeItems(items: TopLevelCommands & TopLevelCommands): (FolderTreeItem | RunCommandTreeItem)[] {
 		const result: (FolderTreeItem | RunCommandTreeItem)[] = [];
 		for (const key in items) {
 			const item = items[key];

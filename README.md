@@ -1,9 +1,6 @@
-# Commands
-
 [![Version](https://vsmarketplacebadge.apphb.com/version-short/usernamehw.commands.svg)](https://marketplace.visualstudio.com/items?itemName=usernamehw.commands)
 [![Installs](https://vsmarketplacebadge.apphb.com/installs-short/usernamehw.commands.svg)](https://marketplace.visualstudio.com/items?itemName=usernamehw.commands)
 [![Rating](https://vsmarketplacebadge.apphb.com/rating-short/usernamehw.commands.svg)](https://marketplace.visualstudio.com/items?itemName=usernamehw.commands)
-[![Trending](https://vsmarketplacebadge.apphb.com/trending-monthly/usernamehw.commands.svg)](https://marketplace.visualstudio.com/items?itemName=usernamehw.commands)
 
 ## Simple command
 
@@ -146,7 +143,7 @@ interface CommandObject {
         color?: string;
     };
 
-    sequence?: CommandObject[];// execute multipe commands
+    sequence?: (CommandObject | string)[];// execute multipe commands
 
     nestedItems: {// Group items into a folder (1 lvl max)
         [key: string]: CommandObject
@@ -154,7 +151,7 @@ interface CommandObject {
 }
 ```
 
-## [Builtin commands (with args)](https://code.visualstudio.com/api/references/commands)
+# [Built-in commands (with args)](https://code.visualstudio.com/api/references/commands)
 
 ### `type` Type text into active editor
 
@@ -582,11 +579,11 @@ Example for a 2x2 grid:
 },
 ```
 
+<!-- ## Miscellaneous ℹ -->
 <!--
 
 Open files by glob? vscode.workspace.findFiles
 go to symbol in file
-vscode.commands.executeCommand('workbench.action.openWalkthrough', 'jakearl.md-to-html#exampleProject', true);// bool - toSide
 
 workbench.action.terminal.newWithCwd
 `editor.action.refactor` & `editor.action.sourceAction` - both covered by `editor.action.codeAction`

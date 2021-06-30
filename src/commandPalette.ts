@@ -3,13 +3,17 @@ import { ExtensionContext } from 'vscode';
 import { commandPaletteCommandsList, extensionConfig } from './extension';
 import { TopLevelCommands } from './types';
 import { forEachItem } from './utils';
-
+/**
+ * Command format in `package.json`.
+ */
 interface ICommand {
 	command: string;
 	title: string;
 	category?: string;
 }
-
+/**
+ * Commands this extension contributes in **commands** section of `package.json`
+ */
 const coreCommandIds = [
 	'commands.openAsQuickPick',
 	'commands.suggestCommands',

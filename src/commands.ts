@@ -4,8 +4,10 @@ import { Constants, extensionConfig } from './extension';
 import { run } from './run';
 import { FolderTreeItem, RunCommandTreeItem } from './TreeViewProvider';
 import { CommandObject, Runnable, ToggleSetting, TopLevelCommands } from './types';
-import { goToSymbol, isSimpleObject, openKeybindingsGuiAt, openSettingGuiAt } from './utils';
-
+import { goToSymbol, isSimpleObject, openKeybindingsGuiAt, openSettingGuiAt, openSettingsJSON } from './utils';
+/**
+ * All command ids contributed by this extension.
+ */
 export const enum CommandIds {
 	// ──── Core ────────────────────────────────────────────────────────────
 	'run' = 'commands.run',
@@ -33,7 +35,11 @@ export const enum CommandIds {
 	'revealFileInOS' = 'commands.revealFileInOS',
 	'open' = 'commands.open',
 }
-
+/**
+ * Register all commands (core + additional)
+ * Core command is needed for this extension to operate
+ * Additional commands are just useful commands that accept arguments.
+ */
 export function registerExtensionCommands() {
 	// ──────────────────────────────────────────────────────────────────────
 	// ──── Core commands ───────────────────────────────────────────────────
@@ -321,6 +327,9 @@ export function registerExtensionCommands() {
 	});
 }
 // ──────────────────────────────────────────────────────────────────────
+/**
+ * Toggle global user setting.
+ */
 async function toggleSetting(arg: ToggleSetting | string) {
 	const settings = workspace.getConfiguration(undefined, null);
 	let newValue;
@@ -365,6 +374,9 @@ function getNextOrFirstElement<T>(arr: T[], target: unknown): T {
 	const idx = arr.findIndex(el => el === target);
 	return idx === arr.length - 1 ? arr[0] : arr[idx + 1];
 }
+/**
+ * Increment global user setting. To decrement - just pass a negative number.
+ */
 async function incrementSetting(settingName: unknown, n: unknown) {
 	if (typeof settingName !== 'string') {
 		window.showWarningMessage('Setting name must be a string');
@@ -386,6 +398,9 @@ async function incrementSetting(settingName: unknown, n: unknown) {
 		window.showInformationMessage(`"${settingName}": ${JSON.stringify(newValue)}`);
 	}
 }
+/**
+ * Update (for now only global) user setting with the new value.
+ */
 async function updateSetting(settingName: string, newValue: unknown, target: 'global' | 'workspace') {
 	const settings = workspace.getConfiguration(undefined, null);
 	const configurationTarget = target === 'workspace' ? ConfigurationTarget.Workspace : ConfigurationTarget.Global;
@@ -397,7 +412,9 @@ async function updateSetting(settingName: string, newValue: unknown, target: 'gl
 export async function getAllVscodeCommands() {
 	return await commands.getCommands(true);
 }
-
+/**
+ * Convert command ids to {@link QuickPickItem `QuickPickItem[]`}
+ */
 export function commandsToQuickPickItems(commandList: string[]): QuickPickItem[] {
 	const result: QuickPickItem[] = [];
 	for (const com of commandList) {
@@ -415,6 +432,3 @@ export function commandsToQuickPickItems(commandList: string[]): QuickPickItem[]
 	return result;
 }
 
-export async function openSettingsJSON() {
-	return await commands.executeCommand('workbench.action.openSettingsJson');
-}

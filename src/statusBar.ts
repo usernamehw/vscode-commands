@@ -3,7 +3,9 @@ import { CommandIds } from './commands';
 import { statusBarItems } from './extension';
 import { TopLevelCommands } from './types';
 import { forEachItem } from './utils';
-
+/**
+ * Dispose and refresh all status bar items.
+ */
 export function updateStatusBarItems(items: TopLevelCommands) {
 	disposeStatusBarItems();
 
@@ -27,7 +29,9 @@ export function updateStatusBarItems(items: TopLevelCommands) {
 		}
 	}, items);
 }
-
+/**
+ * Dispose all status bar items.
+ */
 function disposeStatusBarItems() {
 	for (const statusBarItem of statusBarItems) {
 		statusBarItem.dispose();

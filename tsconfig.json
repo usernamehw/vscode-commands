@@ -11,12 +11,10 @@
 		"strict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"importHelpers": true
+		"forceConsistentCasingInFileNames": true
 	},
 	"exclude": [
 		"node_modules",
-		".vscode-test",
 		"scripts"
 	]
 }

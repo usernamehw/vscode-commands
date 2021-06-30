@@ -6,7 +6,7 @@ export type ExtensionConfig = Readonly<{
 	/**
 	 * Use shorter command ids.
 	 */
-	alias: Alias;
+	alias: Record<string, string>;
 	/**
 	 * Whether Tree View shows folders collapsed by default or not.
 	 */
@@ -30,11 +30,10 @@ export type ExtensionConfig = Readonly<{
 		showNotification: boolean;
 	};
 }>;
-
-export interface Alias {
-	[key: string]: string;
-}
-
+/**
+ * Main configuration property. Can contain folders or command objects.
+ * Folders cannot contain folders.
+ */
 export interface TopLevelCommands {
 	[key: string]: CommandFolder & CommandObject;
 }
@@ -57,14 +56,17 @@ export interface CommandObject {
 	sequence?: Sequence;
 }
 export type Sequence = (CommandObject | string)[];
-
+/**
+ * Folder can only have `nestedItems` property.
+ */
 export interface CommandFolder {
-	nestedItems?: NestedItems;
+	nestedItems?: TopLevelCommands;
 }
 
-export type NestedItems = TopLevelCommands;
-
 // ──────────────────────────────────────────────────────────────────────
+/**
+ * Type for `toggleSetting` command.
+ */
 export interface ToggleSetting {
 	setting: string;
 	value: unknown[] | string;
