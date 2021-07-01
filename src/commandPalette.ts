@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { ExtensionContext } from 'vscode';
-import { commandPaletteCommandsList, extensionConfig } from './extension';
+import { commandPaletteCommandsList, Constants, extensionConfig } from './extension';
 import { TopLevelCommands } from './types';
 import { forEachItem } from './utils';
 /**
@@ -35,14 +35,18 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 	unregisterCommandPalette();
 
 	if (!extensionConfig.populateCommandPalette) {
+		if (context.globalState.get(Constants.COMMAND_PALETTE_WAS_POPULATED_STORAGE_KEY)) {
+			// Setting was enabled then disabled. Only in this case revert/write `package.json`
+			// so it would contain only core commands again.
+			const { coreCommands, packageJSONObject, packageJsonPath } = await getCommandsFromPackageJson(context);
+			packageJSONObject.contributes.commands = coreCommands;
+			await fs.promises.writeFile(packageJsonPath, JSON.stringify(packageJSONObject, null, '\t'));
+			await context.globalState.update(Constants.COMMAND_PALETTE_WAS_POPULATED_STORAGE_KEY, false);
+		}
 		return;
 	}
 
-	const packageJsonPath = context.asAbsolutePath('./package.json');
-	const packageJsonFile = await fs.promises.readFile(packageJsonPath);
-	const packageJSONObject = JSON.parse(packageJsonFile.toString());
-	const oldCommands = packageJSONObject.contributes.commands as ICommand[];
-	const coreCommands: ICommand[] = (packageJSONObject.contributes.commands as ICommand[]).filter(command => coreCommandIds.includes(command.command));
+	const { coreCommands, oldCommands, packageJSONObject, packageJsonPath } = await getCommandsFromPackageJson(context);
 
 	const userCommands: ICommand[] = [];
 	forEachItem((item, key) => {
@@ -64,6 +68,21 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 
 	packageJSONObject.contributes.commands = [...coreCommands, ...userCommands];
 	await fs.promises.writeFile(packageJsonPath, JSON.stringify(packageJSONObject, null, '\t'));
+	await context.globalState.update(Constants.COMMAND_PALETTE_WAS_POPULATED_STORAGE_KEY, true);
+}
+
+async function getCommandsFromPackageJson(context: ExtensionContext) {
+	const packageJsonPath = context.asAbsolutePath('./package.json');
+	const packageJsonFile = await fs.promises.readFile(packageJsonPath);
+	const packageJSONObject = JSON.parse(packageJsonFile.toString());
+	const oldCommands = packageJSONObject.contributes.commands as ICommand[];
+	const coreCommands: ICommand[] = (packageJSONObject.contributes.commands as ICommand[]).filter(command => coreCommandIds.includes(command.command));
+	return {
+		packageJsonPath,
+		packageJSONObject,
+		oldCommands,
+		coreCommands,
+	};
 }
 
 /**

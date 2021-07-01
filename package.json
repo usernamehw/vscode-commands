@@ -318,7 +318,7 @@
 				},
 				"commands.populateCommandPalette": {
 					"type": "boolean",
-					"description": "Adds all items to Command Palette (Requires editor reload after every change of configuration).",
+					"markdownDescription": "Adds all items to Command Palette (Requires editor reload after every change of main config `#commands.commands#`).",
 					"default": false
 				},
 				"commands.toggleSettings.showNotification": {

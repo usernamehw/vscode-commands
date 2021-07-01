@@ -9,6 +9,8 @@ import { ExtensionConfig } from './types';
 export const enum Constants {
 	extensionName = 'commands',
 	commandsSettingId = 'commands.commands',
+
+	COMMAND_PALETTE_WAS_POPULATED_STORAGE_KEY = 'was_populated',
 }
 export let extensionConfig = workspace.getConfiguration(Constants.extensionName) as any as ExtensionConfig;
 export const registeredCommandsList: vscode.Disposable[] = [];
