@@ -1,4 +1,4 @@
-import vscode, { ConfigurationChangeEvent, ExtensionContext, workspace } from 'vscode';
+import { ConfigurationChangeEvent, Disposable, ExtensionContext, window, workspace } from 'vscode';
 import { updateCommandPalette } from './commandPalette';
 import { registerExtensionCommands } from './commands';
 import { updateUserCommands } from './registerUserCommands';
@@ -13,12 +13,12 @@ export const enum Constants {
 	COMMAND_PALETTE_WAS_POPULATED_STORAGE_KEY = 'was_populated',
 }
 export let extensionConfig = workspace.getConfiguration(Constants.extensionName) as any as ExtensionConfig;
-export const registeredCommandsList: vscode.Disposable[] = [];
-export const commandPaletteCommandsList: vscode.Disposable[] = [];
-export const statusBarItems: vscode.Disposable[] = [];
+export const registeredCommandsList: Disposable[] = [];
+export const commandPaletteCommandsList: Disposable[] = [];
+export const statusBarItems: Disposable[] = [];
 
 const commandsTreeViewProvider = new CommandsTreeViewProvider(extensionConfig);
-const commandsTreeView = vscode.window.createTreeView(`${Constants.extensionName}.tree`, {
+const commandsTreeView = window.createTreeView(`${Constants.extensionName}.tree`, {
 	treeDataProvider: commandsTreeViewProvider,
 	showCollapseAll: true,
 });

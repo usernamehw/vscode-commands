@@ -1,4 +1,4 @@
-import vscode, { commands, DocumentSymbol, Selection, TextDocument, TextEditor } from 'vscode';
+import { commands, DocumentSymbol, Range, Selection, TextDocument, TextEditor, TextEditorRevealType, window } from 'vscode';
 import { TopLevelCommands } from './types';
 /**
  * Emulate delay with async setTimeout().
@@ -20,13 +20,13 @@ export function isSimpleObject(item: unknown): item is Record<string, unknown> {
  * Open vscode Settings GUI with input value set to the specified value.
  */
 export function openSettingGuiAt(settingName: string) {
-	vscode.commands.executeCommand('workbench.action.openSettings', settingName);
+	commands.executeCommand('workbench.action.openSettings', settingName);
 }
 /**
  * Open vscode Keybindings GUI with input value set to the specified value.
  */
 export function openKeybindingsGuiAt(value: string) {
-	vscode.commands.executeCommand('workbench.action.openGlobalKeybindings', value);
+	commands.executeCommand('workbench.action.openGlobalKeybindings', value);
 }
 /**
  * Open global settings.json file in editor.
@@ -83,10 +83,10 @@ export async function goToSymbol(editor: TextEditor, symbolName: string) {
 
 	if (foundSymbol) {
 		editor.selection = new Selection(foundSymbol.range.start, foundSymbol.range.start);
-		editor.revealRange(foundSymbol.range, vscode.TextEditorRevealType.AtTop);
+		editor.revealRange(foundSymbol.range, TextEditorRevealType.AtTop);
 		// Highlight for a short time revealed range
-		const range = new vscode.Range(foundSymbol.range.start.line, 0, foundSymbol.range.start.line, 0);
-		const lineHighlightDecorationType = vscode.window.createTextEditorDecorationType({
+		const range = new Range(foundSymbol.range.start.line, 0, foundSymbol.range.start.line, 0);
+		const lineHighlightDecorationType = window.createTextEditorDecorationType({
 			backgroundColor: '#ffb12938',
 			isWholeLine: true,
 		});
