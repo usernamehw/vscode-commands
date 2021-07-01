@@ -7,7 +7,9 @@ import { forEachItem, getAllVscodeCommands } from './utils';
 /**
  * Register a command to be able to execute it from a keybinding.
  */
-export async function registerUserCommands(items: TopLevelCommands) {
+export async function updateUserCommands(items: TopLevelCommands) {
+	unregisterUserCommands();
+
 	const allCommands = await getAllVscodeCommands();
 
 	forEachItem((item, key) => {
