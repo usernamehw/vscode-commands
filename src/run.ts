@@ -19,6 +19,7 @@ export async function run(runnable: CommandFolder & Runnable) {
 	}
 	if (Array.isArray(runnable)) {
 		await runArray(runnable);
+		return;
 	} else if (isSimpleObject(runnable)) {
 		if (Array.isArray(runnable.sequence)) {
 			await runArray(runnable.sequence);
