@@ -22,6 +22,9 @@ export class RunCommandTreeItem extends TreeItem {
 		if (icon) {
 			this.iconPath = new ThemeIcon(icon, new ThemeColor(iconColor ?? ''));
 		}
+		if (typeof runnable === 'string') {
+			this.contextValue = 'stringCommand';// Can't add to status bar
+		}
 	}
 	getLabelName(): string {
 		return typeof this.label === 'string' ? this.label : '';

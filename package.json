@@ -429,7 +429,7 @@
 			"view/item/context": [
 				{
 					"command": "commands.revealCommand",
-					"when": "view == commands.tree && viewItem =~ /command|folder/",
+					"when": "view == commands.tree && viewItem =~ /command|folder|stringCommand/",
 					"group": "1_reveal"
 				},
 				{
@@ -439,7 +439,7 @@
 				},
 				{
 					"command": "commands.assignKeybinding",
-					"when": "view == commands.tree && viewItem == command",
+					"when": "view == commands.tree && viewItem =~ /command|stringCommand/",
 					"group": "3_keybinding"
 				},
 				{
