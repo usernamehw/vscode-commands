@@ -1,8 +1,10 @@
 import fs from 'fs';
-import { ExtensionContext } from 'vscode';
-import { commandPaletteCommandsList, Constants, extensionConfig } from './extension';
+import { Disposable, ExtensionContext } from 'vscode';
+import { Constants, extensionConfig } from './extension';
 import { TopLevelCommands } from './types';
 import { forEachItem } from './utils';
+
+const commandPaletteCommandsList: Disposable[] = [];
 /**
  * Command format in `package.json`.
  */

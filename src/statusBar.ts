@@ -1,8 +1,10 @@
-import { StatusBarAlignment, window } from 'vscode';
+import { Disposable, StatusBarAlignment, window } from 'vscode';
 import { CommandIds } from './commands';
-import { statusBarItems } from './extension';
 import { TopLevelCommands } from './types';
 import { forEachItem } from './utils';
+
+const statusBarItems: Disposable[] = [];
+
 /**
  * Dispose and refresh all status bar items.
  */

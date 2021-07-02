@@ -1,8 +1,9 @@
-import { commands } from 'vscode';
-import { registeredCommandsList } from './extension';
+import { commands, Disposable } from 'vscode';
 import { run } from './run';
 import { TopLevelCommands } from './types';
 import { forEachItem, getAllVscodeCommands } from './utils';
+
+const registeredCommandsList: Disposable[] = [];
 
 /**
  * Register a command to be able to execute it from a keybinding.

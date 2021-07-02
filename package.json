@@ -321,6 +321,11 @@
 					"markdownDescription": "Adds all items to Command Palette (Requires editor reload after every change of main config `#commands.commands#`).",
 					"default": false
 				},
+				"commands.documentLinksEnabled": {
+					"type": "boolean",
+					"markdownDescription": "EXPERIMENTAL. Add ability to run commands as links in documents. Links have format `@command?args@`.\n\nhttps://github.com/usernamehw/vscode-commands/issues/2",
+					"default": false
+				},
 				"commands.toggleSettings.showNotification": {
 					"type": "boolean",
 					"markdownDescription": "When enabled - show notification after using `commands.toggleSetting` or `commands.incrementSetting`.",
