@@ -1,3 +1,12 @@
+## 1.0.0 `02 Jul 2021`
+
+- 💥 Remove `commands.alias`
+- ✨ Feature: document links [issues/2](https://github.com/usernamehw/vscode-commands/issues/2)
+- ✨ Allow command to be a simple string in top most level commands
+- ✨ `commands.open` supports opening file/link with specified app
+- ✨ Hide item from tree view with `"hidden": true,`
+- 🐛 Fix removing commands from Command Palette after disabling `commands.populateCommandPalette`
+
 ## 0.0.11 `30 Jun 2021`
 
 - ✨ Allow `sequence` to accept strings
