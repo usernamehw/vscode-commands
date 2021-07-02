@@ -4,10 +4,6 @@ export type ExtensionConfig = Readonly<{
 	 */
 	commands: TopLevelCommands;
 	/**
-	 * Use shorter command ids.
-	 */
-	alias: Record<string, string>;
-	/**
 	 * Whether Tree View shows folders collapsed by default or not.
 	 */
 	treeViewCollapseFolders: boolean;

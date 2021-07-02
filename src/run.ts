@@ -40,10 +40,7 @@ async function runObject(object: CommandObject) {
 	if (object.delay) {
 		await sleep(object.delay);
 	}
-	let commandId = object.command;
-	if (extensionConfig.alias[commandId]) {
-		commandId = extensionConfig.alias[commandId];
-	}
+	const commandId = object.command;
 	if (!commandId) {
 		window.showErrorMessage('Missing `command` property.');
 	}

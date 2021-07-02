@@ -306,16 +306,6 @@
 					"default": "left",
 					"description": "Where to put command on Status Bar (left or right)."
 				},
-				"commands.alias": {
-					"type": "object",
-					"description": "Use shorter command ids.",
-					"default": {},
-					"patternProperties": {
-						"^.*$": {
-							"type": "string"
-						}
-					}
-				},
 				"commands.populateCommandPalette": {
 					"type": "boolean",
 					"markdownDescription": "Adds all items to Command Palette (Requires editor reload after every change of main config `#commands.commands#`).",

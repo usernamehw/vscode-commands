@@ -122,7 +122,6 @@
 |commands.treeViewCollapseFolders|**false**|Collapse folders by default. Requires reload before being applied.|
 |commands.statusBarDefaultText|"same"|Controls the text of Status Bar item when adding from Tree View context menu.|
 |commands.statusBarDefaultPosition|"left"|Where to put command on Status Bar (left or right).|
-|commands.alias|\{\}|Use shorter command ids.|
 |commands.populateCommandPalette|**false**|Adds all items to Command Palette (Requires editor reload after every change of main config `#commands.commands#`).|
 |commands.documentLinksEnabled|**false**|EXPERIMENTAL. Add ability to run commands as links in documents. Links have format `@command?args@`.<br>https://github.com/usernamehw/vscode-commands/issues/2|
 |commands.toggleSettings.showNotification|**false**|When enabled - show notification after using `commands.toggleSetting` or `commands.incrementSetting`.|
@@ -615,6 +614,8 @@ To quickly find an icon (for Tree View or Status Bar) there's an extension that 
 </details>
 
 <!--
+
+Suggest doesn't show arguments?
 
 Open files by glob? vscode.workspace.findFiles
 go to symbol in file
