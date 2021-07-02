@@ -1,5 +1,4 @@
 import { commands, window } from 'vscode';
-import { extensionConfig } from './extension';
 import { showQuickPick } from './quickPick';
 import { CommandFolder, CommandObject, Runnable, Sequence } from './types';
 import { isSimpleObject, sleep } from './utils';
@@ -8,6 +7,12 @@ import { isSimpleObject, sleep } from './utils';
  * Executing a folder - is to show Quick Pick to choose one of the commands inside that folder.
  */
 export async function run(runnable: CommandFolder & Runnable) {
+	if (typeof runnable === 'string') {
+		await runObject({
+			command: runnable,
+		});
+		return;
+	}
 	if (runnable.nestedItems) {
 		await runFolder(runnable);
 		return;
@@ -22,7 +27,7 @@ export async function run(runnable: CommandFolder & Runnable) {
 		}
 		return;
 	}
-	throw Error('Unknown Command type');
+	window.showErrorMessage(`Unknown command type ${JSON.stringify(runnable)}`);
 }
 async function runArray(arr: Sequence) {
 	for (const item of arr) {

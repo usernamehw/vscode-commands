@@ -35,10 +35,10 @@ export type ExtensionConfig = Readonly<{
  * Folders cannot contain folders.
  */
 export interface TopLevelCommands {
-	[key: string]: CommandFolder & CommandObject;
+	[key: string]: CommandFolder & CommandObject;// TODO: ideally it would also have `| string`
 }
 
-export type Runnable = CommandObject | Sequence;
+export type Runnable = CommandObject | Sequence | string;
 
 export interface CommandObject {
 	command: string;

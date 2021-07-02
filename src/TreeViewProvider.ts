@@ -89,7 +89,7 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 	/**
 	 * Convert extension config to `TreeItem` (`FolderTreeItem` or `RunCommandTreeItem`)
 	 */
-	private commandsToTreeItems(items: TopLevelCommands & TopLevelCommands): (FolderTreeItem | RunCommandTreeItem)[] {
+	private commandsToTreeItems(items: TopLevelCommands): (FolderTreeItem | RunCommandTreeItem)[] {
 		const result: (FolderTreeItem | RunCommandTreeItem)[] = [];
 		for (const key in items) {
 			const item = items[key];
@@ -98,7 +98,9 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 			}
 			let runnable: Runnable = [];
 
-			if (isSimpleObject(item)) {
+			if (typeof item === 'string') {
+				runnable = item;
+			} else if (isSimpleObject(item)) {
 				runnable = item;
 			}
 
