@@ -167,6 +167,7 @@ export function registerExtensionCommands() {
 			return;
 		}
 		const newCommand = addArgs(pickedCommand.label);
+		const newCommandKey = `${pickedCommand.label}_${Math.random().toString().slice(2, 4)}`;
 
 		let newCommandsSetting: TopLevelCommands = {};
 		if (folderTreeItem) {
@@ -178,7 +179,7 @@ export function registerExtensionCommands() {
 						nestedItems: {
 							...item.nestedItems,
 							...{
-								[pickedCommand.label]: newCommand,
+								[newCommandKey]: newCommand,
 							},
 						},
 					};
@@ -190,13 +191,13 @@ export function registerExtensionCommands() {
 			newCommandsSetting = {
 				...extensionConfig.commands,
 				...{
-					[pickedCommand.label]: newCommand,
+					[newCommandKey]: newCommand,
 				},
 			};
 		}
 		await updateSetting(Constants.commandsSettingId, newCommandsSetting, 'global');
 		await openSettingsJSON();
-		await goToSymbol(window.activeTextEditor!, pickedCommand.label);
+		await goToSymbol(window.activeTextEditor!, newCommandKey);
 	}
 	// ──────────────────────────────────────────────────────────────────────
 	// ──── Additional Commands ─────────────────────────────────────────────
