@@ -25,6 +25,7 @@ export function updateDocumentLinkProvider() {
 	const documentLinkProviderDisposable = languages.registerDocumentLinkProvider(
 		{
 			scheme: 'file',
+			pattern: extensionConfig.documentLinksPattern || undefined,
 		},
 		{
 			provideDocumentLinks(document) {

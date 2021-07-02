@@ -12,9 +12,13 @@ export type ExtensionConfig = Readonly<{
 	 */
 	populateCommandPalette: boolean;
 	/**
-	 * EXPERIMENTAL. Add ability to run commands as links in documents. Links have format `@command?args@`.\n\nhttps://github.com/usernamehw/vscode-commands/issues/2
+	 * EXPERIMENTAL. Add ability to run commands as links in documents. Links have format `@command?args@`. https://github.com/usernamehw/vscode-commands/issues/2
 	 */
 	documentLinksEnabled: boolean;
+	/**
+	 * Glob for which document should have document links enabled.
+	 */
+	documentLinksPattern: string;
 	/**
 	 * Controls the text of Status Bar item when adding from Tree View context menu.
 	 */
