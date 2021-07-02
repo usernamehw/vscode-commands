@@ -5,9 +5,7 @@
 ## Simple command
 
 ```js
-"Toggle minimap": {
-    "command": "editor.action.toggleMinimap",
-},
+"Toggle activity": "workbench.action.toggleActivityBarVisibility",
 ```
 
 ![simple](img/simple.gif)
