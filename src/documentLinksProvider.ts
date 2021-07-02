@@ -20,7 +20,7 @@ export function updateDocumentLinkProvider() {
 		},
 	});
 
-	const regex = /@([a-z\d._-]+?)(\?([^@]+?))?@/ig;
+	const regex = /@([a-z\d._-]+)(\?([^@]+))?@/ig;
 
 	const documentLinkProviderDisposable = languages.registerDocumentLinkProvider(
 		{
