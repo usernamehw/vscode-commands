@@ -25,7 +25,8 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands) {
 }
 
 /**
- * Convert command ids to {@link QuickPickItem `QuickPickItem[]`}
+ * - Convert command ids to {@link QuickPickItem `QuickPickItem[]`}
+ * - Add `args` detail to commands that can accept arguments.
  */
 export function commandsToQuickPickItems(commandList: string[]): QuickPickItem[] {
 	const result: QuickPickItem[] = [];

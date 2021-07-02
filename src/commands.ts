@@ -59,12 +59,13 @@ export function registerExtensionCommands() {
 		});
 	});
 	commands.registerTextEditorCommand(CommandIds.suggestCommands, async editor => {
-		const picked = await window.showQuickPick(await getAllVscodeCommands());
+		const quickPickItems = commandsToQuickPickItems(await getAllVscodeCommands());
+		const picked = await window.showQuickPick(quickPickItems);
 		if (!picked) {
 			return;
 		}
 		editor.edit(builder => {
-			builder.insert(editor.selection.active, picked);
+			builder.insert(editor.selection.active, picked.label);
 		});
 	});
 	commands.registerCommand(CommandIds.revealCommand, async (commandTreeItem: RunCommandTreeItem) => {

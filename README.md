@@ -615,8 +615,6 @@ To quickly find an icon (for Tree View or Status Bar) there's an extension that 
 
 <!--
 
-Suggest doesn't show arguments?
-
 Open files by glob? vscode.workspace.findFiles
 go to symbol in file
 
