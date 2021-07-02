@@ -93,6 +93,9 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 		const result: (FolderTreeItem | RunCommandTreeItem)[] = [];
 		for (const key in items) {
 			const item = items[key];
+			if (item.hidden) {
+				continue;
+			}
 			let runnable: Runnable = [];
 
 			if (isSimpleObject(item)) {

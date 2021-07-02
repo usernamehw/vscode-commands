@@ -142,6 +142,7 @@ interface CommandObject {
         tooltip?: string;
         color?: string;
     };
+    hidden?: boolean;// Do not show this in Tree View
 
     sequence?: (CommandObject | string)[];// execute multipe commands
 

@@ -277,6 +277,10 @@
 										}
 									},
 									"default": {}
+								},
+								"hidden": {
+									"type": "boolean",
+									"description": "Do not show this in Tree View."
 								}
 							}
 						}

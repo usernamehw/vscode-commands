@@ -48,6 +48,7 @@ export interface CommandObject {
 	iconColor?: string;
 	statusBar?: StatusBar;
 	sequence?: Sequence;
+	hidden?: boolean;
 }
 /**
  * Add command/folder to status bar
@@ -66,6 +67,7 @@ export type Sequence = (CommandObject | string)[];
 export interface CommandFolder {
 	nestedItems?: TopLevelCommands;
 	statusBar?: StatusBar;
+	hidden?: boolean;
 }
 
 // ──────────────────────────────────────────────────────────────────────
