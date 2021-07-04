@@ -1,3 +1,8 @@
+## 1.0.1 `04 Jul 2021`
+
+- ✨ Return `commands.alias`
+- ✨ Delete command from context menu
+
 ## 1.0.0 `02 Jul 2021`
 
 - 💥 Remove `commands.alias`
