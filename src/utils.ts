@@ -37,10 +37,10 @@ export async function openSettingsJSON() {
 /**
  * Walk recursively over all items from `commands.commands` setting and execute callback for each item/command.
  */
-export function forEachItem(f: (item: TopLevelCommands['anykey'], key: string)=> void, items: TopLevelCommands) {
+export function forEachItem(f: (item: TopLevelCommands['anykey'], key: string, parentElement: TopLevelCommands)=> void, items: TopLevelCommands) {
 	for (const key in items) {
 		const item = items[key];
-		f(item, key);
+		f(item, key, items);
 		if (item.nestedItems) {
 			forEachItem(f, item.nestedItems);
 		}

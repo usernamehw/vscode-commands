@@ -5,6 +5,7 @@
 		"commands.addToStatusBar",
 		"commands.revealCommandsInSettignsGUI",
 		"commands.newCommandInFolder",
-		"commands.newFolder"
+		"commands.newFolder",
+		"commands.deleteCommand"
 	],
 }

@@ -21,6 +21,7 @@ const coreCommandIds = [
 	'commands.suggestCommands',
 	'commands.newCommand',
 	'commands.newFolder',
+	'commands.deleteCommand',
 	'commands.selectAndRun',
 	'commands.newCommandInFolder',
 	'commands.revealCommand',

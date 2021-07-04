@@ -6,7 +6,7 @@ import { run } from './run';
 import { incrementSetting, toggleSetting, updateSetting } from './settings';
 import { FolderTreeItem, RunCommandTreeItem } from './TreeViewProvider';
 import { CommandObject, Runnable, ToggleSetting, TopLevelCommands } from './types';
-import { getAllVscodeCommands, goToSymbol, isSimpleObject, openKeybindingsGuiAt, openSettingGuiAt, openSettingsJSON } from './utils';
+import { forEachItem, getAllVscodeCommands, goToSymbol, isSimpleObject, openKeybindingsGuiAt, openSettingGuiAt, openSettingsJSON } from './utils';
 /**
  * All command ids contributed by this extension.
  */
@@ -16,6 +16,7 @@ export const enum CommandIds {
 	'selectAndRun' = 'commands.selectAndRun',
 	'newCommand' = 'commands.newCommand',
 	'newFolder' = 'commands.newFolder',
+	'deleteCommand' = 'commands.deleteCommand',
 	'suggestCommands' = 'commands.suggestCommands',
 	'revealCommand' = 'commands.revealCommand',
 	'openAsQuickPick' = 'commands.openAsQuickPick',
@@ -139,6 +140,21 @@ export function registerExtensionCommands() {
 	});
 	commands.registerCommand(CommandIds.newFolder, async () => {
 		await newFolder();
+	});
+	commands.registerCommand(CommandIds.deleteCommand, async (treeItem: RunCommandTreeItem) => {
+		const confirmBtnName = 'Delete';
+		const button = await window.showWarningMessage(`Do you want to delete "${treeItem.label}"?\n\n${JSON.stringify(treeItem.runnable, null, '  ')}`, {
+			modal: true,
+		}, confirmBtnName);
+		if (button === confirmBtnName) {
+			const configCommands: TopLevelCommands = JSON.parse(JSON.stringify(extensionConfig.commands));// config is readonly, get a copy
+			forEachItem((item, key, parentElement) => {
+				if (key === treeItem.label) {
+					delete parentElement[key];
+				}
+			}, configCommands);
+			await updateSetting(Constants.commandsSettingId, configCommands, 'global');
+		}
 	});
 	async function newFolder() {
 		const newFolderName = await window.showInputBox({

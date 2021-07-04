@@ -390,6 +390,12 @@
 				"category": "Commands"
 			},
 			{
+				"command": "commands.deleteCommand",
+				"title": "Delete command.",
+				"icon": "$(trash)",
+				"category": "Commands"
+			},
+			{
 				"command": "commands.newFolder",
 				"title": "New Folder",
 				"icon": "$(new-folder)",
@@ -458,6 +464,11 @@
 					"group": "3_keybinding"
 				},
 				{
+					"command": "commands.deleteCommand",
+					"when": "view == commands.tree && viewItem =~ /command|stringCommand/",
+					"group": "4_delete"
+				},
+				{
 					"command": "commands.newCommandInFolder",
 					"when": "view == commands.tree && viewItem == folder",
 					"group": "inline"
@@ -486,6 +497,10 @@
 				},
 				{
 					"command": "commands.newFolder",
+					"when": "false"
+				},
+				{
+					"command": "commands.deleteCommand",
 					"when": "false"
 				}
 			]
