@@ -21,6 +21,7 @@ scripts
 
 dist/extension.js.LICENSE.txt
 LICENSE
+docs
 
 img/*.*
 !img/icon.png

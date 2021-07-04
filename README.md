@@ -595,24 +595,7 @@ Please upvote the following VS Code issues:
 - [Provide some richer (optional) UI for custom tree views](https://github.com/microsoft/vscode/issues/97190)
 - [Allow TreeItem.label to support MarkdownString](https://github.com/microsoft/vscode/issues/115365)
 
-<details><summary><kbd><code>Miscellaneous . . . . . . . . . . . . . . . . .</code></kbd></summary>
-
-## Keyboard shortcuts
-
-It's possible to assign keybindings for often performed actions. Some of the most useful:
-
-- `commands.openAsQuickPick` - show all commands in Quick Pick
-- `commands.tree.focus` - focus the main Tree View
-
-## Codicons
-
-To quickly find an icon (for Tree View or Status Bar) there's an extension that can show all codicons (with preview) and insert picked id into the editor:
-
-[Codicon Names](https://marketplace.visualstudio.com/items?itemName=usernamehw.codicon-names)
-
-![Codicon Names](https://github.com/usernamehw/vscode-codicon-names/raw/HEAD/img/demo.png)
-
-</details>
+## [Miscellaneous](https://github.com/usernamehw/vscode-commands/tree/master/docs/misc.md)
 
 <!--
 
