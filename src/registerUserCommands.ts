@@ -1,4 +1,5 @@
 import { commands, Disposable } from 'vscode';
+import { extensionConfig } from './extension';
 import { run } from './run';
 import { TopLevelCommands } from './types';
 import { forEachItem, getAllVscodeCommands } from './utils';
@@ -22,6 +23,16 @@ export async function updateUserCommands(items: TopLevelCommands) {
 			run(item);
 		}));
 	}, items);
+
+	for (const alias in extensionConfig.alias) {
+		const command = extensionConfig.alias[alias];
+		registeredCommandsList.push(commands.registerCommand(alias, (args: unknown) => {
+			run({
+				command,
+				args,
+			});
+		}));
+	}
 }
 /**
  * Dispose user defined commands.
