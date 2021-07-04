@@ -13,4 +13,10 @@ To quickly find an icon (for Tree View or Status Bar) there's an extension that 
 
 ![Codicon Names](https://github.com/usernamehw/vscode-codicon-names/raw/HEAD/img/demo.png)
 
-## Questionable
+<!--
+
+## Maybe
+
+Changing some of the visual look of VSCode with [Custom CSS and JS Loader](https://marketplace.visualstudio.com/items?itemName=be5invis.vscode-custom-css)
+
+-->
