@@ -1,6 +1,7 @@
 {
     "recommendations": [
-        "dbaeumer.vscode-eslint",
-        "editorconfig.editorconfig"
-    ]
+		"dbaeumer.vscode-eslint",
+		"editorconfig.editorconfig",
+		"usernamehw.contributions"
+	]
 }

@@ -295,6 +295,16 @@
 					},
 					"default": {}
 				},
+				"commands.alias": {
+					"type": "object",
+					"markdownDescription": "Use shorter command ids (inside `#commands.commands#`).",
+					"default": {},
+					"patternProperties": {
+						"^.*$": {
+							"type": "string"
+						}
+					}
+				},
 				"commands.treeViewCollapseFolders": {
 					"type": "boolean",
 					"description": "Collapse folders by default. Requires reload before being applied.",
@@ -325,7 +335,7 @@
 				},
 				"commands.documentLinksEnabled": {
 					"type": "boolean",
-					"markdownDescription": "EXPERIMENTAL. Add ability to run commands as links in documents. Links have format `@command?args@`.\n\n[issues/2](https://github.com/usernamehw/vscode-commands/issues/2)",
+					"markdownDescription": "Run commands as links in documents. Links have format `@command?args@`.\n\n[issues/2](https://github.com/usernamehw/vscode-commands/issues/2)",
 					"default": false
 				},
 				"commands.documentLinksPattern": {

@@ -4,6 +4,10 @@ export type ExtensionConfig = Readonly<{
 	 */
 	commands: TopLevelCommands;
 	/**
+	 * Use shorter command ids.
+	 */
+	alias: Record<string, string>;
+	/**
 	 * Whether Tree View shows folders collapsed by default or not.
 	 */
 	treeViewCollapseFolders: boolean;
@@ -12,7 +16,7 @@ export type ExtensionConfig = Readonly<{
 	 */
 	populateCommandPalette: boolean;
 	/**
-	 * EXPERIMENTAL. Add ability to run commands as links in documents. Links have format `@command?args@`. https://github.com/usernamehw/vscode-commands/issues/2
+	 * Add ability to run commands as links in documents. Links have format `@command?args@`. https://github.com/usernamehw/vscode-commands/issues/2
 	 */
 	documentLinksEnabled: boolean;
 	/**

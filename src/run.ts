@@ -1,4 +1,5 @@
 import { commands, window } from 'vscode';
+import { extensionConfig } from './extension';
 import { showQuickPick } from './quickPick';
 import { CommandFolder, CommandObject, Runnable, Sequence } from './types';
 import { isSimpleObject, sleep } from './utils';
@@ -41,12 +42,18 @@ async function runArray(arr: Sequence) {
 		}
 	}
 }
-
+/**
+ * `runObject()` must be used in all other `run...` functions because
+ * it applies `commands.alias` when needed.
+ */
 async function runObject(object: CommandObject) {
 	if (object.delay) {
 		await sleep(object.delay);
 	}
-	const commandId = object.command;
+	let commandId = object.command;
+	if (extensionConfig.alias[commandId]) {
+		commandId = extensionConfig.alias[commandId];
+	}
 	if (!commandId) {
 		window.showErrorMessage('Missing `command` property.');
 	}
