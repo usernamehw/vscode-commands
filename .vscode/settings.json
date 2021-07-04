@@ -8,4 +8,10 @@
 		"commands.newFolder",
 		"commands.deleteCommand"
 	],
+	"search.exclude": {
+		"**/node_modules": true,
+		"**/bower_components": true,
+		"**/*.code-search": true,
+		"scripts": true
+	}
 }
