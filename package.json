@@ -297,7 +297,7 @@
 				},
 				"commands.alias": {
 					"type": "object",
-					"markdownDescription": "Use shorter command ids (inside `#commands.commands#`).",
+					"markdownDescription": "Use shorter command ids.",
 					"default": {},
 					"patternProperties": {
 						"^.*$": {

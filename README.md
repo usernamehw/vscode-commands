@@ -113,7 +113,7 @@
 |Setting|Default|Description|
 |-|-|-|
 |commands.commands|\{\}|Main extension property. Commands that will be rendered in the View.|
-|commands.alias|\{\}|Use shorter command ids (inside `#commands.commands#`).|
+|commands.alias|\{\}|Use shorter command ids.|
 |commands.treeViewCollapseFolders|**false**|Collapse folders by default. Requires reload before being applied.|
 |commands.statusBarDefaultText|"same"|Controls the text of Status Bar item when adding from Tree View context menu.|
 |commands.statusBarDefaultPosition|"left"|Where to put command on Status Bar (left or right).|
