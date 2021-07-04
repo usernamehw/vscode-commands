@@ -391,7 +391,7 @@
 			},
 			{
 				"command": "commands.deleteCommand",
-				"title": "Delete command.",
+				"title": "Delete command",
 				"icon": "$(trash)",
 				"category": "Commands"
 			},
