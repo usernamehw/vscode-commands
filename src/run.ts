@@ -9,8 +9,10 @@ import { isSimpleObject, sleep } from './utils';
  */
 export async function run(runnable: CommandFolder & Runnable) {
 	if (typeof runnable === 'string') {
+		const { command, args } = parseSimplifiedArgs(runnable);
 		await runObject({
-			command: runnable,
+			command,
+			args,
 		});
 		return;
 	}
@@ -63,3 +65,20 @@ async function runObject(object: CommandObject) {
 async function runFolder(folder: CommandFolder) {
 	await showQuickPick(folder.nestedItems!);
 }
+/**
+ * Allow running a string with args: `commands.runInTerminal?npm run watch` (for runnables that are strings)
+ */
+function parseSimplifiedArgs(stringArgs: string): {	command: string; args?: unknown } {
+	const firstQuestionIndex = stringArgs.indexOf('?');
+	if (firstQuestionIndex === -1) {
+		return {
+			command: stringArgs,
+		};
+	} else {
+		return {
+			command: stringArgs.slice(0, firstQuestionIndex),
+			args: stringArgs.slice(firstQuestionIndex + 1),
+		};
+	}
+}
+
