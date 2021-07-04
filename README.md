@@ -28,13 +28,9 @@
 ```js
 "Toggle multiple settings": {
     "sequence": [
-        {
-            "command": "editor.action.toggleMinimap"
-        },
-        {
-            "command": "workbench.action.toggleStatusbarVisibility"
-        }
-    ]
+        "editor.action.toggleMinimap",
+        "workbench.action.toggleStatusbarVisibility",
+    ],
 },
 ```
 
