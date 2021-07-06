@@ -33,8 +33,7 @@ export function commandsToQuickPickItems(commandList: string[]): QuickPickItem[]
 	for (const com of commandList) {
 		if (com in commandArgs) {
 			result.push({
-				label: com,
-				detail: 'args',
+				label: `${com} ($(pass-filled) args)`,
 			});
 		} else {
 			result.push({
