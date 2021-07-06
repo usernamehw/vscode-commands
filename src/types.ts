@@ -1,4 +1,4 @@
-export type ExtensionConfig = Readonly<{
+export interface ExtensionConfig {
 	/**
 	 * Main config. Items to show in Tree View.
 	 */
@@ -15,6 +15,10 @@ export type ExtensionConfig = Readonly<{
 	 * Adds all items to Command Palette (Requires editor reload).
 	 */
 	populateCommandPalette: boolean;
+	/**
+	 * Allow string `\"args\"` to contain some of the variables from [variables-reference](https://code.visualstudio.com/docs/editor/variables-reference)
+	 */
+	variableSubstitutionEnabled: boolean;
 	/**
 	 * Add ability to run commands as links in documents. Links have format `@command?args@`. https://github.com/usernamehw/vscode-commands/issues/2
 	 */
@@ -37,7 +41,7 @@ export type ExtensionConfig = Readonly<{
 		*/
 		showNotification: boolean;
 	};
-}>;
+}
 /**
  * Main configuration property. Can contain folders or command objects.
  * Folders cannot contain folders.

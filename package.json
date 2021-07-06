@@ -343,6 +343,11 @@
 					"markdownDescription": "[Glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) for `#commands.documentLinksEnabled#`. Example: `**/*.{ts,js}` - only enable in TypeScript & JavaScript files.",
 					"default": ""
 				},
+				"commands.variableSubstitutionEnabled": {
+					"type": "boolean",
+					"markdownDescription": "Allow `\"args\"` (of type string) to contain some of the variables from [variables-reference](https://code.visualstudio.com/docs/editor/variables-reference). Supported: \n\n- `${file}` -  the current opened file absolute path \n\n- `${fileBasename}` - the current opened file's basename \n\n- `${fileBasenameNoExtension}` - the current opened file's basename with no file extension \n\n- `${fileExtname}` - the current opened file's extension \n\n- `${fileDirname}` - the current opened file's dirname \n\n- `${fileWorkspaceFolder}` - the path of the folder opened in VS Code \n\n- `${workspaceFolderBasename}` - the name of the folder opened in VS Code without any slashes (/) \n\n- `${execPath}` - location of Code.exe \n\n- `${pathSeparator}` - `/` on macOS or linux, `\\` on Windows \n\n- `${lineNumber}` - the current selected line number in the active file \n\n- `${selectedText}` - the current selected text in the active file",
+					"default": false
+				},
 				"commands.toggleSettings.showNotification": {
 					"type": "boolean",
 					"markdownDescription": "When enabled - show notification after using `commands.toggleSetting` or `commands.incrementSetting`.",
@@ -512,6 +517,7 @@
 		"generateJsonSchema": "tsc scripts\\generateJsonSchema.ts && node scripts\\generateJsonSchema.js"
 	},
 	"devDependencies": {
+		"@types/lodash": "^4.14.170",
 		"@types/node": "^14.17.4",
 		"@types/vscode": "^1.57.0",
 		"@typescript-eslint/eslint-plugin": "^4.28.1",
@@ -526,6 +532,7 @@
 		"webpack-cli": "^4.7.2"
 	},
 	"dependencies": {
+		"lodash": "^4.17.21",
 		"open": "^8.2.1"
 	}
 }

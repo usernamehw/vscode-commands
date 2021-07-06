@@ -1,6 +1,7 @@
 import { commands, window } from 'vscode';
 import { extensionConfig } from './extension';
 import { showQuickPick } from './quickPick';
+import { substituteVariables } from './substituteVariables';
 import { CommandFolder, CommandObject, Runnable, Sequence } from './types';
 import { isSimpleObject, sleep } from './utils';
 /**
@@ -59,7 +60,11 @@ async function runObject(object: CommandObject) {
 	if (!commandId) {
 		window.showErrorMessage('Missing `command` property.');
 	}
-	return await commands.executeCommand(commandId, object.args);
+	let args = object.args;
+	if (extensionConfig.variableSubstitutionEnabled && typeof args === 'string') {
+		args = substituteVariables(args);
+	}
+	return await commands.executeCommand(commandId, args);
 }
 
 async function runFolder(folder: CommandFolder) {
