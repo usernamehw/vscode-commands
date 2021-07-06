@@ -6,7 +6,7 @@ import { run } from './run';
 import { incrementSetting, toggleSetting, updateSetting } from './settings';
 import { FolderTreeItem, RunCommandTreeItem } from './TreeViewProvider';
 import { CommandObject, Runnable, ToggleSetting, TopLevelCommands } from './types';
-import { forEachItem, getAllVscodeCommands, goToSymbol, isSimpleObject, openKeybindingsGuiAt, openSettingGuiAt, openSettingsJSON } from './utils';
+import { forEachCommand, getAllVscodeCommands, goToSymbol, isSimpleObject, openKeybindingsGuiAt, openSettingGuiAt, openSettingsJSON } from './utils';
 /**
  * All command ids contributed by this extension.
  */
@@ -117,9 +117,7 @@ export function registerExtensionCommands() {
 				commandObject.statusBar = undefined;
 			} else {
 				commandObject.statusBar = {
-					alignment: extensionConfig.statusBarDefaultPosition,
 					text: newStatusBarItemText,
-					priority: -9999,
 				};
 			}
 		}
@@ -148,7 +146,7 @@ export function registerExtensionCommands() {
 		}, confirmBtnName);
 		if (button === confirmBtnName) {
 			const configCommands: TopLevelCommands = JSON.parse(JSON.stringify(extensionConfig.commands));// config is readonly, get a copy
-			forEachItem((item, key, parentElement) => {
+			forEachCommand((item, key, parentElement) => {
 				if (key === treeItem.label) {
 					delete parentElement[key];
 				}

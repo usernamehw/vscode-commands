@@ -66,7 +66,7 @@ export interface CommandObject {
  * Add command/folder to status bar
  */
 interface StatusBar {
-	alignment: 'left' | 'right';
+	alignment?: 'left' | 'right';
 	text: string;
 	priority?: number;
 	tooltip?: string;

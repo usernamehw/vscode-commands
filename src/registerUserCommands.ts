@@ -2,7 +2,7 @@ import { commands, Disposable } from 'vscode';
 import { extensionConfig } from './extension';
 import { run } from './run';
 import { TopLevelCommands } from './types';
-import { forEachItem, getAllVscodeCommands } from './utils';
+import { forEachCommand, getAllVscodeCommands } from './utils';
 
 const registeredCommandsList: Disposable[] = [];
 
@@ -14,7 +14,7 @@ export async function updateUserCommands(items: TopLevelCommands) {
 
 	const allCommands = await getAllVscodeCommands();
 
-	forEachItem((item, key) => {
+	forEachCommand((item, key) => {
 		if (allCommands.includes(key)) {
 			console.warn(`Cannot register command twice: "${key}"`);
 			return;

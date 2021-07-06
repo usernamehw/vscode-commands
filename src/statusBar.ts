@@ -1,7 +1,7 @@
 import { Disposable, StatusBarAlignment, window } from 'vscode';
 import { CommandIds } from './commands';
 import { TopLevelCommands } from './types';
-import { forEachItem } from './utils';
+import { forEachCommand } from './utils';
 
 const statusBarItems: Disposable[] = [];
 
@@ -11,11 +11,11 @@ const statusBarItems: Disposable[] = [];
 export function updateStatusBarItems(items: TopLevelCommands) {
 	disposeStatusBarItems();
 
-	forEachItem((item, key) => {
+	forEachCommand((item, key) => {
 		if (item.statusBar) {
 			const statusBarUserObject = item.statusBar;
 			const alignment = statusBarUserObject.alignment === 'right' ? StatusBarAlignment.Right : StatusBarAlignment.Left;
-			const newStatusBarItem = window.createStatusBarItem(statusBarUserObject.text, alignment, statusBarUserObject.priority);
+			const newStatusBarItem = window.createStatusBarItem(statusBarUserObject.text, alignment, statusBarUserObject.priority ?? -9999);
 			let icon = item.icon ? `$(${item.icon}) ` : '';
 			if (item.nestedItems) {
 				icon = '$(folder) ';

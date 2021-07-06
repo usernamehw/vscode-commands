@@ -2,7 +2,7 @@ import fs from 'fs';
 import { Disposable, ExtensionContext } from 'vscode';
 import { Constants, extensionConfig } from './extension';
 import { TopLevelCommands } from './types';
-import { forEachItem } from './utils';
+import { forEachCommand } from './utils';
 
 const commandPaletteCommandsList: Disposable[] = [];
 /**
@@ -52,7 +52,7 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 	const { coreCommands, oldCommands, packageJSONObject, packageJsonPath } = await getCommandsFromPackageJson(context);
 
 	const userCommands: ICommand[] = [];
-	forEachItem((item, key) => {
+	forEachCommand((item, key) => {
 		if (item.nestedItems) {
 			return;// Skip folders
 		}
