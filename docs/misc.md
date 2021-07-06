@@ -41,3 +41,17 @@ padding status bar
 ligatures
 
 -->
+
+## Using your own color for tree view icon
+
+```js
+"workbench.colorCustomizations": {
+    "mycolor": "#ffc01f",
+},
+"commands.commands": {
+    "Command": {
+        "icon": "dashboard",
+        "iconColor": "mycolor",
+    }
+},
+```
