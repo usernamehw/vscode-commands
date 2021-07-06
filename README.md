@@ -268,7 +268,7 @@ Can open Quick Pick with prefilled prefix (`@...` - symbol, `view ...` - open vi
 },
 ```
 
-### `search.action.openNewEditor` Open search editor with specified args
+### `search.action.openNewEditor` Open [Search Editor](https://code.visualstudio.com/updates/v1_43#_search-editors) with specified args
 
 ```js
 "Open search editor with args": {
