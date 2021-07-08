@@ -15,9 +15,9 @@ If the only purpose for a command sequence is to run it from a keybinding, then 
     "command": "commands.run",
     "args": [
         "editor.action.toggleMinimap",
-        "workbench.action.toggleSidebarVisibility"
-    ]
-}
+        "workbench.action.toggleSidebarVisibility",
+    ],
+},
 ```
 
 ## Codicons
@@ -52,6 +52,6 @@ ligatures
     "Command": {
         "icon": "dashboard",
         "iconColor": "mycolor",
-    }
+    },
 },
 ```

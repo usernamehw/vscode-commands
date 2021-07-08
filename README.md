@@ -593,6 +593,35 @@ Please upvote the following VS Code issues:
 
 ## [Miscellaneous](https://github.com/usernamehw/vscode-commands/tree/master/docs/misc.md)
 
+<details><summary>More examples</summary>
+
+## Status bar granular zoom in/out buttons:
+
+```js
+"commands.commands": {
+    "Zoom in": {
+        "icon": "zoom-in",
+        "statusBar": {},
+        "command": "commands.incrementSetting",
+        "args": {
+            "setting": "window.zoomLevel",
+            "value": 0.1,
+        },
+    },
+    "Zoom out": {
+        "icon": "zoom-out",
+        "statusBar": {},
+        "command": "commands.incrementSetting",
+        "args": {
+            "setting": "window.zoomLevel",
+            "value": -0.1,
+        },
+    },
+},
+```
+
+</details>
+
 <!--
 
 Open files by glob? vscode.workspace.findFiles
