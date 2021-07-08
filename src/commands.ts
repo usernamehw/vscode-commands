@@ -141,7 +141,7 @@ export function registerExtensionCommands() {
 	});
 	commands.registerCommand(CommandIds.deleteCommand, async (treeItem: RunCommandTreeItem) => {
 		const confirmBtnName = 'Delete';
-		const button = await window.showWarningMessage(`Do you want to delete "${treeItem.label}"?\n\n${JSON.stringify(treeItem.runnable, null, '  ')}`, {
+		const button = await window.showWarningMessage(`Do you want to delete "${treeItem.label}"?\n\n${JSON.stringify(treeItem.runnable, null, '    ')}`, {
 			modal: true,
 		}, confirmBtnName);
 		if (button === confirmBtnName) {
