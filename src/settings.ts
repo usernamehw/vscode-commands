@@ -61,7 +61,7 @@ export async function incrementSetting(settingName: unknown, n: unknown) {
 		window.showWarningMessage('Only works for settings of type `number`');
 		return;
 	}
-	const newValue = currentSettingValue + n;
+	const newValue = Number((currentSettingValue + n).toPrecision(10));
 	await settings.update(settingName, newValue, true);
 	if (extensionConfig.toggleSettings.showNotification) {
 		window.showInformationMessage(`"${settingName}": ${JSON.stringify(newValue)}`);
