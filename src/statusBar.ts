@@ -23,7 +23,7 @@ export function updateStatusBarItems(items: TopLevelCommands) {
 			newStatusBarItem.name = statusBarUserObject.text;
 			newStatusBarItem.color = statusBarUserObject.color;
 			newStatusBarItem.tooltip = statusBarUserObject.tooltip || key;
-			newStatusBarItem.text = icon + statusBarUserObject.text;
+			newStatusBarItem.text = icon + (statusBarUserObject.text || '');
 			newStatusBarItem.show();
 			newStatusBarItem.command = {
 				command: CommandIds.run,
