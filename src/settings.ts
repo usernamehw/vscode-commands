@@ -64,7 +64,7 @@ export async function incrementSetting(settingName: unknown, n: unknown) {
 	const newValue = Number((currentSettingValue + n).toPrecision(10));
 	await settings.update(settingName, newValue, true);
 	if (extensionConfig.toggleSettings.showNotification) {
-		window.showInformationMessage(`"${settingName}": ${JSON.stringify(newValue)}`);
+		window.showInformationMessage(`"${settingName}": ${newValue}`);
 	}
 }
 /**
