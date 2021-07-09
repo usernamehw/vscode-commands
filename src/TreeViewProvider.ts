@@ -69,8 +69,8 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 		private config: ExtensionConfig,
 	) { }
 
-	refresh(): void {
-		this._onDidChangeTreeData.fire(undefined);
+	refresh(e?: FolderTreeItem | RunCommandTreeItem): void {
+		this._onDidChangeTreeData.fire(e);
 	}
 
 	updateConfig(newConfig: ExtensionConfig): void {
