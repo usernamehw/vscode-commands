@@ -1,4 +1,4 @@
-import { ColorThemeKind, commands, debug, env, languages, Uri, window, workspace } from 'vscode';
+import { ColorThemeKind, commands, debug, env, languages, ThemeColor, Uri, window, workspace } from 'vscode';
 import { addArgs } from './args';
 import { Constants, extensionConfig } from './extension';
 import { commandsToQuickPickItems, removeCodiconFromLabel, showQuickPick } from './quickPick';
@@ -256,7 +256,7 @@ export function registerExtensionCommands() {
 	commands.registerCommand(CommandIds.openFolder, async (path: string) => {
 		await commands.executeCommand('vscode.openFolder', Uri.file(path));
 	});
-	commands.registerCommand(CommandIds.showNotification, (messageArg: string | { message: string; severity?: 'error' | 'info' | 'warning' }) => {
+	commands.registerCommand(CommandIds.showNotification, (messageArg: string | { message: string; severity?: 'error' | 'info' | 'status' | 'warning' }) => {
 		if (typeof messageArg === 'string') {
 			window.showInformationMessage(messageArg);
 		} else {
@@ -264,6 +264,8 @@ export function registerExtensionCommands() {
 				window.showErrorMessage(messageArg.message);
 			} else if (messageArg.severity === 'warning') {
 				window.showWarningMessage(messageArg.message);
+			} else if (messageArg.severity === 'status') {
+				showTempStatusBarMessage(messageArg.message);
 			} else {
 				window.showInformationMessage(messageArg.message);
 			}
@@ -320,4 +322,13 @@ export function registerExtensionCommands() {
 }
 // ────────────────────────────────────────────────────────────
 
-
+function showTempStatusBarMessage(message: string) {
+	const tempStatusBarMessage = window.createStatusBarItem();
+	tempStatusBarMessage.backgroundColor = new ThemeColor('statusBarItem.errorBackground');
+	tempStatusBarMessage.text = message;
+	tempStatusBarMessage.show();
+	setTimeout(() => {
+		tempStatusBarMessage.hide();
+		tempStatusBarMessage.dispose();
+	}, 4000);
+}

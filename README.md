@@ -539,7 +539,7 @@ Example for a 2x2 grid:
 "Msg error": {
     "command": "commands.showNotification",
     "args": {
-        "severity": "error",// "warning" | "info"
+        "severity": "error",// "warning" | "info" | "status"
         "message": "bad",
     },
 },
