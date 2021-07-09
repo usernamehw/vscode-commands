@@ -1,7 +1,7 @@
 import { ColorThemeKind, commands, debug, env, languages, Uri, window, workspace } from 'vscode';
 import { addArgs } from './args';
 import { Constants, extensionConfig } from './extension';
-import { commandsToQuickPickItems, showQuickPick } from './quickPick';
+import { commandsToQuickPickItems, removeCodiconFromLabel, showQuickPick } from './quickPick';
 import { run } from './run';
 import { incrementSetting, toggleSetting, updateSetting } from './settings';
 import { FolderTreeItem, RunCommandTreeItem } from './TreeViewProvider';
@@ -65,8 +65,9 @@ export function registerExtensionCommands() {
 		if (!picked) {
 			return;
 		}
+		const label = removeCodiconFromLabel(picked.label);
 		editor.edit(builder => {
-			builder.insert(editor.selection.active, picked.label);
+			builder.insert(editor.selection.active, label);
 		});
 	});
 	commands.registerCommand(CommandIds.revealCommand, async (commandTreeItem: RunCommandTreeItem) => {
@@ -181,8 +182,9 @@ export function registerExtensionCommands() {
 		if (!pickedCommand) {
 			return;
 		}
-		const newCommand = addArgs(pickedCommand.label);
-		const newCommandKey = `${pickedCommand.label}_${Math.random().toString().slice(2, 4)}`;
+		const label = removeCodiconFromLabel(pickedCommand.label);
+		const newCommand = addArgs(label);
+		const newCommandKey = `${label}_${Math.random().toString().slice(2, 4)}`;
 
 		let newCommandsSetting: TopLevelCommands = {};
 		if (folderTreeItem) {

@@ -43,3 +43,7 @@ export function commandsToQuickPickItems(commandList: string[]): QuickPickItem[]
 	}
 	return result;
 }
+
+export function removeCodiconFromLabel(str: string) {
+	return str.replace(/\s\(\$\([a-z-]+\)\sargs\)/i, '');
+}
