@@ -1,4 +1,4 @@
-import { Command, Event, EventEmitter, MarkdownString, ThemeColor, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
+import { Command, Event, EventEmitter, MarkdownString, ThemeColor, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState, Uri } from 'vscode';
 import { CommandIds } from './commands';
 import { extensionConfig } from './extension';
 import { ExtensionConfig, Runnable, TopLevelCommands } from './types';
@@ -57,7 +57,23 @@ export class FolderTreeItem extends TreeItem {
 	getLabelName(): string {
 		return typeof this.label === 'string' ? this.label : '';
 	}
-	// TODO: maybe tooltip should show all nested items?
+	// @ts-ignore
+	get tooltip() {
+		if (Object.keys(this.nestedItems).length === 0) {
+			return undefined;
+		}
+		const markdown = new MarkdownString(undefined, true);
+		markdown.isTrusted = true;
+		for (const key in this.nestedItems) {
+			const item = this.nestedItems[key];
+			const commandArg = item.args ? `?${encodeURIComponent(JSON.stringify(item.args))}` : '';
+			const commandUri = Uri.parse(
+				`command:${item.command}${commandArg}`,
+			);
+			markdown.appendMarkdown(`[${key}](${commandUri})\n\n`);
+		}
+		return markdown;
+	}
 }
 
 
