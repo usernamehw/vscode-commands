@@ -1,7 +1,7 @@
 import { Command, Event, EventEmitter, MarkdownString, ThemeColor, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState, Uri } from 'vscode';
 import { CommandIds } from './commands';
 import { extensionConfig } from './extension';
-import { ExtensionConfig, Runnable, TopLevelCommands } from './types';
+import { CommandFolder, ExtensionConfig, Runnable, TopLevelCommands } from './types';
 import { isSimpleObject } from './utils';
 /**
  * Ordinary tree item. Can have icon (with or without color).
@@ -24,6 +24,10 @@ export class RunCommandTreeItem extends TreeItem {
 		}
 		if (typeof runnable === 'string') {
 			this.contextValue = 'stringCommand';// Can't add to status bar
+		}
+		// @ts-ignore
+		if (runnable.statusBar) {
+			this.description = 'status bar';
 		}
 	}
 	getLabelName(): string {
@@ -48,10 +52,14 @@ export class FolderTreeItem extends TreeItem {
 
 	constructor(
 		label: string,
-		nestedItems: TopLevelCommands,
+		folder: CommandFolder,
 	) {
 		super(label);
-		this.nestedItems = nestedItems;
+		this.nestedItems = folder.nestedItems!;
+
+		if (folder.statusBar) {
+			this.description = 'status bar';
+		}
 	}
 
 	getLabelName(): string {
@@ -126,7 +134,7 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 			if (item.nestedItems) {
 				result.push(new FolderTreeItem(
 					key,
-					item.nestedItems,
+					item,
 				));
 			} else {
 				result.push(new RunCommandTreeItem(
