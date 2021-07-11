@@ -1,11 +1,11 @@
-import { ColorThemeKind, commands, debug, env, languages, ThemeColor, Uri, window, workspace } from 'vscode';
+import { ColorThemeKind, commands, debug, env, languages, Uri, window, workspace } from 'vscode';
 import { addArgs } from './args';
 import { Constants, extensionConfig, extensionState } from './extension';
 import { commandsToQuickPickItems, removeCodiconFromLabel, showQuickPick } from './quickPick';
 import { run } from './run';
 import { incrementSetting, toggleSetting, updateSetting } from './settings';
 import { FolderTreeItem, RunCommandTreeItem } from './TreeViewProvider';
-import { CommandObject, Runnable, ToggleSetting, TopLevelCommands } from './types';
+import { CommandObject, Runnable, StatusBarNotification, ToggleSetting, TopLevelCommands } from './types';
 import { forEachCommand, getAllVscodeCommands, goToSymbol, isSimpleObject, openKeybindingsGuiAt, openSettingGuiAt, openSettingsJSON } from './utils';
 /**
  * All command ids contributed by this extension.
@@ -32,6 +32,7 @@ export const enum CommandIds {
 	'setEditorLanguage' = 'commands.setEditorLanguage',
 	'openFolder' = 'commands.openFolder',
 	'showNotification' = 'commands.showNotification',
+	'showStatusBarNotification' = 'commands.showStatusBarNotification',
 	'runInTerminal' = 'commands.runInTerminal',
 	'startDebugging' = 'commands.startDebugging',
 	'toggleTheme' = 'commands.toggleTheme',
@@ -260,19 +261,26 @@ export function registerExtensionCommands() {
 	commands.registerCommand(CommandIds.openFolder, async (path: string) => {
 		await commands.executeCommand('vscode.openFolder', Uri.file(path));
 	});
-	commands.registerCommand(CommandIds.showNotification, (messageArg: string | { message: string; severity?: 'error' | 'info' | 'status' | 'warning' }) => {
-		if (typeof messageArg === 'string') {
-			window.showInformationMessage(messageArg);
+	commands.registerCommand(CommandIds.showNotification, (arg: string | { message: string; severity?: 'error' | 'info' | 'warning' }) => {
+		if (typeof arg === 'string') {
+			window.showInformationMessage(arg);
 		} else {
-			if (messageArg.severity === 'error') {
-				window.showErrorMessage(messageArg.message);
-			} else if (messageArg.severity === 'warning') {
-				window.showWarningMessage(messageArg.message);
-			} else if (messageArg.severity === 'status') {
-				showTempStatusBarMessage(messageArg.message);
+			if (arg.severity === 'error') {
+				window.showErrorMessage(arg.message);
+			} else if (arg.severity === 'warning') {
+				window.showWarningMessage(arg.message);
 			} else {
-				window.showInformationMessage(messageArg.message);
+				window.showInformationMessage(arg.message);
 			}
+		}
+	});
+	commands.registerCommand(CommandIds.showStatusBarNotification, (arg: StatusBarNotification | string) => {
+		if (typeof arg === 'string') {
+			showTempStatusBarMessage({
+				message: arg,
+			});
+		} else {
+			showTempStatusBarMessage(arg);
 		}
 	});
 	commands.registerCommand(CommandIds.runInTerminal, (arg: string | {text?: string; name?: string; cwd?: string; reveal?: boolean}) => {
@@ -326,13 +334,15 @@ export function registerExtensionCommands() {
 }
 // ────────────────────────────────────────────────────────────
 
-function showTempStatusBarMessage(message: string) {
+function showTempStatusBarMessage(notification: StatusBarNotification) {
 	const tempStatusBarMessage = window.createStatusBarItem();
-	tempStatusBarMessage.backgroundColor = new ThemeColor('statusBarItem.errorBackground');
-	tempStatusBarMessage.text = message;
+	// tempStatusBarMessage.backgroundColor = new ThemeColor('statusBarItem.errorBackground');
+	tempStatusBarMessage.text = notification.message;
+	tempStatusBarMessage.color = notification.color;
+
 	tempStatusBarMessage.show();
 	setTimeout(() => {
 		tempStatusBarMessage.hide();
 		tempStatusBarMessage.dispose();
-	}, 4000);
+	}, notification.timeout || 4000);
 }

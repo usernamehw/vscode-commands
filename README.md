@@ -541,8 +541,21 @@ Example for a 2x2 grid:
 "Msg error": {
     "command": "commands.showNotification",
     "args": {
-        "severity": "error",// "warning" | "info" | "status"
+        "severity": "error",// "warning" | "info"
         "message": "bad",
+    },
+},
+```
+
+### `commands.showStatusBarNotification` Show notification in status bar
+
+```js
+"Notification in status bar": {
+    "command": "commands.showStatusBarNotification",
+    "args": {
+        "message": "Read me fast",
+        "color": "#f00",
+        "timeout": 1000,
     },
 },
 ```

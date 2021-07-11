@@ -109,6 +109,11 @@ export const commandArgs: Record<string, unknown> = {
 		message: '',
 		severity: 'error',
 	},
+	[CommandIds.showStatusBarNotification]: {
+		message: '',
+		color: '',
+		timeout: 4000,
+	},
 	[CommandIds.open]: {
 		target: '',
 		app: '',

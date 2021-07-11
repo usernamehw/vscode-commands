@@ -82,11 +82,17 @@ export interface CommandFolder {
 	hidden?: boolean;
 }
 
-// ──────────────────────────────────────────────────────────────────────
+// ────────────────────────────────────────────────────────────
 /**
  * Type for `toggleSetting` command.
  */
 export interface ToggleSetting {
 	setting: string;
 	value: unknown[] | string;
+}
+// ────────────────────────────────────────────────────────────
+export interface StatusBarNotification {
+	message: string;
+	color?: string;
+	timeout?: number;
 }
