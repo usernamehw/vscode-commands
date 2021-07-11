@@ -18,6 +18,7 @@ interface ICommand {
  */
 const coreCommandIds = [
 	'commands.openAsQuickPick',
+	'commands.rerun',
 	'commands.suggestCommands',
 	'commands.newCommand',
 	'commands.newFolder',

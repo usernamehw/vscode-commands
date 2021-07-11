@@ -1,5 +1,5 @@
 import { commands, window } from 'vscode';
-import { extensionConfig } from './extension';
+import { extensionConfig, extensionState } from './extension';
 import { showQuickPick } from './quickPick';
 import { substituteVariables } from './substituteVariables';
 import { CommandFolder, CommandObject, Runnable, Sequence } from './types';
@@ -9,6 +9,7 @@ import { isSimpleObject, sleep } from './utils';
  * Executing a folder - is to show Quick Pick to choose one of the commands inside that folder.
  */
 export async function run(runnable: CommandFolder & Runnable) {
+	extensionState.lastExecutedCommand = runnable;
 	if (typeof runnable === 'string') {
 		const { command, args } = parseSimplifiedArgs(runnable);
 		await runObject({

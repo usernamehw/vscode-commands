@@ -1,6 +1,6 @@
 import { ColorThemeKind, commands, debug, env, languages, ThemeColor, Uri, window, workspace } from 'vscode';
 import { addArgs } from './args';
-import { Constants, extensionConfig } from './extension';
+import { Constants, extensionConfig, extensionState } from './extension';
 import { commandsToQuickPickItems, removeCodiconFromLabel, showQuickPick } from './quickPick';
 import { run } from './run';
 import { incrementSetting, toggleSetting, updateSetting } from './settings';
@@ -13,6 +13,7 @@ import { forEachCommand, getAllVscodeCommands, goToSymbol, isSimpleObject, openK
 export const enum CommandIds {
 	// ──── Core ────────────────────────────────────────────────────────────
 	'run' = 'commands.run',
+	'rerun' = 'commands.rerun',
 	'selectAndRun' = 'commands.selectAndRun',
 	'newCommand' = 'commands.newCommand',
 	'newFolder' = 'commands.newFolder',
@@ -49,6 +50,9 @@ export function registerExtensionCommands() {
 	// ──────────────────────────────────────────────────────────────────────
 	commands.registerCommand(CommandIds.run, async (runnable: Runnable) => {
 		await run(runnable);
+	});
+	commands.registerCommand(CommandIds.rerun, async () => {
+		await run(extensionState.lastExecutedCommand);
 	});
 	commands.registerCommand(CommandIds.selectAndRun, async () => {
 		const pickedCommand = await window.showQuickPick(await getAllVscodeCommands());

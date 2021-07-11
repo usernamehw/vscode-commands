@@ -5,7 +5,7 @@ import { updateDocumentLinkProvider } from './documentLinksProvider';
 import { updateUserCommands } from './registerUserCommands';
 import { updateStatusBarItems } from './statusBar';
 import { CommandsTreeViewProvider } from './TreeViewProvider';
-import { ExtensionConfig } from './types';
+import { ExtensionConfig, Runnable } from './types';
 
 export const enum Constants {
 	extensionId = 'usernamehw.commands',
@@ -16,6 +16,9 @@ export const enum Constants {
 }
 
 export let extensionConfig: ExtensionConfig;
+export class extensionState {
+	static lastExecutedCommand: Runnable = { command: 'noop' };
+}
 
 export function activate(extensionContext: ExtensionContext) {
 	updateConfig();

@@ -380,17 +380,22 @@
 			},
 			{
 				"command": "commands.selectAndRun",
-				"title": "Select and run command.",
+				"title": "Select and run command",
+				"category": "Commands"
+			},
+			{
+				"command": "commands.rerun",
+				"title": "Rerun last command",
 				"category": "Commands"
 			},
 			{
 				"command": "commands.suggestCommands",
-				"title": "Suggest (autocomplete) commands.",
+				"title": "Suggest (autocomplete) commands",
 				"category": "Commands"
 			},
 			{
 				"command": "commands.newCommand",
-				"title": "Add new command to the list.",
+				"title": "Add new command to the list",
 				"icon": "$(add)",
 				"category": "Commands"
 			},
