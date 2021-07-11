@@ -1,8 +1,8 @@
-import { commands, Disposable } from 'vscode';
+import { commands, Disposable, window } from 'vscode';
 import { extensionConfig } from './extension';
 import { run } from './run';
 import { TopLevelCommands } from './types';
-import { forEachCommand, getAllVscodeCommands } from './utils';
+import { forEachCommand, getAllVscodeCommands, goToSymbol, openSettingsJSON } from './utils';
 
 const registeredCommandsList: Disposable[] = [];
 
@@ -14,9 +14,14 @@ export async function updateUserCommands(items: TopLevelCommands) {
 
 	const allCommands = await getAllVscodeCommands();
 
-	forEachCommand((item, key) => {
+	forEachCommand(async (item, key) => {
 		if (allCommands.includes(key)) {
-			console.warn(`Cannot register command twice: "${key}"`);
+			const revealButton = 'Reveal';
+			const button = await window.showWarningMessage(`Command key must be unique (even among already registered commands) "${key}".`, revealButton);
+			if (button) {
+				await openSettingsJSON();
+				await goToSymbol(window.activeTextEditor!, key);
+			}
 			return;
 		}
 		registeredCommandsList.push(commands.registerCommand(key, () => {
