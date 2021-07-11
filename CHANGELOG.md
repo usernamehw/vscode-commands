@@ -1,3 +1,13 @@
+## 1.1.0 `11 Jul 2021`
+
+- ✨ Rerun last command `commands.rerun`
+- ✨ Tree View: show nested items on folder hover
+- ✨ Tree View: Add "status bar" description to items that have it
+- ✨ Substitute variables #9
+- ✨ Suggest commands: use codicon to denote args
+- ✨ Allow to specify simplified command #6
+- ✨ New command: Show notification in status bar
+
 ## 1.0.1 `04 Jul 2021`
 
 - ✨ Return `commands.alias`
