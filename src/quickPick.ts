@@ -1,5 +1,5 @@
 import { QuickPickItem, window } from 'vscode';
-import { commandArgs } from './args';
+import { hasArgs } from './args';
 import { run } from './run';
 import { Runnable, TopLevelCommands } from './types';
 /**
@@ -31,7 +31,7 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands) {
 export function commandsToQuickPickItems(commandList: string[]): QuickPickItem[] {
 	const result: QuickPickItem[] = [];
 	for (const com of commandList) {
-		if (com in commandArgs) {
+		if (hasArgs(com)) {
 			result.push({
 				label: `${com} ($(pass-filled) args)`,
 			});
