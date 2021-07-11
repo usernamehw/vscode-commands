@@ -6,7 +6,7 @@
 	"publisher": "usernamehw",
 	"license": "MIT",
 	"engines": {
-		"vscode": "^1.57.0"
+		"vscode": "^1.58.0"
 	},
 	"extensionKind": [
 		"ui",
@@ -522,18 +522,18 @@
 		"generateJsonSchema": "tsc scripts\\generateJsonSchema.ts && node scripts\\generateJsonSchema.js"
 	},
 	"devDependencies": {
-		"@types/lodash": "^4.14.170",
-		"@types/node": "^14.17.4",
-		"@types/vscode": "^1.57.0",
-		"@typescript-eslint/eslint-plugin": "^4.28.1",
-		"@typescript-eslint/parser": "^4.28.1",
-		"eslint": "^7.29.0",
+		"@types/lodash": "^4.14.171",
+		"@types/node": "^14.17.5",
+		"@types/vscode": "^1.58.0",
+		"@typescript-eslint/eslint-plugin": "^4.28.2",
+		"@typescript-eslint/parser": "^4.28.2",
+		"eslint": "^7.30.0",
 		"eslint-plugin-no-autofix": "^1.1.2",
 		"friendly-errors-webpack-plugin": "^1.7.0",
 		"ts-loader": "^9.2.3",
-		"typescript": "^4.3.4",
+		"typescript": "^4.3.5",
 		"typescript-json-schema": "^0.50.1",
-		"webpack": "^5.41.1",
+		"webpack": "^5.44.0",
 		"webpack-cli": "^4.7.2"
 	},
 	"dependencies": {
