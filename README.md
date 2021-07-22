@@ -263,6 +263,7 @@ Can open Quick Pick with prefilled prefix (`@...` - symbol, `view ...` - open vi
         "preserveCase": false,
         "excludeSettingAndIgnoreFiles": true,
         "triggerSearch": true,
+        "onlyOpenEditors": false,
         // "replace": "",
         // "filesToInclude": "",
         // "filesToExclude": "",

@@ -38,6 +38,7 @@ export const commandArgs: Record<string, unknown> = {
 		preserveCase: false,
 		excludeSettingAndIgnoreFiles: true,
 		triggerSearch: true,
+		onlyOpenEditors: false,
 		replace: '',
 		filesToInclude: '',
 		filesToExclude: '',
