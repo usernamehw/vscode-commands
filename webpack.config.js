@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+/* eslint-disable @typescript-eslint/no-var-requires */
 // @ts-check
-
 'use strict';
 
 const path = require('path');
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin');
 
 /** @type {import('webpack').Configuration}*/
 const config = {
@@ -33,7 +34,6 @@ const config = {
 		}],
 	},
 	plugins: [
-		// @ts-ignore
 		new FriendlyErrorsWebpackPlugin(),
 	],
 };
