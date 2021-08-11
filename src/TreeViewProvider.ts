@@ -33,13 +33,6 @@ export class RunCommandTreeItem extends TreeItem {
 	getLabelName(): string {
 		return typeof this.label === 'string' ? this.label : '';
 	}
-	// @ts-ignore
-	get tooltip() {
-		const markdown = new MarkdownString(undefined, true);
-		markdown.isTrusted = true;
-		markdown.appendCodeblock(JSON.stringify(this.runnable, null, '  '), 'json');
-		return markdown;
-	}
 }
 /**
  * Folder uses icons from active file icon theme.
@@ -65,23 +58,6 @@ export class FolderTreeItem extends TreeItem {
 	getLabelName(): string {
 		return typeof this.label === 'string' ? this.label : '';
 	}
-	// @ts-ignore
-	get tooltip() {
-		if (Object.keys(this.nestedItems).length === 0) {
-			return undefined;
-		}
-		const markdown = new MarkdownString(undefined, true);
-		markdown.isTrusted = true;
-		for (const key in this.nestedItems) {
-			const item = this.nestedItems[key];
-			const commandArg = item.args ? `?${encodeURIComponent(JSON.stringify(item.args))}` : '';
-			const commandUri = Uri.parse(
-				`command:${item.command}${commandArg}`,
-			);
-			markdown.appendMarkdown(`[${key}](${commandUri})\n\n`);
-		}
-		return markdown;
-	}
 }
 
 
@@ -95,6 +71,30 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 
 	refresh(e?: FolderTreeItem | RunCommandTreeItem): void {
 		this._onDidChangeTreeData.fire(e);
+	}
+	/**
+	 * Resolve `tooltip` only on hover
+	 */
+	resolveTreeItem(_: FolderTreeItem | RunCommandTreeItem, el: FolderTreeItem | RunCommandTreeItem) {
+		const markdown = new MarkdownString(undefined, true);
+		markdown.isTrusted = true;
+		if (el instanceof FolderTreeItem) {
+			if (Object.keys(el.nestedItems).length === 0) {
+				return undefined;
+			}
+			for (const key in el.nestedItems) {
+				const item = el.nestedItems[key];
+				const commandArg = item.args ? `?${encodeURIComponent(JSON.stringify(item.args))}` : '';
+				const commandUri = Uri.parse(
+					`command:${item.command}${commandArg}`,
+				);
+				markdown.appendMarkdown(`[${key}](${commandUri})\n\n`);
+			}
+		} else {
+			markdown.appendCodeblock(JSON.stringify(el.runnable, null, '  '), 'json');
+		}
+		el.tooltip = markdown;
+		return el;
 	}
 
 	updateConfig(newConfig: ExtensionConfig): void {
