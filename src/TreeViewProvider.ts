@@ -1,6 +1,7 @@
 import { Command, Event, EventEmitter, MarkdownString, ThemeColor, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState, Uri } from 'vscode';
 import { CommandIds } from './commands';
 import { Constants, extensionConfig } from './extension';
+import { createFolderHoverText } from './folderHoverText';
 import { CommandFolder, ExtensionConfig, Runnable, TopLevelCommands } from './types';
 import { isSimpleObject } from './utils';
 
@@ -77,20 +78,13 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 	 * Resolve `tooltip` only on hover
 	 */
 	resolveTreeItem(_: FolderTreeItem | RunCommandTreeItem, el: FolderTreeItem | RunCommandTreeItem) {
-		const markdown = new MarkdownString(undefined, true);
+		let markdown = new MarkdownString(undefined, true);
 		markdown.isTrusted = true;
 		if (el instanceof FolderTreeItem) {
 			if (Object.keys(el.nestedItems).length === 0) {
 				return undefined;
 			}
-			for (const key in el.nestedItems) {
-				const item = el.nestedItems[key];
-				const commandArg = item.args ? `?${encodeURIComponent(JSON.stringify(item.args))}` : '';
-				const commandUri = Uri.parse(
-					`command:${item.command}${commandArg}`,
-				);
-				markdown.appendMarkdown(`[${key}](${commandUri})\n\n`);
-			}
+			markdown = createFolderHoverText(el.nestedItems);
 		} else {
 			markdown.appendCodeblock(JSON.stringify(el.runnable, null, '  '), 'json');
 		}
