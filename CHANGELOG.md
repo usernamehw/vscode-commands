@@ -1,3 +1,10 @@
+## 1.1.1 `12 Aug 2021`
+
+- ✨ Aliased commands also show args decoration in command picker
+- ✨ Show warning for duplicate command (extension registers commands by their keys, it cannot be the same as any other command id)
+- ✨ Show folder's nested items in status bar on hover
+- 🐛 Resolve Tree View tooltip only on hover
+
 ## 1.1.0 `11 Jul 2021`
 
 - ✨ Rerun last command `commands.rerun`
