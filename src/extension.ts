@@ -11,6 +11,7 @@ export const enum Constants {
 	extensionId = 'usernamehw.commands',
 	extensionName = 'commands',
 	commandsSettingId = 'commands.commands',
+	treeViewStatusBarIndicator = '💠',
 
 	COMMAND_PALETTE_WAS_POPULATED_STORAGE_KEY = 'was_populated',
 }

@@ -1,8 +1,9 @@
 import { Command, Event, EventEmitter, MarkdownString, ThemeColor, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState, Uri } from 'vscode';
 import { CommandIds } from './commands';
-import { extensionConfig } from './extension';
+import { Constants, extensionConfig } from './extension';
 import { CommandFolder, ExtensionConfig, Runnable, TopLevelCommands } from './types';
 import { isSimpleObject } from './utils';
+
 /**
  * Ordinary tree item. Can have icon (with or without color).
  * Shows markdown tooltip on hover with json version of it's contents.
@@ -27,7 +28,7 @@ export class RunCommandTreeItem extends TreeItem {
 		}
 		// @ts-ignore
 		if (runnable.statusBar) {
-			this.description = 'status bar';
+			this.description = Constants.treeViewStatusBarIndicator;
 		}
 	}
 	getLabelName(): string {
@@ -51,7 +52,7 @@ export class FolderTreeItem extends TreeItem {
 		this.nestedItems = folder.nestedItems!;
 
 		if (folder.statusBar) {
-			this.description = 'status bar';
+			this.description = Constants.treeViewStatusBarIndicator;
 		}
 	}
 
