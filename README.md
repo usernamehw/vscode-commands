@@ -1,10 +1,8 @@
-<!--- [![OpenVersion](https://shields.io/github/v/release/usernamehw/commands)](https://github.com/usernamehw/vscode-commands#readme) -->
-[![MS Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/usernamehw.commands?label=VS%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=usernamehw.commands)
-[![MS Marketplace Installs](https://shields.io/visual-studio-marketplace/i/usernamehw.commands?label=VS%20Marketplace%20Installs)](https://marketplace.visualstudio.com/items?itemName=usernamehw.commands)
-[![MS Marketplace Rating](https://shields.io/visual-studio-marketplace/r/usernamehw.commands?label=VS%20Marketplace%20Rating)](https://marketplace.visualstudio.com/items?itemName=usernamehw.commands)
-[![OpenVSX Downloads](https://shields.io/open-vsx/dt/usernamehw/commands?label=Open%20VSX%20Downloads)](https://open-vsx.org/extension/usernamehw/commands)
-[![OpenVSX Rating](https://shields.io/open-vsx/stars/usernamehw/commands?label=Open%20VSX%20Rating)](https://open-vsx.org/extension/usernamehw/commands/reviews)
-<!--- [![OpenVersion](https://shields.io/open-vsx/v/usernamehw/commands)](https://open-vsx.org/extension/usernamehw/commands) -->
+[![MS Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/usernamehw.commands?label=VS%20Marketplace&style=flat-square&color=blue)](https://marketplace.visualstudio.com/items?itemName=usernamehw.commands)
+[![MS Marketplace Installs](https://shields.io/visual-studio-marketplace/i/usernamehw.commands?label=Installs&style=flat-square&color=blue)](https://marketplace.visualstudio.com/items?itemName=usernamehw.commands)
+[![MS Marketplace Rating](https://shields.io/visual-studio-marketplace/r/usernamehw.commands?label=Rating&style=flat-square&color=blue)](https://marketplace.visualstudio.com/items?itemName=usernamehw.commands&ssr=false#review-details)
+[![OpenVSX Downloads](https://shields.io/open-vsx/dt/usernamehw/commands?label=Open%20VSX%20Downloads&style=flat-square&color=yellow)](https://open-vsx.org/extension/usernamehw/commands)
+[![OpenVSX Rating](https://shields.io/open-vsx/stars/usernamehw/commands?label=Rating&style=flat-square&color=yellow)](https://open-vsx.org/extension/usernamehw/commands/reviews)
 
 ## Simple command
 
