@@ -1,8 +1,7 @@
 [![MS Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/usernamehw.commands?label=VS%20Marketplace&style=flat-square&color=blue)](https://marketplace.visualstudio.com/items?itemName=usernamehw.commands)
 [![MS Marketplace Installs](https://shields.io/visual-studio-marketplace/i/usernamehw.commands?label=Installs&style=flat-square&color=blue)](https://marketplace.visualstudio.com/items?itemName=usernamehw.commands)
 [![MS Marketplace Rating](https://shields.io/visual-studio-marketplace/r/usernamehw.commands?label=Rating&style=flat-square&color=blue)](https://marketplace.visualstudio.com/items?itemName=usernamehw.commands&ssr=false#review-details)
-[![OpenVSX Downloads](https://shields.io/open-vsx/dt/usernamehw/commands?label=Open%20VSX%20Downloads&style=flat-square&color=yellow)](https://open-vsx.org/extension/usernamehw/commands)
-[![OpenVSX Rating](https://shields.io/open-vsx/stars/usernamehw/commands?label=Rating&style=flat-square&color=yellow)](https://open-vsx.org/extension/usernamehw/commands/reviews)
+[![OpenVSX Downloads](https://shields.io/open-vsx/dt/usernamehw/commands?label=OpenVSX%20Downloads&style=flat-square&color=green)](https://open-vsx.org/extension/usernamehw/commands)
 
 ## Simple command
 
