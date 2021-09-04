@@ -109,6 +109,10 @@
 												"tooltip": {
 													"type": "string"
 												},
+												"markdownTooltip": {
+													"type": "string",
+													"markdownDescription": "https://github.com/usernamehw/vscode-commands/issues/16"
+												},
 												"color": {
 													"type": "string"
 												}
@@ -161,6 +165,10 @@
 																	},
 																	"tooltip": {
 																		"type": "string"
+																	},
+																	"markdownTooltip": {
+																		"type": "string",
+																		"markdownDescription": "https://github.com/usernamehw/vscode-commands/issues/16"
 																	},
 																	"color": {
 																		"type": "string"
@@ -216,6 +224,10 @@
 																"tooltip": {
 																	"type": "string"
 																},
+																"markdownTooltip": {
+																	"type": "string",
+																	"markdownDescription": "https://github.com/usernamehw/vscode-commands/issues/16"
+																},
 																"color": {
 																	"type": "string"
 																}
@@ -268,6 +280,10 @@
 																					},
 																					"tooltip": {
 																						"type": "string"
+																					},
+																					"markdownTooltip": {
+																						"type": "string",
+																						"markdownDescription": "https://github.com/usernamehw/vscode-commands/issues/16"
 																					},
 																					"color": {
 																						"type": "string"

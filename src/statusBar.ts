@@ -1,4 +1,4 @@
-import { Disposable, StatusBarAlignment, window } from 'vscode';
+import { Disposable, MarkdownString, StatusBarAlignment, window } from 'vscode';
 import { CommandIds } from './commands';
 import { createFolderHoverText } from './folderHoverText';
 import { TopLevelCommands } from './types';
@@ -6,9 +6,7 @@ import { forEachCommand } from './utils';
 
 const statusBarItems: Disposable[] = [];
 
-/**
- * Dispose and refresh all status bar items.
- */
+/** Dispose and refresh all status bar items. */
 export function updateStatusBarItems(items: TopLevelCommands) {
 	disposeStatusBarItems();
 
@@ -20,7 +18,15 @@ export function updateStatusBarItems(items: TopLevelCommands) {
 			let icon = item.icon ? `$(${item.icon}) ` : '';
 			newStatusBarItem.name = statusBarUserObject.text;
 			newStatusBarItem.color = statusBarUserObject.color;
-			newStatusBarItem.tooltip = statusBarUserObject.tooltip || key;
+
+			if (statusBarUserObject.markdownTooltip) {
+				const mdString = new MarkdownString(statusBarUserObject.markdownTooltip, true);
+				mdString.isTrusted = true;
+				newStatusBarItem.tooltip = mdString;
+			} else {
+				newStatusBarItem.tooltip = statusBarUserObject.tooltip || key;
+			}
+
 			if (item.nestedItems) {
 				icon = '$(folder) ';
 				newStatusBarItem.tooltip = createFolderHoverText(item.nestedItems);

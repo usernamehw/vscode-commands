@@ -139,6 +139,7 @@ interface CommandObject {
         text: string;
         priority?: number;
         tooltip?: string;
+        markdownTooltip?: string;
         color?: string;
     };
     hidden?: boolean;// Do not show this in Tree View

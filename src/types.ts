@@ -70,6 +70,7 @@ interface StatusBar {
 	text: string;
 	priority?: number;
 	tooltip?: string;
+	markdownTooltip?: string;
 	color?: string;
 }
 export type Sequence = (CommandObject | string)[];
