@@ -29,6 +29,7 @@ const coreCommandIds = [
 	'commands.assignKeybinding',
 	'commands.addToStatusBar',
 	'commands.revealCommandsInSettignsGUI',
+	'commands.escapeCommandUriArgument',
 ];
 /**
  * VSCode doesn't support dynamic Command Palette items: https://github.com/microsoft/vscode/issues/1422

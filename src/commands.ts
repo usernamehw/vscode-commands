@@ -25,6 +25,7 @@ export const enum CommandIds {
 	'addToStatusBar' = 'commands.addToStatusBar',
 	'newCommandInFolder' = 'commands.newCommandInFolder',
 	'revealCommandsInSettignsGUI' = 'commands.revealCommandsInSettignsGUI',
+	'escapeCommandUriArgument' = 'commands.escapeCommandUriArgument',
 	// ──── Additional ──────────────────────────────────────────────────────
 	'toggleSetting' = 'commands.toggleSetting',
 	'incrementSetting' = 'commands.incrementSetting',
@@ -221,6 +222,17 @@ export function registerExtensionCommands() {
 		await openSettingsJSON();
 		await goToSymbol(window.activeTextEditor!, newCommandKey);
 	}
+	commands.registerTextEditorCommand(CommandIds.escapeCommandUriArgument, editor => {
+		const selectionRange = editor.selection;
+		const selectionText = editor.document.getText(selectionRange);
+		if (!selectionText) {
+			return;
+		}
+		const escapedArgument = encodeURIComponent(JSON.stringify(selectionText));
+		editor.edit(builder => {
+			builder.replace(selectionRange, escapedArgument);
+		});
+	});
 	// ──────────────────────────────────────────────────────────────────────
 	// ──── Additional Commands ─────────────────────────────────────────────
 	// ──────────────────────────────────────────────────────────────────────

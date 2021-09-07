@@ -98,15 +98,16 @@
 
 
 <!-- COMMANDS_START -->
-## Commands (5)
+## Commands (6)
 
 |Command|Description|
 |-|-|
 |commands.openAsQuickPick|Commands: Open as Quick Pick|
 |commands.selectAndRun|Commands: Select and run command|
-|commands.rerun|Commands: Rerun last executed command|
+|commands.rerun|Commands: Rerun last command|
 |commands.suggestCommands|Commands: Suggest (autocomplete) commands|
 |commands.newCommand|Commands: Add new command to the list|
+|commands.escapeCommandUriArgument|Commands: Escape command uri argument|
 <!-- COMMANDS_END -->
 
 <!-- SETTINGS_START -->

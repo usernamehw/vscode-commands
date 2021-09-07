@@ -454,6 +454,11 @@
 				"title": "Open Settings GUI",
 				"icon": "$(gear)",
 				"category": "Commands"
+			},
+			{
+				"command": "commands.escapeCommandUriArgument",
+				"title": "Escape command uri argument",
+				"category": "Commands"
 			}
 		],
 		"menus": {
