@@ -1,3 +1,9 @@
+## 1.1.2 `01 Nov 2021`
+
+- ✨ Create markdown tooltip for status bar item (#16)
+- ✨ New command to escape a command uri argument
+- ✨ Substitute environment variables in command args `${env:ENV_VAR}`
+
 ## 1.1.1 `12 Aug 2021`
 
 - ✨ Aliased commands also show args decoration in command picker
