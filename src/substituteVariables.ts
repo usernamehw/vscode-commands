@@ -15,6 +15,7 @@ const enum VariableNames {
 	pathSeparator = '${pathSeparator}', // `/` on macOS or linux, `\` on Windows
 	lineNumber = '${lineNumber}', // the current selected line number in the active file
 	selectedText = '${selectedText}', // the current selected text in the active file
+	environmentVariable = '${env}',
 	// ────────────────────────────────────────────────────────────
 	// relativeFile = '${relativeFile}', // the current opened file relative to `workspaceFolder`
 	// relativeFileDirname = '${relativeFileDirname}', // the current opened file's dirname relative to `workspaceFolder`
@@ -34,6 +35,7 @@ const variableRegexps = {
 	[VariableNames.pathSeparator]: new RegExp(escapeRegExp(VariableNames.pathSeparator), 'ig'),
 	[VariableNames.lineNumber]: new RegExp(escapeRegExp(VariableNames.lineNumber), 'ig'),
 	[VariableNames.selectedText]: new RegExp(escapeRegExp(VariableNames.selectedText), 'ig'),
+	[VariableNames.environmentVariable]: /\${env:([a-zA-Z_]+[a-zA-Z0-9_]*)}/i,
 	// [VariableNames.relativeFile]: new RegExp(escapeRegExp(VariableNames.relativeFile), 'ig'),
 	// [VariableNames.relativeFileDirname]: new RegExp(escapeRegExp(VariableNames.relativeFileDirname), 'ig'),
 	// [VariableNames.cwd]: new RegExp(escapeRegExp(VariableNames.cwd), 'ig'),
@@ -85,6 +87,14 @@ export function substituteVariables(str: string) {
 		const fileWorkspaceFolder = workspace.getWorkspaceFolder(activeTextEditor.document.uri)?.uri.fsPath;
 		if (fileWorkspaceFolder) {
 			str = str.replace(variableRegexps[VariableNames.fileWorkspaceFolder], fileWorkspaceFolder);
+		}
+	}
+	if (variableRegexps[VariableNames.environmentVariable].test(str)) {
+		// eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
+		const match = str.match(variableRegexps[VariableNames.environmentVariable]);
+		const envName = match?.[1];
+		if (envName) {
+			str = str.replace(variableRegexps[VariableNames.environmentVariable], process.env[envName] || '');
 		}
 	}
 	return str;
