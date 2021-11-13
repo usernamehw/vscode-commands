@@ -61,10 +61,20 @@ async function runObject(object: CommandObject) {
 	if (!commandId) {
 		window.showErrorMessage('Missing `command` property.');
 	}
+
 	let args = object.args;
-	if (extensionConfig.variableSubstitutionEnabled && typeof args === 'string') {
-		args = substituteVariables(args);
+	if (extensionConfig.variableSubstitutionEnabled) {
+		if (typeof args === 'string') {
+			args = substituteVariables(args);
+		} else if (
+			Array.isArray(args) ||
+			typeof args === 'object' && args !== null
+		) {
+			args = substituteVariables(JSON.stringify(args));
+			args = JSON.parse(args as string);
+		}
 	}
+
 	return await commands.executeCommand(commandId, args);
 }
 
