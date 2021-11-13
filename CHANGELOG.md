@@ -1,8 +1,12 @@
+## 1.1.3 `13 Nov 2021`
+
+- ✨ Replace variable works inside arrays/objects (#9)
+
 ## 1.1.2 `01 Nov 2021`
 
 - ✨ Create markdown tooltip for status bar item (#16)
 - ✨ New command to escape a command uri argument
-- ✨ Substitute environment variables in command args `${env:ENV_VAR}`
+- ✨ Substitute environment variables in command args `${env:ENV_VAR}` (#9)
 
 ## 1.1.1 `12 Aug 2021`
 
