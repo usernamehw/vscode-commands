@@ -85,6 +85,10 @@
 											"type": "string",
 											"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
 										},
+										"disableTooltip": {
+											"type": "boolean",
+											"markdownDescription": "Do not show the hover tooltip for this Tree View Item."
+										},
 										"iconColor": {
 											"type": "string",
 											"markdownDescription": "Use existing colors for icon [Color id list](https://code.visualstudio.com/api/references/theme-color)"
@@ -141,6 +145,10 @@
 															"icon": {
 																"type": "string",
 																"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
+															},
+															"disableTooltip": {
+																"type": "boolean",
+																"markdownDescription": "Do not show the hover tooltip for this Tree View Item."
 															},
 															"iconColor": {
 																"type": "string",
@@ -200,6 +208,10 @@
 															"type": "string",
 															"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
 														},
+														"disableTooltip": {
+															"type": "boolean",
+															"markdownDescription": "Do not show the hover tooltip for this Tree View Item."
+														},
 														"iconColor": {
 															"type": "string",
 															"markdownDescription": "Use existing colors for icon [Color id list](https://code.visualstudio.com/api/references/theme-color)"
@@ -256,6 +268,10 @@
 																			"icon": {
 																				"type": "string",
 																				"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
+																			},
+																			"disableTooltip": {
+																				"type": "boolean",
+																				"markdownDescription": "Do not show the hover tooltip for this Tree View Item."
 																			},
 																			"iconColor": {
 																				"type": "string",

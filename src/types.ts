@@ -57,6 +57,7 @@ export interface CommandObject {
 	args?: unknown;
 	delay?: number;
 	icon?: string;
+	disableTooltip?: boolean;
 	iconColor?: string;
 	statusBar?: StatusBar;
 	sequence?: Sequence;

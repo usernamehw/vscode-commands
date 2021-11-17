@@ -1,4 +1,4 @@
-import { Command, Event, EventEmitter, MarkdownString, ThemeColor, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState, Uri } from 'vscode';
+import { Command, Event, EventEmitter, MarkdownString, ThemeColor, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { CommandIds } from './commands';
 import { Constants, extensionConfig } from './extension';
 import { createFolderHoverText } from './folderHoverText';
@@ -86,6 +86,9 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 			}
 			markdown = createFolderHoverText(el.nestedItems);
 		} else {
+			if (isSimpleObject(el.runnable) && el.runnable.disableTooltip) {
+				return el;
+			}
 			markdown.appendCodeblock(JSON.stringify(el.runnable, null, '  '), 'json');
 		}
 		el.tooltip = markdown;
