@@ -11,7 +11,7 @@ export function updateStatusBarItems(items: TopLevelCommands) {
 	disposeStatusBarItems();
 
 	forEachCommand((item, key) => {
-		if (item.statusBar) {
+		if (item.statusBar && !item.statusBar.hidden) {
 			const statusBarUserObject = item.statusBar;
 			const alignment = statusBarUserObject.alignment === 'right' ? StatusBarAlignment.Right : StatusBarAlignment.Left;
 			const newStatusBarItem = window.createStatusBarItem(statusBarUserObject.text, alignment, statusBarUserObject.priority ?? -9999);

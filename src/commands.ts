@@ -121,7 +121,7 @@ export function registerExtensionCommands() {
 		}
 		function toggleStatusBarItem(commandObject: CommandObject) {
 			if (commandObject.statusBar) {
-				commandObject.statusBar = undefined;
+				commandObject.statusBar.hidden = !commandObject.statusBar.hidden;
 			} else {
 				commandObject.statusBar = {
 					text: newStatusBarItemText,

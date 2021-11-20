@@ -73,6 +73,7 @@ interface StatusBar {
 	tooltip?: string;
 	markdownTooltip?: string;
 	color?: string;
+	hidden?: boolean;
 }
 export type Sequence = (CommandObject | string)[];
 /**
@@ -97,4 +98,5 @@ export interface StatusBarNotification {
 	message: string;
 	color?: string;
 	timeout?: number;
+	priority?: number;// TODO: allow to specify priority, make default aligned to the right item
 }

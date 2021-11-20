@@ -135,6 +135,7 @@ interface CommandObject {
     delay?: number;// delay BEFORE execution
     icon?: string;// icon id https://code.visualstudio.com/api/references/icons-in-labels#icon-listing
     iconColor?: string;// color id https://code.visualstudio.com/api/references/theme-color
+    disableTooltip?: boolean;// do not show the hover tooltip for this Tree View Item
     statusBar?: {// add to status bar
         alignment: 'left' | 'right';
         text: string;
@@ -142,6 +143,7 @@ interface CommandObject {
         tooltip?: string;
         markdownTooltip?: string;
         color?: string;
+        hidden?: boolean;
     };
     hidden?: boolean;// Do not show this in Tree View
 

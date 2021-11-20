@@ -28,7 +28,7 @@ export class RunCommandTreeItem extends TreeItem {
 			this.contextValue = 'stringCommand';// Can't add to status bar
 		}
 		// @ts-ignore
-		if (runnable.statusBar) {
+		if (runnable.statusBar && !runnable.statusBar.hidden) {
 			this.description = Constants.treeViewStatusBarIndicator;
 		}
 	}
@@ -52,7 +52,7 @@ export class FolderTreeItem extends TreeItem {
 		super(label);
 		this.nestedItems = folder.nestedItems!;
 
-		if (folder.statusBar) {
+		if (folder.statusBar && !folder.statusBar.hidden) {
 			this.description = Constants.treeViewStatusBarIndicator;
 		}
 	}
