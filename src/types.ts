@@ -62,6 +62,7 @@ export interface CommandObject {
 	statusBar?: StatusBar;
 	sequence?: Sequence;
 	hidden?: boolean;
+	when?: string;
 }
 /**
  * Add command/folder to status bar

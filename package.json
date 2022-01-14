@@ -77,6 +77,10 @@
 											"description": "Command id to execute."
 										},
 										"args": {},
+										"when": {
+											"type": "string",
+											"markdownDescription": "a `when` expression of when the command will be avaliable at the command palette. See [VSCode API](https://code.visualstudio.com/api/references/when-clause-contexts)."
+										},
 										"delay": {
 											"type": "number",
 											"description": "Delay BEFORE executing this command."
@@ -203,6 +207,10 @@
 														"delay": {
 															"type": "number",
 															"description": "Delay BEFORE executing this command."
+														},
+														"when": {
+															"type": "string",
+															"markdownDescription": "a `when` expression of when the command will be avaliable at the command palette. See [VSCode API](https://code.visualstudio.com/api/references/when-clause-contexts)."
 														},
 														"icon": {
 															"type": "string",
