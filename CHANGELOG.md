@@ -1,3 +1,8 @@
+## 1.1.5 `15 Jan 2022`
+
+- ✨ support when expression for command palette [PR #22](https://github.com/usernamehw/vscode-commands/pull/22) by [elazarcoh](https://github.com/elazarcoh)
+- ✨ toggle status bar command should only toggle property `hidden` instead of removing the status bar object
+
 ## 1.1.4 `17 Nov 2021`
 
 - ✨ Disable tree view tooltip per item #17
