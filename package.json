@@ -208,6 +208,10 @@
 															"type": "number",
 															"description": "Delay BEFORE executing this command."
 														},
+														"when": {
+															"type": "string",
+															"markdownDescription": "a `when` expression of when the command will be avaliable at the command palette. See [VSCode API](https://code.visualstudio.com/api/references/when-clause-contexts)."
+														},
 														"icon": {
 															"type": "string",
 															"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
