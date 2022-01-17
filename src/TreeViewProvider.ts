@@ -2,7 +2,7 @@ import { Command, Event, EventEmitter, MarkdownString, ThemeColor, ThemeIcon, Tr
 import { CommandIds } from './commands';
 import { Constants, extensionConfig } from './extension';
 import { createFolderHoverText } from './folderHoverText';
-import { CommandFolder, ExtensionConfig, Runnable, TopLevelCommands } from './types';
+import { CommandFolder, Runnable, TopLevelCommands } from './types';
 import { isSimpleObject } from './utils';
 
 /**
@@ -68,7 +68,7 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 	readonly onDidChangeTreeData: Event<FolderTreeItem | RunCommandTreeItem | undefined> = this._onDidChangeTreeData.event;
 
 	constructor(
-		private config: ExtensionConfig,
+		private commands: TopLevelCommands,
 	) { }
 
 	refresh(e?: FolderTreeItem | RunCommandTreeItem): void {
@@ -95,8 +95,8 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 		return el;
 	}
 
-	updateConfig(newConfig: ExtensionConfig): void {
-		this.config = newConfig;
+	updateCommands(commands: TopLevelCommands): void {
+		this.commands = commands;
 	}
 
 	getTreeItem(element: RunCommandTreeItem): TreeItem {
@@ -107,12 +107,12 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 		if (element instanceof FolderTreeItem) {
 			return this.commandsToTreeItems(element.nestedItems);
 		} else {
-			const allCommands = this.config.commands;
+			const allCommands = this.commands;
 			return this.commandsToTreeItems(allCommands);
 		}
 	}
 	/**
-	 * Convert extension config to `TreeItem` (`FolderTreeItem` or `RunCommandTreeItem`)
+	 * Convert extension commands to `TreeItem` (`FolderTreeItem` or `RunCommandTreeItem`)
 	 */
 	private commandsToTreeItems(items: TopLevelCommands): (FolderTreeItem | RunCommandTreeItem)[] {
 		const result: (FolderTreeItem | RunCommandTreeItem)[] = [];

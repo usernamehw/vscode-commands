@@ -335,6 +335,283 @@
 					},
 					"default": {}
 				},
+				"commands.workspaceCommands": {
+					"type": "object",
+					"description": "Commands that will be rendered in the View, specific to the workspace.",
+					"scope": "window",
+					"patternProperties": {
+						"^.*$": {
+							"oneOf": [
+								{
+									"type": "string",
+									"description": "Just run this command. No arguments."
+								},
+								{
+									"type": "object",
+									"properties": {
+										"command": {
+											"type": "string",
+											"description": "Command id to execute."
+										},
+										"args": {},
+										"when": {
+											"type": "string",
+											"markdownDescription": "a `when` expression of when the command will be avaliable at the command palette. See [VSCode API](https://code.visualstudio.com/api/references/when-clause-contexts)."
+										},
+										"delay": {
+											"type": "number",
+											"description": "Delay BEFORE executing this command."
+										},
+										"icon": {
+											"type": "string",
+											"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
+										},
+										"disableTooltip": {
+											"type": "boolean",
+											"markdownDescription": "Do not show the hover tooltip for this Tree View Item."
+										},
+										"iconColor": {
+											"type": "string",
+											"markdownDescription": "Use existing colors for icon [Color id list](https://code.visualstudio.com/api/references/theme-color)"
+										},
+										"statusBar": {
+											"type": "object",
+											"description": "Add this command to Status Bar.",
+											"properties": {
+												"alignment": {
+													"type": "string",
+													"enum": [
+														"left",
+														"right"
+													]
+												},
+												"text": {
+													"type": "string"
+												},
+												"priority": {
+													"type": "number"
+												},
+												"tooltip": {
+													"type": "string"
+												},
+												"markdownTooltip": {
+													"type": "string",
+													"markdownDescription": "https://github.com/usernamehw/vscode-commands/issues/16"
+												},
+												"color": {
+													"type": "string"
+												}
+											}
+										},
+										"sequence": {
+											"description": "Execute multiple commands.",
+											"type": "array",
+											"items": {
+												"oneOf": [
+													{
+														"type": "string"
+													},
+													{
+														"type": "object",
+														"properties": {
+															"command": {
+																"type": "string",
+																"description": "Command id to execute."
+															},
+															"args": {},
+															"delay": {
+																"type": "number",
+																"description": "Delay BEFORE executing this command."
+															},
+															"icon": {
+																"type": "string",
+																"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
+															},
+															"disableTooltip": {
+																"type": "boolean",
+																"markdownDescription": "Do not show the hover tooltip for this Tree View Item."
+															},
+															"iconColor": {
+																"type": "string",
+																"markdownDescription": "Use existing colors for icon [Color id list](https://code.visualstudio.com/api/references/theme-color)"
+															},
+															"statusBar": {
+																"type": "object",
+																"description": "Add this command to Status Bar.",
+																"properties": {
+																	"alignment": {
+																		"type": "string",
+																		"enum": [
+																			"left",
+																			"right"
+																		]
+																	},
+																	"text": {
+																		"type": "string"
+																	},
+																	"priority": {
+																		"type": "number"
+																	},
+																	"tooltip": {
+																		"type": "string"
+																	},
+																	"markdownTooltip": {
+																		"type": "string",
+																		"markdownDescription": "https://github.com/usernamehw/vscode-commands/issues/16"
+																	},
+																	"color": {
+																		"type": "string"
+																	}
+																}
+															}
+														}
+													}
+												]
+											}
+										},
+										"nestedItems": {
+											"type": "object",
+											"description": "Commands that will be rendered in the View.",
+											"patternProperties": {
+												"^.*$": {
+													"type": "object",
+													"properties": {
+														"command": {
+															"type": "string",
+															"description": "Command id to execute."
+														},
+														"args": {},
+														"delay": {
+															"type": "number",
+															"description": "Delay BEFORE executing this command."
+														},
+														"when": {
+															"type": "string",
+															"markdownDescription": "a `when` expression of when the command will be avaliable at the command palette. See [VSCode API](https://code.visualstudio.com/api/references/when-clause-contexts)."
+														},
+														"icon": {
+															"type": "string",
+															"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
+														},
+														"disableTooltip": {
+															"type": "boolean",
+															"markdownDescription": "Do not show the hover tooltip for this Tree View Item."
+														},
+														"iconColor": {
+															"type": "string",
+															"markdownDescription": "Use existing colors for icon [Color id list](https://code.visualstudio.com/api/references/theme-color)"
+														},
+														"statusBar": {
+															"type": "object",
+															"description": "Add this command to Status Bar.",
+															"properties": {
+																"alignment": {
+																	"type": "string",
+																	"enum": [
+																		"left",
+																		"right"
+																	]
+																},
+																"text": {
+																	"type": "string"
+																},
+																"priority": {
+																	"type": "number"
+																},
+																"tooltip": {
+																	"type": "string"
+																},
+																"markdownTooltip": {
+																	"type": "string",
+																	"markdownDescription": "https://github.com/usernamehw/vscode-commands/issues/16"
+																},
+																"color": {
+																	"type": "string"
+																}
+															}
+														},
+														"sequence": {
+															"description": "Execute multiple commands.",
+															"type": "array",
+															"items": {
+																"oneOf": [
+																	{
+																		"type": "string"
+																	},
+																	{
+																		"type": "object",
+																		"properties": {
+																			"command": {
+																				"type": "string",
+																				"description": "Command id to execute."
+																			},
+																			"args": {},
+																			"delay": {
+																				"type": "number",
+																				"description": "Delay BEFORE executing this command."
+																			},
+																			"icon": {
+																				"type": "string",
+																				"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
+																			},
+																			"disableTooltip": {
+																				"type": "boolean",
+																				"markdownDescription": "Do not show the hover tooltip for this Tree View Item."
+																			},
+																			"iconColor": {
+																				"type": "string",
+																				"markdownDescription": "Use existing colors for icon [Color id list](https://code.visualstudio.com/api/references/theme-color)"
+																			},
+																			"statusBar": {
+																				"type": "object",
+																				"description": "Add this command to Status Bar.",
+																				"properties": {
+																					"alignment": {
+																						"type": "string",
+																						"enum": [
+																							"left",
+																							"right"
+																						]
+																					},
+																					"text": {
+																						"type": "string"
+																					},
+																					"priority": {
+																						"type": "number"
+																					},
+																					"tooltip": {
+																						"type": "string"
+																					},
+																					"markdownTooltip": {
+																						"type": "string",
+																						"markdownDescription": "https://github.com/usernamehw/vscode-commands/issues/16"
+																					},
+																					"color": {
+																						"type": "string"
+																					}
+																				}
+																			}
+																		}
+																	}
+																]
+															}
+														}
+													}
+												}
+											},
+											"default": {}
+										},
+										"hidden": {
+											"type": "boolean",
+											"description": "Do not show this in Tree View."
+										}
+									}
+								}
+							]
+						}
+					},
+					"default": {}
+				},
 				"commands.alias": {
 					"type": "object",
 					"markdownDescription": "Use shorter command ids.",
@@ -571,6 +848,7 @@
 		"@soda/friendly-errors-webpack-plugin": "^1.8.1",
 		"@types/lodash": "^4.14.178",
 		"@types/node": "^14.18.5",
+		"@types/uuid": "^8.3.4",
 		"@types/vscode": "^1.60.0",
 		"@typescript-eslint/eslint-plugin": "^5.9.1",
 		"@typescript-eslint/parser": "^5.9.1",
@@ -584,6 +862,7 @@
 	},
 	"dependencies": {
 		"lodash": "^4.17.21",
-		"open": "^8.4.0"
+		"open": "^8.4.0",
+		"uuid": "^8.3.2"
 	}
 }

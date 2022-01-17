@@ -3,6 +3,7 @@ import { Disposable, ExtensionContext } from 'vscode';
 import { Constants, extensionConfig } from './extension';
 import { TopLevelCommands } from './types';
 import { forEachCommand } from './utils';
+import { getWorkspaceId, isWorkspaceCommandItem, workspaceContextKey } from './workspaceCommands';
 
 const commandPaletteCommandsList: Disposable[] = [];
 /**
@@ -13,6 +14,10 @@ interface ICommand {
 	title: string;
 	category?: string;
 	enablement: string;
+}
+interface ICommandPalette {
+	command: string;
+	when: string;
 }
 /**
  * Commands this extension contributes in **commands** section of `package.json`
@@ -52,7 +57,15 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 		return;
 	}
 
-	const { coreCommands, oldCommands, packageJSONObject, packageJsonPath, coreCommandPalette } = await getCommandsFromPackageJson(context);
+	const {
+		coreCommands,
+		oldCommands,
+		packageJSONObject,
+		packageJsonPath,
+		coreCommandPalette,
+		otherWorkspacesCommands,
+		otherWorkspacesCommandPalette
+	} = await getCommandsFromPackageJson(context);
 
 	const userCommands: ICommand[] = [];
 	const userCommandPalette: { command: string, when: string }[] = [];
@@ -60,15 +73,17 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 		if (item.nestedItems) {
 			return;// Skip folders
 		}
+		const baseWhen = item.when ?? 'true';
+		const when = isWorkspaceCommandItem(item) ? `${workspaceContextKey} == ${item.workspace} && ${baseWhen}` : baseWhen;
 		userCommands.push({
 			command: key,
 			title: key,
 			category: 'Commands',
-			enablement: item.when ?? 'true',
+			enablement: when,
 		});
 		userCommandPalette.push({
 			command: key,
-			when: item.when ?? 'true',
+			when: when,
 		});
 	}, items);
 	const newCommands = [...coreCommands, ...userCommands];
@@ -78,8 +93,8 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 		return;// Only write file if necessary
 	}
 
-	packageJSONObject.contributes.commands = [...coreCommands, ...userCommands];
-	packageJSONObject.contributes.menus.commandPalette = [...coreCommandPalette, ...userCommandPalette];
+	packageJSONObject.contributes.commands = [...coreCommands, ...otherWorkspacesCommands, ...userCommands];
+	packageJSONObject.contributes.menus.commandPalette = [...coreCommandPalette, ...otherWorkspacesCommandPalette, ...userCommandPalette];
 	await fs.promises.writeFile(packageJsonPath, JSON.stringify(packageJSONObject, null, '\t'));
 	await context.globalState.update(Constants.COMMAND_PALETTE_WAS_POPULATED_STORAGE_KEY, true);
 }
@@ -90,13 +105,19 @@ async function getCommandsFromPackageJson(context: ExtensionContext) {
 	const packageJSONObject = JSON.parse(packageJsonFile.toString());
 	const oldCommands = packageJSONObject.contributes.commands as ICommand[];
 	const coreCommands: ICommand[] = (packageJSONObject.contributes.commands as ICommand[]).filter(command => coreCommandIds.includes(command.command));
-	const coreCommandPalette = (packageJSONObject.contributes.menus.commandPalette as { command: string, when: string }[]).filter(command => coreCommandIds.includes(command.command));
+	const coreCommandPalette = (packageJSONObject.contributes.menus.commandPalette as ICommandPalette[]).filter(command => coreCommandIds.includes(command.command));
+	const workspaceId = getWorkspaceId(context);
+	const isOtherWorkspaceCommand = (c: string | undefined) => !workspaceId || (c !== undefined && c.includes(workspaceContextKey) && !c.includes(workspaceId));
+	const otherWorkspacesCommands = packageJSONObject.contributes.commands.filter((c: ICommand) => isOtherWorkspaceCommand(c.enablement));
+	const otherWorkspacesCommandPalette = packageJSONObject.contributes.menus.commandPalette.filter((c: ICommandPalette) => isOtherWorkspaceCommand(c.when));
 	return {
 		packageJsonPath,
 		packageJSONObject,
 		oldCommands,
 		coreCommands,
 		coreCommandPalette,
+		otherWorkspacesCommands,
+		otherWorkspacesCommandPalette,
 	};
 }
 

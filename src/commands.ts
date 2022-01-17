@@ -7,6 +7,7 @@ import { incrementSetting, toggleSetting, updateSetting } from './settings';
 import { FolderTreeItem, RunCommandTreeItem } from './TreeViewProvider';
 import { CommandObject, Runnable, StatusBarNotification, ToggleSetting, TopLevelCommands } from './types';
 import { forEachCommand, getAllVscodeCommands, goToSymbol, isSimpleObject, openKeybindingsGuiAt, openSettingGuiAt, openSettingsJSON } from './utils';
+import { isWorkspaceCommandItem } from './workspaceCommands';
 /**
  * All command ids contributed by this extension.
  */
@@ -102,6 +103,27 @@ export function registerExtensionCommands() {
 		} else {
 			newStatusBarItemText = labelName;
 		}
+		if (treeItem instanceof RunCommandTreeItem && isWorkspaceCommandItem(treeItem.runnable)) {
+			const configCommands: TopLevelCommands = JSON.parse(JSON.stringify(extensionConfig.workspaceCommands));// config is readonly, get a copy
+			for (const key in configCommands) {
+				const commandObject = configCommands[key];
+				if (key === labelName) {
+					toggleStatusBarItem(commandObject);
+					break;
+				}
+				if (commandObject.nestedItems) {
+					for (const key2 in commandObject.nestedItems) {
+						const nestedItem = commandObject.nestedItems[key2];
+						if (key2 === labelName) {
+							toggleStatusBarItem(nestedItem);
+							break;
+						}
+					}
+				}
+			}
+			updateSetting(Constants.workspaceCommandsSettingId, configCommands, 'workspace');
+		}
+		else {
 		const configCommands: TopLevelCommands = JSON.parse(JSON.stringify(extensionConfig.commands));// config is readonly, get a copy
 		for (const key in configCommands) {
 			const commandObject = configCommands[key];
@@ -119,6 +141,8 @@ export function registerExtensionCommands() {
 				}
 			}
 		}
+			updateSetting(Constants.commandsSettingId, configCommands, 'global');
+		}
 		function toggleStatusBarItem(commandObject: CommandObject) {
 			if (commandObject.statusBar) {
 				commandObject.statusBar.hidden = !commandObject.statusBar.hidden;
@@ -128,8 +152,6 @@ export function registerExtensionCommands() {
 				};
 			}
 		}
-
-		updateSetting(Constants.commandsSettingId, configCommands, 'global');
 	});
 	commands.registerCommand(CommandIds.revealCommandsInSettignsGUI, () => {
 		openSettingGuiAt(`@ext:usernamehw.commands`);

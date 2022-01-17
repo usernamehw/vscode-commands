@@ -4,6 +4,10 @@ export interface ExtensionConfig {
 	 */
 	commands: TopLevelCommands;
 	/**
+	 * Workspace specific config. Addition items to show in Tree View, for each workspace.
+	 */
+	workspaceCommands: TopLevelCommands;
+	/**
 	 * Use shorter command ids.
 	 */
 	alias: Record<string, string>;
@@ -63,6 +67,7 @@ export interface CommandObject {
 	sequence?: Sequence;
 	hidden?: boolean;
 	when?: string;
+	workspace?: string;
 }
 /**
  * Add command/folder to status bar
@@ -84,6 +89,7 @@ export interface CommandFolder {
 	nestedItems?: TopLevelCommands;
 	statusBar?: StatusBar;
 	hidden?: boolean;
+	workspace?: string;
 }
 
 // ────────────────────────────────────────────────────────────
@@ -100,4 +106,8 @@ export interface StatusBarNotification {
 	color?: string;
 	timeout?: number;
 	priority?: number;// TODO: allow to specify priority, make default aligned to the right item
+}
+
+export interface WorkspaceCommand {
+	workspace: string;
 }
