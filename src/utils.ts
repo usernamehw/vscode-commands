@@ -31,8 +31,12 @@ export function openKeybindingsGuiAt(value: string) {
 /**
  * Open global settings.json file in editor.
  */
-export async function openSettingsJSON() {
-	return await commands.executeCommand('workbench.action.openSettingsJson');
+export async function openSettingsJSON(target: 'global' | 'workspace') {
+	if (target === 'global') {
+		return await commands.executeCommand('workbench.action.openSettingsJson');
+	} else {
+		return await commands.executeCommand('workbench.action.openWorkspaceSettingsFile');
+	}
 }
 /**
  * Walk recursively over all items from `commands.commands` setting and execute callback for each item/command.

@@ -79,12 +79,14 @@ export function registerExtensionCommands() {
 	});
 	commands.registerCommand(CommandIds.revealCommand, async (commandTreeItem: RunCommandTreeItem) => {
 		const symbolName = commandTreeItem.getLabelName();
-		await openSettingsJSON();
+		applyForTreeItem(async ({ configTarget }) => {
+			await openSettingsJSON(configTarget);
 		const activeTextEditor = window.activeTextEditor;
 		if (!activeTextEditor) {
 			return;
 		}
 		goToSymbol(activeTextEditor, symbolName);
+		}, commandTreeItem)
 	});
 	commands.registerCommand(CommandIds.assignKeybinding, (commandTreeItem: RunCommandTreeItem) => {
 		openKeybindingsGuiAt(commandTreeItem.getLabelName());
@@ -103,7 +105,7 @@ export function registerExtensionCommands() {
 		} else {
 			newStatusBarItemText = labelName;
 		}
-		applyForTreeItem((_, commands, settingId, configTarget) => {
+		applyForTreeItem(({ commands, settingId, configTarget }) => {
 			const configCommands: TopLevelCommands = JSON.parse(JSON.stringify(commands));
 			for (const key in configCommands) {
 				const commandObject = configCommands[key];
@@ -154,7 +156,7 @@ export function registerExtensionCommands() {
 			modal: true,
 		}, confirmBtnName);
 		if (button === confirmBtnName) {
-			applyForTreeItem(async (treeItem, commands, settingId, configTarget) => {
+			applyForTreeItem(async ({ treeItem, commands, settingId, configTarget }) => {
 				const configCommands: TopLevelCommands = JSON.parse(JSON.stringify(commands));// config is readonly, get a copy
 			forEachCommand((item, key, parentElement) => {
 				if (key === treeItem.label) {
@@ -197,11 +199,11 @@ export function registerExtensionCommands() {
 		const newCommandKey = `${label}_${Math.random().toString().slice(2, 4)}`;
 
 		if (folderTreeItem) {
-			applyForTreeItem(async (folderTreeItem, commands, settingId, configTarget) => {
+			applyForTreeItem(async ({ treeItem, commands, settingId, configTarget }) => {
 		let newCommandsSetting: TopLevelCommands = {};
 				for (const key in commands) {
 					const item = commands[key];
-				if (key === folderTreeItem.getLabelName()) {
+					if (key === treeItem.getLabelName()) {
 					// @ts-ignore
 					newCommandsSetting[key] = {
 						nestedItems: {
@@ -216,7 +218,7 @@ export function registerExtensionCommands() {
 				}
 			}
 				await updateSetting(settingId, newCommandsSetting, configTarget);
-				await openSettingsJSON();
+				await openSettingsJSON(configTarget);
 				await goToSymbol(window.activeTextEditor!, newCommandKey);
 			}, folderTreeItem);
 		}
@@ -228,7 +230,7 @@ export function registerExtensionCommands() {
 				},
 			};
 		await updateSetting(Constants.commandsSettingId, newCommandsSetting, 'global');
-		await openSettingsJSON();
+			await openSettingsJSON('global');
 		await goToSymbol(window.activeTextEditor!, newCommandKey);
 		}
 	}
@@ -370,15 +372,15 @@ function showTempStatusBarMessage(notification: StatusBarNotification) {
 }
 
 function applyForTreeItem(
-	action: (item: RunCommandTreeItem | FolderTreeItem, commands: TopLevelCommands, settingId: string, configTarget: 'global' | 'workspace') => any,
+	action: (o: { treeItem: RunCommandTreeItem | FolderTreeItem, commands: TopLevelCommands, settingId: string, configTarget: 'global' | 'workspace' }) => any,
 	treeItem: RunCommandTreeItem | FolderTreeItem) {
 	const isWorkspaceTreeItem = (treeItem: RunCommandTreeItem | FolderTreeItem) => {
 		return (treeItem instanceof RunCommandTreeItem && isWorkspaceCommandItem(treeItem.runnable)) ||
 			(treeItem instanceof FolderTreeItem && isWorkspaceCommandItem(treeItem.folder));
 	}
 	if (isWorkspaceTreeItem(treeItem)) {
-		return action(treeItem, extensionConfig.workspaceCommands, Constants.workspaceCommandsSettingId, 'workspace');
+		return action({ treeItem, commands: extensionConfig.workspaceCommands, settingId: Constants.workspaceCommandsSettingId, configTarget: 'workspace' });
 	} else {
-		return action(treeItem, extensionConfig.commands, Constants.commandsSettingId, 'global');
+		return action({ treeItem, commands: extensionConfig.commands, settingId: Constants.commandsSettingId, configTarget: 'global' });
 	}
 }
