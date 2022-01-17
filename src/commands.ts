@@ -103,8 +103,8 @@ export function registerExtensionCommands() {
 		} else {
 			newStatusBarItemText = labelName;
 		}
-		if (treeItem instanceof RunCommandTreeItem && isWorkspaceCommandItem(treeItem.runnable)) {
-			const configCommands: TopLevelCommands = JSON.parse(JSON.stringify(extensionConfig.workspaceCommands));// config is readonly, get a copy
+		applyForTreeItem((_, commands, settingId, configTarget) => {
+			const configCommands: TopLevelCommands = JSON.parse(JSON.stringify(commands));
 			for (const key in configCommands) {
 				const commandObject = configCommands[key];
 				if (key === labelName) {
@@ -121,28 +121,8 @@ export function registerExtensionCommands() {
 					}
 				}
 			}
-			updateSetting(Constants.workspaceCommandsSettingId, configCommands, 'workspace');
-		}
-		else {
-		const configCommands: TopLevelCommands = JSON.parse(JSON.stringify(extensionConfig.commands));// config is readonly, get a copy
-		for (const key in configCommands) {
-			const commandObject = configCommands[key];
-			if (key === labelName) {
-				toggleStatusBarItem(commandObject);
-				break;
-			}
-			if (commandObject.nestedItems) {
-				for (const key2 in commandObject.nestedItems) {
-					const nestedItem = commandObject.nestedItems[key2];
-					if (key2 === labelName) {
-						toggleStatusBarItem(nestedItem);
-						break;
-					}
-				}
-			}
-		}
-			updateSetting(Constants.commandsSettingId, configCommands, 'global');
-		}
+			updateSetting(settingId, configCommands, configTarget);
+		}, treeItem);
 		function toggleStatusBarItem(commandObject: CommandObject) {
 			if (commandObject.statusBar) {
 				commandObject.statusBar.hidden = !commandObject.statusBar.hidden;
@@ -174,13 +154,15 @@ export function registerExtensionCommands() {
 			modal: true,
 		}, confirmBtnName);
 		if (button === confirmBtnName) {
-			const configCommands: TopLevelCommands = JSON.parse(JSON.stringify(extensionConfig.commands));// config is readonly, get a copy
+			applyForTreeItem(async (treeItem, commands, settingId, configTarget) => {
+				const configCommands: TopLevelCommands = JSON.parse(JSON.stringify(commands));// config is readonly, get a copy
 			forEachCommand((item, key, parentElement) => {
 				if (key === treeItem.label) {
 					delete parentElement[key];
 				}
 			}, configCommands);
-			await updateSetting(Constants.commandsSettingId, configCommands, 'global');
+				await updateSetting(settingId, configCommands, configTarget);
+			}, treeItem);
 		}
 	});
 	async function newFolder() {
@@ -214,10 +196,11 @@ export function registerExtensionCommands() {
 		const newCommand = addArgs(label);
 		const newCommandKey = `${label}_${Math.random().toString().slice(2, 4)}`;
 
-		let newCommandsSetting: TopLevelCommands = {};
 		if (folderTreeItem) {
-			for (const key in extensionConfig.commands) {
-				const item = extensionConfig.commands[key];
+			applyForTreeItem(async (folderTreeItem, commands, settingId, configTarget) => {
+		let newCommandsSetting: TopLevelCommands = {};
+				for (const key in commands) {
+					const item = commands[key];
 				if (key === folderTreeItem.getLabelName()) {
 					// @ts-ignore
 					newCommandsSetting[key] = {
@@ -232,17 +215,22 @@ export function registerExtensionCommands() {
 					newCommandsSetting[key] = item;
 				}
 			}
-		} else {
-			newCommandsSetting = {
+				await updateSetting(settingId, newCommandsSetting, configTarget);
+				await openSettingsJSON();
+				await goToSymbol(window.activeTextEditor!, newCommandKey);
+			}, folderTreeItem);
+		}
+		else {
+			const newCommandsSetting = {
 				...extensionConfig.commands,
 				...{
 					[newCommandKey]: newCommand,
 				},
 			};
-		}
 		await updateSetting(Constants.commandsSettingId, newCommandsSetting, 'global');
 		await openSettingsJSON();
 		await goToSymbol(window.activeTextEditor!, newCommandKey);
+		}
 	}
 	commands.registerTextEditorCommand(CommandIds.escapeCommandUriArgument, editor => {
 		const selectionRange = editor.selection;
@@ -379,4 +367,18 @@ function showTempStatusBarMessage(notification: StatusBarNotification) {
 		tempStatusBarMessage.hide();
 		tempStatusBarMessage.dispose();
 	}, notification.timeout || 4000);
+}
+
+function applyForTreeItem(
+	action: (item: RunCommandTreeItem | FolderTreeItem, commands: TopLevelCommands, settingId: string, configTarget: 'global' | 'workspace') => any,
+	treeItem: RunCommandTreeItem | FolderTreeItem) {
+	const isWorkspaceTreeItem = (treeItem: RunCommandTreeItem | FolderTreeItem) => {
+		return (treeItem instanceof RunCommandTreeItem && isWorkspaceCommandItem(treeItem.runnable)) ||
+			(treeItem instanceof FolderTreeItem && isWorkspaceCommandItem(treeItem.folder));
+	}
+	if (isWorkspaceTreeItem(treeItem)) {
+		return action(treeItem, extensionConfig.workspaceCommands, Constants.workspaceCommandsSettingId, 'workspace');
+	} else {
+		return action(treeItem, extensionConfig.commands, Constants.commandsSettingId, 'global');
+	}
 }

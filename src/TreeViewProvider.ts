@@ -47,7 +47,7 @@ export class FolderTreeItem extends TreeItem {
 
 	constructor(
 		label: string,
-		folder: CommandFolder,
+		readonly folder: CommandFolder,
 	) {
 		super(label);
 		this.nestedItems = folder.nestedItems!;
