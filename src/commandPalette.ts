@@ -64,11 +64,11 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 		packageJsonPath,
 		coreCommandPalette,
 		otherWorkspacesCommands,
-		otherWorkspacesCommandPalette
+		otherWorkspacesCommandPalette,
 	} = await getCommandsFromPackageJson(context);
 
 	const userCommands: ICommand[] = [];
-	const userCommandPalette: { command: string, when: string }[] = [];
+	const userCommandPalette: { command: string; when: string }[] = [];
 	forEachCommand((item, key) => {
 		if (item.nestedItems) {
 			return;// Skip folders
@@ -83,7 +83,7 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 		});
 		userCommandPalette.push({
 			command: key,
-			when: when,
+			when,
 		});
 	}, items);
 	const newCommands = [...coreCommands, ...userCommands];
@@ -107,7 +107,7 @@ async function getCommandsFromPackageJson(context: ExtensionContext) {
 	const coreCommands: ICommand[] = (packageJSONObject.contributes.commands as ICommand[]).filter(command => coreCommandIds.includes(command.command));
 	const coreCommandPalette = (packageJSONObject.contributes.menus.commandPalette as ICommandPalette[]).filter(command => coreCommandIds.includes(command.command));
 	const workspaceId = getWorkspaceId(context);
-	const isOtherWorkspaceCommand = (c: string | undefined) => !workspaceId || (c !== undefined && c.includes(workspaceContextKey) && !c.includes(workspaceId));
+	const isOtherWorkspaceCommand = (c: string | undefined) => !workspaceId || c !== undefined && c.includes(workspaceContextKey) && !c.includes(workspaceId);
 	const otherWorkspacesCommands = packageJSONObject.contributes.commands.filter((c: ICommand) => isOtherWorkspaceCommand(c.enablement));
 	const otherWorkspacesCommandPalette = packageJSONObject.contributes.menus.commandPalette.filter((c: ICommandPalette) => isOtherWorkspaceCommand(c.when));
 	return {

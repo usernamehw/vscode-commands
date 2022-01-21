@@ -77,16 +77,16 @@ export function registerExtensionCommands() {
 			builder.insert(editor.selection.active, label);
 		});
 	});
-	commands.registerCommand(CommandIds.revealCommand, async (commandTreeItem: RunCommandTreeItem) => {
+	commands.registerCommand(CommandIds.revealCommand, (commandTreeItem: RunCommandTreeItem) => {
 		const symbolName = commandTreeItem.getLabelName();
 		applyForTreeItem(async ({ configTarget }) => {
 			await openSettingsJSON(configTarget);
-		const activeTextEditor = window.activeTextEditor;
-		if (!activeTextEditor) {
-			return;
-		}
-		goToSymbol(activeTextEditor, symbolName);
-		}, commandTreeItem)
+			const activeTextEditor = window.activeTextEditor;
+			if (!activeTextEditor) {
+				return;
+			}
+			goToSymbol(activeTextEditor, symbolName);
+		}, commandTreeItem);
 	});
 	commands.registerCommand(CommandIds.assignKeybinding, (commandTreeItem: RunCommandTreeItem) => {
 		openKeybindingsGuiAt(commandTreeItem.getLabelName());
@@ -158,11 +158,11 @@ export function registerExtensionCommands() {
 		if (button === confirmBtnName) {
 			applyForTreeItem(async ({ treeItem, commands, settingId, configTarget }) => {
 				const configCommands: TopLevelCommands = JSON.parse(JSON.stringify(commands));// config is readonly, get a copy
-			forEachCommand((item, key, parentElement) => {
-				if (key === treeItem.label) {
-					delete parentElement[key];
-				}
-			}, configCommands);
+				forEachCommand((item, key, parentElement) => {
+					if (key === treeItem.label) {
+						delete parentElement[key];
+					}
+				}, configCommands);
 				await updateSetting(settingId, configCommands, configTarget);
 			}, treeItem);
 		}
@@ -200,38 +200,37 @@ export function registerExtensionCommands() {
 
 		if (folderTreeItem) {
 			applyForTreeItem(async ({ treeItem, commands, settingId, configTarget }) => {
-		let newCommandsSetting: TopLevelCommands = {};
+				const newCommandsSetting: TopLevelCommands = {};
 				for (const key in commands) {
 					const item = commands[key];
 					if (key === treeItem.getLabelName()) {
 					// @ts-ignore
-					newCommandsSetting[key] = {
-						nestedItems: {
-							...item.nestedItems,
-							...{
-								[newCommandKey]: newCommand,
+						newCommandsSetting[key] = {
+							nestedItems: {
+								...item.nestedItems,
+								...{
+									[newCommandKey]: newCommand,
+								},
 							},
-						},
-					};
-				} else {
-					newCommandsSetting[key] = item;
+						};
+					} else {
+						newCommandsSetting[key] = item;
+					}
 				}
-			}
 				await updateSetting(settingId, newCommandsSetting, configTarget);
 				await openSettingsJSON(configTarget);
 				await goToSymbol(window.activeTextEditor!, newCommandKey);
 			}, folderTreeItem);
-		}
-		else {
+		} else {
 			const newCommandsSetting = {
 				...extensionConfig.commands,
 				...{
 					[newCommandKey]: newCommand,
 				},
 			};
-		await updateSetting(Constants.commandsSettingId, newCommandsSetting, 'global');
+			await updateSetting(Constants.commandsSettingId, newCommandsSetting, 'global');
 			await openSettingsJSON('global');
-		await goToSymbol(window.activeTextEditor!, newCommandKey);
+			await goToSymbol(window.activeTextEditor!, newCommandKey);
 		}
 	}
 	commands.registerTextEditorCommand(CommandIds.escapeCommandUriArgument, editor => {
@@ -372,12 +371,10 @@ function showTempStatusBarMessage(notification: StatusBarNotification) {
 }
 
 function applyForTreeItem(
-	action: (o: { treeItem: RunCommandTreeItem | FolderTreeItem, commands: TopLevelCommands, settingId: string, configTarget: 'global' | 'workspace' }) => any,
-	treeItem: RunCommandTreeItem | FolderTreeItem) {
-	const isWorkspaceTreeItem = (treeItem: RunCommandTreeItem | FolderTreeItem) => {
-		return (treeItem instanceof RunCommandTreeItem && isWorkspaceCommandItem(treeItem.runnable)) ||
-			(treeItem instanceof FolderTreeItem && isWorkspaceCommandItem(treeItem.folder));
-	}
+	action: (o: { treeItem: FolderTreeItem | RunCommandTreeItem; commands: TopLevelCommands; settingId: string; configTarget: 'global' | 'workspace' })=> any,
+	treeItem: FolderTreeItem | RunCommandTreeItem) {
+	const isWorkspaceTreeItem = (treeItem: FolderTreeItem | RunCommandTreeItem) => treeItem instanceof RunCommandTreeItem && isWorkspaceCommandItem(treeItem.runnable) ||
+			treeItem instanceof FolderTreeItem && isWorkspaceCommandItem(treeItem.folder);
 	if (isWorkspaceTreeItem(treeItem)) {
 		return action({ treeItem, commands: extensionConfig.workspaceCommands, settingId: Constants.workspaceCommandsSettingId, configTarget: 'workspace' });
 	} else {

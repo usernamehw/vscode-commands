@@ -52,7 +52,7 @@ export function activate(extensionContext: ExtensionContext) {
 	}
 
 	function updateEverything(workspaceId?: string) {
-		let commands = allCommands(workspaceId);
+		const commands = allCommands(workspaceId);
 		commandsTreeViewProvider.updateCommands(commands);
 		commandsTreeViewProvider.refresh();
 		updateUserCommands(commands);
