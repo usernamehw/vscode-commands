@@ -62,6 +62,7 @@
 				"commands.commands": {
 					"type": "object",
 					"description": "Main extension property. Commands that will be rendered in the View.",
+					"scope": "application",
 					"patternProperties": {
 						"^.*$": {
 							"oneOf": [

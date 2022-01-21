@@ -43,6 +43,7 @@ export function activate(extensionContext: ExtensionContext) {
 	function allCommands(workspaceId?: string) {
 		let commands = extensionConfig.commands;
 		if (workspaceId) {
+			// TODO: maybe fetch only workspace value from workspaceCommands?
 			commands = {
 				...commands,
 				...addWorkspaceIdToCommands(extensionConfig.workspaceCommands, workspaceId),
