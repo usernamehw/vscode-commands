@@ -6,11 +6,13 @@ import { updateUserCommands } from './registerUserCommands';
 import { updateStatusBarItems } from './statusBar';
 import { CommandsTreeViewProvider } from './TreeViewProvider';
 import { ExtensionConfig, Runnable } from './types';
+import { addWorkspaceIdToCommands, getWorkspaceId, setWorkspaceIdToContext } from './workspaceCommands';
 
 export const enum Constants {
 	extensionId = 'usernamehw.commands',
 	extensionName = 'commands',
 	commandsSettingId = 'commands.commands',
+	workspaceCommandsSettingId = 'commands.workspaceCommands',
 	treeViewStatusBarIndicator = '💠',
 
 	COMMAND_PALETTE_WAS_POPULATED_STORAGE_KEY = 'was_populated',
@@ -24,13 +26,13 @@ export class extensionState {
 export function activate(extensionContext: ExtensionContext) {
 	updateConfig();
 
-	const commandsTreeViewProvider = new CommandsTreeViewProvider(extensionConfig);
+	const commandsTreeViewProvider = new CommandsTreeViewProvider({});
 	const commandsTreeView = window.createTreeView(`${Constants.extensionName}.tree`, {
 		treeDataProvider: commandsTreeViewProvider,
 		showCollapseAll: true,
 	});
 
-	updateEverything();
+	setWorkspaceIdToContext(extensionContext).then(updateEverything);
 
 	registerExtensionCommands();
 
@@ -38,12 +40,25 @@ export function activate(extensionContext: ExtensionContext) {
 		extensionConfig = workspace.getConfiguration(Constants.extensionName) as any as ExtensionConfig;
 	}
 
-	function updateEverything() {
-		commandsTreeViewProvider.updateConfig(extensionConfig);
+	function allCommands(workspaceId?: string) {
+		let commands = extensionConfig.commands;
+		if (workspaceId) {
+			// TODO: maybe fetch only workspace value from workspaceCommands?
+			commands = {
+				...commands,
+				...addWorkspaceIdToCommands(extensionConfig.workspaceCommands, workspaceId),
+			};
+		}
+		return commands;
+	}
+
+	function updateEverything(workspaceId?: string) {
+		const commands = allCommands(workspaceId);
+		commandsTreeViewProvider.updateCommands(commands);
 		commandsTreeViewProvider.refresh();
-		updateUserCommands(extensionConfig.commands);
-		updateStatusBarItems(extensionConfig.commands);
-		updateCommandPalette(extensionConfig.commands, extensionContext);
+		updateUserCommands(commands);
+		updateStatusBarItems(commands);
+		updateCommandPalette(commands, extensionContext);
 		updateDocumentLinkProvider();
 	}
 
@@ -53,7 +68,7 @@ export function activate(extensionContext: ExtensionContext) {
 			return;
 		}
 		updateConfig();
-		updateEverything();
+		updateEverything(getWorkspaceId(extensionContext));
 	}));
 }
 

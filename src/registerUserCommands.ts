@@ -19,7 +19,7 @@ export async function updateUserCommands(items: TopLevelCommands) {
 			const revealButton = 'Reveal';
 			const button = await window.showWarningMessage(`Command key must be unique (even among already registered commands) "${key}".`, revealButton);
 			if (button) {
-				await openSettingsJSON();
+				await openSettingsJSON(item.workspace ? 'workspace' : 'global');
 				await goToSymbol(window.activeTextEditor!, key);
 			}
 			return;
