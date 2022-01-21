@@ -1,22 +1,21 @@
-import { v4 as uuid } from 'uuid';
-import * as vscode from 'vscode';
+import { commands, ExtensionContext } from 'vscode';
 import { CommandFolder, CommandObject, TopLevelCommands, WorkspaceCommand } from './types';
-import { forEachCommand } from './utils';
+import { forEachCommand, uniqueId } from './utils';
 
 export const workspaceContextKey = 'usernamehw.commands.workspaceId';
 
-export function getWorkspaceId(context: vscode.ExtensionContext): string | undefined {
+export function getWorkspaceId(context: ExtensionContext): string | undefined {
 	return context.workspaceState.get<string>('workspaceId');
 }
 
-export async function setWorkspaceIdToContext(context: vscode.ExtensionContext): Promise<string> {
+export async function setWorkspaceIdToContext(context: ExtensionContext): Promise<string> {
 	let maybeWorkspaceId = getWorkspaceId(context);
 	if (!maybeWorkspaceId) {
-		maybeWorkspaceId = uuid();
+		maybeWorkspaceId = uniqueId();
 		await context.workspaceState.update('workspaceId', maybeWorkspaceId);
 	}
 	const workspaceId = maybeWorkspaceId;
-	await vscode.commands.executeCommand('setContext', workspaceContextKey, workspaceId);
+	await commands.executeCommand('setContext', workspaceContextKey, workspaceId);
 	return workspaceId;
 }
 

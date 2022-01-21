@@ -849,7 +849,6 @@
 		"@soda/friendly-errors-webpack-plugin": "^1.8.1",
 		"@types/lodash": "^4.14.178",
 		"@types/node": "^14.18.5",
-		"@types/uuid": "^8.3.4",
 		"@types/vscode": "^1.60.0",
 		"@typescript-eslint/eslint-plugin": "^5.9.1",
 		"@typescript-eslint/parser": "^5.9.1",
@@ -863,7 +862,6 @@
 	},
 	"dependencies": {
 		"lodash": "^4.17.21",
-		"open": "^8.4.0",
-		"uuid": "^8.3.2"
+		"open": "^8.4.0"
 	}
 }

@@ -117,3 +117,9 @@ export function forEachSymbol(f: (symbol: DocumentSymbol)=> void, symbols: Docum
 export async function getAllVscodeCommands() {
 	return await commands.getCommands(true);
 }
+/**
+ * Unique id... Ehh, good enough.
+ */
+export function uniqueId(): string {
+	return Date.now().toString(36) + Math.random().toString(36).slice(2);
+}
