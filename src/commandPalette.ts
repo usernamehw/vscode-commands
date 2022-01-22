@@ -3,7 +3,7 @@ import { Disposable, ExtensionContext } from 'vscode';
 import { Constants, extensionConfig } from './extension';
 import { TopLevelCommands } from './types';
 import { forEachCommand } from './utils';
-import { getWorkspaceId, isWorkspaceCommandItem, workspaceContextKey } from './workspaceCommands';
+import { getWorkspaceId, isWorkspaceCommandItem, WorkspaceConstants } from './workspaceCommands';
 
 const commandPaletteCommandsList: Disposable[] = [];
 /**
@@ -74,7 +74,7 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 			return;// Skip folders
 		}
 		const baseWhen = item.when ?? 'true';
-		const when = isWorkspaceCommandItem(item) ? `${workspaceContextKey} == ${item.workspace} && ${baseWhen}` : baseWhen;
+		const when = isWorkspaceCommandItem(item) ? `${WorkspaceConstants.ContextKey} == ${item.workspace} && ${baseWhen}` : baseWhen;
 		userCommands.push({
 			command: key,
 			title: key,
@@ -107,7 +107,7 @@ async function getCommandsFromPackageJson(context: ExtensionContext) {
 	const coreCommands: ICommand[] = (packageJSONObject.contributes.commands as ICommand[]).filter(command => coreCommandIds.includes(command.command));
 	const coreCommandPalette = (packageJSONObject.contributes.menus.commandPalette as ICommandPalette[]).filter(command => coreCommandIds.includes(command.command));
 	const workspaceId = getWorkspaceId(context);
-	const isOtherWorkspaceCommand = (c: string | undefined) => !workspaceId || c !== undefined && c.includes(workspaceContextKey) && !c.includes(workspaceId);
+	const isOtherWorkspaceCommand = (c: string | undefined) => !workspaceId || c !== undefined && c.includes(WorkspaceConstants.ContextKey) && !c.includes(workspaceId);
 	const otherWorkspacesCommands = packageJSONObject.contributes.commands.filter((c: ICommand) => isOtherWorkspaceCommand(c.enablement));
 	const otherWorkspacesCommandPalette = packageJSONObject.contributes.menus.commandPalette.filter((c: ICommandPalette) => isOtherWorkspaceCommand(c.when));
 	return {

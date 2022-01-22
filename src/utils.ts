@@ -1,5 +1,6 @@
 import { commands, DocumentSymbol, Range, Selection, TextDocument, TextEditor, TextEditorRevealType, window } from 'vscode';
 import { TopLevelCommands } from './types';
+
 /**
  * Emulate delay with async setTimeout().
  */
@@ -29,14 +30,10 @@ export function openKeybindingsGuiAt(value: string) {
 	commands.executeCommand('workbench.action.openGlobalKeybindings', value);
 }
 /**
- * Open global settings.json file in editor.
+ * Open global or workspace settings.json file in the editor.
  */
 export async function openSettingsJSON(target: 'global' | 'workspace') {
-	if (target === 'global') {
-		return await commands.executeCommand('workbench.action.openSettingsJson');
-	} else {
-		return await commands.executeCommand('workbench.action.openWorkspaceSettingsFile');
-	}
+	return await commands.executeCommand(target === 'global' ? 'workbench.action.openSettingsJson' : 'workbench.action.openWorkspaceSettingsFile');
 }
 /**
  * Walk recursively over all items from `commands.commands` setting and execute callback for each item/command.

@@ -6,7 +6,7 @@
 	"publisher": "usernamehw",
 	"license": "MIT",
 	"engines": {
-		"vscode": "^1.63.0"
+		"vscode": "^1.63.1"
 	},
 	"extensionKind": [
 		"ui",

@@ -1,7 +1,9 @@
 import { MarkdownString, Uri } from 'vscode';
 import { TopLevelCommands } from './types';
 
-
+/**
+ * Create tooltip content for folder that contains all of the nested items.
+ */
 export function createFolderHoverText(nestedItems: TopLevelCommands) {
 	const markdown = new MarkdownString(undefined, true);
 	markdown.isTrusted = true;

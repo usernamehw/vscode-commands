@@ -2,20 +2,23 @@ import { commands, ExtensionContext } from 'vscode';
 import { CommandFolder, CommandObject, TopLevelCommands, WorkspaceCommand } from './types';
 import { deepCopy, forEachCommand, uniqueId } from './utils';
 
-export const workspaceContextKey = 'usernamehw.commands.workspaceId';
+export const enum WorkspaceConstants {
+	StorageKey = 'workspaceId',
+	ContextKey = 'usernamehw.commands.workspaceId',
+}
 
 export function getWorkspaceId(context: ExtensionContext): string | undefined {
-	return context.workspaceState.get<string>('workspaceId');
+	return context.workspaceState.get<string>(WorkspaceConstants.StorageKey);
 }
 
 export async function setWorkspaceIdToContext(context: ExtensionContext): Promise<string> {
 	let maybeWorkspaceId = getWorkspaceId(context);
 	if (!maybeWorkspaceId) {
 		maybeWorkspaceId = uniqueId();
-		await context.workspaceState.update('workspaceId', maybeWorkspaceId);
+		await context.workspaceState.update(WorkspaceConstants.StorageKey, maybeWorkspaceId);
 	}
 	const workspaceId = maybeWorkspaceId;
-	await commands.executeCommand('setContext', workspaceContextKey, workspaceId);
+	await commands.executeCommand('setContext', WorkspaceConstants.ContextKey, workspaceId);
 	return workspaceId;
 }
 
@@ -23,8 +26,8 @@ export function isWorkspaceCommandItem(item: any): item is (CommandFolder & Work
 	return item.workspace !== undefined;
 }
 
-export function addWorkspaceIdToCommands(items: TopLevelCommands, workspaceId: string) {
-	const itemsDeepCopy = deepCopy(items);
+export function addWorkspaceIdToCommands(workspaceCommands: TopLevelCommands, workspaceId: string): TopLevelCommands {
+	const itemsDeepCopy = deepCopy(workspaceCommands);
 	forEachCommand(item => {
 		item.workspace = workspaceId;
 	}, itemsDeepCopy);

@@ -68,7 +68,7 @@ export async function incrementSetting(settingName: unknown, n: unknown) {
 	}
 }
 /**
- * Update (for now only global) user setting with the new value.
+ * Update user setting with the new value.
  */
 export async function updateSetting(settingName: string, newValue: unknown, target: 'global' | 'workspace') {
 	const settings = workspace.getConfiguration(undefined, null);

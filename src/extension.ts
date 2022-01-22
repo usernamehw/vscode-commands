@@ -5,7 +5,7 @@ import { updateDocumentLinkProvider } from './documentLinksProvider';
 import { updateUserCommands } from './registerUserCommands';
 import { updateStatusBarItems } from './statusBar';
 import { CommandsTreeViewProvider } from './TreeViewProvider';
-import { ExtensionConfig, Runnable } from './types';
+import { ExtensionConfig, Runnable, TopLevelCommands } from './types';
 import { addWorkspaceIdToCommands, getWorkspaceId, setWorkspaceIdToContext } from './workspaceCommands';
 
 export const enum Constants {
@@ -23,7 +23,7 @@ export class extensionState {
 	static lastExecutedCommand: Runnable = { command: 'noop' };
 }
 
-export function activate(extensionContext: ExtensionContext) {
+export async function activate(extensionContext: ExtensionContext) {
 	updateConfig();
 
 	const commandsTreeViewProvider = new CommandsTreeViewProvider({});
@@ -32,24 +32,27 @@ export function activate(extensionContext: ExtensionContext) {
 		showCollapseAll: true,
 	});
 
-	setWorkspaceIdToContext(extensionContext).then(updateEverything);
 
 	registerExtensionCommands();
+
+	await setWorkspaceIdToContext(extensionContext);
+	updateEverything();
 
 	function updateConfig() {
 		extensionConfig = workspace.getConfiguration(Constants.extensionName) as any as ExtensionConfig;
 	}
 
-	function allCommands(workspaceId?: string) {
-		let commands = extensionConfig.commands;
-		if (workspaceId) {
-			// TODO: maybe fetch only workspace value from workspaceCommands?
-			commands = {
-				...commands,
-				...addWorkspaceIdToCommands(extensionConfig.workspaceCommands, workspaceId),
+	/** Merge global and workspace commands */
+	function allCommands(workspaceId?: string): TopLevelCommands {
+		const workspaceCommands = workspace.getConfiguration(Constants.extensionName).inspect('workspaceCommands')?.workspaceValue as ExtensionConfig['workspaceCommands'] | undefined;
+		if (workspaceId && workspaceCommands) {
+			return {
+				...extensionConfig.commands,
+				...addWorkspaceIdToCommands(workspaceCommands, workspaceId),
 			};
+		} else {
+			return extensionConfig.commands;
 		}
-		return commands;
 	}
 
 	function updateEverything(workspaceId?: string) {
