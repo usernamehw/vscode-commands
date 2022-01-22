@@ -21,6 +21,7 @@ export const enum CommandIds {
 	'deleteCommand' = 'commands.deleteCommand',
 	'suggestCommands' = 'commands.suggestCommands',
 	'revealCommand' = 'commands.revealCommand',
+	'revealCommand2' = 'commands.revealCommand2',
 	'openAsQuickPick' = 'commands.openAsQuickPick',
 	'assignKeybinding' = 'commands.assignKeybinding',
 	'addToStatusBar' = 'commands.addToStatusBar',
@@ -84,6 +85,10 @@ export function registerExtensionCommands() {
 			goToSymbol(window.activeTextEditor, symbolName);
 		}, commandTreeItem);
 	});
+	commands.registerCommand(CommandIds.revealCommand2, async ({ workspaceId, label }: { workspaceId?: string; label: string }) => {
+		await openSettingsJSON(workspaceId ? 'workspace' : 'global');
+		goToSymbol(window.activeTextEditor, label);
+	});
 	commands.registerCommand(CommandIds.assignKeybinding, (commandTreeItem: RunCommandTreeItem) => {
 		openKeybindingsGuiAt(commandTreeItem.getLabelName());
 	});
@@ -134,8 +139,8 @@ export function registerExtensionCommands() {
 	commands.registerCommand(CommandIds.revealCommandsInSettignsGUI, () => {
 		openSettingGuiAt(`@ext:${Constants.extensionId}`);
 	});
-	commands.registerCommand(CommandIds.openAsQuickPick, async () => {
-		await showQuickPick(allCommands(getWorkspaceId(extensionState.extensionContext)));
+	commands.registerCommand(CommandIds.openAsQuickPick, () => {
+		showQuickPick(allCommands(getWorkspaceId(extensionState.extensionContext)));
 	});
 	commands.registerCommand(CommandIds.newCommand, async () => {
 		await addNewCommand();

@@ -1,4 +1,4 @@
-import { Disposable, MarkdownString, StatusBarAlignment, window } from 'vscode';
+import { Disposable, MarkdownString, StatusBarAlignment, Uri, window } from 'vscode';
 import { CommandIds } from './commands';
 import { createFolderHoverText } from './folderHoverText';
 import { TopLevelCommands } from './types';
@@ -19,18 +19,26 @@ export function updateStatusBarItems(items: TopLevelCommands) {
 			newStatusBarItem.name = statusBarUserObject.text;
 			newStatusBarItem.color = statusBarUserObject.color;
 
+			let mdTooltip = new MarkdownString(undefined, true);
+			mdTooltip.isTrusted = true;
 			if (statusBarUserObject.markdownTooltip) {
-				const mdString = new MarkdownString(statusBarUserObject.markdownTooltip, true);
-				mdString.isTrusted = true;
-				newStatusBarItem.tooltip = mdString;
+				mdTooltip.appendMarkdown(statusBarUserObject.markdownTooltip);
 			} else {
-				newStatusBarItem.tooltip = statusBarUserObject.tooltip || key;
+				mdTooltip.appendText(statusBarUserObject.tooltip || key);
 			}
-
 			if (item.nestedItems) {
 				icon = '$(folder) ';
-				newStatusBarItem.tooltip = createFolderHoverText(item.nestedItems);
+				mdTooltip = createFolderHoverText(item.nestedItems);
 			}
+			const args = [{
+				workspaceId: item.workspace,
+				label: key,
+			}];
+			const revealCommandUri = Uri.parse(
+				`command:commands.revealCommand2?${encodeURIComponent(JSON.stringify(args))}`,
+			);
+			mdTooltip.appendMarkdown(`\n\n---\n\n[Reveal in settings.json](${revealCommandUri})`);
+			newStatusBarItem.tooltip = mdTooltip;
 
 			newStatusBarItem.text = icon + (statusBarUserObject.text || '');
 			newStatusBarItem.command = {
