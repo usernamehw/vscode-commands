@@ -36,7 +36,7 @@ export async function activate(extensionContext: ExtensionContext) {
 	registerExtensionCommands();
 
 	await setWorkspaceIdToContext(extensionContext);
-	updateEverything();
+	updateEverything(getWorkspaceId(extensionContext));
 
 	function updateConfig() {
 		extensionConfig = workspace.getConfiguration(Constants.extensionName) as any as ExtensionConfig;
