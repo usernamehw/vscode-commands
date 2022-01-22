@@ -1,13 +1,13 @@
 import { ColorThemeKind, commands, debug, env, languages, Uri, window, workspace } from 'vscode';
 import { addArgs } from './args';
-import { Constants, extensionConfig, extensionState } from './extension';
+import { allCommands, Constants, extensionConfig, extensionState } from './extension';
 import { commandsToQuickPickItems, removeCodiconFromLabel, showQuickPick } from './quickPick';
 import { run } from './run';
 import { incrementSetting, toggleSetting, updateSetting } from './settings';
 import { FolderTreeItem, RunCommandTreeItem } from './TreeViewProvider';
 import { CommandObject, Runnable, StatusBarNotification, ToggleSetting, TopLevelCommands } from './types';
 import { deepCopy, forEachCommand, getAllVscodeCommands, goToSymbol, isSimpleObject, openKeybindingsGuiAt, openSettingGuiAt, openSettingsJSON } from './utils';
-import { isWorkspaceCommandItem } from './workspaceCommands';
+import { getWorkspaceId, isWorkspaceCommandItem } from './workspaceCommands';
 /**
  * All command ids contributed by this extension.
  */
@@ -139,7 +139,7 @@ export function registerExtensionCommands() {
 		openSettingGuiAt(`@ext:${Constants.extensionId}`);
 	});
 	commands.registerCommand(CommandIds.openAsQuickPick, async () => {
-		await showQuickPick(extensionConfig.commands);
+		await showQuickPick(allCommands(getWorkspaceId(extensionState.extensionContext)));
 	});
 	commands.registerCommand(CommandIds.newCommand, async () => {
 		await addNewCommand();

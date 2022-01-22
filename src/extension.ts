@@ -21,9 +21,12 @@ export const enum Constants {
 export let extensionConfig: ExtensionConfig;
 export class extensionState {
 	static lastExecutedCommand: Runnable = { command: 'noop' };
+	static extensionContext: ExtensionContext;
 }
 
 export async function activate(extensionContext: ExtensionContext) {
+	extensionState.extensionContext = extensionContext;
+
 	updateConfig();
 
 	const commandsTreeViewProvider = new CommandsTreeViewProvider({});
@@ -40,19 +43,6 @@ export async function activate(extensionContext: ExtensionContext) {
 
 	function updateConfig() {
 		extensionConfig = workspace.getConfiguration(Constants.extensionName) as any as ExtensionConfig;
-	}
-
-	/** Merge global and workspace commands */
-	function allCommands(workspaceId?: string): TopLevelCommands {
-		const workspaceCommands = workspace.getConfiguration(Constants.extensionName).inspect('workspaceCommands')?.workspaceValue as ExtensionConfig['workspaceCommands'] | undefined;
-		if (workspaceId && workspaceCommands) {
-			return {
-				...extensionConfig.commands,
-				...addWorkspaceIdToCommands(workspaceCommands, workspaceId),
-			};
-		} else {
-			return extensionConfig.commands;
-		}
 	}
 
 	function updateEverything(workspaceId?: string) {
@@ -73,6 +63,19 @@ export async function activate(extensionContext: ExtensionContext) {
 		updateConfig();
 		updateEverything(getWorkspaceId(extensionContext));
 	}));
+}
+
+/** Merge global and workspace commands */
+export function allCommands(workspaceId: string | undefined): TopLevelCommands {
+	const workspaceCommands = workspace.getConfiguration(Constants.extensionName).inspect('workspaceCommands')?.workspaceValue as ExtensionConfig['workspaceCommands'] | undefined;
+	if (workspaceId && workspaceCommands) {
+		return {
+			...extensionConfig.commands,
+			...addWorkspaceIdToCommands(workspaceCommands, workspaceId),
+		};
+	} else {
+		return extensionConfig.commands;
+	}
 }
 
 export function deactivate() { }

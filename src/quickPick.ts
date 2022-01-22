@@ -18,6 +18,7 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands) {
 		}
 	}
 	traverseCommands(commandsForPicking);
+
 	const pickedCommandTitle = await window.showQuickPick(Object.keys(treeAsOneLevelMap));
 	if (pickedCommandTitle) {
 		await run(treeAsOneLevelMap[pickedCommandTitle]);
@@ -29,19 +30,13 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands) {
  * - Add `args` detail to commands that can accept arguments.
  */
 export function commandsToQuickPickItems(commandList: string[]): QuickPickItem[] {
-	const result: QuickPickItem[] = [];
+	const quickPickItems: QuickPickItem[] = [];
 	for (const com of commandList) {
-		if (hasArgs(com)) {
-			result.push({
-				label: `${com} ($(pass-filled) args)`,
-			});
-		} else {
-			result.push({
-				label: com,
-			});
-		}
+		quickPickItems.push({
+			label: `${com}${hasArgs(com) ? ' ($(pass-filled) args)' : ''}`,
+		});
 	}
-	return result;
+	return quickPickItems;
 }
 
 export function removeCodiconFromLabel(str: string) {
