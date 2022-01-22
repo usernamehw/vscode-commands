@@ -1,6 +1,6 @@
 import { commands, ExtensionContext } from 'vscode';
 import { CommandFolder, CommandObject, TopLevelCommands, WorkspaceCommand } from './types';
-import { forEachCommand, uniqueId } from './utils';
+import { deepCopy, forEachCommand, uniqueId } from './utils';
 
 export const workspaceContextKey = 'usernamehw.commands.workspaceId';
 
@@ -24,7 +24,7 @@ export function isWorkspaceCommandItem(item: any): item is (CommandFolder & Work
 }
 
 export function addWorkspaceIdToCommands(items: TopLevelCommands, workspaceId: string) {
-	const itemsDeepCopy = JSON.parse(JSON.stringify(items));
+	const itemsDeepCopy = deepCopy(items);
 	forEachCommand(item => {
 		item.workspace = workspaceId;
 	}, itemsDeepCopy);

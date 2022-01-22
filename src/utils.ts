@@ -123,3 +123,9 @@ export async function getAllVscodeCommands() {
 export function uniqueId(): string {
 	return Date.now().toString(36) + Math.random().toString(36).slice(2);
 }
+/**
+ * Copy object or array (hopefully without circular references).
+ */
+export function deepCopy(object: unknown): any {
+	return JSON.parse(JSON.stringify(object));
+}

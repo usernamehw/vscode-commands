@@ -6,7 +6,7 @@ import { run } from './run';
 import { incrementSetting, toggleSetting, updateSetting } from './settings';
 import { FolderTreeItem, RunCommandTreeItem } from './TreeViewProvider';
 import { CommandObject, Runnable, StatusBarNotification, ToggleSetting, TopLevelCommands } from './types';
-import { forEachCommand, getAllVscodeCommands, goToSymbol, isSimpleObject, openKeybindingsGuiAt, openSettingGuiAt, openSettingsJSON } from './utils';
+import { deepCopy, forEachCommand, getAllVscodeCommands, goToSymbol, isSimpleObject, openKeybindingsGuiAt, openSettingGuiAt, openSettingsJSON } from './utils';
 import { isWorkspaceCommandItem } from './workspaceCommands';
 /**
  * All command ids contributed by this extension.
@@ -106,7 +106,7 @@ export function registerExtensionCommands() {
 			newStatusBarItemText = labelName;
 		}
 		applyForTreeItem(({ commands, settingId, configTarget }) => {
-			const configCommands: TopLevelCommands = JSON.parse(JSON.stringify(commands));
+			const configCommands: TopLevelCommands = deepCopy(commands);
 			for (const key in configCommands) {
 				const commandObject = configCommands[key];
 				if (key === labelName) {
@@ -136,7 +136,7 @@ export function registerExtensionCommands() {
 		}
 	});
 	commands.registerCommand(CommandIds.revealCommandsInSettignsGUI, () => {
-		openSettingGuiAt(`@ext:usernamehw.commands`);
+		openSettingGuiAt(`@ext:${Constants.extensionId}`);
 	});
 	commands.registerCommand(CommandIds.openAsQuickPick, async () => {
 		await showQuickPick(extensionConfig.commands);
@@ -157,7 +157,7 @@ export function registerExtensionCommands() {
 		}, confirmBtnName);
 		if (button === confirmBtnName) {
 			applyForTreeItem(async ({ treeItem, commands, settingId, configTarget }) => {
-				const configCommands: TopLevelCommands = JSON.parse(JSON.stringify(commands));// config is readonly, get a copy
+				const configCommands: TopLevelCommands = deepCopy(commands);// config is readonly, get a copy
 				forEachCommand((item, key, parentElement) => {
 					if (key === treeItem.label) {
 						delete parentElement[key];
