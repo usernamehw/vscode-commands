@@ -1,11 +1,12 @@
-import { QuickInputButton, QuickPickItem, ThemeIcon, window } from 'vscode';
+import { commands, QuickInputButton, QuickPickItem, ThemeIcon, window } from 'vscode';
 import { hasArgs } from './args';
+import { CommandIds } from './commands';
 import { run } from './run';
 import { Runnable, TopLevelCommands } from './types';
 import { goToSymbol, openSettingsJSON } from './utils';
 import { isWorkspaceCommandItem } from './workspaceCommands';
 /**
- * Show quick pick with commands. After picking one - run it.
+ * Show quick pick with user commands. After picking one - run it.
  */
 export function showQuickPick(commandsForPicking: TopLevelCommands) {
 	const treeAsOneLevelMap: Record<string, Runnable> = {};
@@ -21,27 +22,45 @@ export function showQuickPick(commandsForPicking: TopLevelCommands) {
 	}
 	traverseCommands(commandsForPicking);
 
-	const quickInputButton: QuickInputButton = {
+	const newCommandButton: QuickInputButton = {
+		iconPath: new ThemeIcon('add'),
+		tooltip: 'Add new command',
+	};
+
+	const revealCommandButton: QuickInputButton = {
 		iconPath: new ThemeIcon('go-to-file'),
 		tooltip: 'Reveal in settings.json',
 	};
 
 	const quickPickItems: QuickPickItem[] = Object.keys(treeAsOneLevelMap).map(label => ({
 		label,
-		buttons: [quickInputButton],
+		buttons: [revealCommandButton],
 	}));
 	let pickedItem: QuickPickItem | undefined;
 	const quickPick = window.createQuickPick();
+	quickPick.title = 'Run command';
 	quickPick.items = quickPickItems;
+	quickPick.buttons = [
+		newCommandButton,
+	];
 	quickPick.onDidTriggerItemButton(async e => {
-		const clickedItem = treeAsOneLevelMap[e.item.label];
-		await openSettingsJSON(isWorkspaceCommandItem(clickedItem) ? 'workspace' : 'global');
-		goToSymbol(window.activeTextEditor, e.item.label);
+		if (e.button.tooltip === revealCommandButton.tooltip) {
+			const clickedItem = treeAsOneLevelMap[e.item.label];
+			await openSettingsJSON(isWorkspaceCommandItem(clickedItem) ? 'workspace' : 'global');
+			goToSymbol(window.activeTextEditor, e.item.label);
+		}
 		quickPick.hide();
 		quickPick.dispose();
 	});
 	quickPick.onDidChangeSelection(e => {
 		pickedItem = e[0];
+	});
+	quickPick.onDidTriggerButton(e => {
+		if (e.tooltip === newCommandButton.tooltip) {
+			commands.executeCommand(CommandIds.newCommand);
+		}
+		quickPick.hide();
+		quickPick.dispose();
 	});
 
 	quickPick.onDidAccept(async () => {
