@@ -1,7 +1,14 @@
+## 1.2.0 `22 Jan 2022`
+
+- ✨ Suppert workspace specific command [PR #23](https://github.com/usernamehw/vscode-commands/pull/23) by [elazarcoh](https://github.com/elazarcoh)
+- ✨ Show "reveal command in settings" in inline buttons in Quick Pick
+- ✨ Show "reveal command in settings" in status bar hover tooltip
+- ✨ Show "new command" button in Quick Pick
+
 ## 1.1.5 `15 Jan 2022`
 
-- ✨ support when expression for command palette [PR #22](https://github.com/usernamehw/vscode-commands/pull/22) by [elazarcoh](https://github.com/elazarcoh)
-- ✨ toggle status bar command should only toggle property `hidden` instead of removing the status bar object
+- ✨ Support when expression for command palette [PR #22](https://github.com/usernamehw/vscode-commands/pull/22) by [elazarcoh](https://github.com/elazarcoh)
+- ✨ Toggle status bar command should only toggle property `hidden` instead of removing the status bar object
 
 ## 1.1.4 `17 Nov 2021`
 
