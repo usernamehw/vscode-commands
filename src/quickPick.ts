@@ -1,11 +1,13 @@
-import { QuickPickItem, window } from 'vscode';
+import { QuickInputButton, QuickPickItem, ThemeIcon, window } from 'vscode';
 import { hasArgs } from './args';
 import { run } from './run';
 import { Runnable, TopLevelCommands } from './types';
+import { goToSymbol, openSettingsJSON } from './utils';
+import { isWorkspaceCommandItem } from './workspaceCommands';
 /**
  * Show quick pick with commands. After picking one - run it.
  */
-export async function showQuickPick(commandsForPicking: TopLevelCommands) {
+export function showQuickPick(commandsForPicking: TopLevelCommands) {
 	const treeAsOneLevelMap: Record<string, Runnable> = {};
 	function traverseCommands(items: TopLevelCommands): void {
 		for (const key in items) {
@@ -19,10 +21,37 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands) {
 	}
 	traverseCommands(commandsForPicking);
 
-	const pickedCommandTitle = await window.showQuickPick(Object.keys(treeAsOneLevelMap));
-	if (pickedCommandTitle) {
-		await run(treeAsOneLevelMap[pickedCommandTitle]);
-	}
+	const quickInputButton: QuickInputButton = {
+		iconPath: new ThemeIcon('go-to-file'),
+		tooltip: 'Reveal in settings.json',
+	};
+
+	const quickPickItems: QuickPickItem[] = Object.keys(treeAsOneLevelMap).map(label => ({
+		label,
+		buttons: [quickInputButton],
+	}));
+	let pickedItem: QuickPickItem | undefined;
+	const quickPick = window.createQuickPick();
+	quickPick.items = quickPickItems;
+	quickPick.onDidTriggerItemButton(async e => {
+		const clickedItem = treeAsOneLevelMap[e.item.label];
+		await openSettingsJSON(isWorkspaceCommandItem(clickedItem) ? 'workspace' : 'global');
+		goToSymbol(window.activeTextEditor, e.item.label);
+		quickPick.hide();
+		quickPick.dispose();
+	});
+	quickPick.onDidChangeSelection(e => {
+		pickedItem = e[0];
+	});
+
+	quickPick.onDidAccept(async () => {
+		if (pickedItem) {
+			await run(treeAsOneLevelMap[pickedItem.label]);
+		}
+		quickPick.hide();
+		quickPick.dispose();
+	});
+	quickPick.show();
 }
 
 /**

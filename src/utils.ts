@@ -72,7 +72,11 @@ async function getSymbols(document: TextDocument): Promise<DocumentSymbol[]> {
  * - Briefly highlight the entire line
  * - Move cursor to the symbol position
  */
-export async function goToSymbol(editor: TextEditor, symbolName: string) {
+export async function goToSymbol(editor: TextEditor | undefined, symbolName: string) {
+	if (!editor) {
+		window.showErrorMessage('No TextEditor provided.');
+		return;
+	}
 	const symbols = await getSymbols(editor.document);
 
 	let foundSymbol: DocumentSymbol | undefined;

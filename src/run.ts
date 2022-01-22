@@ -19,7 +19,7 @@ export async function run(runnable: CommandFolder & Runnable) {
 		return;
 	}
 	if (runnable.nestedItems) {
-		await runFolder(runnable);
+		runFolder(runnable);
 		return;
 	}
 	if (Array.isArray(runnable)) {
@@ -78,8 +78,8 @@ async function runObject(object: CommandObject) {
 	return await commands.executeCommand(commandId, args);
 }
 
-async function runFolder(folder: CommandFolder) {
-	await showQuickPick(folder.nestedItems!);
+function runFolder(folder: CommandFolder) {
+	showQuickPick(folder.nestedItems!);
 }
 /**
  * Allow running a string with args: `commands.runInTerminal?npm run watch` (for runnables that are strings)

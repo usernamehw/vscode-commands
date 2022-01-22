@@ -81,11 +81,7 @@ export function registerExtensionCommands() {
 		const symbolName = commandTreeItem.getLabelName();
 		applyForTreeItem(async ({ configTarget }) => {
 			await openSettingsJSON(configTarget);
-			const activeTextEditor = window.activeTextEditor;
-			if (!activeTextEditor) {
-				return;
-			}
-			goToSymbol(activeTextEditor, symbolName);
+			goToSymbol(window.activeTextEditor, symbolName);
 		}, commandTreeItem);
 	});
 	commands.registerCommand(CommandIds.assignKeybinding, (commandTreeItem: RunCommandTreeItem) => {
@@ -219,7 +215,7 @@ export function registerExtensionCommands() {
 				}
 				await updateSetting(settingId, newCommandsSetting, configTarget);
 				await openSettingsJSON(configTarget);
-				await goToSymbol(window.activeTextEditor!, newCommandKey);
+				await goToSymbol(window.activeTextEditor, newCommandKey);
 			}, folderTreeItem);
 		} else {
 			const newCommandsSetting = {
@@ -230,7 +226,7 @@ export function registerExtensionCommands() {
 			};
 			await updateSetting(Constants.commandsSettingId, newCommandsSetting, 'global');
 			await openSettingsJSON('global');
-			await goToSymbol(window.activeTextEditor!, newCommandKey);
+			await goToSymbol(window.activeTextEditor, newCommandKey);
 		}
 	}
 	commands.registerTextEditorCommand(CommandIds.escapeCommandUriArgument, editor => {
