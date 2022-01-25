@@ -326,10 +326,10 @@ Arguments object:
 
 Arguments object:
 
-- **to** A mandatory direction value.(`up` or `down`)
-- **by** Unit to move. Default is computed based on 'to' value. (`line`, `wrappedLine`, `page`, `halfPage`)
+- **to** A mandatory direction value (`up` or `down`).
+- **by** Unit to move. Default is computed based on 'to' value. (`line`, `wrappedLine`, `page`, `halfPage`).
 - **value**: Number of units to move. Default is 1.
-- **revealCursor**: If 'true' reveals the cursor if it is outside view port.
+- **revealCursor**: If 'true' reveals the cursor when it is outside view port.
 
 ```js
 "Scroll 10 lines down": {
@@ -346,7 +346,7 @@ Arguments object:
 
 ### `moveActiveEditor` Move the active editor by tabs or groups
 
-- **to** String value providing where to move (`left` or `right`)
+- **to** String value providing where to move (`left` or `right`).
 - **by** String value providing the unit for move (by `tab` or by `group`).
 - **value** Number value providing how many positions or an absolute position to move.
 
@@ -361,7 +361,7 @@ Arguments object:
 },
 ```
 
-### `vscode.setEditorLayout` Sets the editor layout.
+### `vscode.setEditorLayout` Sets the editor layout
 
 Example for a 2x2 grid:
 
@@ -384,7 +384,7 @@ Example for a 2x2 grid:
 },
 ```
 
-### `vscode.openIssueReporter` Opens the issue reporter with the provided extension id as the selected source.
+### `vscode.openIssueReporter` Opens the issue reporter with the provided extension id as the selected source
 
 - **extensionId** - extensionId to report an issue on
 
@@ -420,7 +420,7 @@ Example for a 2x2 grid:
 ```js
 "Toggle indent guides": {
     "command": "commands.toggleSetting",
-    "args": "editor.renderIndentGuides",// string - toggle boolean
+    "args": "editor.renderIndentGuides", // string - toggle boolean
 },
 ```
 
@@ -596,7 +596,7 @@ Example for a 2x2 grid:
 },
 ```
 
-### `commands.revealFileInOS` Open OS file explorer and reveal the specified path
+### `commands.revealFileInOS` Open system file explorer and reveal the specified path
 
 ```js
 "commands.revealFileInOS": {
