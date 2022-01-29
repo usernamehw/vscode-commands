@@ -1,6 +1,11 @@
+## Unreleased
+
+- ✨ Feature
+- 🐛 Bugfix
+
 ## 1.2.0 `22 Jan 2022`
 
-- ✨ Suppert workspace specific command [PR #23](https://github.com/usernamehw/vscode-commands/pull/23) by [elazarcoh](https://github.com/elazarcoh)
+- ✨ Support workspace specific command [PR #23](https://github.com/usernamehw/vscode-commands/pull/23) by [elazarcoh](https://github.com/elazarcoh)
 - ✨ Show "reveal command in settings" in inline buttons in Quick Pick
 - ✨ Show "reveal command in settings" in status bar hover tooltip
 - ✨ Show "new command" button in Quick Pick
@@ -62,7 +67,7 @@
 
 ## 0.0.10 `19 Jun 2021`
 
-- ✨ Show command as json on hover
+- ✨ Show command as JSON on hover
 - ✨ New folder icon
 - 💥 Rename `commands.openInApp` to `commands.open`
 
