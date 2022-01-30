@@ -16,6 +16,9 @@ const enum VariableNames {
 	lineNumber = '${lineNumber}', // the current selected line number in the active file
 	selectedText = '${selectedText}', // the current selected text in the active file
 	environmentVariable = '${env}',
+	singleEnvironmentVariable = 'env',
+	configurationVariable = '${config}',
+	singleConfigurationVariable = 'config',
 	// ────────────────────────────────────────────────────────────
 	// relativeFile = '${relativeFile}', // the current opened file relative to `workspaceFolder`
 	// relativeFileDirname = '${relativeFileDirname}', // the current opened file's dirname relative to `workspaceFolder`
@@ -35,7 +38,10 @@ const variableRegexps = {
 	[VariableNames.pathSeparator]: new RegExp(escapeRegExp(VariableNames.pathSeparator), 'ig'),
 	[VariableNames.lineNumber]: new RegExp(escapeRegExp(VariableNames.lineNumber), 'ig'),
 	[VariableNames.selectedText]: new RegExp(escapeRegExp(VariableNames.selectedText), 'ig'),
-	[VariableNames.environmentVariable]: /\${env:([a-zA-Z_]+[a-zA-Z0-9_]*)}/i,
+	[VariableNames.singleEnvironmentVariable]: /\${env:([a-zA-Z_]+[a-zA-Z0-9_]*)}/i,
+	[VariableNames.environmentVariable]: /\${env:([a-zA-Z_]+[a-zA-Z0-9_]*)}/ig,
+	[VariableNames.singleConfigurationVariable]: /\${config:([^}]+?)}/i,
+	[VariableNames.configurationVariable]: /\${config:([^}]+?)}/ig,
 	// [VariableNames.relativeFile]: new RegExp(escapeRegExp(VariableNames.relativeFile), 'ig'),
 	// [VariableNames.relativeFileDirname]: new RegExp(escapeRegExp(VariableNames.relativeFileDirname), 'ig'),
 	// [VariableNames.cwd]: new RegExp(escapeRegExp(VariableNames.cwd), 'ig'),
@@ -90,12 +96,32 @@ export function substituteVariables(str: string) {
 		}
 	}
 	if (variableRegexps[VariableNames.environmentVariable].test(str)) {
-		// eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
 		const match = str.match(variableRegexps[VariableNames.environmentVariable]);
-		const envName = match?.[1];
-		if (envName) {
-			str = str.replace(variableRegexps[VariableNames.environmentVariable], process.env[envName] || '');
+
+		for (const _ of match || []) {
+			str = str.replace(variableRegexps[VariableNames.singleEnvironmentVariable], (__, g1) => process.env[g1] || g1);
+		}
+	}
+	if (variableRegexps[VariableNames.configurationVariable].test(str)) {
+		const match = str.match(variableRegexps[VariableNames.configurationVariable]);
+
+		for (const _ of match || []) {
+			str = str.replace(variableRegexps[VariableNames.singleConfigurationVariable], (__, g1) => replaceConfigurationVariable(g1));
 		}
 	}
 	return str;
+}
+
+function replaceConfigurationVariable(configName: string): string {
+	if (!configName.includes('.')) {
+		window.showErrorMessage(`Need a dot (.) in the name of configuration. "${configName}"`);
+		return configName;
+	}
+	const configParts = configName.split('.');
+	const configValue = workspace.getConfiguration(configParts[0]).get(configParts.slice(1).join('.'));
+	if (typeof configValue !== 'string' && typeof configValue !== 'number') {
+		window.showErrorMessage(`Configuration must be of type: string or number "${configName}"`);
+		return configName;
+	}
+	return String(configValue);
 }
