@@ -1,5 +1,5 @@
 import { CommandIds } from './commands';
-import { extensionConfig } from './extension';
+import { $config } from './extension';
 /**
  * Map commands with arguments;
  */
@@ -132,10 +132,10 @@ export function addArgs(commandId: string) {
 			args: commandArgs[commandId],
 		};
 	}
-	if (commandId in extensionConfig.alias) {
+	if (commandId in $config.alias) {
 		return {
 			command: commandId,
-			args: commandArgs[extensionConfig.alias[commandId]],
+			args: commandArgs[$config.alias[commandId]],
 		};
 	}
 	return {
@@ -146,5 +146,5 @@ export function addArgs(commandId: string) {
  * Return `true` if command accepts arguments.
  */
 export function hasArgs(commandId: string) {
-	return commandId in commandArgs || extensionConfig.alias[commandId] in commandArgs;
+	return commandId in commandArgs || $config.alias[commandId] in commandArgs;
 }

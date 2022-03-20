@@ -1,6 +1,6 @@
 import { ColorThemeKind, commands, debug, env, languages, Uri, window, workspace } from 'vscode';
 import { addArgs } from './args';
-import { allCommands, Constants, extensionConfig, extensionState } from './extension';
+import { allCommands, Constants, $config, $state } from './extension';
 import { commandsToQuickPickItems, removeCodiconFromLabel, showQuickPick } from './quickPick';
 import { run } from './run';
 import { incrementSetting, toggleSetting, updateSetting } from './settings';
@@ -56,7 +56,7 @@ export function registerExtensionCommands() {
 		await run(runnable);
 	});
 	commands.registerCommand(CommandIds.rerun, async () => {
-		await run(extensionState.lastExecutedCommand);
+		await run($state.lastExecutedCommand);
 	});
 	commands.registerCommand(CommandIds.selectAndRun, async () => {
 		const pickedCommand = await window.showQuickPick(await getAllVscodeCommands());
@@ -95,7 +95,7 @@ export function registerExtensionCommands() {
 	commands.registerCommand(CommandIds.addToStatusBar, async (treeItem: FolderTreeItem | RunCommandTreeItem) => {
 		const labelName = treeItem.getLabelName();
 		let newStatusBarItemText = '';
-		if (extensionConfig.statusBarDefaultText === 'pick') {
+		if ($config.statusBarDefaultText === 'pick') {
 			const text = await window.showInputBox({
 				prompt: 'Status Bar text',
 			});
@@ -140,7 +140,7 @@ export function registerExtensionCommands() {
 		openSettingGuiAt(`@ext:${Constants.extensionId}`);
 	});
 	commands.registerCommand(CommandIds.openAsQuickPick, () => {
-		showQuickPick(allCommands(getWorkspaceId(extensionState.extensionContext)));
+		showQuickPick(allCommands(getWorkspaceId($state.extensionContext)));
 	});
 	commands.registerCommand(CommandIds.newCommand, async () => {
 		await addNewCommand();
@@ -177,7 +177,7 @@ export function registerExtensionCommands() {
 			return;
 		}
 		const newCommandsSetting = {
-			...extensionConfig.commands,
+			...$config.commands,
 			...{
 				[newFolderName]: {
 					nestedItems: {},
@@ -224,7 +224,7 @@ export function registerExtensionCommands() {
 			}, folderTreeItem);
 		} else {
 			const newCommandsSetting = {
-				...extensionConfig.commands,
+				...$config.commands,
 				...{
 					[newCommandKey]: newCommand,
 				},
@@ -377,8 +377,8 @@ function applyForTreeItem(
 	const isWorkspaceTreeItem = (treeItem: FolderTreeItem | RunCommandTreeItem) => treeItem instanceof RunCommandTreeItem && isWorkspaceCommandItem(treeItem.runnable) ||
 			treeItem instanceof FolderTreeItem && isWorkspaceCommandItem(treeItem.folder);
 	if (isWorkspaceTreeItem(treeItem)) {
-		return action({ treeItem, commands: extensionConfig.workspaceCommands, settingId: Constants.workspaceCommandsSettingId, configTarget: 'workspace' });
+		return action({ treeItem, commands: $config.workspaceCommands, settingId: Constants.workspaceCommandsSettingId, configTarget: 'workspace' });
 	} else {
-		return action({ treeItem, commands: extensionConfig.commands, settingId: Constants.commandsSettingId, configTarget: 'global' });
+		return action({ treeItem, commands: $config.commands, settingId: Constants.commandsSettingId, configTarget: 'global' });
 	}
 }

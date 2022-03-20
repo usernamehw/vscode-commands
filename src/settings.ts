@@ -1,5 +1,5 @@
 import { ConfigurationTarget, window, workspace } from 'vscode';
-import { extensionConfig } from './extension';
+import { $config } from './extension';
 import { ToggleSetting } from './types';
 import { isSimpleObject } from './utils';
 
@@ -38,7 +38,7 @@ export async function toggleSetting(arg: ToggleSetting | string) {
 		}
 
 		await settings.update(settingName, newValue, ConfigurationTarget.Global);
-		if (extensionConfig.toggleSettings.showNotification) {
+		if ($config.toggleSettings.showNotification) {
 			window.showInformationMessage(`"${settingName}": ${JSON.stringify(newValue)}`);
 		}
 	}
@@ -63,7 +63,7 @@ export async function incrementSetting(settingName: unknown, n: unknown) {
 	}
 	const newValue = Number((currentSettingValue + n).toPrecision(10));
 	await settings.update(settingName, newValue, true);
-	if (extensionConfig.toggleSettings.showNotification) {
+	if ($config.toggleSettings.showNotification) {
 		window.showInformationMessage(`"${settingName}": ${newValue}`);
 	}
 }

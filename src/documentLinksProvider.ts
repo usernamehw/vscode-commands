@@ -1,5 +1,5 @@
 import { Disposable, DocumentLink, env, languages, Range, Uri, window } from 'vscode';
-import { Constants, extensionConfig } from './extension';
+import { Constants, $config } from './extension';
 import { run } from './run';
 
 const documentLinkDisposables: Disposable[] = [];
@@ -7,7 +7,7 @@ const documentLinkDisposables: Disposable[] = [];
 export function updateDocumentLinkProvider() {
 	disposeDocumentLinkDisposables();
 
-	if (!extensionConfig.documentLinksEnabled) {
+	if (!$config.documentLinksEnabled) {
 		return;
 	}
 
@@ -25,7 +25,7 @@ export function updateDocumentLinkProvider() {
 	const documentLinkProviderDisposable = languages.registerDocumentLinkProvider(
 		{
 			scheme: 'file',
-			pattern: extensionConfig.documentLinksPattern || undefined,
+			pattern: $config.documentLinksPattern || undefined,
 		},
 		{
 			provideDocumentLinks(document) {

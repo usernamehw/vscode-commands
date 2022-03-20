@@ -1,5 +1,5 @@
 import { commands, Disposable, window } from 'vscode';
-import { extensionConfig } from './extension';
+import { $config } from './extension';
 import { run } from './run';
 import { TopLevelCommands } from './types';
 import { forEachCommand, getAllVscodeCommands, goToSymbol, openSettingsJSON } from './utils';
@@ -29,8 +29,8 @@ export async function updateUserCommands(items: TopLevelCommands) {
 		}));
 	}, items);
 
-	for (const alias in extensionConfig.alias) {
-		const command = extensionConfig.alias[alias];
+	for (const alias in $config.alias) {
+		const command = $config.alias[alias];
 		registeredCommandsList.push(commands.registerCommand(alias, (args: unknown) => {
 			run({
 				command,

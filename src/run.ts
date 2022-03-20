@@ -1,5 +1,5 @@
 import { commands, window } from 'vscode';
-import { extensionConfig, extensionState } from './extension';
+import { $config, $state } from './extension';
 import { showQuickPick } from './quickPick';
 import { substituteVariables } from './substituteVariables';
 import { CommandFolder, CommandObject, Runnable, Sequence } from './types';
@@ -9,7 +9,7 @@ import { isSimpleObject, sleep } from './utils';
  * Executing a folder - is to show Quick Pick to choose one of the commands inside that folder.
  */
 export async function run(runnable: CommandFolder & Runnable) {
-	extensionState.lastExecutedCommand = runnable;
+	$state.lastExecutedCommand = runnable;
 	if (typeof runnable === 'string') {
 		const { command, args } = parseSimplifiedArgs(runnable);
 		await runObject({
@@ -55,15 +55,15 @@ async function runObject(object: CommandObject) {
 		await sleep(object.delay);
 	}
 	let commandId = object.command;
-	if (extensionConfig.alias[commandId]) {
-		commandId = extensionConfig.alias[commandId];
+	if ($config.alias[commandId]) {
+		commandId = $config.alias[commandId];
 	}
 	if (!commandId) {
 		window.showErrorMessage('Missing `command` property.');
 	}
 
 	let args = object.args;
-	if (extensionConfig.variableSubstitutionEnabled) {
+	if ($config.variableSubstitutionEnabled) {
 		if (typeof args === 'string') {
 			args = substituteVariables(args);
 		} else if (

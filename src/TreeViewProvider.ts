@@ -1,6 +1,6 @@
 import { Command, Event, EventEmitter, MarkdownString, ThemeColor, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { CommandIds } from './commands';
-import { Constants, extensionConfig } from './extension';
+import { $config } from './extension';
 import { createFolderHoverText } from './folderHoverText';
 import { CommandFolder, Runnable, TopLevelCommands } from './types';
 import { isSimpleObject } from './utils';
@@ -29,7 +29,7 @@ export class RunCommandTreeItem extends TreeItem {
 		}
 		// @ts-ignore
 		if (runnable.statusBar && !runnable.statusBar.hidden) {
-			this.description = extensionConfig.treeViewStatusBarVisibleSymbol;
+			this.description = $config.treeViewStatusBarVisibleSymbol;
 		}
 	}
 	getLabelName(): string {
@@ -40,7 +40,7 @@ export class RunCommandTreeItem extends TreeItem {
  * Folder uses icons from active file icon theme.
  */
 export class FolderTreeItem extends TreeItem {
-	collapsibleState = extensionConfig.treeViewCollapseFolders ? TreeItemCollapsibleState.Collapsed : TreeItemCollapsibleState.Expanded;
+	collapsibleState = $config.treeViewCollapseFolders ? TreeItemCollapsibleState.Collapsed : TreeItemCollapsibleState.Expanded;
 	contextValue = 'folder';
 	iconPath = ThemeIcon.Folder;
 	nestedItems: TopLevelCommands;
@@ -53,7 +53,7 @@ export class FolderTreeItem extends TreeItem {
 		this.nestedItems = folder.nestedItems!;
 
 		if (folder.statusBar && !folder.statusBar.hidden) {
-			this.description = extensionConfig.treeViewStatusBarVisibleSymbol;
+			this.description = $config.treeViewStatusBarVisibleSymbol;
 		}
 	}
 

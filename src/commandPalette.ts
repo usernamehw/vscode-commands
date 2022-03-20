@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { Disposable, ExtensionContext } from 'vscode';
-import { Constants, extensionConfig } from './extension';
+import { Constants, $config } from './extension';
 import { TopLevelCommands } from './types';
 import { forEachCommand } from './utils';
 import { getWorkspaceId, isWorkspaceCommandItem, WorkspaceConstants } from './workspaceCommands';
@@ -45,7 +45,7 @@ const coreCommandIds = [
 export async function updateCommandPalette(items: TopLevelCommands, context: ExtensionContext) {
 	unregisterCommandPalette();
 
-	if (!extensionConfig.populateCommandPalette) {
+	if (!$config.populateCommandPalette) {
 		if (context.globalState.get(Constants.COMMAND_PALETTE_WAS_POPULATED_STORAGE_KEY)) {
 			// Setting was enabled then disabled. Only in this case revert/write `package.json`
 			// so it would contain only core commands again.
