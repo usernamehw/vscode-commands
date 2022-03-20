@@ -1,7 +1,9 @@
-## Unreleased
+## 1.2.1 `20 Mar 2022`
 
-- ✨ Feature
-- 🐛 Bugfix
+- ✨ variable substition: add configuration variables #25
+- ✨ add `"backgroundColor"` property to status bar item (only `error` or `warning` values available)
+- ✨ add `"name"` property to status bar item (shown in status bar context menu)
+- ✨ add setting to control tree view symbol which indicates that command is visible in the status bar `"commands.treeViewStatusBarVisibleSymbol"`
 
 ## 1.2.0 `22 Jan 2022`
 
