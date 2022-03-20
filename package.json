@@ -126,7 +126,8 @@
 													"markdownDescription": "https://github.com/usernamehw/vscode-commands/issues/16"
 												},
 												"color": {
-													"type": "string"
+													"type": "string",
+													"format": "color"
 												}
 											}
 										},
@@ -190,7 +191,8 @@
 																		"markdownDescription": "https://github.com/usernamehw/vscode-commands/issues/16"
 																	},
 																	"color": {
-																		"type": "string"
+																		"type": "string",
+																		"format": "color"
 																	}
 																}
 															}
@@ -259,7 +261,8 @@
 																	"markdownDescription": "https://github.com/usernamehw/vscode-commands/issues/16"
 																},
 																"color": {
-																	"type": "string"
+																	"type": "string",
+																	"format": "color"
 																}
 															}
 														},
@@ -323,7 +326,8 @@
 																						"markdownDescription": "https://github.com/usernamehw/vscode-commands/issues/16"
 																					},
 																					"color": {
-																						"type": "string"
+																						"type": "string",
+																						"format": "color"
 																					}
 																				}
 																			}
@@ -415,7 +419,8 @@
 													"markdownDescription": "https://github.com/usernamehw/vscode-commands/issues/16"
 												},
 												"color": {
-													"type": "string"
+													"type": "string",
+													"format": "color"
 												}
 											}
 										},
@@ -479,7 +484,8 @@
 																		"markdownDescription": "https://github.com/usernamehw/vscode-commands/issues/16"
 																	},
 																	"color": {
-																		"type": "string"
+																		"type": "string",
+																		"format": "color"
 																	}
 																}
 															}
@@ -548,7 +554,8 @@
 																	"markdownDescription": "https://github.com/usernamehw/vscode-commands/issues/16"
 																},
 																"color": {
-																	"type": "string"
+																	"type": "string",
+																	"format": "color"
 																}
 															}
 														},
@@ -612,7 +619,8 @@
 																						"markdownDescription": "https://github.com/usernamehw/vscode-commands/issues/16"
 																					},
 																					"color": {
-																						"type": "string"
+																						"type": "string",
+																						"format": "color"
 																					}
 																				}
 																			}
