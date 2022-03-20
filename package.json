@@ -724,6 +724,11 @@
 					"description": "Collapse folders by default. Requires reload before being applied.",
 					"default": false
 				},
+				"commands.treeViewStatusBarVisibleSymbol": {
+					"type": "string",
+					"markdownDescription": "Symbol used in the tree view to indicate that command is also visible in the status bar.",
+					"default": "💠"
+				},
 				"commands.statusBarDefaultText": {
 					"type": "string",
 					"enum": [

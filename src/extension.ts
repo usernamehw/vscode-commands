@@ -13,7 +13,6 @@ export const enum Constants {
 	extensionName = 'commands',
 	commandsSettingId = 'commands.commands',
 	workspaceCommandsSettingId = 'commands.workspaceCommands',
-	treeViewStatusBarIndicator = '💠',
 
 	COMMAND_PALETTE_WAS_POPULATED_STORAGE_KEY = 'was_populated',
 }

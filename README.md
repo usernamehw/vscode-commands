@@ -111,13 +111,15 @@
 <!-- COMMANDS_END -->
 
 <!-- SETTINGS_START -->
-## Settings (10)
+## Settings (12)
 
 |Setting|Default|Description|
 |-|-|-|
 |commands.commands|\{\}|Main extension property. Commands that will be rendered in the View.|
+|commands.workspaceCommands|\{\}|Commands that will be rendered in the View, specific to the workspace.|
 |commands.alias|\{\}|Use shorter command ids.|
 |commands.treeViewCollapseFolders|**false**|Collapse folders by default. Requires reload before being applied.|
+|commands.treeViewStatusBarVisibleSymbol|"💠"|Symbol used in the tree view to indicate that command is also visible in the status bar.|
 |commands.statusBarDefaultText|"same"|Controls the text of Status Bar item when adding from Tree View context menu.|
 |commands.statusBarDefaultPosition|"left"|Where to put command on Status Bar (left or right).|
 |commands.populateCommandPalette|**false**|Adds all items to Command Palette (Requires editor reload after every change of main config `#commands.commands#`).|

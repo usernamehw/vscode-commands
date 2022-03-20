@@ -16,6 +16,10 @@ export interface ExtensionConfig {
 	 */
 	treeViewCollapseFolders: boolean;
 	/**
+	 * Symbol used in the tree view to indicate that command is also visible in the status bar.
+	 */
+	treeViewStatusBarVisibleSymbol: string;
+	/**
 	 * Adds all items to Command Palette (Requires editor reload).
 	 */
 	populateCommandPalette: boolean;

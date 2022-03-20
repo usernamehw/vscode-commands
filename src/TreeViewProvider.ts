@@ -29,7 +29,7 @@ export class RunCommandTreeItem extends TreeItem {
 		}
 		// @ts-ignore
 		if (runnable.statusBar && !runnable.statusBar.hidden) {
-			this.description = Constants.treeViewStatusBarIndicator;
+			this.description = extensionConfig.treeViewStatusBarVisibleSymbol;
 		}
 	}
 	getLabelName(): string {
@@ -53,7 +53,7 @@ export class FolderTreeItem extends TreeItem {
 		this.nestedItems = folder.nestedItems!;
 
 		if (folder.statusBar && !folder.statusBar.hidden) {
-			this.description = Constants.treeViewStatusBarIndicator;
+			this.description = extensionConfig.treeViewStatusBarVisibleSymbol;
 		}
 	}
 
