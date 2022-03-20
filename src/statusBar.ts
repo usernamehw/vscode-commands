@@ -16,7 +16,7 @@ export function updateStatusBarItems(items: TopLevelCommands) {
 			const alignment = statusBarUserObject.alignment === 'right' ? StatusBarAlignment.Right : StatusBarAlignment.Left;
 			const newStatusBarItem = window.createStatusBarItem(statusBarUserObject.text, alignment, statusBarUserObject.priority ?? -9999);
 			let icon = item.icon ? `$(${item.icon}) ` : '';
-			newStatusBarItem.name = statusBarUserObject.text;
+			newStatusBarItem.name = `Commands: ${statusBarUserObject.name || statusBarUserObject.text}`;
 			newStatusBarItem.color = statusBarUserObject.color;
 
 			let mdTooltip = new MarkdownString(undefined, true);

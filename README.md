@@ -136,15 +136,6 @@ interface CommandObject {
     icon?: string;// icon id https://code.visualstudio.com/api/references/icons-in-labels#icon-listing
     iconColor?: string;// color id https://code.visualstudio.com/api/references/theme-color
     disableTooltip?: boolean;// do not show the hover tooltip for this Tree View Item
-    statusBar?: {// add to status bar
-        alignment: 'left' | 'right';
-        text: string;
-        priority?: number;
-        tooltip?: string;
-        markdownTooltip?: string;
-        color?: string;
-        hidden?: boolean;
-    };
     hidden?: boolean;// Do not show this in Tree View
 
     sequence?: (CommandObject | string)[];// execute multipe commands
@@ -152,6 +143,20 @@ interface CommandObject {
     nestedItems: {// Group items into a folder (1 lvl max)
         [key: string]: CommandObject
     }
+
+    // add command to status bar
+    statusBar?: {
+        alignment: 'left' | 'right';// status bar alignment
+        text: string;// status bar item text
+        name?: string;// name of the item in status bar context menu
+        priority?: number;// item position (can also be a negative number)
+        tooltip?: string;// hover text
+        markdownTooltip?: string;// hover text (in markdown)
+        color?: string;// color of status bar item text
+        hidden?: boolean;// Do not show this status bar item
+    };
+
+
 }
 ```
 
@@ -655,6 +660,8 @@ vscode.diff
 vscode.openWith `commands.executeCommand("vscode.openWith", uri, MyCustomEditor.viewType);`
 editor.unfold
 editor.fold
+commands.executeCommand("workbench.extensions.uninstallExtension", "EXTENSION_ID");
+commands.executeCommand("workbench.extensions.action.showExtensionsWithIds", ["alefragnani.delphi-keybindings", "alefragnani.delphi-themes"]);
 
 TODO: https://github.com/microsoft/vscode-docs/blob/main/api/references/commands.md Sync changes periodically
 -->

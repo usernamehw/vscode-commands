@@ -75,6 +75,7 @@ export interface CommandObject {
 interface StatusBar {
 	alignment?: 'left' | 'right';
 	text: string;
+	name?: string;
 	priority?: number;
 	tooltip?: string;
 	markdownTooltip?: string;
