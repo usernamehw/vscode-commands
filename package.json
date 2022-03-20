@@ -127,6 +127,14 @@
 												"color": {
 													"type": "string",
 													"format": "color"
+												},
+												"backgroundColor": {
+													"type": "string",
+													"markdownDescription": "Background of Status bar item (only `error` & `warning` values are allowed).",
+													"enum": [
+														"error",
+														"warning"
+													]
 												}
 											}
 										},
@@ -192,6 +200,14 @@
 																	"color": {
 																		"type": "string",
 																		"format": "color"
+																	},
+																	"backgroundColor": {
+																		"type": "string",
+																		"markdownDescription": "Background of Status bar item (only `error` & `warning` values are allowed).",
+																		"enum": [
+																			"error",
+																			"warning"
+																		]
 																	}
 																}
 															}
@@ -262,6 +278,14 @@
 																"color": {
 																	"type": "string",
 																	"format": "color"
+																},
+																"backgroundColor": {
+																	"type": "string",
+																	"markdownDescription": "Background of Status bar item (only `error` & `warning` values are allowed).",
+																	"enum": [
+																		"error",
+																		"warning"
+																	]
 																}
 															}
 														},
@@ -327,6 +351,14 @@
 																					"color": {
 																						"type": "string",
 																						"format": "color"
+																					},
+																					"backgroundColor": {
+																						"type": "string",
+																						"markdownDescription": "Background of Status bar item (only `error` & `warning` values are allowed).",
+																						"enum": [
+																							"error",
+																							"warning"
+																						]
 																					}
 																				}
 																			}
@@ -420,6 +452,14 @@
 												"color": {
 													"type": "string",
 													"format": "color"
+												},
+												"backgroundColor": {
+													"type": "string",
+													"markdownDescription": "Background of Status bar item (only `error` & `warning` values are allowed).",
+													"enum": [
+														"error",
+														"warning"
+													]
 												}
 											}
 										},
@@ -485,6 +525,14 @@
 																	"color": {
 																		"type": "string",
 																		"format": "color"
+																	},
+																	"backgroundColor": {
+																		"type": "string",
+																		"markdownDescription": "Background of Status bar item (only `error` & `warning` values are allowed).",
+																		"enum": [
+																			"error",
+																			"warning"
+																		]
 																	}
 																}
 															}
@@ -555,6 +603,14 @@
 																"color": {
 																	"type": "string",
 																	"format": "color"
+																},
+																"backgroundColor": {
+																	"type": "string",
+																	"markdownDescription": "Background of Status bar item (only `error` & `warning` values are allowed).",
+																	"enum": [
+																		"error",
+																		"warning"
+																	]
 																}
 															}
 														},
@@ -620,6 +676,14 @@
 																					"color": {
 																						"type": "string",
 																						"format": "color"
+																					},
+																					"backgroundColor": {
+																						"type": "string",
+																						"markdownDescription": "Background of Status bar item (only `error` & `warning` values are allowed).",
+																						"enum": [
+																							"error",
+																							"warning"
+																						]
 																					}
 																				}
 																			}

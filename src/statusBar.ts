@@ -1,4 +1,4 @@
-import { Disposable, MarkdownString, StatusBarAlignment, Uri, window } from 'vscode';
+import { Disposable, MarkdownString, StatusBarAlignment, ThemeColor, Uri, window } from 'vscode';
 import { CommandIds } from './commands';
 import { createFolderHoverText } from './folderHoverText';
 import { TopLevelCommands } from './types';
@@ -18,6 +18,8 @@ export function updateStatusBarItems(items: TopLevelCommands) {
 			let icon = item.icon ? `$(${item.icon}) ` : '';
 			newStatusBarItem.name = `Commands: ${statusBarUserObject.name || statusBarUserObject.text}`;
 			newStatusBarItem.color = statusBarUserObject.color;
+			newStatusBarItem.backgroundColor = statusBarUserObject.backgroundColor === 'error' ? new ThemeColor('statusBarItem.errorBackground') :
+				statusBarUserObject.backgroundColor === 'warning' ? new ThemeColor('statusBarItem.warningBackground') : undefined;
 
 			let mdTooltip = new MarkdownString(undefined, true);
 			mdTooltip.isTrusted = true;

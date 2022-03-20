@@ -79,8 +79,9 @@ interface StatusBar {
 	priority?: number;
 	tooltip?: string;
 	markdownTooltip?: string;
-	color?: string;
 	hidden?: boolean;
+	color?: string;
+	backgroundColor?: 'error' | 'warning';
 }
 export type Sequence = (CommandObject | string)[];
 /**

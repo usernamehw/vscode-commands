@@ -152,8 +152,9 @@ interface CommandObject {
         priority?: number;// item position (can also be a negative number)
         tooltip?: string;// hover text
         markdownTooltip?: string;// hover text (in markdown)
+        hidden?: boolean;// do not show this status bar item
         color?: string;// color of status bar item text
-        hidden?: boolean;// Do not show this status bar item
+        backgroundColor?: 'error' | 'warning';// status bar item background color
     };
 
 
