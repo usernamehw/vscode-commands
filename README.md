@@ -284,6 +284,23 @@ Can open Quick Pick with prefilled prefix (`@...` - symbol, `view ...` - open vi
 },
 ```
 
+### `editor.actions.findWithArgs` Open Editor Find Widget
+
+```js
+"Find Widget with args": {
+    "command": "editor.actions.findWithArgs",
+    "args": {
+        "searchString": "TODO",
+        "replaceString": "",
+        "isRegex": false,
+        "isCaseSensitive": false,
+        "matchWholeWord": false,
+        "preserveCase": false,
+        "findInSelection": false,
+    },
+},
+```
+
 ### `search.action.openNewEditor` Open [Search Editor](https://code.visualstudio.com/updates/v1_43#_search-editors) with specified args
 
 ```js
