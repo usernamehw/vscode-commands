@@ -56,6 +56,15 @@ export const commandArgs: Record<string, unknown> = {
 		filesToInclude: '',
 		filesToExclude: '',
 	},
+	'editor.actions.findWithArgs': {
+		searchString: '',
+		replaceString: '',
+		isRegex: false,
+		isCaseSensitive: false,
+		matchWholeWord: false,
+		preserveCase: false,
+		findInSelection: false,
+	},
 	cursorMove: {
 		to: 'down',
 		by: 'line',
