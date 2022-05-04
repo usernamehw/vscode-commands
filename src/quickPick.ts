@@ -33,7 +33,8 @@ export function showQuickPick(commandsForPicking: TopLevelCommands) {
 	};
 
 	const quickPickItems: QuickPickItem[] = Object.keys(treeAsOneLevelMap).map(label => ({
-		label,
+		// @ts-ignore
+		label: `${treeAsOneLevelMap[label]?.icon ? `$(${treeAsOneLevelMap[label].icon}) ` : ''}${label}`,
 		buttons: [revealCommandButton],
 	}));
 	let pickedItem: QuickPickItem | undefined;
@@ -44,10 +45,11 @@ export function showQuickPick(commandsForPicking: TopLevelCommands) {
 		newCommandButton,
 	];
 	quickPick.onDidTriggerItemButton(async e => {
+		const labelWithoutCodiconIcon = removeCodiconIconFromLabel(e.item.label);
+		const clickedItem = treeAsOneLevelMap[labelWithoutCodiconIcon];
 		if (e.button.tooltip === revealCommandButton.tooltip) {
-			const clickedItem = treeAsOneLevelMap[e.item.label];
 			await openSettingsJSON(isWorkspaceCommandItem(clickedItem) ? 'workspace' : 'global');
-			goToSymbol(window.activeTextEditor, e.item.label);
+			goToSymbol(window.activeTextEditor, labelWithoutCodiconIcon);
 		}
 		quickPick.hide();
 		quickPick.dispose();
@@ -65,7 +67,7 @@ export function showQuickPick(commandsForPicking: TopLevelCommands) {
 
 	quickPick.onDidAccept(async () => {
 		if (pickedItem) {
-			await run(treeAsOneLevelMap[pickedItem.label]);
+			await run(treeAsOneLevelMap[removeCodiconIconFromLabel(pickedItem.label)]);
 		}
 		quickPick.hide();
 		quickPick.dispose();
@@ -87,6 +89,17 @@ export function commandsToQuickPickItems(commandList: string[]): QuickPickItem[]
 	return quickPickItems;
 }
 
-export function removeCodiconFromLabel(str: string) {
+/**
+ * Remove codicon that shows at the start of the label when
+ * the item has "icon" property.
+ */
+function removeCodiconIconFromLabel(str: string): string {
+	return str.replace(/\$\([a-z-]+\)\s/i, '');
+}
+/**
+ * Remove codicon with the args text that shows at the end of the label
+ * of the command that accepts arguments.
+ */
+export function removeCodiconFromLabel(str: string): string {
 	return str.replace(/\s\(\$\([a-z-]+\)\sargs\)/i, '');
 }
