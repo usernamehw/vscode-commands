@@ -1,3 +1,8 @@
+## 1.2.2 `02 Jun 2022`
+
+- ✨ feat: render icons in quick pick
+- 🐛 fix: toggle setting should work for arrays #29
+
 ## 1.2.1 `20 Mar 2022`
 
 - ✨ variable substition: add configuration variables #25
