@@ -2,6 +2,7 @@ import { ConfigurationTarget, window, workspace } from 'vscode';
 import { $config } from './extension';
 import { ToggleSetting } from './types';
 import { isSimpleObject } from './utils';
+import isEqual from 'lodash/isEqual';
 
 /**
  * Toggle global user setting.
@@ -79,8 +80,8 @@ export async function updateSetting(settingName: string, newValue: unknown, targ
  * Get next item in array. If there is no next - return the first item.
  */
 export function getNextOrFirstElement<T>(arr: T[], target: unknown): T {
-	const idx = arr.findIndex(el => el === target);
-	return idx === arr.length - 1 ? arr[0] : arr[idx + 1];
+	const index = arr.findIndex(el => isEqual(el, target));
+	return index === arr.length - 1 ? arr[0] : arr[index + 1];
 }
 // commands.registerCommand(`${EXTENSION_NAME}.settingsMerge`, (arg: unknown) => {
 // 	if (!isSimpleObject(arg)) {
