@@ -630,16 +630,46 @@ Example for a 2x2 grid:
 },
 ```
 
-## Upstream issues
+---
 
-Please upvote the following VS Code issues:
+## Running sequence without adding it to `settings.json`
 
-- [Provide some richer (optional) UI for custom tree views](https://github.com/microsoft/vscode/issues/97190)
-- [Allow TreeItem.label to support MarkdownString](https://github.com/microsoft/vscode/issues/115365)
+If the only purpose for a command sequence is to run it from a keybinding, then it might be easier to just run it from a `keybindings.json` file directly:
 
-## [Miscellaneous](https://github.com/usernamehw/vscode-commands/tree/master/docs/misc.md)
+```js
+{
+    "key": "ctrl+shift+9",
+    "command": "commands.run",
+    "args": [
+        "editor.action.toggleMinimap",
+        "workbench.action.toggleSidebarVisibility",
+    ],
+},
+```
 
-<details><summary>More examples</summary>
+## Codicons
+
+To quickly find an icon (for Tree View or Status Bar) there's an extension that can show all codicons (with preview) and insert picked id into the editor:
+
+[Codicon Names](https://marketplace.visualstudio.com/items?itemName=usernamehw.codicon-names)
+
+![Codicon Names](https://github.com/usernamehw/vscode-codicon-names/raw/HEAD/img/demo.png)
+
+## Using your own color for tree view icon
+
+```js
+"workbench.colorCustomizations": {
+    "mycolor": "#ffc01f",
+},
+"commands.commands": {
+    "Command": {
+        "icon": "dashboard",
+        "iconColor": "mycolor",
+    },
+},
+```
+
+## More examples
 
 ## Status bar granular zoom in/out buttons:
 
@@ -666,7 +696,12 @@ Please upvote the following VS Code issues:
 },
 ```
 
-</details>
+## Upstream issues
+
+Please upvote the following VS Code issues:
+
+- [Provide some richer (optional) UI for custom tree views](https://github.com/microsoft/vscode/issues/97190)
+- [Allow TreeItem.label to support MarkdownString](https://github.com/microsoft/vscode/issues/115365)
 
 <!--
 
