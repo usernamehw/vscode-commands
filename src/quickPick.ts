@@ -77,7 +77,7 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
 	});
 	quickPick.onDidTriggerButton(e => {
 		if (e.tooltip === newCommandButton.tooltip) {
-			commands.executeCommand(CommandIds.newCommand);
+			commands.executeCommand(CommandIds.NewCommand);
 		}
 		quickPick.hide();
 		quickPick.dispose();

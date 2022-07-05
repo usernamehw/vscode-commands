@@ -10,12 +10,12 @@ import { ExtensionConfig, Runnable, TopLevelCommands } from './types';
 import { addWorkspaceIdToCommands, getWorkspaceId, setWorkspaceIdToContext } from './workspaceCommands';
 
 export const enum Constants {
-	extensionId = 'usernamehw.commands',
-	extensionName = 'commands',
-	commandsSettingId = 'commands.commands',
-	workspaceCommandsSettingId = 'commands.workspaceCommands',
+	ExtensionId = 'usernamehw.commands',
+	ExtensionName = 'commands',
+	CommandsSettingId = 'commands.commands',
+	WorkspaceCommandsSettingId = 'commands.workspaceCommands',
 
-	COMMAND_PALETTE_WAS_POPULATED_STORAGE_KEY = 'was_populated',
+	CommandPaletteWasPopulatedStorageKey = 'was_populated',
 }
 
 /** extension config */
@@ -36,7 +36,7 @@ export async function activate(extensionContext: ExtensionContext) {
 	updateConfig();
 
 	const commandsTreeViewProvider = new CommandsTreeViewProvider({});
-	const commandsTreeView = window.createTreeView(`${Constants.extensionName}.tree`, {
+	const commandsTreeView = window.createTreeView(`${Constants.ExtensionName}.tree`, {
 		treeDataProvider: commandsTreeViewProvider,
 		showCollapseAll: true,
 	});
@@ -48,7 +48,7 @@ export async function activate(extensionContext: ExtensionContext) {
 	updateEverything(getWorkspaceId(extensionContext));
 
 	function updateConfig() {
-		$config = workspace.getConfiguration(Constants.extensionName) as any as ExtensionConfig;
+		$config = workspace.getConfiguration(Constants.ExtensionName) as any as ExtensionConfig;
 	}
 
 	function updateEverything(workspaceId?: string) {
@@ -63,7 +63,7 @@ export async function activate(extensionContext: ExtensionContext) {
 
 	extensionContext.subscriptions.push(commandsTreeView);
 	extensionContext.subscriptions.push(workspace.onDidChangeConfiguration(e => {
-		if (!e.affectsConfiguration(Constants.extensionName)) {
+		if (!e.affectsConfiguration(Constants.ExtensionName)) {
 			return;
 		}
 		updateConfig();
@@ -73,7 +73,7 @@ export async function activate(extensionContext: ExtensionContext) {
 
 /** Merge global and workspace commands */
 export function allCommands(workspaceId: string | undefined): TopLevelCommands {
-	const workspaceCommands = workspace.getConfiguration(Constants.extensionName).inspect('workspaceCommands')?.workspaceValue as ExtensionConfig['workspaceCommands'] | undefined;
+	const workspaceCommands = workspace.getConfiguration(Constants.ExtensionName).inspect('workspaceCommands')?.workspaceValue as ExtensionConfig['workspaceCommands'] | undefined;
 	if (workspaceId && workspaceCommands) {
 		return {
 			...$config.commands,

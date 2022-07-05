@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { Disposable, ExtensionContext } from 'vscode';
-import { Constants, $config } from './extension';
+import { $config, Constants } from './extension';
 import { TopLevelCommands } from './types';
 import { forEachCommand } from './utils';
 import { getWorkspaceId, isWorkspaceCommandItem, WorkspaceConstants } from './workspaceCommands';
@@ -46,13 +46,13 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 	unregisterCommandPalette();
 
 	if (!$config.populateCommandPalette) {
-		if (context.globalState.get(Constants.COMMAND_PALETTE_WAS_POPULATED_STORAGE_KEY)) {
+		if (context.globalState.get(Constants.CommandPaletteWasPopulatedStorageKey)) {
 			// Setting was enabled then disabled. Only in this case revert/write `package.json`
 			// so it would contain only core commands again.
 			const { coreCommands, packageJSONObject, packageJsonPath } = await getCommandsFromPackageJson(context);
 			packageJSONObject.contributes.commands = coreCommands;
 			await fs.promises.writeFile(packageJsonPath, JSON.stringify(packageJSONObject, null, '\t'));
-			await context.globalState.update(Constants.COMMAND_PALETTE_WAS_POPULATED_STORAGE_KEY, false);
+			await context.globalState.update(Constants.CommandPaletteWasPopulatedStorageKey, false);
 		}
 		return;
 	}
@@ -96,7 +96,7 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 	packageJSONObject.contributes.commands = [...coreCommands, ...otherWorkspacesCommands, ...userCommands];
 	packageJSONObject.contributes.menus.commandPalette = [...coreCommandPalette, ...otherWorkspacesCommandPalette, ...userCommandPalette];
 	await fs.promises.writeFile(packageJsonPath, JSON.stringify(packageJSONObject, null, '\t'));
-	await context.globalState.update(Constants.COMMAND_PALETTE_WAS_POPULATED_STORAGE_KEY, true);
+	await context.globalState.update(Constants.CommandPaletteWasPopulatedStorageKey, true);
 }
 
 async function getCommandsFromPackageJson(context: ExtensionContext) {

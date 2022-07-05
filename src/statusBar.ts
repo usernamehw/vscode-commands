@@ -44,7 +44,7 @@ export function updateStatusBarItems(items: TopLevelCommands) {
 
 			newStatusBarItem.text = icon + (statusBarUserObject.text || '');
 			newStatusBarItem.command = {
-				command: CommandIds.run,
+				command: CommandIds.Run,
 				title: 'Run Command',
 				arguments: [item],
 			};

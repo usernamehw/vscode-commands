@@ -138,7 +138,7 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 				result.push(new RunCommandTreeItem(
 					key,
 					{
-						command: CommandIds.run,
+						command: CommandIds.Run,
 						title: 'Run Command',
 						arguments: [runnable],
 					},

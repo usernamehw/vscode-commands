@@ -1,5 +1,5 @@
 import { Disposable, DocumentLink, env, languages, Range, Uri, window } from 'vscode';
-import { Constants, $config } from './extension';
+import { $config, Constants } from './extension';
 import { run } from './run';
 
 const documentLinkDisposables: Disposable[] = [];
@@ -37,7 +37,7 @@ export function updateDocumentLinkProvider() {
 							range: new Range(i, match.index, i, match[0].length + match.index),
 							target: Uri.from({
 								scheme: env.uriScheme,
-								authority: Constants.extensionId,
+								authority: Constants.ExtensionId,
 								query: match[1],
 								fragment: match[3],
 							}),

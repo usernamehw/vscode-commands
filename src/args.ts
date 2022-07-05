@@ -92,40 +92,40 @@ export const commandArgs: Record<string, unknown> = {
 		apply: 'first',
 		preferred: false,
 	},
-	[CommandIds.toggleSetting]: {
+	[CommandIds.ToggleSetting]: {
 		setting: '',
 		value: [],
 	},
-	[CommandIds.incrementSetting]: {
+	[CommandIds.IncrementSetting]: {
 		setting: '',
 		value: 1,
 	},
-	[CommandIds.toggleTheme]: {
+	[CommandIds.ToggleTheme]: {
 		dark: 'Default Dark+,Abyss',
 		light: 'Default Light+,Quiet Light',
 	},
-	[CommandIds.openFolder]: '',
-	[CommandIds.runInTerminal]: {
+	[CommandIds.OpenFolder]: '',
+	[CommandIds.RunInTerminal]: {
 		text: '',
 		name: '',
 		reveal: true,
 		cwd: '',
 	},
-	[CommandIds.startDebugging]: '',
-	[CommandIds.openExternal]: '',
-	[CommandIds.setEditorLanguage]: '',
-	[CommandIds.clipboardWrite]: '',
-	[CommandIds.revealFileInOS]: '',
-	[CommandIds.showNotification]: {
+	[CommandIds.StartDebugging]: '',
+	[CommandIds.OpenExternal]: '',
+	[CommandIds.SetEditorLanguage]: '',
+	[CommandIds.ClipboardWrite]: '',
+	[CommandIds.RevealFileInOS]: '',
+	[CommandIds.ShowNotification]: {
 		message: '',
 		severity: 'error',
 	},
-	[CommandIds.showStatusBarNotification]: {
+	[CommandIds.ShowStatusBarNotification]: {
 		message: '',
 		color: '',
 		timeout: 4000,
 	},
-	[CommandIds.open]: {
+	[CommandIds.Open]: {
 		target: '',
 		app: '',
 		arguments: [],
