@@ -12,14 +12,20 @@ import { isWorkspaceCommandItem } from './workspaceCommands';
  * Show quick pick with user commands. After picking one - run it.
  */
 export async function showQuickPick(commandsForPicking: TopLevelCommands, isFolder = false) {
-	const treeAsOneLevelMap: Record<string, Runnable> = {};
-	function traverseCommands(items: TopLevelCommands): void {
+	const treeAsOneLevelMap: Record<string, {
+		runnable: Runnable;
+		parentFolderName?: string;
+	}> = {};
+	function traverseCommands(items: TopLevelCommands, parentFolderName?: string): void {
 		for (const key in items) {
-			const command = items[key];
-			if (command.nestedItems) {
-				traverseCommands(command.nestedItems);
+			const runnable = items[key];
+			if (runnable.nestedItems) {
+				traverseCommands(runnable.nestedItems, key);
 			} else {
-				treeAsOneLevelMap[key] = command;
+				treeAsOneLevelMap[key] = {
+					runnable,
+					parentFolderName,
+				};
 			}
 		}
 	}
@@ -37,14 +43,16 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
 
 	const userCommands: QuickPickWithRunnable[] = Object.keys(treeAsOneLevelMap).map(label => ({
 		// @ts-ignore
-		label: `${treeAsOneLevelMap[label]?.icon ? `$(${treeAsOneLevelMap[label].icon}) ` : ''}${label}`,
+		label: `${treeAsOneLevelMap[label]?.runnable.icon ? `$(${treeAsOneLevelMap[label].runnable.icon}) ` : ''}${label}`,
 		buttons: [revealCommandButton],
-		runnable: treeAsOneLevelMap[label],
+		runnable: treeAsOneLevelMap[label].runnable,
+		description: treeAsOneLevelMap[label].parentFolderName ? `$(folder) ${treeAsOneLevelMap[label].parentFolderName}` : undefined,
 	}));
 
 	let pickedItem: QuickPickItem | undefined;
 	const quickPick = window.createQuickPick();
 	quickPick.matchOnDescription = true;
+	quickPick.matchOnDetail = true;
 	quickPick.title = 'Run command';
 
 
@@ -113,7 +121,7 @@ type QuickPickWithRunnable = QuickPickItem & { runnable: Runnable };
 function convertVSCodeCommandToQuickPickItem(commanList: VSCodeCommand[]): QuickPickWithRunnable[] {
 	return commanList.map(com => ({
 		label: com.title,
-		description: com.command,
+		detail: com.command,
 		runnable: {
 			command: com.command,
 		},
