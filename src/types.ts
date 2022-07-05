@@ -20,6 +20,10 @@ export interface ExtensionConfig {
 	 */
 	treeViewStatusBarVisibleSymbol: string;
 	/**
+	 * When checked - include all commands from Command Palette to the Quick Pick.
+	 */
+	quickPickIncludeAllCommands: boolean;
+	/**
 	 * Adds all items to Command Palette (Requires editor reload).
 	 */
 	populateCommandPalette: boolean;

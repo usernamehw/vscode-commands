@@ -1,14 +1,17 @@
-import { commands, QuickInputButton, QuickPickItem, ThemeIcon, window } from 'vscode';
+import fs from 'fs';
+import { commands, extensions, QuickInputButton, QuickPickItem, ThemeIcon, window } from 'vscode';
 import { hasArgs } from './args';
 import { CommandIds } from './commands';
+import { $config, $state } from './extension';
 import { run } from './run';
 import { Runnable, TopLevelCommands } from './types';
 import { goToSymbol, openSettingsJSON } from './utils';
 import { isWorkspaceCommandItem } from './workspaceCommands';
+
 /**
  * Show quick pick with user commands. After picking one - run it.
  */
-export function showQuickPick(commandsForPicking: TopLevelCommands) {
+export async function showQuickPick(commandsForPicking: TopLevelCommands, isFolder = false) {
 	const treeAsOneLevelMap: Record<string, Runnable> = {};
 	function traverseCommands(items: TopLevelCommands): void {
 		for (const key in items) {
@@ -32,15 +35,30 @@ export function showQuickPick(commandsForPicking: TopLevelCommands) {
 		tooltip: 'Reveal in settings.json',
 	};
 
-	const quickPickItems: QuickPickItem[] = Object.keys(treeAsOneLevelMap).map(label => ({
+	const userCommands: QuickPickWithRunnable[] = Object.keys(treeAsOneLevelMap).map(label => ({
 		// @ts-ignore
 		label: `${treeAsOneLevelMap[label]?.icon ? `$(${treeAsOneLevelMap[label].icon}) ` : ''}${label}`,
 		buttons: [revealCommandButton],
+		runnable: treeAsOneLevelMap[label],
 	}));
+
 	let pickedItem: QuickPickItem | undefined;
 	const quickPick = window.createQuickPick();
+	quickPick.matchOnDescription = true;
 	quickPick.title = 'Run command';
-	quickPick.items = quickPickItems;
+
+
+	if ($config.quickPickIncludeAllCommands && !isFolder) {
+		const allCommandPaletteCommands = convertVSCodeCommandToQuickPickItem(await getAllCommandPaletteCommands());
+		// dedup?
+		quickPick.items = [
+			...userCommands,
+			...allCommandPaletteCommands,
+		];
+	} else {
+		quickPick.items = userCommands;
+	}
+
 	quickPick.buttons = [
 		newCommandButton,
 	];
@@ -67,7 +85,8 @@ export function showQuickPick(commandsForPicking: TopLevelCommands) {
 
 	quickPick.onDidAccept(async () => {
 		if (pickedItem) {
-			await run(treeAsOneLevelMap[removeCodiconIconFromLabel(pickedItem.label)]);
+			// @ts-ignore
+			await run(pickedItem.runnable);
 		}
 		quickPick.hide();
 		quickPick.dispose();
@@ -87,6 +106,73 @@ export function commandsToQuickPickItems(commandList: string[]): QuickPickItem[]
 		});
 	}
 	return quickPickItems;
+}
+
+type QuickPickWithRunnable = QuickPickItem & { runnable: Runnable };
+
+function convertVSCodeCommandToQuickPickItem(commanList: VSCodeCommand[]): QuickPickWithRunnable[] {
+	return commanList.map(com => ({
+		label: com.title,
+		description: com.command,
+		runnable: {
+			command: com.command,
+		},
+	} as QuickPickWithRunnable));
+}
+
+interface VSCodeCommand {
+	command: string;
+	title: string;
+	category?: string;
+}
+
+export type VSCodeCommandWithoutCategory = Omit<VSCodeCommand, 'category'>;
+
+async function getAllCommandPaletteCommands(): Promise<VSCodeCommandWithoutCategory[]> {
+	if ($state.allCommandPaletteCommands.length) {
+		return $state.allCommandPaletteCommands;
+	}
+	const commandsFromExtensions = getAllCommandsFromExtensions();
+	const builtinCommands = await getAllBuiltinCommands();
+	const allCommandPaletteCommands = [
+		...builtinCommands,
+		...commandsFromExtensions,
+	];
+	$state.allCommandPaletteCommands = allCommandPaletteCommands;
+	return allCommandPaletteCommands;
+}
+
+async function getAllBuiltinCommands(): Promise<VSCodeCommandWithoutCategory[]> {
+	const commandsDataPath = $state.extensionContext.asAbsolutePath('./data/commandTitleMap.json');
+	const file = await fs.promises.readFile(commandsDataPath);
+	try {
+		const fileContentAsObject = JSON.parse(file.toString());
+		const result: VSCodeCommandWithoutCategory[] = [];
+		for (const key in fileContentAsObject) {
+			result.push({
+				command: key,
+				title: fileContentAsObject[key],
+			});
+		}
+		return result;
+	} catch (e) {
+		window.showErrorMessage(`Failed to get builtin commands: ${String(e)}`);
+	}
+	return [];
+}
+
+function getAllCommandsFromExtensions(): VSCodeCommandWithoutCategory[] {
+	const coms: VSCodeCommandWithoutCategory[] = [];
+	for (const extension of extensions.all) {
+		const contributedCommands: VSCodeCommand[] | undefined = extension.packageJSON?.contributes?.commands;
+		if (contributedCommands) {
+			coms.push(...contributedCommands.map(command => ({
+				command: command.command,
+				title: `${command.category ? `${command.category}: ` : ''}${command.title}`,
+			})));
+		}
+	}
+	return coms;
 }
 
 /**

@@ -2,6 +2,7 @@ import { ExtensionContext, window, workspace } from 'vscode';
 import { updateCommandPalette } from './commandPalette';
 import { registerExtensionCommands } from './commands';
 import { updateDocumentLinkProvider } from './documentLinksProvider';
+import { VSCodeCommandWithoutCategory } from './quickPick';
 import { updateUserCommands } from './registerUserCommands';
 import { updateStatusBarItems } from './statusBar';
 import { CommandsTreeViewProvider } from './TreeViewProvider';
@@ -23,6 +24,10 @@ export let $config: ExtensionConfig;
 export class $state {
 	static lastExecutedCommand: Runnable = { command: 'noop' };
 	static extensionContext: ExtensionContext;
+	/**
+	 * Cache all Command Palette commands for `quickPickIncludeAllCommands` feature.
+	 */
+	static allCommandPaletteCommands: VSCodeCommandWithoutCategory[] = [];
 }
 
 export async function activate(extensionContext: ExtensionContext) {

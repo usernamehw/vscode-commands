@@ -1,6 +1,6 @@
 import { ColorThemeKind, commands, debug, env, languages, Uri, window, workspace } from 'vscode';
 import { addArgs } from './args';
-import { allCommands, Constants, $config, $state } from './extension';
+import { $config, $state, allCommands, Constants } from './extension';
 import { commandsToQuickPickItems, removeCodiconFromLabel, showQuickPick } from './quickPick';
 import { run } from './run';
 import { incrementSetting, toggleSetting, updateSetting } from './settings';

@@ -4,6 +4,7 @@ import { showQuickPick } from './quickPick';
 import { substituteVariables } from './substituteVariables';
 import { CommandFolder, CommandObject, Runnable, Sequence } from './types';
 import { isSimpleObject, sleep } from './utils';
+
 /**
  * Execute runnable or folder.
  * Executing a folder - is to show Quick Pick to choose one of the commands inside that folder.
@@ -77,9 +78,11 @@ async function runObject(object: CommandObject) {
 
 	return await commands.executeCommand(commandId, args);
 }
-
+/**
+ * Run folder (show Quick pick with all commands inside that folder).
+ */
 function runFolder(folder: CommandFolder) {
-	showQuickPick(folder.nestedItems!);
+	showQuickPick(folder.nestedItems!, true);
 }
 /**
  * Allow running a string with args: `commands.runInTerminal?npm run watch` (for runnables that are strings)

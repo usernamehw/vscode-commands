@@ -29,15 +29,13 @@
 		"commands",
 		"args",
 		"arguments",
-		"tree",
-		"view",
+		"tree view",
 		"keybinding",
 		"macros",
 		"toggle",
 		"setting",
 		"delay",
-		"status",
-		"bar"
+		"status bar"
 	],
 	"categories": [
 		"Other"
@@ -746,6 +744,11 @@
 					],
 					"default": "left",
 					"description": "Where to put command on Status Bar (left or right)."
+				},
+				"commands.quickPickIncludeAllCommands": {
+					"type": "boolean",
+					"markdownDescription": "EXPERIMENTAL: When checked - include all commands from Command Palette to the Quick Pick.",
+					"default": false
 				},
 				"commands.populateCommandPalette": {
 					"type": "boolean",
