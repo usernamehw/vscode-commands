@@ -444,20 +444,30 @@ Example for a 2x2 grid:
 ### `commands.toggleSetting` Toggle settings
 
 ```js
-"Toggle indent guides": {
+"Toggle boolean setting (pass string args)": {
     "command": "commands.toggleSetting",
-    "args": "editor.renderIndentGuides", // string - toggle boolean
+    "args": "editor.renderIndentGuides",
 },
 ```
 
 ```js
-"Switch themes": {
+"Pass array of values to cycle through": {
     "command": "commands.toggleSetting",
     "args": {
         "setting": "workbench.colorTheme",
         "value": ["Monokai", "Kimbie Dark"],
     },
     "icon": "symbol-color",
+},
+```
+
+```js
+"Toggle workspace setting": {
+	"command": "commands.toggleSetting",
+	"args": {
+		"setting": "workbench.editor.showTabs",
+		"target": "workspace",
+	},
 },
 ```
 

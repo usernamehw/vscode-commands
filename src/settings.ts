@@ -4,12 +4,15 @@ import { CommandId } from './commands';
 import { $config } from './extension';
 import { isSimpleObject } from './utils';
 
+type Target = 'global' | 'workspace';
+
 /**
  * Type for {@link CommandId.ToggleSetting} command.
  */
 export interface ToggleSettingType {
 	setting: string;
-	value: unknown[] | string;
+	value?: unknown[] | string;
+	target?: Target;
 }
 
 /**
@@ -19,6 +22,7 @@ export async function toggleSetting(arg: ToggleSettingType | string): Promise<vo
 	const settings = workspace.getConfiguration(undefined, null);
 	let newValue: unknown;
 	let settingName: string;
+	let target: Target = 'global';
 
 	if (typeof arg === 'string') {
 		// Passed only string - assume that's a boolean settings' name and try to toggle it
@@ -30,9 +34,13 @@ export async function toggleSetting(arg: ToggleSettingType | string): Promise<vo
 		settingName = arg;
 		newValue = !currentSettingValue;
 	} else if (isSimpleObject(arg)) {
+		// Passed an object of ToggleSettingType type.
 		settingName = arg.setting;
 		const currentSettingValue = settings.get(settingName);
 		const settingValues = arg.value;
+		if (arg.target && (['global', 'workspace'] as Target[]).includes(arg.target)) {
+			target = arg.target;
+		}
 
 		if (settingValues === undefined) {
 			// Passed an object. "value" is omitted -> assume it's to toggle a boolean setting
@@ -60,7 +68,7 @@ export async function toggleSetting(arg: ToggleSettingType | string): Promise<vo
 		return;
 	}
 
-	await settings.update(settingName, newValue, ConfigurationTarget.Global);
+	await settings.update(settingName, newValue, target === 'global' ? ConfigurationTarget.Global : ConfigurationTarget.Workspace);
 
 	if ($config.toggleSettings.showNotification) {
 		window.showInformationMessage(`"${settingName}": ${JSON.stringify(newValue)}`);

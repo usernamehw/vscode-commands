@@ -96,6 +96,7 @@ export const commandArgs: Record<string, unknown> = {
 	[CommandId.ToggleSetting]: {
 		setting: '',
 		value: [],
+		target: 'global',
 	},
 	[CommandId.IncrementSetting]: {
 		setting: '',
