@@ -1,13 +1,20 @@
+import isEqual from 'lodash/isEqual';
 import { ConfigurationTarget, window, workspace } from 'vscode';
 import { $config } from './extension';
-import { ToggleSetting } from './types';
 import { isSimpleObject } from './utils';
-import isEqual from 'lodash/isEqual';
+
+/**
+ * Type for `toggleSetting` command.
+ */
+export interface ToggleSettingType {
+	setting: string;
+	value: unknown[] | string;
+}
 
 /**
  * Toggle global user setting.
  */
-export async function toggleSetting(arg: ToggleSetting | string) {
+export async function toggleSetting(arg: ToggleSettingType | string): Promise<void> {
 	const settings = workspace.getConfiguration(undefined, null);
 	let newValue;
 
@@ -47,7 +54,7 @@ export async function toggleSetting(arg: ToggleSetting | string) {
 /**
  * Increment global user setting. To decrement - just pass a negative number.
  */
-export async function incrementSetting(settingName: unknown, n: unknown) {
+export async function incrementSetting(settingName: unknown, n: unknown): Promise<void> {
 	if (typeof settingName !== 'string') {
 		window.showWarningMessage('Setting name must be a string');
 		return;
@@ -71,7 +78,7 @@ export async function incrementSetting(settingName: unknown, n: unknown) {
 /**
  * Update user setting with the new value.
  */
-export async function updateSetting(settingName: string, newValue: unknown, target: 'global' | 'workspace') {
+export async function updateSetting(settingName: string, newValue: unknown, target: 'global' | 'workspace'): Promise<void> {
 	const settings = workspace.getConfiguration(undefined, null);
 	const configurationTarget = target === 'workspace' ? ConfigurationTarget.Workspace : ConfigurationTarget.Global;
 	await settings.update(settingName, newValue, configurationTarget);

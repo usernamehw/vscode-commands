@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { commands, extensions, QuickInputButton, QuickPickItem, ThemeIcon, window } from 'vscode';
 import { hasArgs } from './args';
-import { CommandIds } from './commands';
+import { CommandId } from './commands';
 import { $config, $state } from './extension';
 import { run } from './run';
 import { Runnable, TopLevelCommands } from './types';
@@ -11,7 +11,7 @@ import { isWorkspaceCommandItem } from './workspaceCommands';
 /**
  * Show quick pick with user commands. After picking one - run it.
  */
-export async function showQuickPick(commandsForPicking: TopLevelCommands, isFolder = false) {
+export async function showQuickPick(commandsForPicking: TopLevelCommands, isFolder = false): Promise<void> {
 	const treeAsOneLevelMap: Record<string, {
 		runnable: Runnable;
 		parentFolderName?: string;
@@ -85,7 +85,7 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
 	});
 	quickPick.onDidTriggerButton(e => {
 		if (e.tooltip === newCommandButton.tooltip) {
-			commands.executeCommand(CommandIds.NewCommand);
+			commands.executeCommand(CommandId.NewCommand);
 		}
 		quickPick.hide();
 		quickPick.dispose();

@@ -1,5 +1,6 @@
-import { CommandIds } from './commands';
+import { CommandId } from './commands';
 import { $config } from './extension';
+
 /**
  * Map commands with arguments;
  */
@@ -92,40 +93,40 @@ export const commandArgs: Record<string, unknown> = {
 		apply: 'first',
 		preferred: false,
 	},
-	[CommandIds.ToggleSetting]: {
+	[CommandId.ToggleSetting]: {
 		setting: '',
 		value: [],
 	},
-	[CommandIds.IncrementSetting]: {
+	[CommandId.IncrementSetting]: {
 		setting: '',
 		value: 1,
 	},
-	[CommandIds.ToggleTheme]: {
+	[CommandId.ToggleTheme]: {
 		dark: 'Default Dark+,Abyss',
 		light: 'Default Light+,Quiet Light',
 	},
-	[CommandIds.OpenFolder]: '',
-	[CommandIds.RunInTerminal]: {
+	[CommandId.OpenFolder]: '',
+	[CommandId.RunInTerminal]: {
 		text: '',
 		name: '',
 		reveal: true,
 		cwd: '',
 	},
-	[CommandIds.StartDebugging]: '',
-	[CommandIds.OpenExternal]: '',
-	[CommandIds.SetEditorLanguage]: '',
-	[CommandIds.ClipboardWrite]: '',
-	[CommandIds.RevealFileInOS]: '',
-	[CommandIds.ShowNotification]: {
+	[CommandId.StartDebugging]: '',
+	[CommandId.OpenExternal]: '',
+	[CommandId.SetEditorLanguage]: '',
+	[CommandId.ClipboardWrite]: '',
+	[CommandId.RevealFileInOS]: '',
+	[CommandId.ShowNotification]: {
 		message: '',
 		severity: 'error',
 	},
-	[CommandIds.ShowStatusBarNotification]: {
+	[CommandId.ShowStatusBarNotification]: {
 		message: '',
 		color: '',
 		timeout: 4000,
 	},
-	[CommandIds.Open]: {
+	[CommandId.Open]: {
 		target: '',
 		app: '',
 		arguments: [],
@@ -134,7 +135,7 @@ export const commandArgs: Record<string, unknown> = {
 /**
  * Add arguments if command can accept them (even if they are optional).
  */
-export function addArgs(commandId: string) {
+export function addArgs(commandId: string): { command: string; args?: unknown } {
 	if (commandId in commandArgs) {
 		return {
 			command: commandId,
@@ -154,6 +155,6 @@ export function addArgs(commandId: string) {
 /**
  * Return `true` if command accepts arguments.
  */
-export function hasArgs(commandId: string) {
+export function hasArgs(commandId: string): boolean {
 	return commandId in commandArgs || $config.alias[commandId] in commandArgs;
 }

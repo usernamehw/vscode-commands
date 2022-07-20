@@ -1,5 +1,4 @@
-import { incrementSetting } from '../settings';
-import { ToggleSettingType } from '../types';
+import { incrementSetting, ToggleSettingType } from '../settings';
 import { isSimpleObject } from '../utils';
 
 export function incrementSettingCommand(arg: ToggleSettingType | string) {

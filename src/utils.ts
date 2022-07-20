@@ -20,25 +20,25 @@ export function isSimpleObject(item: unknown): item is Record<string, unknown> {
 /**
  * Open vscode Settings GUI with input value set to the specified value.
  */
-export function openSettingGuiAt(settingName: string) {
-	commands.executeCommand('workbench.action.openSettings', settingName);
+export async function openSettingGuiAt(settingName: string): Promise<void> {
+	await commands.executeCommand('workbench.action.openSettings', settingName);
 }
 /**
  * Open vscode Keybindings GUI with input value set to the specified value.
  */
-export function openKeybindingsGuiAt(value: string) {
-	commands.executeCommand('workbench.action.openGlobalKeybindings', value);
+export async function openKeybindingsGuiAt(value: string): Promise<void> {
+	await commands.executeCommand('workbench.action.openGlobalKeybindings', value);
 }
 /**
  * Open global or workspace settings.json file in the editor.
  */
-export async function openSettingsJSON(target: 'global' | 'workspace') {
-	return await commands.executeCommand(target === 'global' ? 'workbench.action.openSettingsJson' : 'workbench.action.openWorkspaceSettingsFile');
+export async function openSettingsJSON(target: 'global' | 'workspace'): Promise<void> {
+	await commands.executeCommand(target === 'global' ? 'workbench.action.openSettingsJson' : 'workbench.action.openWorkspaceSettingsFile');
 }
 /**
  * Walk recursively over all items from `commands.commands` setting and execute callback for each item/command.
  */
-export function forEachCommand(f: (item: TopLevelCommands['anykey'], key: string, parentElement: TopLevelCommands)=> void, items: TopLevelCommands) {
+export function forEachCommand(f: (item: TopLevelCommands['anykey'], key: string, parentElement: TopLevelCommands)=> void, items: TopLevelCommands): void {
 	for (const key in items) {
 		const item = items[key];
 		f(item, key, items);
@@ -72,7 +72,7 @@ async function getSymbols(document: TextDocument): Promise<DocumentSymbol[]> {
  * - Briefly highlight the entire line
  * - Move cursor to the symbol position
  */
-export async function goToSymbol(editor: TextEditor | undefined, symbolName: string) {
+export async function goToSymbol(editor: TextEditor | undefined, symbolName: string): Promise<void> {
 	if (!editor) {
 		window.showErrorMessage('No TextEditor provided.');
 		return;
@@ -104,7 +104,7 @@ export async function goToSymbol(editor: TextEditor | undefined, symbolName: str
 /**
  * Recursively walk through document symbols.
  */
-export function forEachSymbol(f: (symbol: DocumentSymbol)=> void, symbols: DocumentSymbol[]) {
+export function forEachSymbol(f: (symbol: DocumentSymbol)=> void, symbols: DocumentSymbol[]): void {
 	for (const symbol of symbols) {
 		f(symbol);
 		if (symbol.children.length) {
@@ -115,7 +115,7 @@ export function forEachSymbol(f: (symbol: DocumentSymbol)=> void, symbols: Docum
 /**
  * Return all registered vscode commands (excluding internal).
  */
-export async function getAllVscodeCommands() {
+export async function getAllVscodeCommands(): Promise<string[]> {
 	return await commands.getCommands(true);
 }
 /**
@@ -127,6 +127,6 @@ export function uniqueId(): string {
 /**
  * Copy object or array (hopefully without circular references).
  */
-export function deepCopy(object: unknown): any {
+export function deepCopy<T>(object: T): T {
 	return JSON.parse(JSON.stringify(object));
 }

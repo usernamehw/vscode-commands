@@ -9,7 +9,7 @@ const registeredCommandsList: Disposable[] = [];
 /**
  * Register a command to be able to execute it from a keybinding.
  */
-export async function updateUserCommands(items: TopLevelCommands) {
+export async function updateUserCommands(items: TopLevelCommands): Promise<void> {
 	unregisterUserCommands();
 
 	const allCommands = await getAllVscodeCommands();

@@ -101,23 +101,3 @@ export interface CommandFolder {
 	hidden?: boolean;
 	workspace?: string;
 }
-
-// ────────────────────────────────────────────────────────────
-/**
- * Type for `toggleSetting` command.
- */
-export interface ToggleSetting {
-	setting: string;
-	value: unknown[] | string;
-}
-// ────────────────────────────────────────────────────────────
-export interface StatusBarNotification {
-	message: string;
-	color?: string;
-	timeout?: number;
-	priority?: number;// TODO: allow to specify priority, make default aligned to the right item
-}
-
-export interface WorkspaceCommand {
-	workspace: string;
-}

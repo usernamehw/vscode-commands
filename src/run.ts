@@ -9,7 +9,7 @@ import { isSimpleObject, sleep } from './utils';
  * Execute runnable or folder.
  * Executing a folder - is to show Quick Pick to choose one of the commands inside that folder.
  */
-export async function run(runnable: CommandFolder & Runnable) {
+export async function run(runnable: CommandFolder & Runnable): Promise<void> {
 	$state.lastExecutedCommand = runnable;
 	if (typeof runnable === 'string') {
 		const { command, args } = parseSimplifiedArgs(runnable);
@@ -36,7 +36,7 @@ export async function run(runnable: CommandFolder & Runnable) {
 	}
 	window.showErrorMessage(`Unknown command type ${JSON.stringify(runnable)}`);
 }
-async function runArray(arr: Sequence) {
+async function runArray(arr: Sequence): Promise<void> {
 	for (const item of arr) {
 		if (typeof item === 'string') {
 			await runObject({
@@ -51,7 +51,7 @@ async function runArray(arr: Sequence) {
  * `runObject()` must be used in all other `run...` functions because
  * it applies `commands.alias` when needed.
  */
-async function runObject(object: CommandObject) {
+async function runObject(object: CommandObject): Promise<unknown> {
 	if (object.delay) {
 		await sleep(object.delay);
 	}
@@ -81,7 +81,7 @@ async function runObject(object: CommandObject) {
 /**
  * Run folder (show Quick pick with all commands inside that folder).
  */
-function runFolder(folder: CommandFolder) {
+function runFolder(folder: CommandFolder): void {
 	showQuickPick(folder.nestedItems!, true);
 }
 /**

@@ -4,7 +4,7 @@ import { TopLevelCommands } from './types';
 /**
  * Create tooltip content for folder that contains all of the nested items.
  */
-export function createFolderHoverText(nestedItems: TopLevelCommands) {
+export function createFolderHoverText(nestedItems: TopLevelCommands): MarkdownString {
 	const markdown = new MarkdownString(undefined, true);
 	markdown.isTrusted = true;
 	for (const key in nestedItems) {

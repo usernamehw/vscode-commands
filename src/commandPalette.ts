@@ -42,7 +42,7 @@ const coreCommandIds = [
  *
  * This function updates `package.json` file to add items from `commands.commands` to Command Palette (but requires editor reload after changing configuration)
  */
-export async function updateCommandPalette(items: TopLevelCommands, context: ExtensionContext) {
+export async function updateCommandPalette(items: TopLevelCommands, context: ExtensionContext): Promise<void> {
 	unregisterCommandPalette();
 
 	if (!$config.populateCommandPalette) {

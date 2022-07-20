@@ -1,5 +1,4 @@
 import { window } from 'vscode';
-import { StatusBarNotification } from '../types';
 
 export function showStatusBarNotificationCommand(arg: StatusBarNotification | string) {
 	if (typeof arg === 'string') {
@@ -22,4 +21,11 @@ function showTempStatusBarMessage(notification: StatusBarNotification) {
 		tempStatusBarMessage.hide();
 		tempStatusBarMessage.dispose();
 	}, notification.timeout || 4000);
+}
+
+interface StatusBarNotification {
+	message: string;
+	color?: string;
+	timeout?: number;
+	priority?: number;// TODO: allow to specify priority, make default aligned to the right item
 }

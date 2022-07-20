@@ -18,9 +18,7 @@ export const enum Constants {
 	CommandPaletteWasPopulatedStorageKey = 'was_populated',
 }
 
-/** extension config */
 export let $config: ExtensionConfig;
-/** extension state */
 export class $state {
 	static lastExecutedCommand: Runnable = { command: 'noop' };
 	static extensionContext: ExtensionContext;
@@ -71,7 +69,9 @@ export async function activate(extensionContext: ExtensionContext) {
 	}));
 }
 
-/** Merge global and workspace commands */
+/**
+ * Merge global and workspace commands.
+ */
 export function allCommands(workspaceId: string | undefined): TopLevelCommands {
 	const workspaceCommands = workspace.getConfiguration(Constants.ExtensionName).inspect('workspaceCommands')?.workspaceValue as ExtensionConfig['workspaceCommands'] | undefined;
 	if (workspaceId && workspaceCommands) {

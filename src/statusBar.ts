@@ -1,13 +1,15 @@
 import { Disposable, MarkdownString, StatusBarAlignment, ThemeColor, Uri, window } from 'vscode';
-import { CommandIds } from './commands';
+import { CommandId } from './commands';
 import { createFolderHoverText } from './folderHoverText';
 import { TopLevelCommands } from './types';
 import { forEachCommand } from './utils';
 
 const statusBarItems: Disposable[] = [];
 
-/** Dispose and refresh all status bar items. */
-export function updateStatusBarItems(items: TopLevelCommands) {
+/**
+ * Dispose and refresh all status bar items.
+ */
+export function updateStatusBarItems(items: TopLevelCommands): void {
 	disposeStatusBarItems();
 
 	forEachCommand((item, key) => {
@@ -37,14 +39,14 @@ export function updateStatusBarItems(items: TopLevelCommands) {
 				label: key,
 			}];
 			const revealCommandUri = Uri.parse(
-				`command:commands.revealCommand2?${encodeURIComponent(JSON.stringify(args))}`,
+				`command:${CommandId.RevealCommand2}?${encodeURIComponent(JSON.stringify(args))}`,
 			);
 			mdTooltip.appendMarkdown(`\n\n---\n\n[Reveal in settings.json](${revealCommandUri})`);
 			newStatusBarItem.tooltip = mdTooltip;
 
 			newStatusBarItem.text = icon + (statusBarUserObject.text || '');
 			newStatusBarItem.command = {
-				command: CommandIds.Run,
+				command: CommandId.Run,
 				title: 'Run Command',
 				arguments: [item],
 			};

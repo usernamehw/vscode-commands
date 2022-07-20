@@ -33,7 +33,7 @@ import { isWorkspaceCommandItem } from './workspaceCommands';
 /**
  * All command ids contributed by this extension.
  */
-export const enum CommandIds {
+export const enum CommandId {
 	// ──── Core ──────────────────────────────────────────────────
 	Run = 'commands.run',
 	Rerun = 'commands.rerun',
@@ -72,35 +72,35 @@ export const enum CommandIds {
  */
 export function registerExtensionCommands() {
 	// ──── Core Commands ─────────────────────────────────────────
-	commands.registerCommand(CommandIds.Run, runCommand);
-	commands.registerCommand(CommandIds.Rerun, rerunCommand);
-	commands.registerCommand(CommandIds.SelectAndRun, selectAndRunCommand);
-	commands.registerCommand(CommandIds.RevealCommand, revealCommandCommand);
-	commands.registerCommand(CommandIds.RevealCommand2, revealCommand2Command);
-	commands.registerCommand(CommandIds.AssignKeybinding, assignKeybindingCommand);
-	commands.registerCommand(CommandIds.ToggleStatusBar, toggleStatusBarCommand);
-	commands.registerCommand(CommandIds.RevealCommandsInSettignsGUI, revealCommandsInSettingsGUICommand);
-	commands.registerCommand(CommandIds.OpenAsQuickPick, openAsQuickPickCommand);
-	commands.registerCommand(CommandIds.NewCommand, newCommandCommand);
-	commands.registerCommand(CommandIds.NewCommandInFolder, newCommandInFolderCommand);
-	commands.registerCommand(CommandIds.NewFolder, newFolderCommand);
-	commands.registerCommand(CommandIds.DeleteCommand, deleteCommandCommand);
-	commands.registerTextEditorCommand(CommandIds.SuggestCommands, suggestCommandsCommand);
-	commands.registerTextEditorCommand(CommandIds.EscapeCommandUriArgument, escapeCommandUriArgumentCommand);
+	commands.registerCommand(CommandId.Run, runCommand);
+	commands.registerCommand(CommandId.Rerun, rerunCommand);
+	commands.registerCommand(CommandId.SelectAndRun, selectAndRunCommand);
+	commands.registerCommand(CommandId.RevealCommand, revealCommandCommand);
+	commands.registerCommand(CommandId.RevealCommand2, revealCommand2Command);
+	commands.registerCommand(CommandId.AssignKeybinding, assignKeybindingCommand);
+	commands.registerCommand(CommandId.ToggleStatusBar, toggleStatusBarCommand);
+	commands.registerCommand(CommandId.RevealCommandsInSettignsGUI, revealCommandsInSettingsGUICommand);
+	commands.registerCommand(CommandId.OpenAsQuickPick, openAsQuickPickCommand);
+	commands.registerCommand(CommandId.NewCommand, newCommandCommand);
+	commands.registerCommand(CommandId.NewCommandInFolder, newCommandInFolderCommand);
+	commands.registerCommand(CommandId.NewFolder, newFolderCommand);
+	commands.registerCommand(CommandId.DeleteCommand, deleteCommandCommand);
+	commands.registerTextEditorCommand(CommandId.SuggestCommands, suggestCommandsCommand);
+	commands.registerTextEditorCommand(CommandId.EscapeCommandUriArgument, escapeCommandUriArgumentCommand);
 	// ──── Additional Commands ───────────────────────────────────
-	commands.registerCommand(CommandIds.ToggleSetting, toggleSettingCommand);
-	commands.registerCommand(CommandIds.IncrementSetting, incrementSettingCommand);
-	commands.registerCommand(CommandIds.ClipboardWrite, clipboardWriteCommand);
-	commands.registerCommand(CommandIds.SetEditorLanguage, setEditorLanguageCommand);
-	commands.registerCommand(CommandIds.OpenFolder, openFolderCommand);
-	commands.registerCommand(CommandIds.ShowNotification, showNotificationCommand);
-	commands.registerCommand(CommandIds.ShowStatusBarNotification, showStatusBarNotificationCommand);
-	commands.registerCommand(CommandIds.RunInTerminal, runInTerminalCommand);
-	commands.registerCommand(CommandIds.StartDebugging, startDebuggingCommand);
-	commands.registerCommand(CommandIds.ToggleTheme, toggleThemeCommand);
-	commands.registerCommand(CommandIds.OpenExternal, openExternalCommand);
-	commands.registerCommand(CommandIds.RevealFileInOS, revealFileInOSCommand);
-	commands.registerCommand(CommandIds.Open, openCommand);
+	commands.registerCommand(CommandId.ToggleSetting, toggleSettingCommand);
+	commands.registerCommand(CommandId.IncrementSetting, incrementSettingCommand);
+	commands.registerCommand(CommandId.ClipboardWrite, clipboardWriteCommand);
+	commands.registerCommand(CommandId.SetEditorLanguage, setEditorLanguageCommand);
+	commands.registerCommand(CommandId.OpenFolder, openFolderCommand);
+	commands.registerCommand(CommandId.ShowNotification, showNotificationCommand);
+	commands.registerCommand(CommandId.ShowStatusBarNotification, showStatusBarNotificationCommand);
+	commands.registerCommand(CommandId.RunInTerminal, runInTerminalCommand);
+	commands.registerCommand(CommandId.StartDebugging, startDebuggingCommand);
+	commands.registerCommand(CommandId.ToggleTheme, toggleThemeCommand);
+	commands.registerCommand(CommandId.OpenExternal, openExternalCommand);
+	commands.registerCommand(CommandId.RevealFileInOS, revealFileInOSCommand);
+	commands.registerCommand(CommandId.Open, openCommand);
 }
 
 export function applyForTreeItem(

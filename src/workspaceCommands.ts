@@ -1,5 +1,5 @@
 import { commands, ExtensionContext } from 'vscode';
-import { CommandFolder, CommandObject, TopLevelCommands, WorkspaceCommand } from './types';
+import { CommandFolder, CommandObject, TopLevelCommands } from './types';
 import { deepCopy, forEachCommand, uniqueId } from './utils';
 
 export const enum WorkspaceConstants {
@@ -32,4 +32,8 @@ export function addWorkspaceIdToCommands(workspaceCommands: TopLevelCommands, wo
 		item.workspace = workspaceId;
 	}, itemsDeepCopy);
 	return itemsDeepCopy;
+}
+
+interface WorkspaceCommand {
+	workspace: string;
 }
