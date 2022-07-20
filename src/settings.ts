@@ -1,10 +1,11 @@
 import isEqual from 'lodash/isEqual';
 import { ConfigurationTarget, window, workspace } from 'vscode';
+import { CommandId } from './commands';
 import { $config } from './extension';
 import { isSimpleObject } from './utils';
 
 /**
- * Type for `toggleSetting` command.
+ * Type for {@link CommandId.ToggleSetting} command.
  */
 export interface ToggleSettingType {
 	setting: string;
@@ -16,22 +17,32 @@ export interface ToggleSettingType {
  */
 export async function toggleSetting(arg: ToggleSettingType | string): Promise<void> {
 	const settings = workspace.getConfiguration(undefined, null);
-	let newValue;
+	let newValue: unknown;
+	let settingName: string;
 
 	if (typeof arg === 'string') {
-		// Passed only string, assume that's a boolean settings' name and try to toggle it
+		// Passed only string - assume that's a boolean settings' name and try to toggle it
 		const currentSettingValue = settings.get<unknown>(arg);
 		if (typeof currentSettingValue !== 'boolean') {
-			window.showWarningMessage('Passing a string only works with type Boolean');
+			window.showWarningMessage('Passing a string only works if the setting type is Boolean');
 			return;
 		}
+		settingName = arg;
 		newValue = !currentSettingValue;
 	} else if (isSimpleObject(arg)) {
-		const settingName = arg.setting;
+		settingName = arg.setting;
 		const currentSettingValue = settings.get(settingName);
 		const settingValues = arg.value;
 
-		if (Array.isArray(settingValues)) {
+		if (settingValues === undefined) {
+			// Passed an object. "value" is omitted -> assume it's to toggle a boolean setting
+			if (typeof currentSettingValue !== 'boolean') {
+				window.showWarningMessage(`Omitting "value" key is only possible if the setting type is Boolean.`);
+				return;
+			}
+			newValue = !currentSettingValue;
+		} else if (Array.isArray(settingValues)) {
+			// Passed an object. "value" is array -> cycle through
 			newValue = getNextOrFirstElement(settingValues, currentSettingValue);
 		} else if (typeof settingValues === 'string') {
 			// Handle comma separated string here (assume it's an array of strings)
@@ -44,11 +55,15 @@ export async function toggleSetting(arg: ToggleSettingType | string): Promise<vo
 				}
 			}
 		}
+	} else {
+		window.showWarningMessage(`Argument for ${CommandId.ToggleSetting} must be either a string (for toggling boolean value) or an object with keys: "setting" and "value".`);
+		return;
+	}
 
-		await settings.update(settingName, newValue, ConfigurationTarget.Global);
-		if ($config.toggleSettings.showNotification) {
-			window.showInformationMessage(`"${settingName}": ${JSON.stringify(newValue)}`);
-		}
+	await settings.update(settingName, newValue, ConfigurationTarget.Global);
+
+	if ($config.toggleSettings.showNotification) {
+		window.showInformationMessage(`"${settingName}": ${JSON.stringify(newValue)}`);
 	}
 }
 /**
@@ -70,7 +85,9 @@ export async function incrementSetting(settingName: unknown, n: unknown): Promis
 		return;
 	}
 	const newValue = Number((currentSettingValue + n).toPrecision(10));
+
 	await settings.update(settingName, newValue, true);
+
 	if ($config.toggleSettings.showNotification) {
 		window.showInformationMessage(`"${settingName}": ${newValue}`);
 	}
