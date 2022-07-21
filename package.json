@@ -1,7 +1,7 @@
 {
 	"name": "commands",
 	"displayName": "Commands",
-	"description": "Run commands from Tree View / Status Bar / Quick Pick.",
+	"description": "Run one/multiple commands with arguments from Tree View / Status Bar / Quick Pick.",
 	"version": "1.2.2",
 	"publisher": "usernamehw",
 	"license": "MIT",
@@ -24,18 +24,19 @@
 	"keywords": [
 		"run",
 		"execute",
+		"multi",
 		"multiple",
 		"command",
 		"commands",
 		"args",
 		"arguments",
 		"tree view",
+		"status bar",
 		"keybinding",
+		"shortcut",
 		"macros",
-		"toggle",
-		"setting",
-		"delay",
-		"status bar"
+		"toggle setting",
+		"delay"
 	],
 	"categories": [
 		"Other"

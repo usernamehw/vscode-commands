@@ -3,6 +3,14 @@
 [![MS Marketplace Rating](https://shields.io/visual-studio-marketplace/r/usernamehw.commands?label=Rating&style=flat-square&color=blue)](https://marketplace.visualstudio.com/items?itemName=usernamehw.commands&ssr=false#review-details)
 [![OpenVSX Downloads](https://shields.io/open-vsx/dt/usernamehw/commands?label=OpenVSX%20Downloads&style=flat-square&color=green)](https://open-vsx.org/extension/usernamehw/commands)
 
+## Features
+
+- Run commands with arguments ("args")
+- Run multiple commands (in sequence)
+- Use Tree View / Quick Pick / Status Bar / Document link to run commands
+- Assign keyboard shortcut to specified commands
+- Create alias for existing commands
+
 ## Simple command
 
 ```js
