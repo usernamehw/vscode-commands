@@ -43,14 +43,14 @@ export async function activate(extensionContext: ExtensionContext) {
 	registerExtensionCommands();
 
 	await setWorkspaceIdToContext(extensionContext);
-	updateEverything(getWorkspaceId(extensionContext));
+	updateEverything();
 
 	function updateConfig() {
 		$config = workspace.getConfiguration(Constants.ExtensionName) as any as ExtensionConfig;
 	}
 
-	function updateEverything(workspaceId?: string) {
-		const commands = allCommands(workspaceId);
+	function updateEverything() {
+		const commands = allCommands();
 		commandsTreeViewProvider.updateCommands(commands);
 		commandsTreeViewProvider.refresh();
 		updateUserCommands(commands);
@@ -65,14 +65,15 @@ export async function activate(extensionContext: ExtensionContext) {
 			return;
 		}
 		updateConfig();
-		updateEverything(getWorkspaceId(extensionContext));
+		updateEverything();
 	}));
 }
 
 /**
  * Merge global and workspace commands.
  */
-export function allCommands(workspaceId: string | undefined): TopLevelCommands {
+export function allCommands(): TopLevelCommands {
+	const workspaceId = getWorkspaceId($state.extensionContext);
 	const workspaceCommands = workspace.getConfiguration(Constants.ExtensionName).inspect('workspaceCommands')?.workspaceValue as ExtensionConfig['workspaceCommands'] | undefined;
 	if (workspaceId && workspaceCommands) {
 		return {
