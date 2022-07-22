@@ -36,14 +36,20 @@ export async function openSettingsJSON(target: 'global' | 'workspace'): Promise<
 	await commands.executeCommand(target === 'global' ? 'workbench.action.openSettingsJson' : 'workbench.action.openWorkspaceSettingsFile');
 }
 /**
- * Walk recursively over all items from `commands.commands` setting and execute callback for each item/command.
+ * Walk over all items (only 1 lvl nesting) from
+ * `commands.commands` setting and execute callback for each item/command.
  */
-export function forEachCommand(f: (item: TopLevelCommands['anykey'], key: string, parentElement: TopLevelCommands)=> void, items: TopLevelCommands): void {
-	for (const key in items) {
-		const item = items[key];
-		f(item, key, items);
+export function forEachCommand(
+	callback: (item: TopLevelCommands['anykey'], key: string, parentElement: TopLevelCommands)=> void,
+	items: TopLevelCommands,
+): void {
+	for (const [key, item] of Object.entries(items)) {
+		callback(item, key, items);
+
 		if (item.nestedItems) {
-			forEachCommand(f, item.nestedItems);
+			for (const [nestedKey, nestedItem] of Object.entries(item.nestedItems) || []) {
+				callback(nestedItem, nestedKey, item.nestedItems);
+			}
 		}
 	}
 }

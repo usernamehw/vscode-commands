@@ -2,6 +2,8 @@ import escapeRegExp from 'lodash/escapeRegExp';
 import path from 'path';
 import { env, window, workspace } from 'vscode';
 
+// https://github.com/microsoft/vscode/blob/main/src/vs/workbench/services/configurationResolver/common/variableResolver.ts
+
 const enum VariableNames {
 	File = '${file}', // the current opened file (absolute path?)
 	FileBasename = '${fileBasename}', // the current opened file's basename
