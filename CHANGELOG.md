@@ -1,14 +1,22 @@
+## 1.3.0 `24 Jul 2022`
+
+- ✨ Experimental: Add all commands to Quick Pick `"commands.quickPickIncludeAllCommands"`
+- ✨ Add folder names for nested items in Quick Pick
+- ✨ Suggest variable substitute `commands.suggestVariables`
+- ✨ Toggle workspace setting with `commands.toggleSetting`
+- 🐛 Passing only string should toggle boolean setting for `commands.toggleSetting`
+
 ## 1.2.2 `02 Jun 2022`
 
-- ✨ feat: render icons in quick pick
-- 🐛 fix: toggle setting should work for arrays #29
+- ✨ Render icons in quick pick
+- 🐛 Toggle setting should work for arrays #29
 
 ## 1.2.1 `20 Mar 2022`
 
-- ✨ variable substition: add configuration variables #25
-- ✨ add `"backgroundColor"` property to status bar item (only `error` or `warning` values available)
-- ✨ add `"name"` property to status bar item (shown in status bar context menu)
-- ✨ add setting to control tree view symbol which indicates that command is visible in the status bar `"commands.treeViewStatusBarVisibleSymbol"`
+- ✨ Variable substition: add configuration variables #25
+- ✨ Add `"backgroundColor"` property to status bar item (only `error` or `warning` values available)
+- ✨ Add `"name"` property to status bar item (shown in status bar context menu)
+- ✨ Add setting to control tree view symbol which indicates that command is visible in the status bar `"commands.treeViewStatusBarVisibleSymbol"`
 
 ## 1.2.0 `22 Jan 2022`
 

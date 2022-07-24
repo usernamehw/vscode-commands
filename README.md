@@ -152,11 +152,11 @@ interface CommandObject {
 
     sequence?: (CommandObject | string)[];// execute multipe commands
 
-    nestedItems: {// Group items into a folder (1 lvl max)
+    nestedItems: {// Make into folder: Group items (1 lvl nesting max)
         [key: string]: CommandObject
     }
 
-    // add command to status bar
+    // add command or folder to status bar
     statusBar?: {
         alignment: 'left' | 'right';// status bar alignment
         text: string;// status bar item text
@@ -168,8 +168,6 @@ interface CommandObject {
         color?: string;// color of status bar item text
         backgroundColor?: 'error' | 'warning';// status bar item background color
     };
-
-
 }
 ```
 
