@@ -4,13 +4,14 @@ import { env, window, workspace } from 'vscode';
 
 // https://github.com/microsoft/vscode/blob/main/src/vs/workbench/services/configurationResolver/common/variableResolver.ts
 
-const enum VariableNames {
+// TODO: ${userHome}
+export const enum VariableNames {
 	File = '${file}', // the current opened file (absolute path?)
 	FileBasename = '${fileBasename}', // the current opened file's basename
 	FileBasenameNoExtension = '${fileBasenameNoExtension}', // the current opened file's basename with no file extension
 	FileExtname = '${fileExtname}', // the current opened file's extension
 	FileDirname = '${fileDirname}', // the current opened file's dirname
-	FileWorkspaceFolder = '${fileWorkspaceFolder}', // the current opened file's workspace folder (no idea)
+	FileWorkspaceFolder = '${fileWorkspaceFolder}', // the current opened file's workspace folder
 	WorkspaceFolder = '${workspaceFolder}', // the path of the folder opened in VS Code
 	WorkspaceFolderBasename = '${workspaceFolderBasename}', // the name of the folder opened in VS Code without any slashes (/)
 	ExecPath = '${execPath}', //  location of Code.exe

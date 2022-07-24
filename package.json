@@ -49,7 +49,8 @@
 		"onCommand:commands.revealCommand",
 		"onCommand:commands.assignKeybinding",
 		"onCommand:commands.addToStatusBar",
-		"onCommand:commands.suggestCommands"
+		"onCommand:commands.suggestCommands",
+		"onCommand:commands.suggestVariables"
 	],
 	"main": "./dist/extension",
 	"contributes": {
@@ -814,6 +815,12 @@
 			{
 				"command": "commands.suggestCommands",
 				"title": "Suggest (autocomplete) commands",
+				"category": "Commands"
+			},
+			{
+				"command": "commands.suggestVariables",
+				"title": "Suggest (autocomplete) variables",
+				"description": "Suggest variables that are supported by this extension's variable substitutions, e.g: `${workspaceFolderBasename}`.",
 				"category": "Commands"
 			},
 			{

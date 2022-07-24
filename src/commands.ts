@@ -22,6 +22,7 @@ import { showNotificationCommand } from './commands/showNotificationCommand';
 import { showStatusBarNotificationCommand } from './commands/showStatusBarNotificationCommand';
 import { startDebuggingCommand } from './commands/startDebuggingCommand';
 import { suggestCommandsCommand } from './commands/suggestCommandsCommand';
+import { suggestVariableCommand } from './commands/suggestVariableCommand';
 import { toggleSettingCommand } from './commands/toggleSettingCommand';
 import { toggleStatusBarCommand } from './commands/toggleStatusBarCommand';
 import { toggleThemeCommand } from './commands/toggleThemeCommand';
@@ -42,6 +43,7 @@ export const enum CommandId {
 	NewFolder = 'commands.newFolder',
 	DeleteCommand = 'commands.deleteCommand',
 	SuggestCommands = 'commands.suggestCommands',
+	SuggestVariables = 'commands.suggestVariables',
 	RevealCommand = 'commands.revealCommand',
 	RevealCommand2 = 'commands.revealCommand2',
 	OpenAsQuickPick = 'commands.openAsQuickPick',
@@ -86,6 +88,7 @@ export function registerExtensionCommands() {
 	commands.registerCommand(CommandId.NewFolder, newFolderCommand);
 	commands.registerCommand(CommandId.DeleteCommand, deleteCommandCommand);
 	commands.registerTextEditorCommand(CommandId.SuggestCommands, suggestCommandsCommand);
+	commands.registerTextEditorCommand(CommandId.SuggestVariables, suggestVariableCommand);
 	commands.registerTextEditorCommand(CommandId.EscapeCommandUriArgument, escapeCommandUriArgumentCommand);
 	// ──── Additional Commands ───────────────────────────────────
 	commands.registerCommand(CommandId.ToggleSetting, toggleSettingCommand);

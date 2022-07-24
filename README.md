@@ -106,7 +106,7 @@
 
 
 <!-- COMMANDS_START -->
-## Commands (6)
+## Commands (7)
 
 |Command|Description|
 |-|-|
@@ -114,6 +114,7 @@
 |commands.selectAndRun|Commands: Select and run command|
 |commands.rerun|Commands: Rerun last command|
 |commands.suggestCommands|Commands: Suggest (autocomplete) commands|
+|commands.suggestVariables|Commands: Suggest variables that are supported by this extension's variable substitutions, e.g: `${workspaceFolderBasename}`.|
 |commands.newCommand|Commands: Add new command to the list|
 |commands.escapeCommandUriArgument|Commands: Escape command uri argument|
 <!-- COMMANDS_END -->
