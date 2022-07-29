@@ -1,10 +1,12 @@
-import { Disposable, MarkdownString, StatusBarAlignment, ThemeColor, Uri, window } from 'vscode';
+import { languages, MarkdownString, StatusBarAlignment, StatusBarItem, TextEditor, ThemeColor, Uri, window } from 'vscode';
 import { CommandId } from './commands';
 import { createFolderHoverText } from './folderHoverText';
 import { TopLevelCommands } from './types';
 import { forEachCommand } from './utils';
 
-const statusBarItems: Disposable[] = [];
+const statusBarItems: StatusBarWithGlob[] = [];
+
+type StatusBarWithGlob = StatusBarItem & { activeEditorGlob?: string };
 
 /**
  * Dispose and refresh all status bar items.
@@ -16,7 +18,7 @@ export function updateStatusBarItems(items: TopLevelCommands): void {
 		if (item.statusBar && !item.statusBar.hidden) {
 			const statusBarUserObject = item.statusBar;
 			const alignment = statusBarUserObject.alignment === 'right' ? StatusBarAlignment.Right : StatusBarAlignment.Left;
-			const newStatusBarItem = window.createStatusBarItem(statusBarUserObject.text, alignment, statusBarUserObject.priority ?? -9999);
+			const newStatusBarItem: StatusBarWithGlob = window.createStatusBarItem(statusBarUserObject.text, alignment, statusBarUserObject.priority ?? -9999);
 			let icon = item.icon ? `$(${item.icon}) ` : '';
 			newStatusBarItem.name = `Commands: ${statusBarUserObject.name || statusBarUserObject.text}`;
 			newStatusBarItem.color = statusBarUserObject.color;
@@ -51,10 +53,46 @@ export function updateStatusBarItems(items: TopLevelCommands): void {
 				arguments: [item],
 			};
 
+			newStatusBarItem.activeEditorGlob = item.statusBar.activeEditorGlob;
+
 			newStatusBarItem.show();
 			statusBarItems.push(newStatusBarItem);
 		}
 	}, items);
+
+	updateStatusBarItemsVisibilityByGlob(window.activeTextEditor);
+}
+
+/**
+ * Control whether or not status bar item should be shown
+ * based on active text editor.
+ */
+export function updateStatusBarItemsVisibilityByGlob(editor?: TextEditor) {
+	// No active text editor
+	if (!editor) {
+		for (const statusBarItem of statusBarItems) {
+			if (!statusBarItem.activeEditorGlob) {
+				statusBarItem.show();
+			} else {
+				statusBarItem.hide();
+			}
+		}
+		return;
+	}
+	// Active text editor exists
+	for (const statusBarItem of statusBarItems) {
+		if (statusBarItem.activeEditorGlob) {
+			if (languages.match({
+				pattern: statusBarItem.activeEditorGlob || '',
+			}, editor.document) !== 0) {
+				statusBarItem.show();
+			} else {
+				statusBarItem.hide();
+			}
+		} else {
+			statusBarItem.show();
+		}
+	}
 }
 /**
  * Dispose all status bar items.

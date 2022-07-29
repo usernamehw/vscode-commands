@@ -117,6 +117,10 @@
 												"priority": {
 													"type": "number"
 												},
+												"activeEditorGlob": {
+													"type": "string",
+													"markdownDescription": "Only show when active editor file matches [glob](https://www.npmjs.com/package/glob) pattern"
+												},
 												"tooltip": {
 													"type": "string"
 												},
@@ -189,6 +193,10 @@
 																	},
 																	"priority": {
 																		"type": "number"
+																	},
+																	"activeEditorGlob": {
+																		"type": "string",
+																		"markdownDescription": "Only show when active editor file matches [glob](https://www.npmjs.com/package/glob) pattern"
 																	},
 																	"tooltip": {
 																		"type": "string"
@@ -268,6 +276,10 @@
 																"priority": {
 																	"type": "number"
 																},
+																"activeEditorGlob": {
+																	"type": "string",
+																	"markdownDescription": "Only show when active editor file matches [glob](https://www.npmjs.com/package/glob) pattern"
+																},
 																"tooltip": {
 																	"type": "string"
 																},
@@ -340,6 +352,10 @@
 																					},
 																					"priority": {
 																						"type": "number"
+																					},
+																					"activeEditorGlob": {
+																						"type": "string",
+																						"markdownDescription": "Only show when active editor file matches [glob](https://www.npmjs.com/package/glob) pattern"
 																					},
 																					"tooltip": {
 																						"type": "string"
@@ -442,6 +458,10 @@
 												"priority": {
 													"type": "number"
 												},
+												"activeEditorGlob": {
+													"type": "string",
+													"markdownDescription": "Only show when active editor file matches [glob](https://www.npmjs.com/package/glob) pattern"
+												},
 												"tooltip": {
 													"type": "string"
 												},
@@ -514,6 +534,10 @@
 																	},
 																	"priority": {
 																		"type": "number"
+																	},
+																	"activeEditorGlob": {
+																		"type": "string",
+																		"markdownDescription": "Only show when active editor file matches [glob](https://www.npmjs.com/package/glob) pattern"
 																	},
 																	"tooltip": {
 																		"type": "string"
@@ -593,6 +617,10 @@
 																"priority": {
 																	"type": "number"
 																},
+																"activeEditorGlob": {
+																	"type": "string",
+																	"markdownDescription": "Only show when active editor file matches [glob](https://www.npmjs.com/package/glob) pattern"
+																},
 																"tooltip": {
 																	"type": "string"
 																},
@@ -665,6 +693,10 @@
 																					},
 																					"priority": {
 																						"type": "number"
+																					},
+																					"activeEditorGlob": {
+																						"type": "string",
+																						"markdownDescription": "Only show when active editor file matches [glob](https://www.npmjs.com/package/glob) pattern"
 																					},
 																					"tooltip": {
 																						"type": "string"
