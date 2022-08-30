@@ -68,6 +68,10 @@ export interface CommandObject {
 	command: string;
 	args?: unknown;
 	delay?: number;
+	/**
+	 * Run this command or sequence **repeat** number of times.
+	 */
+	repeat?: number;
 	icon?: string;
 	disableTooltip?: boolean;
 	iconColor?: string;

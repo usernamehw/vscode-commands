@@ -52,6 +52,27 @@ async function runArray(arr: Sequence): Promise<void> {
  * it applies `commands.alias` when needed.
  */
 async function runObject(object: CommandObject): Promise<unknown> {
+	if (object.repeat !== undefined) {
+		const repeat = object.repeat;
+		if (typeof repeat !== 'number') {
+			window.showErrorMessage('"repeat" must be number.');
+			return undefined;
+		}
+		if (repeat <= 0) {
+			window.showErrorMessage('"repeat" must be bigger than zero.');
+			return undefined;
+		}
+		// property "repeat" is read-only (can't delete), need copy
+		const objectWithoutRepeat = {
+			...object,
+		};
+		delete objectWithoutRepeat?.repeat;
+
+		for (let i = 0; i < repeat; i++) {
+			await runObject(objectWithoutRepeat);
+		}
+	}
+
 	if (object.delay) {
 		await sleep(object.delay);
 	}

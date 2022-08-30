@@ -145,6 +145,7 @@ interface CommandObject {
     command: string;// command id to execute
     args?: unknown;// command arguments to execute
     delay?: number;// delay BEFORE execution
+    repeat?: number;// run this command or sequence this number of times
     icon?: string;// icon id https://code.visualstudio.com/api/references/icons-in-labels#icon-listing
     iconColor?: string;// color id https://code.visualstudio.com/api/references/theme-color
     disableTooltip?: boolean;// do not show the hover tooltip for this Tree View Item

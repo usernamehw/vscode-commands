@@ -85,6 +85,11 @@
 											"type": "number",
 											"description": "Delay BEFORE executing this command."
 										},
+										"repeat": {
+											"type": "integer",
+											"description": "Run this command or sequence this number of times.",
+											"minimum": 1
+										},
 										"icon": {
 											"type": "string",
 											"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
@@ -161,6 +166,11 @@
 															"delay": {
 																"type": "number",
 																"description": "Delay BEFORE executing this command."
+															},
+															"repeat": {
+																"type": "integer",
+																"description": "Run this command or sequence this number of times.",
+																"minimum": 1
 															},
 															"icon": {
 																"type": "string",
@@ -239,6 +249,11 @@
 														"delay": {
 															"type": "number",
 															"description": "Delay BEFORE executing this command."
+														},
+														"repeat": {
+															"type": "integer",
+															"description": "Run this command or sequence this number of times.",
+															"minimum": 1
 														},
 														"when": {
 															"type": "string",
@@ -320,6 +335,11 @@
 																			"delay": {
 																				"type": "number",
 																				"description": "Delay BEFORE executing this command."
+																			},
+																			"repeat": {
+																				"type": "integer",
+																				"description": "Run this command or sequence this number of times.",
+																				"minimum": 1
 																			},
 																			"icon": {
 																				"type": "string",
@@ -426,6 +446,11 @@
 											"type": "number",
 											"description": "Delay BEFORE executing this command."
 										},
+										"repeat": {
+											"type": "integer",
+											"description": "Run this command or sequence this number of times.",
+											"minimum": 1
+										},
 										"icon": {
 											"type": "string",
 											"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
@@ -502,6 +527,11 @@
 															"delay": {
 																"type": "number",
 																"description": "Delay BEFORE executing this command."
+															},
+															"repeat": {
+																"type": "integer",
+																"description": "Run this command or sequence this number of times.",
+																"minimum": 1
 															},
 															"icon": {
 																"type": "string",
@@ -580,6 +610,11 @@
 														"delay": {
 															"type": "number",
 															"description": "Delay BEFORE executing this command."
+														},
+														"repeat": {
+															"type": "integer",
+															"description": "Run this command or sequence this number of times.",
+															"minimum": 1
 														},
 														"when": {
 															"type": "string",
@@ -661,6 +696,11 @@
 																			"delay": {
 																				"type": "number",
 																				"description": "Delay BEFORE executing this command."
+																			},
+																			"repeat": {
+																				"type": "integer",
+																				"description": "Run this command or sequence this number of times.",
+																				"minimum": 1
 																			},
 																			"icon": {
 																				"type": "string",
