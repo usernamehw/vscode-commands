@@ -1,3 +1,8 @@
+## 1.4.0 `30 Aug 2022`
+
+- ✨ Add option to show status bar item depending on active editor: `activeEditorGlob`
+- ✨ Add option to repeat command or sequence #30
+
 ## 1.3.0 `24 Jul 2022`
 
 - ✨ Experimental: Add all commands to Quick Pick `"commands.quickPickIncludeAllCommands"`
