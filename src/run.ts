@@ -51,16 +51,16 @@ async function runArray(arr: Sequence): Promise<void> {
  * `runObject()` must be used in all other `run...` functions because
  * it applies `commands.alias` when needed.
  */
-async function runObject(object: CommandObject): Promise<unknown> {
+async function runObject(object: CommandObject): Promise<void> {
 	if (object.repeat !== undefined) {
 		const repeat = object.repeat;
 		if (typeof repeat !== 'number') {
 			window.showErrorMessage('"repeat" must be number.');
-			return undefined;
+			return;
 		}
 		if (repeat <= 0) {
 			window.showErrorMessage('"repeat" must be bigger than zero.');
-			return undefined;
+			return;
 		}
 		// property "repeat" is read-only (can't delete), need copy
 		const objectWithoutRepeat = {
@@ -97,7 +97,12 @@ async function runObject(object: CommandObject): Promise<unknown> {
 		}
 	}
 
-	return await commands.executeCommand(commandId, args);
+	try {
+		await commands.executeCommand(commandId, args);
+	} catch (err) {
+		window.showErrorMessage((err as Error).message);
+		throw err;
+	}
 }
 /**
  * Run folder (show Quick pick with all commands inside that folder).
