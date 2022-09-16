@@ -782,7 +782,7 @@
 				},
 				"commands.alias": {
 					"type": "object",
-					"markdownDescription": "Use shorter command ids.",
+					"markdownDescription": "Use shorter command ids. Extension registers aliased commands so that they can be also used in keybindings.",
 					"default": {},
 					"patternProperties": {
 						"^.*$": {
