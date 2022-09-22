@@ -6,7 +6,7 @@
 	"publisher": "usernamehw",
 	"license": "MIT",
 	"engines": {
-		"vscode": "^1.66.0"
+		"vscode": "^1.55.0"
 	},
 	"extensionKind": [
 		"ui",
@@ -1031,8 +1031,8 @@
 	"devDependencies": {
 		"@soda/friendly-errors-webpack-plugin": "^1.8.1",
 		"@types/lodash": "^4.14.184",
-		"@types/node": "16.x",
-		"@types/vscode": "^1.66.0",
+		"@types/node": "14.x",
+		"@types/vscode": "^1.55.0",
 		"@typescript-eslint/eslint-plugin": "^5.36.0",
 		"@typescript-eslint/parser": "^5.36.0",
 		"eslint": "^8.23.0",
