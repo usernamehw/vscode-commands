@@ -126,6 +126,10 @@
 													"type": "string",
 													"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
 												},
+												"activeEditorLanguage": {
+													"type": "string",
+													"markdownDescription": "Only show when active editor [Language Id](https://code.visualstudio.com/docs/languages/identifiers) matches."
+												},
 												"tooltip": {
 													"type": "string"
 												},
@@ -207,6 +211,10 @@
 																	"activeEditorGlob": {
 																		"type": "string",
 																		"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
+																	},
+																	"activeEditorLanguage": {
+																		"type": "string",
+																		"markdownDescription": "Only show when active editor [Language Id](https://code.visualstudio.com/docs/languages/identifiers) matches."
 																	},
 																	"tooltip": {
 																		"type": "string"
@@ -295,6 +303,10 @@
 																	"type": "string",
 																	"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
 																},
+																"activeEditorLanguage": {
+																	"type": "string",
+																	"markdownDescription": "Only show when active editor [Language Id](https://code.visualstudio.com/docs/languages/identifiers) matches."
+																},
 																"tooltip": {
 																	"type": "string"
 																},
@@ -376,6 +388,10 @@
 																					"activeEditorGlob": {
 																						"type": "string",
 																						"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
+																					},
+																					"activeEditorLanguage": {
+																						"type": "string",
+																						"markdownDescription": "Only show when active editor [Language Id](https://code.visualstudio.com/docs/languages/identifiers) matches."
 																					},
 																					"tooltip": {
 																						"type": "string"
@@ -487,6 +503,10 @@
 													"type": "string",
 													"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
 												},
+												"activeEditorLanguage": {
+													"type": "string",
+													"markdownDescription": "Only show when active editor [Language Id](https://code.visualstudio.com/docs/languages/identifiers) matches."
+												},
 												"tooltip": {
 													"type": "string"
 												},
@@ -568,6 +588,10 @@
 																	"activeEditorGlob": {
 																		"type": "string",
 																		"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
+																	},
+																	"activeEditorLanguage": {
+																		"type": "string",
+																		"markdownDescription": "Only show when active editor [Language Id](https://code.visualstudio.com/docs/languages/identifiers) matches."
 																	},
 																	"tooltip": {
 																		"type": "string"
@@ -656,6 +680,10 @@
 																	"type": "string",
 																	"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
 																},
+																"activeEditorLanguage": {
+																	"type": "string",
+																	"markdownDescription": "Only show when active editor [Language Id](https://code.visualstudio.com/docs/languages/identifiers) matches."
+																},
 																"tooltip": {
 																	"type": "string"
 																},
@@ -737,6 +765,10 @@
 																					"activeEditorGlob": {
 																						"type": "string",
 																						"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
+																					},
+																					"activeEditorLanguage": {
+																						"type": "string",
+																						"markdownDescription": "Only show when active editor [Language Id](https://code.visualstudio.com/docs/languages/identifiers) matches."
 																					},
 																					"tooltip": {
 																						"type": "string"

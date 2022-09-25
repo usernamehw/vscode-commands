@@ -4,7 +4,7 @@ import { registerExtensionCommands } from './commands';
 import { updateDocumentLinkProvider } from './documentLinksProvider';
 import { VSCodeCommandWithoutCategory } from './quickPick';
 import { updateUserCommands } from './registerUserCommands';
-import { updateStatusBarItems, updateStatusBarItemsVisibilityByGlob } from './statusBar';
+import { updateStatusBarItems, updateStatusBarItemsVisibilityBasedOnActiveEditor } from './statusBar';
 import { CommandsTreeViewProvider } from './TreeViewProvider';
 import { ExtensionConfig, Runnable, TopLevelCommands } from './types';
 import { addWorkspaceIdToCommands, getWorkspaceId, setWorkspaceIdToContext } from './workspaceCommands';
@@ -69,7 +69,7 @@ export async function activate(extensionContext: ExtensionContext) {
 	}));
 
 	extensionContext.subscriptions.push(window.onDidChangeActiveTextEditor(editor => {
-		updateStatusBarItemsVisibilityByGlob(editor);
+		updateStatusBarItemsVisibilityBasedOnActiveEditor(editor);
 	}));
 }
 

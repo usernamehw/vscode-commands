@@ -169,6 +169,7 @@ interface CommandObject {
         color?: string;// color of status bar item text
         backgroundColor?: 'error' | 'warning';// status bar item background color
         activeEditorGlob?: string// only show status bar item when active editor matches glob pattern
+        activeEditorLanguage?: string;// only show status bar item when active editor language id matches
     };
 }
 ```

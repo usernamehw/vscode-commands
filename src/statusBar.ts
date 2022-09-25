@@ -4,9 +4,12 @@ import { createFolderHoverText } from './folderHoverText';
 import { TopLevelCommands } from './types';
 import { forEachCommand } from './utils';
 
-const statusBarItems: StatusBarWithGlob[] = [];
+const statusBarItems: StatusBarWithActiveEditorMetadata[] = [];
 
-type StatusBarWithGlob = StatusBarItem & { activeEditorGlob?: string };
+type StatusBarWithActiveEditorMetadata = StatusBarItem & {
+	activeEditorGlob?: string;
+	activeEditorLanguage?: string;
+};
 
 /**
  * Dispose and refresh all status bar items.
@@ -18,7 +21,7 @@ export function updateStatusBarItems(items: TopLevelCommands): void {
 		if (item.statusBar && !item.statusBar.hidden) {
 			const statusBarUserObject = item.statusBar;
 			const alignment = statusBarUserObject.alignment === 'right' ? StatusBarAlignment.Right : StatusBarAlignment.Left;
-			const newStatusBarItem: StatusBarWithGlob = window.createStatusBarItem(statusBarUserObject.text, alignment, statusBarUserObject.priority ?? -9999);
+			const newStatusBarItem: StatusBarWithActiveEditorMetadata = window.createStatusBarItem(statusBarUserObject.text, alignment, statusBarUserObject.priority ?? -9999);
 			let icon = item.icon ? `$(${item.icon}) ` : '';
 			newStatusBarItem.name = `Commands: ${statusBarUserObject.name || statusBarUserObject.text}`;
 			newStatusBarItem.color = statusBarUserObject.color;
@@ -54,24 +57,25 @@ export function updateStatusBarItems(items: TopLevelCommands): void {
 			};
 
 			newStatusBarItem.activeEditorGlob = item.statusBar.activeEditorGlob;
+			newStatusBarItem.activeEditorLanguage = item.statusBar.activeEditorLanguage;
 
 			newStatusBarItem.show();
 			statusBarItems.push(newStatusBarItem);
 		}
 	}, items);
 
-	updateStatusBarItemsVisibilityByGlob(window.activeTextEditor);
+	updateStatusBarItemsVisibilityBasedOnActiveEditor(window.activeTextEditor);
 }
 
 /**
  * Control whether or not status bar item should be shown
  * based on active text editor.
  */
-export function updateStatusBarItemsVisibilityByGlob(editor?: TextEditor) {
-	// No active text editor
+export function updateStatusBarItemsVisibilityBasedOnActiveEditor(editor?: TextEditor) {
+	// No active text editor (no editor opened).
 	if (!editor) {
 		for (const statusBarItem of statusBarItems) {
-			if (!statusBarItem.activeEditorGlob) {
+			if (!statusBarItem.activeEditorLanguage && !statusBarItem.activeEditorGlob) {
 				statusBarItem.show();
 			} else {
 				statusBarItem.hide();
@@ -79,8 +83,20 @@ export function updateStatusBarItemsVisibilityByGlob(editor?: TextEditor) {
 		}
 		return;
 	}
-	// Active text editor exists
+
+	// Active text editor exists.
 	for (const statusBarItem of statusBarItems) {
+		if (!statusBarItem.activeEditorGlob && !statusBarItem.activeEditorLanguage) {
+			statusBarItem.show();
+			return;
+		}
+		if (statusBarItem.activeEditorLanguage) {
+			if (editor.document.languageId === statusBarItem.activeEditorLanguage) {
+				statusBarItem.show();
+			} else {
+				statusBarItem.hide();
+			}
+		}
 		if (statusBarItem.activeEditorGlob) {
 			if (languages.match({
 				pattern: statusBarItem.activeEditorGlob || '',
@@ -89,8 +105,6 @@ export function updateStatusBarItemsVisibilityByGlob(editor?: TextEditor) {
 			} else {
 				statusBarItem.hide();
 			}
-		} else {
-			statusBarItem.show();
 		}
 	}
 }

@@ -95,6 +95,7 @@ interface StatusBar {
 	color?: string;
 	backgroundColor?: 'error' | 'warning';
 	activeEditorGlob?: string;
+	activeEditorLanguage?: string;
 }
 export type Sequence = (CommandObject | string)[];
 /**
