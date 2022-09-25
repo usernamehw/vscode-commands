@@ -676,7 +676,7 @@ To quickly find an icon (for Tree View or Status Bar) there's an extension that 
 
 ![Codicon Names](https://github.com/usernamehw/vscode-codicon-names/raw/HEAD/img/demo.png)
 
-there's also a [vscode-codicons](https://microsoft.github.io/vscode-codicons/dist/codicon.html) web app to browse codicons.
+There's also a [vscode-codicons](https://microsoft.github.io/vscode-codicons/dist/codicon.html) web page to browse codicons.
 
 ## Using your own color for tree view icon
 
