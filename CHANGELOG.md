@@ -1,3 +1,8 @@
+## 1.5.0 `25 Sep 2022`
+
+- ✨ Add option to show status bar item depending on active editor language id: `activeEditorLanguage` #36
+- 🔨 Show error notification when command failed to run. Show error notifications when command or alias failed to register
+
 ## 1.4.0 `30 Aug 2022`
 
 - ✨ Add option to show status bar item depending on active editor: `activeEditorGlob`
