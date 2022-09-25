@@ -124,7 +124,7 @@
 												},
 												"activeEditorGlob": {
 													"type": "string",
-													"markdownDescription": "Only show when active editor file matches [glob](https://www.npmjs.com/package/glob) pattern"
+													"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
 												},
 												"tooltip": {
 													"type": "string"
@@ -206,7 +206,7 @@
 																	},
 																	"activeEditorGlob": {
 																		"type": "string",
-																		"markdownDescription": "Only show when active editor file matches [glob](https://www.npmjs.com/package/glob) pattern"
+																		"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
 																	},
 																	"tooltip": {
 																		"type": "string"
@@ -293,7 +293,7 @@
 																},
 																"activeEditorGlob": {
 																	"type": "string",
-																	"markdownDescription": "Only show when active editor file matches [glob](https://www.npmjs.com/package/glob) pattern"
+																	"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
 																},
 																"tooltip": {
 																	"type": "string"
@@ -375,7 +375,7 @@
 																					},
 																					"activeEditorGlob": {
 																						"type": "string",
-																						"markdownDescription": "Only show when active editor file matches [glob](https://www.npmjs.com/package/glob) pattern"
+																						"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
 																					},
 																					"tooltip": {
 																						"type": "string"
@@ -485,7 +485,7 @@
 												},
 												"activeEditorGlob": {
 													"type": "string",
-													"markdownDescription": "Only show when active editor file matches [glob](https://www.npmjs.com/package/glob) pattern"
+													"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
 												},
 												"tooltip": {
 													"type": "string"
@@ -567,7 +567,7 @@
 																	},
 																	"activeEditorGlob": {
 																		"type": "string",
-																		"markdownDescription": "Only show when active editor file matches [glob](https://www.npmjs.com/package/glob) pattern"
+																		"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
 																	},
 																	"tooltip": {
 																		"type": "string"
@@ -654,7 +654,7 @@
 																},
 																"activeEditorGlob": {
 																	"type": "string",
-																	"markdownDescription": "Only show when active editor file matches [glob](https://www.npmjs.com/package/glob) pattern"
+																	"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
 																},
 																"tooltip": {
 																	"type": "string"
@@ -736,7 +736,7 @@
 																					},
 																					"activeEditorGlob": {
 																						"type": "string",
-																						"markdownDescription": "Only show when active editor file matches [glob](https://www.npmjs.com/package/glob) pattern"
+																						"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
 																					},
 																					"tooltip": {
 																						"type": "string"
