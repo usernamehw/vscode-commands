@@ -1,11 +1,11 @@
-import { ExtensionContext, window, workspace } from 'vscode';
+import { ExtensionContext, TreeView, window, workspace } from 'vscode';
 import { updateCommandPalette } from './commandPalette';
 import { registerExtensionCommands } from './commands';
 import { updateDocumentLinkProvider } from './documentLinksProvider';
 import { VSCodeCommandWithoutCategory } from './quickPick';
 import { updateUserCommands } from './registerUserCommands';
 import { updateStatusBarItems, updateStatusBarItemsVisibilityBasedOnActiveEditor } from './statusBar';
-import { CommandsTreeViewProvider } from './TreeViewProvider';
+import { CommandsTreeViewProvider, FolderTreeItem, RunCommandTreeItem } from './TreeViewProvider';
 import { ExtensionConfig, Runnable, TopLevelCommands } from './types';
 import { addWorkspaceIdToCommands, getWorkspaceId, setWorkspaceIdToContext } from './workspaceCommands';
 
@@ -21,63 +21,69 @@ export const enum Constants {
 export let $config: ExtensionConfig;
 export class $state {
 	static lastExecutedCommand: Runnable = { command: 'noop' };
-	static extensionContext: ExtensionContext;
+	static context: ExtensionContext;
 	/**
 	 * Cache all Command Palette commands for `quickPickIncludeAllCommands` feature.
 	 */
 	static allCommandPaletteCommands: VSCodeCommandWithoutCategory[] = [];
+	static commandsTreeViewProvider: CommandsTreeViewProvider;
+	static commandsTreeView: TreeView<FolderTreeItem | RunCommandTreeItem>;
 }
 
-export async function activate(extensionContext: ExtensionContext) {
-	$state.extensionContext = extensionContext;
+export async function activate(context: ExtensionContext) {
+	$state.context = context;
 
 	updateConfig();
 
-	const commandsTreeViewProvider = new CommandsTreeViewProvider({});
-	const commandsTreeView = window.createTreeView(`${Constants.ExtensionName}.tree`, {
-		treeDataProvider: commandsTreeViewProvider,
+	$state.commandsTreeViewProvider = new CommandsTreeViewProvider({});
+	$state.commandsTreeView = window.createTreeView(`${Constants.ExtensionName}.tree`, {
+		treeDataProvider: $state.commandsTreeViewProvider,
 		showCollapseAll: true,
 	});
 
 
 	registerExtensionCommands();
 
-	await setWorkspaceIdToContext(extensionContext);
-	updateEverything();
+	await setWorkspaceIdToContext(context);
+	updateEverything(context);
 
 	function updateConfig() {
 		$config = workspace.getConfiguration(Constants.ExtensionName) as any as ExtensionConfig;
 	}
 
-	function updateEverything() {
-		const commands = allCommands();
-		commandsTreeViewProvider.updateCommands(commands);
-		commandsTreeViewProvider.refresh();
-		updateUserCommands(commands);
-		updateStatusBarItems(commands);
-		updateCommandPalette(commands, extensionContext);
-		updateDocumentLinkProvider();
-	}
-
-	extensionContext.subscriptions.push(commandsTreeView);
-	extensionContext.subscriptions.push(workspace.onDidChangeConfiguration(e => {
+	context.subscriptions.push($state.commandsTreeView);
+	context.subscriptions.push(workspace.onDidChangeConfiguration(e => {
 		if (!e.affectsConfiguration(Constants.ExtensionName)) {
 			return;
 		}
 		updateConfig();
-		updateEverything();
+		updateEverything(context);
 	}));
 
-	extensionContext.subscriptions.push(window.onDidChangeActiveTextEditor(editor => {
+	context.subscriptions.push(window.onDidChangeActiveTextEditor(editor => {
 		updateStatusBarItemsVisibilityBasedOnActiveEditor(editor);
 	}));
 }
 
 /**
+ * Function runs after every config update.
+ */
+function updateEverything(context: ExtensionContext) {
+	const commands = getAllCommands();
+	$state.commandsTreeViewProvider.updateCommands(commands);
+	$state.commandsTreeViewProvider.refresh();
+	// const keybindings = getKeybindings(context);
+	updateUserCommands(commands);
+	updateStatusBarItems(commands);
+	updateCommandPalette(commands, context);
+	updateDocumentLinkProvider();
+}
+
+/**
  * Merge global and workspace commands.
  */
-export function allCommands(): TopLevelCommands {
-	const workspaceId = getWorkspaceId($state.extensionContext);
+export function getAllCommands(): TopLevelCommands {
+	const workspaceId = getWorkspaceId($state.context);
 	const workspaceCommands = workspace.getConfiguration(Constants.ExtensionName).inspect('workspaceCommands')?.workspaceValue as ExtensionConfig['workspaceCommands'] | undefined;
 	if (workspaceId && workspaceCommands) {
 		return {
