@@ -20,6 +20,10 @@ export interface ExtensionConfig {
 	 */
 	treeViewStatusBarVisibleSymbol: string;
 	/**
+	 * Symbol used in the tree view to indicate workspace command (from `#commands.workspaceCommands#`) setting.
+	 */
+	treeViewWorkspaceCommandSymbol: string;
+	/**
 	 * When checked - include all commands from Command Palette to the Quick Pick.
 	 */
 	quickPickIncludeAllCommands: boolean;

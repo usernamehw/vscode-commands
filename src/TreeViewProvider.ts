@@ -12,6 +12,7 @@ import { isSimpleObject } from './utils';
 export class RunCommandTreeItem extends TreeItem {
 	collapsibleState = TreeItemCollapsibleState.None;
 	contextValue = 'command';
+	description = '';
 
 	constructor(
 		label: string,
@@ -27,9 +28,11 @@ export class RunCommandTreeItem extends TreeItem {
 		if (typeof runnable === 'string') {
 			this.contextValue = 'stringCommand';// Can't add to status bar
 		}
-		// @ts-ignore
-		if (runnable.statusBar && !runnable.statusBar.hidden) {
-			this.description = $config.treeViewStatusBarVisibleSymbol;
+		if (typeof runnable !== 'string' && !Array.isArray(runnable) && runnable.workspace) {
+			this.description = $config.treeViewWorkspaceCommandSymbol;
+		}
+		if (typeof runnable !== 'string' && !Array.isArray(runnable) && runnable.statusBar && !runnable.statusBar.hidden) {
+			this.description += $config.treeViewStatusBarVisibleSymbol;
 		}
 	}
 	getLabelName(): string {
@@ -42,6 +45,7 @@ export class RunCommandTreeItem extends TreeItem {
 export class FolderTreeItem extends TreeItem {
 	collapsibleState = $config.treeViewCollapseFolders ? TreeItemCollapsibleState.Collapsed : TreeItemCollapsibleState.Expanded;
 	contextValue = 'folder';
+	description = '';
 	iconPath = ThemeIcon.Folder;
 	nestedItems: TopLevelCommands;
 
@@ -52,8 +56,11 @@ export class FolderTreeItem extends TreeItem {
 		super(label);
 		this.nestedItems = folder.nestedItems!;
 
+		if (folder.workspace) {
+			this.description = $config.treeViewWorkspaceCommandSymbol;
+		}
 		if (folder.statusBar && !folder.statusBar.hidden) {
-			this.description = $config.treeViewStatusBarVisibleSymbol;
+			this.description += $config.treeViewStatusBarVisibleSymbol;
 		}
 	}
 

@@ -151,7 +151,7 @@ async function getAllCommandPaletteCommands(): Promise<VSCodeCommandWithoutCateg
 }
 
 async function getAllBuiltinCommands(): Promise<VSCodeCommandWithoutCategory[]> {
-	const commandsDataPath = $state.extensionContext.asAbsolutePath('./data/commandTitleMap.json');
+	const commandsDataPath = $state.context.asAbsolutePath('./data/commandTitleMap.json');
 	const file = await fs.promises.readFile(commandsDataPath);
 	try {
 		const fileContentAsObject = JSON.parse(file.toString());

@@ -1,6 +1,6 @@
-import { allCommands } from '../extension';
+import { getAllCommands } from '../extension';
 import { showQuickPick } from '../quickPick';
 
 export function openAsQuickPickCommand() {
-	showQuickPick(allCommands());
+	showQuickPick(getAllCommands());
 }
