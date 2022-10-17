@@ -1,7 +1,7 @@
 import { commands, window } from 'vscode';
 import { $config, $state } from './extension';
 import { showQuickPick } from './quickPick';
-import { substituteVariables } from './substituteVariables';
+import { substituteVariableRecursive, substituteVariables } from './substituteVariables';
 import { CommandFolder, CommandObject, Runnable, Sequence } from './types';
 import { isSimpleObject, sleep } from './utils';
 
@@ -92,8 +92,7 @@ async function runObject(object: CommandObject): Promise<void> {
 			Array.isArray(args) ||
 			typeof args === 'object' && args !== null
 		) {
-			args = substituteVariables(JSON.stringify(args));
-			args = JSON.parse(args as string);
+			args = substituteVariableRecursive({ ...args });
 		}
 	}
 

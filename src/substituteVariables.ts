@@ -54,7 +54,7 @@ const variableRegexps = {
  *
  * TODO: throw errors (window.showMessage) when variable exists but can't resolve
  */
-export function substituteVariables(str: string) {
+export function substituteVariables(str: string): string {
 	const activeTextEditor = window.activeTextEditor;
 	const workspaceFolder = workspace.workspaceFolders?.[0].uri.fsPath;
 	if (str.includes(VariableNames.SelectedText) && activeTextEditor) {
@@ -127,4 +127,26 @@ function replaceConfigurationVariable(configName: string): string {
 		return configName;
 	}
 	return String(configValue);
+}
+
+/**
+ * Walk recursively through object/array and replace variables in strings.
+ */
+export function substituteVariableRecursive(arg: unknown[] | object | string | unknown): object | string | unknown {
+	if (typeof arg === 'string') {
+		return substituteVariables(arg);
+	}
+
+	if (Array.isArray(arg)) {
+		for (const [key, value] of arg.entries()) {
+			arg[key] = substituteVariableRecursive(value);
+		}
+	} else if (typeof arg === 'object' && arg !== null) {
+		for (const key in arg) {
+			// @ts-ignore
+			arg[key] = substituteVariableRecursive(arg[key]);
+		}
+	}
+
+	return arg;
 }
