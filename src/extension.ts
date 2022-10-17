@@ -2,6 +2,7 @@ import { ExtensionContext, TreeView, window, workspace } from 'vscode';
 import { updateCommandPalette } from './commandPalette';
 import { registerExtensionCommands } from './commands';
 import { updateDocumentLinkProvider } from './documentLinksProvider';
+import { getKeybindings, VSCodeKeybindingItem } from './getKeybindings';
 import { VSCodeCommandWithoutCategory } from './quickPick';
 import { updateUserCommands } from './registerUserCommands';
 import { updateStatusBarItems, updateStatusBarItemsVisibilityBasedOnActiveEditor } from './statusBar';
@@ -19,7 +20,7 @@ export const enum Constants {
 }
 
 export let $config: ExtensionConfig;
-export class $state {
+export abstract class $state {
 	static lastExecutedCommand: Runnable = { command: 'noop' };
 	static context: ExtensionContext;
 	/**
@@ -28,6 +29,7 @@ export class $state {
 	static allCommandPaletteCommands: VSCodeCommandWithoutCategory[] = [];
 	static commandsTreeViewProvider: CommandsTreeViewProvider;
 	static commandsTreeView: TreeView<FolderTreeItem | RunCommandTreeItem>;
+	static keybindings: VSCodeKeybindingItem[] = [];
 }
 
 export async function activate(context: ExtensionContext) {
@@ -68,11 +70,13 @@ export async function activate(context: ExtensionContext) {
 /**
  * Function runs after every config update.
  */
-function updateEverything(context: ExtensionContext) {
+async function updateEverything(context: ExtensionContext) {
 	const commands = getAllCommands();
+	if ($config.showKeybindings) {
+		$state.keybindings = await getKeybindings(context);
+	}
 	$state.commandsTreeViewProvider.updateCommands(commands);
 	$state.commandsTreeViewProvider.refresh();
-	// const keybindings = getKeybindings(context);
 	updateUserCommands(commands);
 	updateStatusBarItems(commands);
 	updateCommandPalette(commands, context);

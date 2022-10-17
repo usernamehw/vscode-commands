@@ -823,6 +823,11 @@
 					},
 					"additionalProperties": false
 				},
+				"commands.showKeybindings": {
+					"type": "boolean",
+					"markdownDescription": "Whether or not to show keyboard shortcuts assigned to command contributed by user. (Currently only displayed in Tree View).",
+					"default": false
+				},
 				"commands.treeViewCollapseFolders": {
 					"type": "boolean",
 					"description": "Collapse folders by default. Requires reload before being applied.",
@@ -1081,6 +1086,7 @@
 		"webpack-cli": "^4.10.0"
 	},
 	"dependencies": {
+		"jsonc-simple-parser": "^2.2.1",
 		"lodash": "^4.17.21",
 		"open": "^8.4.0"
 	}

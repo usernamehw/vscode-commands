@@ -120,13 +120,14 @@
 <!-- COMMANDS_END -->
 
 <!-- SETTINGS_START -->
-## Settings (14)
+## Settings (15)
 
 |Setting|Default|Description|
 |-|-|-|
 |commands.commands|\{\}|Main extension property. Commands that will be rendered in the View.|
 |commands.workspaceCommands|\{\}|Commands that will be rendered in the View, specific to the workspace.|
 |commands.alias|\{\}|Use shorter command ids. Extension registers aliased commands so that they can be also used in keybindings.|
+|commands.showKeybindings|**false**|Whether or not to show keyboard shortcuts assigned to command contributed by user. (Currently only displayed in Tree View).|
 |commands.treeViewCollapseFolders|**false**|Collapse folders by default. Requires reload before being applied.|
 |commands.treeViewStatusBarVisibleSymbol|"💠"|Symbol used in the tree view to indicate that command is also visible in the status bar.|
 |commands.treeViewWorkspaceCommandSymbol|"🎯"|Symbol used in the tree view to indicate workspace command (from `#commands.workspaceCommands#`) setting.|

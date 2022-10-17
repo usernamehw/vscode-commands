@@ -12,6 +12,10 @@ export interface ExtensionConfig {
 	 */
 	alias: Record<string, string>;
 	/**
+	 * Whether or not to show keyboard shortcuts assigned to command contributed by user.
+	 */
+	showKeybindings: boolean;
+	/**
 	 * Whether Tree View shows folders collapsed by default or not.
 	 */
 	treeViewCollapseFolders: boolean;

@@ -1,6 +1,6 @@
 import { Command, Event, EventEmitter, MarkdownString, ThemeColor, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { CommandId } from './commands';
-import { $config } from './extension';
+import { $config, $state } from './extension';
 import { createFolderHoverText } from './folderHoverText';
 import { CommandFolder, Runnable, TopLevelCommands } from './types';
 import { isSimpleObject } from './utils';
@@ -33,6 +33,10 @@ export class RunCommandTreeItem extends TreeItem {
 		}
 		if (typeof runnable !== 'string' && !Array.isArray(runnable) && runnable.statusBar && !runnable.statusBar.hidden) {
 			this.description += $config.treeViewStatusBarVisibleSymbol;
+		}
+		const keybinding = $state.keybindings.find(keyItem => keyItem.command === label);
+		if (keybinding) {
+			this.description += ` ⌨${keybinding.key}⌨`;
 		}
 	}
 	getLabelName(): string {
