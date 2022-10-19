@@ -72,6 +72,7 @@ export async function activate(context: ExtensionContext) {
  */
 async function updateEverything(context: ExtensionContext) {
 	const commands = getAllCommands();
+	$state.keybindings = [];
 	if ($config.showKeybindings) {
 		$state.keybindings = await getKeybindings(context);
 	}
