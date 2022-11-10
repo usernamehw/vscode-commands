@@ -20,7 +20,6 @@ webpack.config.js
 scripts
 
 dist/extension.js.LICENSE.txt
-LICENSE
 docs
 
 img/*.*
