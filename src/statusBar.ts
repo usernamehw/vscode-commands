@@ -88,7 +88,7 @@ export function updateStatusBarItemsVisibilityBasedOnActiveEditor(editor?: TextE
 	for (const statusBarItem of statusBarItems) {
 		if (!statusBarItem.activeEditorGlob && !statusBarItem.activeEditorLanguage) {
 			statusBarItem.show();
-			return;
+			continue;
 		}
 		if (statusBarItem.activeEditorLanguage) {
 			if (editor.document.languageId === statusBarItem.activeEditorLanguage) {
