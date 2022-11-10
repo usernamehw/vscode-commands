@@ -1,3 +1,11 @@
+## 1.6.0 `10 Nov 2022`
+
+- ✨ Mark workspace commands in tree view `"commands.treeViewWorkspaceCommandSymbol": "🎯",`
+- ✨ Show keybinding in tree view (when enabled) `"commands.showKeybindings": true,`
+- ✨ Custom markdown tooltip that is shown in tree view #40
+- 🐛 Don't use json stringify parse for variable substitution #33
+- 🐛 Fix status bar conditional visibility wrong for multiple status bar items
+
 ## 1.5.0 `25 Sep 2022`
 
 - ✨ Add option to show status bar item depending on active editor language id: `activeEditorLanguage` #36
