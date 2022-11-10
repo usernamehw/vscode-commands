@@ -94,6 +94,10 @@
 											"type": "string",
 											"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
 										},
+										"markdownTooltip": {
+											"type": "string",
+											"markdownDescription": "Add custom markdown text to hover tooltip."
+										},
 										"disableTooltip": {
 											"type": "boolean",
 											"markdownDescription": "Do not show the hover tooltip for this Tree View Item."
@@ -179,6 +183,10 @@
 															"icon": {
 																"type": "string",
 																"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
+															},
+															"markdownTooltip": {
+																"type": "string",
+																"markdownDescription": "Add custom markdown text to hover tooltip."
 															},
 															"disableTooltip": {
 																"type": "boolean",
@@ -271,6 +279,10 @@
 															"type": "string",
 															"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
 														},
+														"markdownTooltip": {
+															"type": "string",
+															"markdownDescription": "Add custom markdown text to hover tooltip."
+														},
 														"disableTooltip": {
 															"type": "boolean",
 															"markdownDescription": "Do not show the hover tooltip for this Tree View Item."
@@ -356,6 +368,10 @@
 																			"icon": {
 																				"type": "string",
 																				"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
+																			},
+																			"markdownTooltip": {
+																				"type": "string",
+																				"markdownDescription": "Add custom markdown text to hover tooltip."
 																			},
 																			"disableTooltip": {
 																				"type": "boolean",
@@ -471,6 +487,10 @@
 											"type": "string",
 											"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
 										},
+										"markdownTooltip": {
+											"type": "string",
+											"markdownDescription": "Add custom markdown text to hover tooltip."
+										},
 										"disableTooltip": {
 											"type": "boolean",
 											"markdownDescription": "Do not show the hover tooltip for this Tree View Item."
@@ -556,6 +576,10 @@
 															"icon": {
 																"type": "string",
 																"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
+															},
+															"markdownTooltip": {
+																"type": "string",
+																"markdownDescription": "Add custom markdown text to hover tooltip."
 															},
 															"disableTooltip": {
 																"type": "boolean",
@@ -648,6 +672,10 @@
 															"type": "string",
 															"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
 														},
+														"markdownTooltip": {
+															"type": "string",
+															"markdownDescription": "Add custom markdown text to hover tooltip."
+														},
 														"disableTooltip": {
 															"type": "boolean",
 															"markdownDescription": "Do not show the hover tooltip for this Tree View Item."
@@ -733,6 +761,10 @@
 																			"icon": {
 																				"type": "string",
 																				"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
+																			},
+																			"markdownTooltip": {
+																				"type": "string",
+																				"markdownDescription": "Add custom markdown text to hover tooltip."
 																			},
 																			"disableTooltip": {
 																				"type": "boolean",

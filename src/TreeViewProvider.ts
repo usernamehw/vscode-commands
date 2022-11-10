@@ -100,6 +100,10 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 			if (isSimpleObject(el.runnable) && el.runnable.disableTooltip) {
 				return el;
 			}
+			if (isSimpleObject(el.runnable) && el.runnable.markdownTooltip) {
+				markdown.appendMarkdown(el.runnable.markdownTooltip as string);
+				markdown.appendMarkdown('\n\n---\n\n');
+			}
 			markdown.appendCodeblock(JSON.stringify(el.runnable, null, '  '), 'json');
 		}
 		el.tooltip = markdown;

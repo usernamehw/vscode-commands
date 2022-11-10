@@ -81,6 +81,7 @@ export interface CommandObject {
 	 */
 	repeat?: number;
 	icon?: string;
+	markdownTooltip?: string;
 	disableTooltip?: boolean;
 	iconColor?: string;
 	statusBar?: StatusBar;
