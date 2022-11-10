@@ -14,7 +14,7 @@ export interface VSCodeKeybindingItem {
  * Return all keybindings from user `keybindings.json` file.
  */
 export async function getKeybindings(context: ExtensionContext): Promise<VSCodeKeybindingItem[]> {
-	const UserDirPath = path.join(context.logUri.fsPath, '..', '..', '..', '..', 'User');
+	const UserDirPath = path.join(context.logUri.fsPath, '..', '..', '..', '..', '..', 'User');
 	const keybindingsPath = path.join(UserDirPath, 'keybindings.json');
 	let allKeybindings: VSCodeKeybindingItem[] = [];
 	try {
