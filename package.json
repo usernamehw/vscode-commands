@@ -126,6 +126,10 @@
 												"priority": {
 													"type": "number"
 												},
+												"hidden": {
+													"type": "boolean",
+													"description": "Do not show this Status Bar Item."
+												},
 												"activeEditorGlob": {
 													"type": "string",
 													"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
@@ -215,6 +219,10 @@
 																	},
 																	"priority": {
 																		"type": "number"
+																	},
+																	"hidden": {
+																		"type": "boolean",
+																		"description": "Do not show this Status Bar Item."
 																	},
 																	"activeEditorGlob": {
 																		"type": "string",
@@ -311,6 +319,10 @@
 																"priority": {
 																	"type": "number"
 																},
+																"hidden": {
+																	"type": "boolean",
+																	"description": "Do not show this Status Bar Item."
+																},
 																"activeEditorGlob": {
 																	"type": "string",
 																	"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
@@ -400,6 +412,10 @@
 																					},
 																					"priority": {
 																						"type": "number"
+																					},
+																					"hidden": {
+																						"type": "boolean",
+																						"description": "Do not show this Status Bar Item."
 																					},
 																					"activeEditorGlob": {
 																						"type": "string",
@@ -519,6 +535,10 @@
 												"priority": {
 													"type": "number"
 												},
+												"hidden": {
+													"type": "boolean",
+													"description": "Do not show this Status Bar Item."
+												},
 												"activeEditorGlob": {
 													"type": "string",
 													"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
@@ -608,6 +628,10 @@
 																	},
 																	"priority": {
 																		"type": "number"
+																	},
+																	"hidden": {
+																		"type": "boolean",
+																		"description": "Do not show this Status Bar Item."
 																	},
 																	"activeEditorGlob": {
 																		"type": "string",
@@ -704,6 +728,10 @@
 																"priority": {
 																	"type": "number"
 																},
+																"hidden": {
+																	"type": "boolean",
+																	"description": "Do not show this Status Bar Item."
+																},
 																"activeEditorGlob": {
 																	"type": "string",
 																	"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern"
@@ -793,6 +821,10 @@
 																					},
 																					"priority": {
 																						"type": "number"
+																					},
+																					"hidden": {
+																						"type": "boolean",
+																						"description": "Do not show this Status Bar Item."
 																					},
 																					"activeEditorGlob": {
 																						"type": "string",
