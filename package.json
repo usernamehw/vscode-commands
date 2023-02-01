@@ -1018,6 +1018,11 @@
 				"command": "commands.escapeCommandUriArgument",
 				"title": "Escape command uri argument",
 				"category": "Commands"
+			},
+			{
+				"command": "commands.run",
+				"title": "Run custom command",
+				"category": "Commands"
 			}
 		],
 		"menus": {
@@ -1093,9 +1098,19 @@
 				{
 					"command": "commands.deleteCommand",
 					"when": "false"
+				},
+				{
+					"command": "commands.run",
+					"when": "false"
 				}
 			]
-		}
+		},
+		"jsonValidation": [
+			{
+				"fileMatch": "**/keybindings.json",
+				"url": "./data/keybindings.schema.json"
+			}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "webpack --mode production --color",
@@ -1118,6 +1133,7 @@
 		"webpack-cli": "^4.10.0"
 	},
 	"dependencies": {
+		"jsonc-parser": "^3.2.0",
 		"jsonc-simple-parser": "^2.2.1",
 		"lodash": "^4.17.21",
 		"open": "^8.4.0"
