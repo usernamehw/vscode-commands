@@ -1,8 +1,10 @@
-import { commands, CompletionItemKind, languages, Range } from 'vscode';
 import { findNodeAtOffset, getNodePath, getNodeValue, Node, parseTree } from 'jsonc-parser';
+import { CompletionItemKind, languages, Range } from 'vscode';
+import { CommandId } from './commands';
 import { getAllCommandPaletteCommands } from './quickPick';
+import { getAllVscodeCommands } from './utils';
 
-export default () => {
+export function registerJsonSchemaCompletion() {
 	languages.registerCompletionItemProvider({
 		pattern: '**/{keybindings.json,package.json}',
 	}, {
@@ -11,47 +13,49 @@ export default () => {
 			if (!root) {
 				return;
 			}
+
 			const node = findNodeAtOffset(root, document.offsetAt(position));
 			if (node?.type !== 'string') {
 				return;
 			}
 
-			let path = getNodePath(node);
+			let jsonPath = getNodePath(node);
 			const patchMatches = (compare: string[], useStartsWith = false) => {
-				if (!useStartsWith && compare.length !== path.length) {
-					return undefined;
+				if (!useStartsWith && compare.length !== jsonPath.length) {
+					return;
 				}
-				return compare.every((item, i) => item === '*' || item === path[i]);
+				return compare.every((item, i) => item === '*' || item === jsonPath[i]);
 			};
 
 			if (languages.match({ pattern: '**/package.json' }, document)) {
 				if (!patchMatches(['contributes', 'keybindings'], true)) {
 					return;
 				}
-				path = path.slice(2);
+				jsonPath = jsonPath.slice(2);
 			}
+
 			let keybindingNode: Node | undefined;
 			if (patchMatches(['*', 'args', '*'])) {
 				keybindingNode = node.parent!.parent!.parent!;
 			} else if (patchMatches(['*', 'args', '*', 'command'])) {
-				keybindingNode = node.parent!.parent!.parent!.parent!.parent!;
+				keybindingNode = node?.parent?.parent?.parent?.parent?.parent;
 			}
 			if (!keybindingNode) {
 				return;
 			}
 
 			const keybinding = getNodeValue(keybindingNode);
-			if (keybinding.command !== 'commands.run') {
+			if (keybinding.command !== CommandId.Run) {
 				return;
 			}
 
-			const commandTitles = Object.fromEntries((await getAllCommandPaletteCommands().catch(() => [])).map(({ command, title }) => [command, title]));
-			const commandsList = await commands.getCommands(true);
+			const commandTitles = Object.fromEntries((await getAllCommandPaletteCommands().catch(() => []))
+				.map(({ command, title }) => [command, title]));
+			const commandsList = await getAllVscodeCommands();
+			const startPosition = document.positionAt(node.offset + 1);
+			const endPosition = document.positionAt(node.offset + 1 + node.length - 2);
+			const range = new Range(startPosition, endPosition);
 
-			const start = document.positionAt(node.offset + 1);
-			const end = document.positionAt(node.offset + 1 + node.length - 2);
-			const range = new Range(start, end);
-			// eslint-disable-next-line consistent-return
 			return commandsList.map((command, i) => ({
 				label: command,
 				kind: CompletionItemKind.Constant,
@@ -62,4 +66,4 @@ export default () => {
 			}));
 		},
 	});
-};
+}
