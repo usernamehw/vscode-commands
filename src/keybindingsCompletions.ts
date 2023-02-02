@@ -6,7 +6,7 @@ import { getAllVscodeCommands } from './utils';
 
 export function registerJsonSchemaCompletion() {
 	languages.registerCompletionItemProvider({
-		pattern: '**/{keybindings.json,package.json}',
+		pattern: '**/{keybindings.json}',
 	}, {
 		async provideCompletionItems(document, position) {
 			const root = parseTree(document.getText(), []);
@@ -19,7 +19,7 @@ export function registerJsonSchemaCompletion() {
 				return;
 			}
 
-			let jsonPath = getNodePath(node);
+			const jsonPath = getNodePath(node);
 			const patchMatches = (compare: string[], useStartsWith = false) => {
 				if (!useStartsWith && compare.length !== jsonPath.length) {
 					return;
@@ -27,16 +27,9 @@ export function registerJsonSchemaCompletion() {
 				return compare.every((item, i) => item === '*' || item === jsonPath[i]);
 			};
 
-			if (languages.match({ pattern: '**/package.json' }, document)) {
-				if (!patchMatches(['contributes', 'keybindings'], true)) {
-					return;
-				}
-				jsonPath = jsonPath.slice(2);
-			}
-
 			let keybindingNode: Node | undefined;
 			if (patchMatches(['*', 'args', '*'])) {
-				keybindingNode = node.parent!.parent!.parent!;
+				keybindingNode = node.parent?.parent?.parent;
 			} else if (patchMatches(['*', 'args', '*', 'command'])) {
 				keybindingNode = node?.parent?.parent?.parent?.parent?.parent;
 			}
