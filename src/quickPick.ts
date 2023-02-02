@@ -136,12 +136,7 @@ interface VSCodeCommand {
 
 export type VSCodeCommandWithoutCategory = Omit<VSCodeCommand, 'category'>;
 
-let allCommandPaletteCommandsCached: VSCodeCommandWithoutCategory[] | undefined;
-
 export async function getAllCommandPaletteCommands(): Promise<VSCodeCommandWithoutCategory[]> {
-	if (allCommandPaletteCommandsCached) {
-		return allCommandPaletteCommandsCached;
-	}
 	if ($state.allCommandPaletteCommands.length) {
 		return $state.allCommandPaletteCommands;
 	}
@@ -152,7 +147,6 @@ export async function getAllCommandPaletteCommands(): Promise<VSCodeCommandWitho
 		...commandsFromExtensions,
 	];
 	$state.allCommandPaletteCommands = allCommandPaletteCommands;
-	allCommandPaletteCommandsCached = allCommandPaletteCommands;
 	return allCommandPaletteCommands;
 }
 
