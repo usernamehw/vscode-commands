@@ -1,5 +1,5 @@
 import fs from 'fs';
-import JSONC from 'jsonc-simple-parser';
+import { parse } from 'jsonc-parser';
 import path from 'path';
 import { ExtensionContext, window } from 'vscode';
 
@@ -19,7 +19,7 @@ export async function getKeybindings(context: ExtensionContext): Promise<VSCodeK
 	let allKeybindings: VSCodeKeybindingItem[] = [];
 	try {
 		const keybindingsContents = await fs.promises.readFile(keybindingsPath);
-		const keybindingsAsArray = JSONC.parse(keybindingsContents.toString());
+		const keybindingsAsArray = parse(keybindingsContents.toString());
 		allKeybindings = keybindingsAsArray;
 	} catch (err) {
 		window.showErrorMessage((err as Error).message);
