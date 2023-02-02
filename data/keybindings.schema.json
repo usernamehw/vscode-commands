@@ -1,0 +1,45 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema",
+	"type": "array",
+	"items": {
+		"if": {
+			"properties": {
+				"command": {
+					"const": "commands.run"
+				}
+			}
+		},
+		"then": {
+			"required": [
+				"args"
+			],
+			"properties": {
+				"args": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "object",
+								"required": [
+									"command"
+								],
+								"properties": {
+									"command": {
+										"type": "string"
+									},
+									"args": {},
+									"delay": {
+										"type": "number"
+									}
+								}
+							}
+						]
+					}
+				}
+			}
+		}
+	}
+}

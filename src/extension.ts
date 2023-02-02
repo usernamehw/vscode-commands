@@ -3,6 +3,7 @@ import { updateCommandPalette } from './commandPalette';
 import { registerExtensionCommands } from './commands';
 import { updateDocumentLinkProvider } from './documentLinksProvider';
 import { getKeybindings, VSCodeKeybindingItem } from './getKeybindings';
+import keybindingsCompletions from './keybindingsCompletions';
 import { VSCodeCommandWithoutCategory } from './quickPick';
 import { updateUserCommands } from './registerUserCommands';
 import { updateStatusBarItems, updateStatusBarItemsVisibilityBasedOnActiveEditor } from './statusBar';
@@ -45,6 +46,7 @@ export async function activate(context: ExtensionContext) {
 
 
 	registerExtensionCommands();
+	keybindingsCompletions();
 
 	await setWorkspaceIdToContext(context);
 	updateEverything(context);
