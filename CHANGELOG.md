@@ -1,3 +1,8 @@
+## 1.7.0 `10 Feb 2023`
+
+- ✨ Make extension available on the web
+- ✨ Add autocomplete in `keybindings.json` for "args" when using `commands.run`
+
 ## 1.6.0 `10 Nov 2022`
 
 - ✨ Mark workspace commands in tree view `"commands.treeViewWorkspaceCommandSymbol": "🎯",`
