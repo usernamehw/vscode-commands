@@ -16,8 +16,10 @@ package-lock.json
 .gitattributes
 
 node_modules
-webpack.config.js
 scripts
+
+web.webpack.config.js
+webpack.config.js
 
 dist/extension.js.LICENSE.txt
 docs

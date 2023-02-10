@@ -53,6 +53,7 @@
 		"onCommand:commands.suggestVariables"
 	],
 	"main": "./dist/extension",
+	"browser": "./dist/web/extension",
 	"contributes": {
 		"configuration": {
 			"type": "object",
@@ -1145,8 +1146,10 @@
 		]
 	},
 	"scripts": {
-		"vscode:prepublish": "webpack --mode production --color",
+		"vscode:prepublish": "webpack --mode production --color && npm run package-web",
 		"watch": "webpack --mode development --watch --stats minimal",
+		"watch-web": "webpack --mode development --watch --config web.webpack.config.js",
+		"package-web": "webpack --mode production --devtool hidden-source-map --config web.webpack.config.js",
 		"generateJsonSchema": "tsc scripts\\generateJsonSchema.ts && node scripts\\generateJsonSchema.js"
 	},
 	"devDependencies": {
@@ -1158,6 +1161,9 @@
 		"@typescript-eslint/parser": "^5.50.0",
 		"eslint": "^8.33.0",
 		"eslint-plugin-no-autofix": "^1.2.3",
+		"null-loader": "^4.0.1",
+		"path-browserify": "^1.0.1",
+		"process": "^0.11.10",
 		"ts-loader": "^9.4.2",
 		"typescript": "^4.9.5",
 		"typescript-json-schema": "^0.55.0",

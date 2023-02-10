@@ -1,6 +1,10 @@
-import { isSimpleObject } from '../utils';
+import { isOnWeb, isSimpleObject, showNotOnWebNotification } from '../utils';
 
 export async function openCommand(arg: string | { target: string; app: string; arguments?: string[] }) {
+	if (isOnWeb()) {
+		showNotOnWebNotification('Running "commands.open"');
+		return;
+	}
 	const open = (await import('open')).default;
 	if (typeof arg === 'string') {
 		await open(arg);

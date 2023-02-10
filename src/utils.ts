@@ -1,4 +1,5 @@
-import { commands, DocumentSymbol, Range, Selection, TextDocument, TextEditor, TextEditorRevealType, window } from 'vscode';
+import { commands, DocumentSymbol, env, ExtensionMode, Range, Selection, TextDocument, TextEditor, TextEditorRevealType, UIKind, window } from 'vscode';
+import { $state } from './extension';
 import { TopLevelCommands } from './types';
 
 /**
@@ -135,4 +136,18 @@ export function uniqueId(): string {
  */
 export function deepCopy<T>(object: T): T {
 	return JSON.parse(JSON.stringify(object));
+}
+export function stringToUint8Array(text: string): Uint8Array {
+	return new TextEncoder().encode(text);
+}
+export function uint8ArrayToString(arr: Uint8Array): string {
+	return new TextDecoder().decode(arr);
+}
+
+export function isOnWeb(): boolean {
+	return env.uiKind === UIKind.Web || $state.context.extensionMode === ExtensionMode.Development;
+}
+
+export function showNotOnWebNotification(text: string): void {
+	window.showWarningMessage(`Not on the web, you don't. "${text}"`);
 }

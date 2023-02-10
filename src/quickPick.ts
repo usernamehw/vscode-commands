@@ -1,11 +1,10 @@
-import fs from 'fs';
-import { commands, extensions, QuickInputButton, QuickPickItem, ThemeIcon, window } from 'vscode';
+import { commands, extensions, QuickInputButton, QuickPickItem, ThemeIcon, Uri, window, workspace } from 'vscode';
 import { hasArgs } from './args';
 import { CommandId } from './commands';
 import { $config, $state } from './extension';
 import { run } from './run';
 import { Runnable, TopLevelCommands } from './types';
-import { goToSymbol, openSettingsJSON } from './utils';
+import { goToSymbol, openSettingsJSON, uint8ArrayToString } from './utils';
 import { isWorkspaceCommandItem } from './workspaceCommands';
 
 /**
@@ -152,9 +151,9 @@ export async function getAllCommandPaletteCommands(): Promise<VSCodeCommandWitho
 
 async function getAllBuiltinCommands(): Promise<VSCodeCommandWithoutCategory[]> {
 	const commandsDataPath = $state.context.asAbsolutePath('./data/commandTitleMap.json');
-	const file = await fs.promises.readFile(commandsDataPath);
+	const file = await workspace.fs.readFile(Uri.file(commandsDataPath));
 	try {
-		const fileContentAsObject = JSON.parse(file.toString());
+		const fileContentAsObject = JSON.parse(uint8ArrayToString(file));
 		const result: VSCodeCommandWithoutCategory[] = [];
 		for (const key in fileContentAsObject) {
 			result.push({

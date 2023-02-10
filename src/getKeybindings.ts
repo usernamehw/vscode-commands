@@ -1,7 +1,7 @@
-import fs from 'fs';
 import { parse } from 'jsonc-parser';
 import path from 'path';
-import { ExtensionContext, window } from 'vscode';
+import { ExtensionContext, Uri, window, workspace } from 'vscode';
+import { isOnWeb, showNotOnWebNotification, uint8ArrayToString } from './utils';
 
 export interface VSCodeKeybindingItem {
 	key: string;
@@ -14,12 +14,16 @@ export interface VSCodeKeybindingItem {
  * Return all keybindings from user `keybindings.json` file.
  */
 export async function getKeybindings(context: ExtensionContext): Promise<VSCodeKeybindingItem[]> {
+	if (isOnWeb()) {
+		showNotOnWebNotification('Using setting "commands.showKeybindings".');
+		return [];
+	}
 	const UserDirPath = path.join(context.logUri.fsPath, '..', '..', '..', '..', '..', 'User');
 	const keybindingsPath = path.join(UserDirPath, 'keybindings.json');
 	let allKeybindings: VSCodeKeybindingItem[] = [];
 	try {
-		const keybindingsContents = await fs.promises.readFile(keybindingsPath);
-		const keybindingsAsArray = parse(keybindingsContents.toString());
+		const keybindingsContents = await workspace.fs.readFile(Uri.file(keybindingsPath));
+		const keybindingsAsArray = parse(uint8ArrayToString(keybindingsContents));
 		allKeybindings = keybindingsAsArray;
 	} catch (err) {
 		window.showErrorMessage((err as Error).message);
