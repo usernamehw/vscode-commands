@@ -13,6 +13,10 @@ export function updateUserCommands(items: TopLevelCommands): void {
 	unregisterUserCommands();
 
 	forEachCommand((item, key) => {
+		if (key === '') {
+			// Don't show error message for empty string. User is likely typing.
+			return;
+		}
 		let disposable: Disposable;
 		try {
 			disposable = commands.registerCommand(key, () => {
