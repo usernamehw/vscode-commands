@@ -18,6 +18,11 @@ export const enum Constants {
 	WorkspaceCommandsSettingId = 'commands.workspaceCommands',
 
 	CommandPaletteWasPopulatedStorageKey = 'was_populated',
+
+	/**
+	 * This: https://github.com/microsoft/vscode/issues/128233
+	 */
+	NestingSymbol = '◦',
 }
 
 export let $config: ExtensionConfig;

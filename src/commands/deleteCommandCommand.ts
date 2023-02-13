@@ -1,5 +1,6 @@
 import { window } from 'vscode';
 import { applyForTreeItem } from '../commands';
+import { Constants } from '../extension';
 import { updateSetting } from '../settings';
 import { RunCommandTreeItem } from '../TreeViewProvider';
 import { TopLevelCommands } from '../types';
@@ -7,7 +8,7 @@ import { deepCopy, forEachCommand } from '../utils';
 
 export async function deleteCommandCommand(treeItem: RunCommandTreeItem) {
 	const confirmBtnName = 'Delete';
-	const button = await window.showWarningMessage(`Do you want to delete "${treeItem.label}"?\n\n${JSON.stringify(treeItem.runnable, null, '    ')}`, {
+	const button = await window.showWarningMessage(`Do you want to delete "${treeItem.label}"?\n\n${JSON.stringify(treeItem.runnable, null, Constants.NestingSymbol.repeat(4))}`, {
 		modal: true,
 	}, confirmBtnName);
 	if (button === confirmBtnName) {
