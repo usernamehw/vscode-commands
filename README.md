@@ -695,32 +695,7 @@ There's also a [vscode-codicons](https://microsoft.github.io/vscode-codicons/dis
 },
 ```
 
-## More examples
-
-## Status bar granular zoom in/out buttons:
-
-```js
-"commands.commands": {
-    "Zoom in": {
-        "icon": "zoom-in",
-        "statusBar": {},
-        "command": "commands.incrementSetting",
-        "args": {
-            "setting": "window.zoomLevel",
-            "value": 0.1,
-        },
-    },
-    "Zoom out": {
-        "icon": "zoom-out",
-        "statusBar": {},
-        "command": "commands.incrementSetting",
-        "args": {
-            "setting": "window.zoomLevel",
-            "value": -0.1,
-        },
-    },
-},
-```
+## [More examples](https://github.com/usernamehw/vscode-commands/tree/master/docs/examples.md)
 
 ## Upstream issues
 
