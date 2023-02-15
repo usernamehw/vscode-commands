@@ -19,9 +19,6 @@ export const enum Constants {
 
 	CommandPaletteWasPopulatedStorageKey = 'was_populated',
 
-	/**
-	 * This: https://github.com/microsoft/vscode/issues/128233
-	 */
 	NestingSymbol = '◦',
 }
 

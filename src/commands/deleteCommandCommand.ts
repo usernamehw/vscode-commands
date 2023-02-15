@@ -1,4 +1,4 @@
-import { window } from 'vscode';
+import { window, workspace } from 'vscode';
 import { applyForTreeItem } from '../commands';
 import { Constants } from '../extension';
 import { updateSetting } from '../settings';
@@ -8,7 +8,11 @@ import { deepCopy, forEachCommand } from '../utils';
 
 export async function deleteCommandCommand(treeItem: RunCommandTreeItem) {
 	const confirmBtnName = 'Delete';
-	const button = await window.showWarningMessage(`Do you want to delete "${treeItem.label}"?\n\n${JSON.stringify(treeItem.runnable, null, Constants.NestingSymbol.repeat(4))}`, {
+	/**
+	 * This: https://github.com/microsoft/vscode/issues/128233
+	 */
+	const formatSymbol = workspace.getConfiguration('window').get('dialogStyle') === 'custom' ? Constants.NestingSymbol : ' ';
+	const button = await window.showWarningMessage(`Do you want to delete "${treeItem.label}"?\n\n${JSON.stringify(treeItem.runnable, null, formatSymbol.repeat(4))}`, {
 		modal: true,
 	}, confirmBtnName);
 	if (button === confirmBtnName) {
