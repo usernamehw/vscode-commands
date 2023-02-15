@@ -1,4 +1,4 @@
-## Status bar granular zoom in/out buttons:
+## Status Bar granular zoom in/out buttons:
 
 ```js
 "commands.commands": {
@@ -23,3 +23,34 @@
 },
 ```
 
+## Replace Activity Bar with icons in Status Bar:
+
+```js
+"commands.commands": {
+    "File Explorer": {
+        "command": "workbench.explorer.fileView.focus",
+        "icon": "files",
+        "statusBar": {}
+    },
+    "Search in files": {
+        "command": "workbench.view.search.focus",
+        "icon": "search",
+        "statusBar": {}
+    },
+    "Source Control": {
+        "command": "workbench.scm.focus",
+        "icon": "source-control",
+        "statusBar": {}
+    },
+    "Debug": {
+        "command": "workbench.view.debug",
+        "icon": "debug-alt",
+        "statusBar": {}
+    },
+    "Extensions": {
+        "command": "workbench.view.extensions",
+        "icon": "extensions",
+        "statusBar": {}
+    }
+}
+```
