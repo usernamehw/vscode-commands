@@ -1,0 +1,164 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema",
+
+	"$defs": {
+		"commandItem": {
+			"oneOf": [
+				{
+					"type": "string",
+					"markdownDescription": "Run this command (no arguments)."
+				},
+				{
+					"$ref": "#/$defs/commandObject"
+				}
+			]
+		},
+		"statusBar": {
+			"type": "object",
+			"markdownDescription": "Show this command in the [Status Bar](https://code.visualstudio.com/docs/getstarted/userinterface).",
+			"properties": {
+				"alignment": {
+					"markdownDescription": "Represents the alignment of status bar items.",
+					"type": "string",
+					"enum": [
+						"left",
+						"right"
+					]
+				},
+				"name": {
+					"markdownDescription": "The name of the status bar item (Shown in context menu).",
+					"type": "string"
+				},
+				"text": {
+					"markdownDescription": "Text of the status bar item.",
+					"type": "string"
+				},
+				"priority": {
+					"markdownDescription": "The priority of the item. Higher values mean the item should be shown more to the left.",
+					"type": "number"
+				},
+				"hidden": {
+					"type": "boolean",
+					"markdownDescription": "Do not show this Status Bar Item."
+				},
+				"activeEditorGlob": {
+					"type": "string",
+					"markdownDescription": "Only show when active editor file matches [glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) pattern."
+				},
+				"activeEditorLanguage": {
+					"type": "string",
+					"markdownDescription": "Only show when active editor [Language Id](https://code.visualstudio.com/docs/languages/identifiers) matches."
+				},
+				"tooltip": {
+					"markdownDescription": "Show when hovering over status bar item.",
+					"type": "string"
+				},
+				"markdownTooltip": {
+					"type": "string",
+					"markdownDescription": "Show when hovering over status bar item (markdown). https://github.com/usernamehw/vscode-commands/issues/16"
+				},
+				"color": {
+					"type": "string",
+					"format": "color",
+					"markdownDescription": "Color of the text in status bar."
+				},
+				"backgroundColor": {
+					"type": "string",
+					"markdownDescription": "Background of Status bar item (only `error` & `warning` values are allowed).",
+					"enum": [
+						"error",
+						"warning"
+					]
+				}
+			}
+		},
+		"commandObject": {
+			"type": "object",
+			"markdownDescription": "Title of your custom command. Needs to be unique.",
+			"properties": {
+				"command": {
+					"type": "string",
+					"markdownDescription": "Command id to execute."
+				},
+				"args": {
+					"markdownDescription": "Arguments for this command."
+				},
+				"when": {
+					"type": "string",
+					"markdownDescription": "a `when` expression of when the command will be avaliable at the command palette. See [VSCode API](https://code.visualstudio.com/api/references/when-clause-contexts)."
+				},
+				"delay": {
+					"type": "number",
+					"markdownDescription": "Delay (ms) BEFORE executing this command."
+				},
+				"repeat": {
+					"type": "integer",
+					"markdownDescription": "Run this command or sequence this number of times.",
+					"minimum": 1
+				},
+				"icon": {
+					"type": "string",
+					"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
+				},
+				"markdownTooltip": {
+					"type": "string",
+					"markdownDescription": "Add custom markdown text to hover tooltip."
+				},
+				"disableTooltip": {
+					"type": "boolean",
+					"markdownDescription": "Do not show the hover tooltip for this Tree View Item."
+				},
+				"iconColor": {
+					"type": "string",
+					"markdownDescription": "Use existing colors for icon [Color id list](https://code.visualstudio.com/api/references/theme-color)"
+				},
+				"statusBar": {
+					"$ref": "#/$defs/statusBar"
+				},
+				"sequence": {
+					"markdownDescription": "Execute multiple commands.",
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/commandItem"
+					}
+				},
+				"nestedItems": {
+					"type": "object",
+					"markdownDescription": "Makes this item a folder. Nested items render inside it.",
+					"patternProperties": {
+						"^.*$": {
+							"$ref": "#/$defs/commandObject"
+						}
+					},
+					"default": {}
+				},
+				"hidden": {
+					"type": "boolean",
+					"markdownDescription": "Do not show this in the Tree View."
+				}
+			}
+		}
+	},
+
+	"type": "object",
+	"properties": {
+		"commands.commands": {
+			"type": "object",
+			"patternProperties": {
+				"^.*$": {
+					"$ref": "#/$defs/commandItem"
+				}
+			},
+			"default": {}
+		},
+		"commands.workspaceCommands": {
+			"type": "object",
+			"patternProperties": {
+				"^.*$": {
+					"$ref": "#/$defs/commandObject"
+				}
+			},
+			"default": {}
+		}
+	}
+}

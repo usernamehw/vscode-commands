@@ -146,7 +146,7 @@
 interface CommandObject {
     command: string;// command id to execute
     args?: unknown;// command arguments to execute
-    delay?: number;// delay BEFORE execution
+    delay?: number;// delay (ms) BEFORE execution
     repeat?: number;// run this command or sequence this number of times
     icon?: string;// icon id https://code.visualstudio.com/api/references/icons-in-labels#icon-listing
     iconColor?: string;// color id https://code.visualstudio.com/api/references/theme-color

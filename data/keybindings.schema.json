@@ -17,7 +17,7 @@
 				"args": {
 					"type": "array",
 					"items": {
-						"anyOf": [
+						"oneOf": [
 							{
 								"type": "string"
 							},
@@ -28,11 +28,20 @@
 								],
 								"properties": {
 									"command": {
-										"type": "string"
+										"type": "string",
+										"markdownDescription": "Command id to execute."
 									},
-									"args": {},
+									"args": {
+										"markdownDescription": "Arguments for this command."
+									},
 									"delay": {
-										"type": "number"
+										"type": "number",
+										"markdownDescription": "Delay (ms) BEFORE executing this command."
+									},
+									"repeat": {
+										"type": "integer",
+										"markdownDescription": "Run this command or sequence this number of times.",
+										"minimum": 1
 									}
 								}
 							}
