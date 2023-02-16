@@ -535,6 +535,10 @@ Example for a 2x2 grid:
     "command": "commands.openFolder",
     "args": "C:\\temp\\temp.txt",
 },
+"Open relative file": {
+    "command": "commands.openFolder",
+    "args": "./package.json",// open relative to the first opened workspace folder
+},
 "Open folder": {
     "command": "commands.openFolder",
     "args": "C:\\temp",

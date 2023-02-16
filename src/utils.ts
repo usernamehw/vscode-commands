@@ -138,9 +138,11 @@ export function deepCopy<T>(object: T): T {
 	return JSON.parse(JSON.stringify(object));
 }
 export function stringToUint8Array(text: string): Uint8Array {
+	// @ts-ignore
 	return new TextEncoder().encode(text);
 }
 export function uint8ArrayToString(arr: Uint8Array): string {
+	// @ts-ignore
 	return new TextDecoder().decode(arr);
 }
 
