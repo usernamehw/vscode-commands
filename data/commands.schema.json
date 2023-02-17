@@ -1,0 +1,905 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema",
+
+	"$defs": {
+
+		"thisExtensionArgsTypes": {
+			"allOf": [
+				{ "$ref": "#/$defs/toggleSettingCommand" },
+				{ "$ref": "#/$defs/incrementSettingCommand" },
+				{ "$ref": "#/$defs/toggleThemeCommand" },
+				{ "$ref": "#/$defs/openFolderCommand" },
+				{ "$ref": "#/$defs/runInTerminalCommand" },
+				{ "$ref": "#/$defs/startDebuggingCommand" },
+				{ "$ref": "#/$defs/setEditorLanguageCommand" },
+				{ "$ref": "#/$defs/clipboardWriteCommand" },
+				{ "$ref": "#/$defs/showNotificationCommand" },
+				{ "$ref": "#/$defs/openExternalCommand" },
+				{ "$ref": "#/$defs/openCommand" },
+				{ "$ref": "#/$defs/revealFileIsOSCommand" }
+			]
+		},
+
+		"argsTypes": {
+			"allOf": [
+				{ "$ref": "#/$defs/thisExtensionArgsTypes" },
+				{ "$ref": "#/$defs/typeCommand" },
+				{ "$ref": "#/$defs/runTaskCommand" },
+				{ "$ref": "#/$defs/insertSnippetCommand" },
+				{ "$ref": "#/$defs/sendSequenceCommand" },
+				{ "$ref": "#/$defs/quickOpenCommand" },
+				{ "$ref": "#/$defs/openSettingsCommand" },
+				{ "$ref": "#/$defs/openGlobalKeybindingsCommand" },
+				{ "$ref": "#/$defs/extensionsSearchCommand" },
+				{ "$ref": "#/$defs/codeActionCommand" },
+				{ "$ref": "#/$defs/findInFilesCommand" },
+				{ "$ref": "#/$defs/findWithArgsCommand" },
+				{ "$ref": "#/$defs/searchOpenNewEditorCommand" },
+				{ "$ref": "#/$defs/cursorMoveCommand" },
+				{ "$ref": "#/$defs/editorScrollCommand" },
+				{ "$ref": "#/$defs/moveActiveEditorCommand" },
+				{ "$ref": "#/$defs/emmetWrapWithAbbreviationCommand" },
+				{ "$ref": "#/$defs/openIssueReporterCommand" },
+				{ "$ref": "#/$defs/installExtensionCommand" },
+				{ "$ref": "#/$defs/uninstallExtensionCommand" }
+			]
+		},
+
+		"typeCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "type"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "object",
+						"required": [
+							"text"
+						],
+						"properties": {
+							"text": {
+								"type": "string"
+							}
+						},
+						"additionalProperties": false
+					}
+				}
+			}
+		},
+
+		"runTaskCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "workbench.action.tasks.runTask"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "string"
+					}
+				}
+			}
+		},
+
+		"insertSnippetCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "editor.action.insertSnippet"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "object",
+						"properties": {
+							"snippet": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			}
+		},
+
+		"sendSequenceCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "workbench.action.terminal.sendSequence"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "object",
+						"required": [
+							"text"
+						],
+						"properties": {
+							"text": {
+								"type": "string"
+							}
+						},
+						"additionalProperties": false
+					}
+				}
+			}
+		},
+
+		"quickOpenCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "workbench.action.quickOpen"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "string"
+					}
+				}
+			}
+		},
+
+		"openSettingsCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "workbench.action.openSettings"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "string"
+					}
+				}
+			}
+		},
+
+		"openGlobalKeybindingsCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "workbench.action.openGlobalKeybindings"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "string"
+					}
+				}
+			}
+		},
+
+		"extensionsSearchCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "workbench.extensions.search"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "string"
+					}
+				}
+			}
+		},
+
+		"codeActionCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "editor.action.codeAction"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "object",
+						"properties": {
+							"kind": {
+								"type": "string"
+							},
+							"apply": {
+								"type": "string",
+								"enum": [
+									"first",
+									"ifSingle",
+									"never"
+								]
+							},
+							"preferred": {
+								"type": "boolean"
+							}
+						},
+						"additionalProperties": false
+					}
+				}
+			}
+		},
+
+		"findInFilesCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "workbench.action.findInFiles"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "object",
+						"properties": {
+							"query": {
+								"type": "string"
+							},
+							"replace": {
+								"type": "string"
+							},
+							"filesToInclude": {
+								"type": "string"
+							},
+							"filesToExclude": {
+								"type": "string"
+							},
+							"isRegex": {
+								"type": "boolean"
+							},
+							"isCaseSensitive": {
+								"type": "boolean"
+							},
+							"matchWholeWord": {
+								"type": "boolean"
+							},
+							"preserveCase": {
+								"type": "boolean"
+							},
+							"excludeSettingAndIgnoreFiles": {
+								"type": "boolean"
+							},
+							"triggerSearch": {
+								"type": "boolean"
+							},
+							"onlyOpenEditors": {
+								"type": "boolean"
+							}
+						},
+						"additionalProperties": false
+					}
+				}
+			}
+		},
+
+		"findWithArgsCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "editor.actions.findWithArgs"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "object",
+						"properties": {
+							"searchString": {
+								"type": "string"
+							},
+							"replaceString": {
+								"type": "string"
+							},
+							"isRegex": {
+								"type": "boolean"
+							},
+							"isCaseSensitive": {
+								"type": "boolean"
+							},
+							"matchWholeWord": {
+								"type": "boolean"
+							},
+							"preserveCase": {
+								"type": "boolean"
+							},
+							"findInSelection": {
+								"type": "boolean"
+							}
+						},
+						"additionalProperties": false
+					}
+				}
+			}
+		},
+
+		"searchOpenNewEditorCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "search.action.openNewEditor"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "object",
+						"properties": {
+							"query": {
+								"type": "string"
+							},
+							"filesToInclude": {
+								"type": "string"
+							},
+							"filesToExclude": {
+								"type": "string"
+							},
+							"contextLines": {
+								"type": "integer"
+							},
+							"isRegexp": {
+								"type": "boolean"
+							},
+							"isCaseSensitive": {
+								"type": "boolean"
+							},
+							"matchWholeWord": {
+								"type": "boolean"
+							},
+							"preserveCase": {
+								"type": "boolean"
+							},
+							"excludeSettingAndIgnoreFiles": {
+								"type": "boolean"
+							},
+							"triggerSearch": {
+								"type": "boolean"
+							},
+							"showIncludesExcludes": {
+								"type": "boolean"
+							}
+						},
+						"additionalProperties": false
+					}
+				}
+			}
+		},
+
+		"cursorMoveCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "cursorMove"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "object",
+						"properties": {
+							"to": {
+								"type": "string",
+								"enum": [
+									"left", "right", "up", "down", "prevBlankLine","nextBlankLine", "wrappedLineStart", "wrappedLineEnd", "wrappedLineColumnCenter", "wrappedLineFirstNonWhitespaceCharacter", "wrappedLineLastNonWhitespaceCharacter", "viewPortTop", "viewPortCenter", "viewPortBottom", "viewPortIfOutside"
+								]
+							},
+							"by": {
+								"type": "string",
+								"enum": [
+									"line",
+									"wrappedLine",
+									"character",
+									"halfLine"
+								]
+							},
+							"value": {
+								"type": "integer"
+							},
+							"select": {
+								"type": "boolean"
+							}
+						},
+						"additionalProperties": false
+					}
+				}
+			}
+		},
+
+		"editorScrollCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "editorScroll"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "object",
+						"properties": {
+							"to": {
+								"type": "string",
+								"enum": [
+									"up",
+									"down"
+								]
+							},
+							"by": {
+								"type": "string",
+								"enum": [
+									"line",
+									"wrappedLine",
+									"page",
+									"halfPage"
+								]
+							},
+							"value": {
+								"type": "integer"
+							},
+							"revealCursor": {
+								"type": "boolean"
+							}
+						},
+						"additionalProperties": false
+					}
+				}
+			}
+		},
+
+		"moveActiveEditorCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "moveActiveEditor"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "object",
+						"properties": {
+							"to": {
+								"type": "string",
+								"enum": [
+									"left",
+									"right"
+								]
+							},
+							"by": {
+								"type": "string",
+								"enum": [
+									"tab",
+									"group"
+								]
+							},
+							"value": {
+								"type": "integer"
+							}
+						},
+						"additionalProperties": false
+					}
+				}
+			}
+		},
+
+		"emmetWrapWithAbbreviationCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "editor.emmet.action.wrapWithAbbreviation"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "object",
+						"properties": {
+							"abbreviation": {
+								"type": "string"
+							},
+							"language": {
+								"type": "string"
+							}
+						},
+						"additionalProperties": false
+					}
+				}
+			}
+		},
+
+		"openIssueReporterCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "vscode.openIssueReporter"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "string"
+					}
+				}
+			}
+		},
+
+		"installExtensionCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "workbench.extensions.installExtension"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "string"
+					}
+				}
+			}
+		},
+
+		"uninstallExtensionCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "workbench.extensions.uninstallExtension"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "string"
+					}
+				}
+			}
+		},
+
+
+
+
+
+
+		"toggleSettingCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "commands.toggleSetting"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"oneOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "object",
+								"required": [
+									"setting"
+								],
+								"properties": {
+									"setting": {
+										"type": "string"
+									},
+									"target": {
+										"type": "string",
+										"enum": [
+											"global",
+											"workspace"
+										]
+									},
+									"value": {}
+								},
+								"additionalProperties": false
+							}
+						]
+					}
+				}
+			}
+		},
+
+		"incrementSettingCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "commands.incrementSetting"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "object",
+						"required": [
+							"setting"
+						],
+						"properties": {
+							"setting": {
+								"type": "string"
+							},
+							"value": {
+								"type": "number"
+							}
+						},
+						"additionalProperties": false
+					}
+				}
+			}
+		},
+
+		"toggleThemeCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "commands.toggleTheme"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "object",
+						"properties": {
+							"dark": {
+								"type": "string"
+							},
+							"light": {
+								"type": "string"
+							}
+						},
+						"additionalProperties": false
+					}
+				}
+			}
+		},
+
+		"openFolderCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "commands.openFolder"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "string"
+					}
+				}
+			}
+		},
+
+		"runInTerminalCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "commands.runInTerminal"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"oneOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "object",
+								"properties": {
+									"text": {
+										"type": "string"
+									},
+									"name": {
+										"type": "string"
+									},
+									"cwd": {
+										"type": "string"
+									},
+									"reveal": {
+										"type": "boolean"
+									}
+								},
+								"additionalProperties": false
+							}
+						]
+					}
+				}
+			}
+		},
+
+		"startDebuggingCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "commands.startDebugging"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "string"
+					}
+				}
+			}
+		},
+
+		"setEditorLanguageCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "commands.setEditorLanguage"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "string"
+					}
+				}
+			}
+		},
+
+		"clipboardWriteCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "commands.clipboardWrite"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "string"
+					}
+				}
+			}
+		},
+
+		"showNotificationCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "commands.showNotification"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"oneOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "object",
+								"properties": {
+									"message": {
+										"type": "string"
+									},
+									"severity": {
+										"type": "string",
+										"enum": [
+											"error",
+											"warning",
+											"info"
+										]
+									}
+								},
+								"additionalProperties": false
+							}
+						]
+					}
+				}
+			}
+		},
+
+		"openExternalCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "commands.openExternal"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "string"
+					}
+				}
+			}
+		},
+
+		"openCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "commands.open"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"oneOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "object",
+								"properties": {
+									"target": {
+										"type": "string"
+									},
+									"app": {
+										"type": "string"
+									},
+									"arguments": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										}
+									}
+								},
+								"additionalProperties": false
+							}
+						]
+					}
+				}
+			}
+		},
+
+		"revealFileIsOSCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "commands.revealFileInOS"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "string"
+					}
+				}
+			}
+		}
+
+	}
+}

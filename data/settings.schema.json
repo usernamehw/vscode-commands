@@ -136,7 +136,8 @@
 					"type": "boolean",
 					"markdownDescription": "Do not show this in the Tree View."
 				}
-			}
+			},
+			"$ref": "commands.schema.json#/$defs/argsTypes"
 		}
 	},
 
