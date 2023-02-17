@@ -18,6 +18,7 @@ export const enum VariableNames {
 	PathSeparator = '${pathSeparator}', // `/` on macOS or linux, `\` on Windows
 	LineNumber = '${lineNumber}', // the current selected line number in the active file
 	SelectedText = '${selectedText}', // the current selected text in the active file
+	Clipboard = '${clipboard}', // current clipboard value
 	EnvironmentVariable = '${env}',
 	SingleEnvironmentVariable = 'env',
 	ConfigurationVariable = '${config}',
@@ -41,6 +42,7 @@ const variableRegexps = {
 	[VariableNames.PathSeparator]: new RegExp(escapeRegExp(VariableNames.PathSeparator), 'ig'),
 	[VariableNames.LineNumber]: new RegExp(escapeRegExp(VariableNames.LineNumber), 'ig'),
 	[VariableNames.SelectedText]: new RegExp(escapeRegExp(VariableNames.SelectedText), 'ig'),
+	[VariableNames.Clipboard]: new RegExp(escapeRegExp(VariableNames.Clipboard), 'ig'),
 	[VariableNames.SingleEnvironmentVariable]: /\${env:([a-zA-Z_]+[a-zA-Z0-9_]*)}/i,
 	[VariableNames.EnvironmentVariable]: /\${env:([a-zA-Z_]+[a-zA-Z0-9_]*)}/ig,
 	[VariableNames.SingleConfigurationVariable]: /\${config:([^}]+?)}/i,
@@ -54,7 +56,7 @@ const variableRegexps = {
  *
  * TODO: throw errors (window.showMessage) when variable exists but can't resolve
  */
-export function substituteVariables(str: string): string {
+export async function substituteVariables(str: string): Promise<string> {
 	const activeTextEditor = window.activeTextEditor;
 	const workspaceFolder = workspace.workspaceFolders?.[0].uri.fsPath;
 	if (str.includes(VariableNames.SelectedText) && activeTextEditor) {
@@ -98,6 +100,10 @@ export function substituteVariables(str: string): string {
 			str = str.replace(variableRegexps[VariableNames.FileWorkspaceFolder], fileWorkspaceFolder);
 		}
 	}
+	if (str.includes(VariableNames.Clipboard)) {
+		const clipboardValue = await env.clipboard.readText();
+		str = str.replace(variableRegexps[VariableNames.Clipboard], clipboardValue);
+	}
 	if (variableRegexps[VariableNames.EnvironmentVariable].test(str)) {
 		const match = str.match(variableRegexps[VariableNames.EnvironmentVariable]);
 
@@ -132,19 +138,19 @@ function replaceConfigurationVariable(configName: string): string {
 /**
  * Walk recursively through object/array and replace variables in strings.
  */
-export function substituteVariableRecursive(arg: unknown[] | object | string | unknown): object | string | unknown {
+export async function substituteVariableRecursive(arg: unknown[] | object | string | unknown): Promise<object | string | unknown> {
 	if (typeof arg === 'string') {
-		return substituteVariables(arg);
+		return await substituteVariables(arg);
 	}
 
 	if (Array.isArray(arg)) {
 		for (const [key, value] of arg.entries()) {
-			arg[key] = substituteVariableRecursive(value);
+			arg[key] = await substituteVariableRecursive(value);
 		}
 	} else if (typeof arg === 'object' && arg !== null) {
 		for (const key in arg) {
 			// @ts-ignore
-			arg[key] = substituteVariableRecursive(arg[key]);
+			arg[key] = await substituteVariableRecursive(arg[key]);
 		}
 	}
 

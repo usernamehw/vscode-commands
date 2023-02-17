@@ -87,12 +87,12 @@ async function runObject(object: CommandObject): Promise<void> {
 	let args = object.args;
 	if ($config.variableSubstitutionEnabled) {
 		if (typeof args === 'string') {
-			args = substituteVariables(args);
+			args = await substituteVariables(args);
 		} else if (
 			Array.isArray(args) ||
 			typeof args === 'object' && args !== null
 		) {
-			args = substituteVariableRecursive({ ...args });
+			args = await substituteVariableRecursive({ ...args });
 		}
 	}
 

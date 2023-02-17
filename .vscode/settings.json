@@ -6,7 +6,8 @@
 		"commands.revealCommandsInSettignsGUI",
 		"commands.newCommandInFolder",
 		"commands.newFolder",
-		"commands.deleteCommand"
+		"commands.deleteCommand",
+		"commands.run"
 	],
 	"search.exclude": {
 		"**/node_modules": true,
