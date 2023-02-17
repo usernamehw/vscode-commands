@@ -1,3 +1,10 @@
+## 1.8.0 `17 Feb 2023`
+
+- ✨ Improve autocomplete in `settings.json`. Add autocomplete for "command" & "args" properties
+- ✨ Allow relative path for `commands.openFolder` command
+- ✨ New `${clipboard}` variable substitution
+- ✨ `${config:...}` variable substitution stringifies(json) arrays & objects now
+
 ## 1.7.0 `10 Feb 2023`
 
 - ✨ Make extension available on the web
