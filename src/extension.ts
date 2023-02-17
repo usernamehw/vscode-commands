@@ -52,7 +52,9 @@ export async function activate(context: ExtensionContext) {
 	await setWorkspaceIdToContext(context);
 	updateEverything(context);
 
-	setTimeout(registerJsonSchemaCompletion);
+	setTimeout(() => {
+		registerJsonSchemaCompletion(context);
+	});
 
 	function updateConfig() {
 		$config = workspace.getConfiguration(Constants.ExtensionName) as any as ExtensionConfig;
