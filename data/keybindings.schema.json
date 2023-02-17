@@ -1,7 +1,11 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema",
+
 	"type": "array",
+
 	"items": {
+		"$ref": "commands.schema.json#/$defs/thisExtensionArgsTypes",
+
 		"if": {
 			"properties": {
 				"command": {
@@ -10,9 +14,6 @@
 			}
 		},
 		"then": {
-			"required": [
-				"args"
-			],
 			"properties": {
 				"args": {
 					"type": "array",
