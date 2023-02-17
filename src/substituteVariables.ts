@@ -126,12 +126,17 @@ function replaceConfigurationVariable(configName: string): string {
 		window.showErrorMessage(`Need a dot (.) in the name of configuration. "${configName}"`);
 		return configName;
 	}
+
 	const configParts = configName.split('.');
 	const configValue = workspace.getConfiguration(configParts[0]).get(configParts.slice(1).join('.'));
-	if (typeof configValue !== 'string' && typeof configValue !== 'number') {
-		window.showErrorMessage(`Configuration must be of type: string or number "${configName}"`);
-		return configName;
+
+	if (
+		Array.isArray(configValue) ||
+		(configValue !== null && typeof configValue === 'object')
+	) {
+		return JSON.stringify(configValue);
 	}
+
 	return String(configValue);
 }
 
