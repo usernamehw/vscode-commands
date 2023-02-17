@@ -3,7 +3,7 @@ import { updateCommandPalette } from './commandPalette';
 import { registerExtensionCommands } from './commands';
 import { updateDocumentLinkProvider } from './documentLinksProvider';
 import { getKeybindings, VSCodeKeybindingItem } from './getKeybindings';
-import { registerJsonSchemaCompletion } from './keybindingsCompletions';
+import { registerJsonSchemaCompletion } from './jsonSchemaCompletions';
 import { VSCodeCommandWithoutCategory } from './quickPick';
 import { updateUserCommands } from './registerUserCommands';
 import { updateStatusBarItems, updateStatusBarItemsVisibilityBasedOnActiveEditor } from './statusBar';
