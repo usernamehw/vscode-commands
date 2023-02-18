@@ -81,14 +81,17 @@ export function registerJsonSchemaCompletion(context: ExtensionContext): void {
 }
 
 /**
- * Check if cursor is in the json node named `command` and `command` is somewhere inside of
- * `commands.commands`/`commands.workspaceCommands` setting.
+ * Check if cursor is in the json node named `command` or one lvl in `sequence` and
+ * also somewhere inside of `commands.commands`/`commands.workspaceCommands` setting.
  */
 function isCommandIdAutocomplete(comparePath: (number | string)[]): boolean {
 	return (
 		comparePath[0] === Constants.CommandsSettingId ||
 		comparePath[0] === Constants.WorkspaceCommandsSettingId
-	) && comparePath.slice(-1)?.[0] === 'command';
+	) && (
+		comparePath.slice(-1)?.[0] === 'command' ||
+		comparePath.slice(-2)?.[0] === 'sequence'
+	);
 }
 
 /**
