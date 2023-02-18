@@ -69,7 +69,7 @@ export async function toggleSetting(arg: ToggleSettingType | string): Promise<vo
 	}
 
 	try {
-		await settings.update(settingName, newValue, target === 'global' ? ConfigurationTarget.Global : ConfigurationTarget.Workspace);
+		await settings.update(settingName, newValue, target === 'workspace' ? ConfigurationTarget.Workspace : ConfigurationTarget.Global);
 	} catch (e) {
 		window.showErrorMessage((e as Error).message);
 	}
@@ -81,12 +81,24 @@ export async function toggleSetting(arg: ToggleSettingType | string): Promise<vo
 /**
  * Increment global user setting. To decrement - just pass a negative number.
  */
-export async function incrementSetting(settingName: unknown, n: unknown): Promise<void> {
+export async function incrementSetting(arg: ToggleSettingType | string): Promise<void> {
+	let settingName: unknown;
+	let value: unknown = 1;
+	let target: Target = 'global';
+
+	if (typeof arg === 'string') {
+		settingName = arg;
+	} else if (isSimpleObject(arg)) {
+		settingName = arg.setting;
+		value = arg.value ?? 1;
+		target = arg.target || 'global';
+	}
+
 	if (typeof settingName !== 'string') {
 		window.showWarningMessage('Setting name must be a string');
 		return;
 	}
-	if (typeof n !== 'number' || isNaN(n)) {
+	if (typeof value !== 'number' || isNaN(value)) {
 		window.showWarningMessage('Only numbers allowed');
 		return;
 	}
@@ -96,10 +108,10 @@ export async function incrementSetting(settingName: unknown, n: unknown): Promis
 		window.showWarningMessage('Only works for settings of type `number`');
 		return;
 	}
-	const newValue = Number((currentSettingValue + n).toPrecision(10));
+	const newValue = Number((currentSettingValue + value).toPrecision(10));
 
 	try {
-		await settings.update(settingName, newValue, true);
+		await settings.update(settingName, newValue, target === 'workspace' ? ConfigurationTarget.Workspace : ConfigurationTarget.Global);
 	} catch (e) {
 		window.showErrorMessage((e as Error).message);
 	}
@@ -111,11 +123,10 @@ export async function incrementSetting(settingName: unknown, n: unknown): Promis
 /**
  * Update user setting with the new value.
  */
-export async function updateSetting(settingName: string, newValue: unknown, target: 'global' | 'workspace'): Promise<void> {
+export async function updateSetting(settingName: string, newValue: unknown, target: Target): Promise<void> {
 	const settings = workspace.getConfiguration(undefined, null);
-	const configurationTarget = target === 'workspace' ? ConfigurationTarget.Workspace : ConfigurationTarget.Global;
 	try {
-		await settings.update(settingName, newValue, configurationTarget);
+		await settings.update(settingName, newValue, target === 'workspace' ? ConfigurationTarget.Workspace : ConfigurationTarget.Global);
 	} catch (e) {
 		window.showErrorMessage((e as Error).message);
 	}

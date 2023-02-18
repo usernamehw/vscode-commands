@@ -649,6 +649,13 @@
 							"setting": {
 								"type": "string"
 							},
+							"target": {
+								"type": "string",
+								"enum": [
+									"global",
+									"workspace"
+								]
+							},
 							"value": {
 								"type": "number"
 							}

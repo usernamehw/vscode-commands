@@ -502,6 +502,7 @@ Example for a 2x2 grid:
     "args": {
         "setting": "editor.fontSize",
         "value": 0.5,
+        // "target": "workspace",
     },
 },
 ```
