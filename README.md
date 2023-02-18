@@ -558,6 +558,7 @@ Example for a 2x2 grid:
         "text": "npm run watch",
         "name": "watch",
         "reveal": true,
+        "waitForExit": false,// will wait for terminal to exit before running next command
         // "cwd": "",
     },
 },

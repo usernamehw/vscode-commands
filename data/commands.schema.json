@@ -730,6 +730,9 @@
 									},
 									"reveal": {
 										"type": "boolean"
+									},
+									"waitForExit": {
+										"type": "boolean"
 									}
 								},
 								"additionalProperties": false
