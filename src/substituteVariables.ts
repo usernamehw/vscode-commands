@@ -101,8 +101,7 @@ export async function substituteVariables(str: string): Promise<string> {
 		}
 	}
 	if (str.includes(VariableNames.Clipboard)) {
-		const clipboardValue = await env.clipboard.readText();
-		str = str.replace(variableRegexps[VariableNames.Clipboard], clipboardValue);
+		str = str.replace(variableRegexps[VariableNames.Clipboard], await env.clipboard.readText());
 	}
 	if (variableRegexps[VariableNames.EnvironmentVariable].test(str)) {
 		const match = str.match(variableRegexps[VariableNames.EnvironmentVariable]);

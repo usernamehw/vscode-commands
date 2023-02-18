@@ -3,7 +3,7 @@ import { $config, $state } from './extension';
 import { showQuickPick } from './quickPick';
 import { substituteVariableRecursive, substituteVariables } from './substituteVariables';
 import { CommandFolder, CommandObject, Runnable, Sequence } from './types';
-import { isSimpleObject, sleep } from './utils';
+import { deepCopy, isSimpleObject, sleep } from './utils';
 
 /**
  * Execute runnable or folder.
@@ -92,7 +92,7 @@ async function runObject(object: CommandObject): Promise<void> {
 			Array.isArray(args) ||
 			typeof args === 'object' && args !== null
 		) {
-			args = await substituteVariableRecursive({ ...args });
+			args = await substituteVariableRecursive(deepCopy(args));
 		}
 	}
 
