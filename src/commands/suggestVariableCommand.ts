@@ -15,6 +15,8 @@ export async function suggestVariableCommand(editor: TextEditor) {
 		[VariableNames.PathSeparator, '`/` on macOS or linux, `\\` on Windows'],
 		[VariableNames.LineNumber, 'Current selected line number in the active file'],
 		[VariableNames.SelectedText, 'Current selected text in the active file'],
+		[VariableNames.Clipboard, 'Current clipboard value'],
+		[VariableNames.Random, '6 random Base-10 digits'],
 		['${env:}', 'Environment variable value'],
 		['${config:}', 'VSCode Configuration value'],
 	];

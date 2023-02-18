@@ -22,6 +22,7 @@ export const enum VariableNames {
 	EnvironmentVariable = '${env}',
 	SingleEnvironmentVariable = 'env',
 	ConfigurationVariable = '${config}',
+	Random = '${random}',
 	SingleConfigurationVariable = 'config',
 	// ────────────────────────────────────────────────────────────
 	// relativeFile = '${relativeFile}', // the current opened file relative to `workspaceFolder`
@@ -43,6 +44,7 @@ const variableRegexps = {
 	[VariableNames.LineNumber]: new RegExp(escapeRegExp(VariableNames.LineNumber), 'ig'),
 	[VariableNames.SelectedText]: new RegExp(escapeRegExp(VariableNames.SelectedText), 'ig'),
 	[VariableNames.Clipboard]: new RegExp(escapeRegExp(VariableNames.Clipboard), 'ig'),
+	[VariableNames.Random]: new RegExp(escapeRegExp(VariableNames.Random), 'ig'),
 	[VariableNames.SingleEnvironmentVariable]: /\${env:([a-zA-Z_]+[a-zA-Z0-9_]*)}/i,
 	[VariableNames.EnvironmentVariable]: /\${env:([a-zA-Z_]+[a-zA-Z0-9_]*)}/ig,
 	[VariableNames.SingleConfigurationVariable]: /\${config:([^}]+?)}/i,
@@ -50,7 +52,7 @@ const variableRegexps = {
 	// [VariableNames.relativeFile]: new RegExp(escapeRegExp(VariableNames.relativeFile), 'ig'),
 	// [VariableNames.relativeFileDirname]: new RegExp(escapeRegExp(VariableNames.relativeFileDirname), 'ig'),
 	// [VariableNames.cwd]: new RegExp(escapeRegExp(VariableNames.cwd), 'ig'),
-};
+} satisfies Record<VariableNames, RegExp>;
 /**
  * Try to emulate variable substitution in tasks https://code.visualstudio.com/docs/editor/variables-reference
  *
@@ -99,6 +101,9 @@ export async function substituteVariables(str: string): Promise<string> {
 		if (fileWorkspaceFolder) {
 			str = str.replace(variableRegexps[VariableNames.FileWorkspaceFolder], fileWorkspaceFolder);
 		}
+	}
+	if (str.includes(VariableNames.Random)) {
+		str = str.replace(variableRegexps[VariableNames.Random], String(Math.random()).slice(2, 8));
 	}
 	if (str.includes(VariableNames.Clipboard)) {
 		str = str.replace(variableRegexps[VariableNames.Clipboard], await env.clipboard.readText());

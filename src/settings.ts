@@ -68,7 +68,11 @@ export async function toggleSetting(arg: ToggleSettingType | string): Promise<vo
 		return;
 	}
 
-	await settings.update(settingName, newValue, target === 'global' ? ConfigurationTarget.Global : ConfigurationTarget.Workspace);
+	try {
+		await settings.update(settingName, newValue, target === 'global' ? ConfigurationTarget.Global : ConfigurationTarget.Workspace);
+	} catch (e) {
+		window.showErrorMessage((e as Error).message);
+	}
 
 	if ($config.toggleSettings.showNotification) {
 		window.showInformationMessage(`"${settingName}": ${JSON.stringify(newValue)}`);
@@ -94,7 +98,11 @@ export async function incrementSetting(settingName: unknown, n: unknown): Promis
 	}
 	const newValue = Number((currentSettingValue + n).toPrecision(10));
 
-	await settings.update(settingName, newValue, true);
+	try {
+		await settings.update(settingName, newValue, true);
+	} catch (e) {
+		window.showErrorMessage((e as Error).message);
+	}
 
 	if ($config.toggleSettings.showNotification) {
 		window.showInformationMessage(`"${settingName}": ${newValue}`);
@@ -106,7 +114,11 @@ export async function incrementSetting(settingName: unknown, n: unknown): Promis
 export async function updateSetting(settingName: string, newValue: unknown, target: 'global' | 'workspace'): Promise<void> {
 	const settings = workspace.getConfiguration(undefined, null);
 	const configurationTarget = target === 'workspace' ? ConfigurationTarget.Workspace : ConfigurationTarget.Global;
-	await settings.update(settingName, newValue, configurationTarget);
+	try {
+		await settings.update(settingName, newValue, configurationTarget);
+	} catch (e) {
+		window.showErrorMessage((e as Error).message);
+	}
 }
 /**
  * Get next item in array. If there is no next - return the first item.
