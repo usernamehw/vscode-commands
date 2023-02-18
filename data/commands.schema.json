@@ -105,6 +105,12 @@
 						"properties": {
 							"snippet": {
 								"type": "string"
+							},
+							"langId": {
+								"type": "string"
+							},
+							"name": {
+								"type": "string"
 							}
 						}
 					}
