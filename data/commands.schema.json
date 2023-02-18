@@ -14,6 +14,7 @@
 				{ "$ref": "#/$defs/setEditorLanguageCommand" },
 				{ "$ref": "#/$defs/clipboardWriteCommand" },
 				{ "$ref": "#/$defs/showNotificationCommand" },
+				{ "$ref": "#/$defs/showStatusBarNotificationCommand" },
 				{ "$ref": "#/$defs/openExternalCommand" },
 				{ "$ref": "#/$defs/openCommand" },
 				{ "$ref": "#/$defs/revealFileIsOSCommand" },
@@ -822,6 +823,44 @@
 											"warning",
 											"info"
 										]
+									}
+								},
+								"additionalProperties": false
+							}
+						]
+					}
+				}
+			}
+		},
+
+		"showStatusBarNotificationCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "commands.showStatusBarNotification"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"oneOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "object",
+								"properties": {
+									"message": {
+										"type": "string"
+									},
+									"color": {
+										"type": "string",
+										"format": "color"
+									},
+									"timeout": {
+										"type": "integer",
+										"default": 5000
 									}
 								},
 								"additionalProperties": false

@@ -615,7 +615,7 @@ Example for a 2x2 grid:
     "args": {
         "message": "Read me fast",
         "color": "#f00",
-        "timeout": 1000,
+        "timeout": 5000,
     },
 },
 ```

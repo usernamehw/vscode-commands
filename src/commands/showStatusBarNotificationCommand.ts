@@ -12,7 +12,6 @@ export function showStatusBarNotificationCommand(arg: StatusBarNotification | st
 
 function showTempStatusBarMessage(notification: StatusBarNotification) {
 	const tempStatusBarMessage = window.createStatusBarItem();
-	// tempStatusBarMessage.backgroundColor = new ThemeColor('statusBarItem.errorBackground');
 	tempStatusBarMessage.text = notification.message;
 	tempStatusBarMessage.color = notification.color;
 
@@ -20,12 +19,12 @@ function showTempStatusBarMessage(notification: StatusBarNotification) {
 	setTimeout(() => {
 		tempStatusBarMessage.hide();
 		tempStatusBarMessage.dispose();
-	}, notification.timeout || 4000);
+	}, notification.timeout || 5000);
 }
 
 interface StatusBarNotification {
 	message: string;
 	color?: string;
 	timeout?: number;
-	priority?: number;// TODO: allow to specify priority, make default aligned to the right item
+	// TODO: allow to specify priority/alignment?
 }
