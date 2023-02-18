@@ -137,7 +137,8 @@
 					"markdownDescription": "Do not show this in the Tree View."
 				}
 			},
-			"$ref": "commands.schema.json#/$defs/argsTypes"
+			"$ref": "commands.schema.json#/$defs/argsTypes",
+			"additionalProperties": false
 		}
 	},
 

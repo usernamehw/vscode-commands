@@ -4,52 +4,6 @@
 	"type": "array",
 
 	"items": {
-		"$ref": "commands.schema.json#/$defs/thisExtensionArgsTypes",
-
-		"if": {
-			"properties": {
-				"command": {
-					"const": "commands.run"
-				}
-			}
-		},
-		"then": {
-			"properties": {
-				"args": {
-					"type": "array",
-					"items": {
-						"oneOf": [
-							{
-								"type": "string"
-							},
-							{
-								"type": "object",
-								"required": [
-									"command"
-								],
-								"properties": {
-									"command": {
-										"type": "string",
-										"markdownDescription": "Command id to execute."
-									},
-									"args": {
-										"markdownDescription": "Arguments for this command."
-									},
-									"delay": {
-										"type": "number",
-										"markdownDescription": "Delay (ms) BEFORE executing this command."
-									},
-									"repeat": {
-										"type": "integer",
-										"markdownDescription": "Run this command or sequence this number of times.",
-										"minimum": 1
-									}
-								}
-							}
-						]
-					}
-				}
-			}
-		}
+		"$ref": "commands.schema.json#/$defs/thisExtensionArgsTypes"
 	}
 }
