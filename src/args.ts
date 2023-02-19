@@ -88,6 +88,7 @@ export const commandArgs: Record<string, unknown> = {
 		language: 'html',
 	},
 	'workbench.extensions.installExtension': '',
+	'workbench.extensions.action.showExtensionsWithIds': [''],
 	'editor.action.codeAction': {
 		kind: '',
 		apply: 'first',
@@ -125,12 +126,12 @@ export const commandArgs: Record<string, unknown> = {
 	[CommandId.ShowStatusBarNotification]: {
 		message: '',
 		color: '',
-		timeout: 4000,
+		timeout: 5000,
 	},
 	[CommandId.Open]: {
 		target: '',
 		app: '',
-		arguments: [],
+		arguments: [''],
 	},
 };
 /**

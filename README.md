@@ -452,6 +452,18 @@ Example for a 2x2 grid:
 },
 ```
 
+### `workbench.extensions.action.showExtensionsWithIds` Show extensions in Extensions View by id
+
+```js
+"Show specific extensions": {
+    "command": "workbench.extensions.action.showExtensionsWithIds",
+    "args": [
+        "usernamehw.commands",
+        "usernamehw.errorlens",
+    ],
+},
+```
+
 ## Additional commands
 
 ### `commands.toggleSetting` Toggle settings
@@ -722,8 +734,6 @@ vscode.diff
 vscode.openWith `commands.executeCommand("vscode.openWith", uri, MyCustomEditor.viewType);`
 editor.unfold
 editor.fold
-commands.executeCommand("workbench.extensions.uninstallExtension", "EXTENSION_ID");
-commands.executeCommand("workbench.extensions.action.showExtensionsWithIds", ["alefragnani.delphi-keybindings", "alefragnani.delphi-themes"]);
 
 TODO: https://github.com/microsoft/vscode-docs/blob/main/api/references/commands.md Sync changes periodically
 -->

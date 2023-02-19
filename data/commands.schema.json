@@ -43,7 +43,8 @@
 				{ "$ref": "#/$defs/emmetWrapWithAbbreviationCommand" },
 				{ "$ref": "#/$defs/openIssueReporterCommand" },
 				{ "$ref": "#/$defs/installExtensionCommand" },
-				{ "$ref": "#/$defs/uninstallExtensionCommand" }
+				{ "$ref": "#/$defs/uninstallExtensionCommand" },
+				{ "$ref": "#/$defs/showExtensionswithIdCommand" }
 			]
 		},
 
@@ -585,6 +586,26 @@
 				"properties": {
 					"args": {
 						"type": "string"
+					}
+				}
+			}
+		},
+
+		"showExtensionswithIdCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "workbench.extensions.action.showExtensionsWithIds"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
 					}
 				}
 			}
