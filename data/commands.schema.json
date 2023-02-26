@@ -768,6 +768,9 @@
 									},
 									"waitForExit": {
 										"type": "boolean"
+									},
+									"reuse": {
+										"type": "boolean"
 									}
 								},
 								"additionalProperties": false

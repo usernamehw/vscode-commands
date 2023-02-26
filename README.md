@@ -558,7 +558,7 @@ Example for a 2x2 grid:
 },
 ```
 
-### `commands.runInTerminal` Create new terminal and send text
+### `commands.runInTerminal` Send text to new (or specified) terminal
 
 ```js
 "Terminal => watch (string argument)": {
@@ -572,6 +572,7 @@ Example for a 2x2 grid:
         "name": "watch",
         "reveal": true,
         "waitForExit": false,// will wait for terminal to exit before running next command
+        "reuse": false,// reuse first terminal with same specified name (or create new if none exist)
         // "cwd": "",
     },
 },

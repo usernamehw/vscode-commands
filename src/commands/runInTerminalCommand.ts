@@ -6,6 +6,7 @@ interface RunInTerminalArgs {
 	cwd?: string;
 	reveal?: boolean;
 	waitForExit?: boolean;
+	reuse?: boolean;
 }
 
 let onDidCloseTerminalDisposable: Disposable;
@@ -21,13 +22,15 @@ export async function runInTerminalCommand(arg: RunInTerminalArgs | string): Pro
 				window.showErrorMessage('No "text" property provided.');
 				return;
 			}
-			const newTerm = window.createTerminal({
-				name: arg.name,
-				cwd: arg.cwd,
-			});
+			const targetTerm = (arg.name && arg.reuse)
+				&& window.terminals.filter((term) => term.name === arg.name)[0]
+				|| window.createTerminal({
+					name: arg.name,
+					cwd: arg.cwd,
+				});
 			if (arg.waitForExit) {
 				onDidCloseTerminalDisposable = window.onDidCloseTerminal(closedTerminal => {
-					if (closedTerminal.name === newTerm.name) {
+					if (closedTerminal.name === targetTerm.name) {
 						resolve(true);
 						onDidCloseTerminalDisposable?.dispose();
 					}
@@ -35,9 +38,9 @@ export async function runInTerminalCommand(arg: RunInTerminalArgs | string): Pro
 			} else {
 				resolve(false);
 			}
-			newTerm.sendText(arg.text);
+			targetTerm.sendText(arg.text);
 			if (arg.reveal) {
-				newTerm.show();
+				targetTerm.show();
 			}
 		}
 	});
