@@ -570,6 +570,7 @@ Example for a 2x2 grid:
     "args": {
         "text": "npm run watch",
         "name": "watch",
+        "iconColor": "terminal.ansiCyan",// assign a color (from the current theme) to the terminal icon
         "reveal": true,
         "waitForExit": false,// will wait for terminal to exit before running next command
         "reuse": false,// reuse first terminal with same specified name (or create new if none exist)

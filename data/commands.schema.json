@@ -760,6 +760,24 @@
 									"name": {
 										"type": "string"
 									},
+									"iconColor": {
+										"type": "string",
+										"anyOf": [
+											"string",
+											{ 
+												"enum": [
+													"terminal.ansiBlack",
+													"terminal.ansiRed",
+													"terminal.ansiGreen",
+													"terminal.ansiYellow",
+													"terminal.ansiBlue",
+													"terminal.ansiMagenta",
+													"terminal.ansiCyan",
+													"terminal.ansiWhite"
+												]
+											}
+										]
+									},
 									"cwd": {
 										"type": "string"
 									},

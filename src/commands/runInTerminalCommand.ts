@@ -1,8 +1,9 @@
-import { Disposable, window } from 'vscode';
+import { Disposable, ThemeColor, window } from 'vscode';
 
 interface RunInTerminalArgs {
 	text?: string;
 	name?: string;
+	iconColor?: string;
 	cwd?: string;
 	reveal?: boolean;
 	waitForExit?: boolean;
@@ -27,6 +28,7 @@ export async function runInTerminalCommand(arg: RunInTerminalArgs | string): Pro
 				|| window.createTerminal({
 					name: arg.name,
 					cwd: arg.cwd,
+					color: arg.iconColor && new ThemeColor(arg.iconColor)
 				});
 			if (arg.waitForExit) {
 				onDidCloseTerminalDisposable = window.onDidCloseTerminal(closedTerminal => {
