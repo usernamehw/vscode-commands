@@ -1,4 +1,4 @@
-import { Disposable, ThemeColor, window } from 'vscode';
+import { Disposable, window } from 'vscode';
 import { createTerminalCommand } from './createTerminalCommand';
 import { revealTerminalCommand } from './revealTerminalCommand';
 

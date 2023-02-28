@@ -1,4 +1,4 @@
-import { tasks, Terminal, window } from 'vscode';
+import { Terminal, window } from 'vscode';
 import { createTerminalCommand } from './createTerminalCommand';
 
 interface FocusTerminalArgs {
