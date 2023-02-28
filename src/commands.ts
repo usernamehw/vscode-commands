@@ -1,6 +1,7 @@
 import { commands } from 'vscode';
 import { assignKeybindingCommand } from './commands/assignKeybindingCommand';
 import { clipboardWriteCommand } from './commands/clipboardWriteCommand';
+import { createTerminalCommand } from './commands/createTerminalCommand';
 import { deleteCommandCommand } from './commands/deleteCommandCommand';
 import { escapeCommandUriArgumentCommand } from './commands/escapeCommandUriArgumentCommand';
 import { incrementSettingCommand } from './commands/incrementSettingCommand';
@@ -14,6 +15,7 @@ import { rerunCommand } from './commands/rerunCommand';
 import { revealCommand2Command, revealCommandCommand } from './commands/revealCommandCommand';
 import { revealCommandsInSettingsGUICommand } from './commands/revealCommandsInSettingsGUICommand';
 import { revealFileInOSCommand } from './commands/revealFileInOSCommand';
+import { revealTerminalCommand } from './commands/revealTerminalCommand';
 import { runCommand } from './commands/runCommand';
 import { runInTerminalCommand } from './commands/runInTerminalCommand';
 import { selectAndRunCommand } from './commands/selectAndRunCommand';
@@ -60,6 +62,8 @@ export const enum CommandId {
 	OpenFolder = 'commands.openFolder',
 	ShowNotification = 'commands.showNotification',
 	ShowStatusBarNotification = 'commands.showStatusBarNotification',
+	CreateTerminal = 'commands.createTerminal',
+	RevealTerminal = 'commands.revealTerminal',
 	RunInTerminal = 'commands.runInTerminal',
 	StartDebugging = 'commands.startDebugging',
 	ToggleTheme = 'commands.toggleTheme',
@@ -98,6 +102,8 @@ export function registerExtensionCommands() {
 	commands.registerCommand(CommandId.OpenFolder, openFolderCommand);
 	commands.registerCommand(CommandId.ShowNotification, showNotificationCommand);
 	commands.registerCommand(CommandId.ShowStatusBarNotification, showStatusBarNotificationCommand);
+	commands.registerCommand(CommandId.CreateTerminal, createTerminalCommand);
+	commands.registerCommand(CommandId.RevealTerminal, revealTerminalCommand);
 	commands.registerCommand(CommandId.RunInTerminal, runInTerminalCommand);
 	commands.registerCommand(CommandId.StartDebugging, startDebuggingCommand);
 	commands.registerCommand(CommandId.ToggleTheme, toggleThemeCommand);

@@ -558,6 +558,47 @@ Example for a 2x2 grid:
 },
 ```
 
+### `commands.createTerminal` Create new terminal with specified options  
+
+```js
+"Create new terminal": {
+    "command": "commands.createTerminal",
+},
+"Create new terminal named 'foobar' (string argument)": {
+    "command": "commands.createTerminal",
+    "args": "foobar"
+},
+"Create new terminal named 'foobar'": {
+    "command": "commands.createTerminal",
+    "args": {
+        "name": "foobar"
+        "iconColor": "terminal.ansiCyan",// assign a color (from current theme) for the new terminal
+        // "cwd": "",
+    },
+},
+```
+
+### `commands.revealTerminal` Focus specific terminal (creating new with specified options if necessary)  
+
+```js
+"Reveal newest user-initiated terminal": {
+    "command": "commands.revealTerminal",
+},
+"Reveal newest terminal named 'foobar' (string argument)": {
+    "command": "commands.revealTerminal",
+    "args": "foobar"
+},
+"Reveal terminal named 'foobar'": {
+    "command": "commands.revealTerminal",
+    "args": {
+        "oldest": true,// reveal oldest matching terminal (or newest if omitted); create new if no match
+        "name": "foobar",// if no match, assign a name to the new terminal
+        "iconColor": "terminal.ansiCyan",// if no match, assign a color (from current theme) to the new terminal
+        // "cwd": "",
+    },
+},
+```
+
 ### `commands.runInTerminal` Send text to new (or specified) terminal
 
 ```js
@@ -570,10 +611,10 @@ Example for a 2x2 grid:
     "args": {
         "text": "npm run watch",
         "name": "watch",
-        "iconColor": "terminal.ansiCyan",// assign a color (from the current theme) to the terminal icon
         "reveal": true,
         "waitForExit": false,// will wait for terminal to exit before running next command
-        "reuse": false,// reuse first terminal with same specified name (or create new if none exist)
+        "reuse": "newest",// reuse same-named (or user-initiated) terminal; create new if no match
+        "iconColor": "terminal.ansiCyan",// if no match, assign a color (from current theme) to the new terminal
         // "cwd": "",
     },
 },

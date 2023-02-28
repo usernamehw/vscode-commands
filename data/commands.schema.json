@@ -9,6 +9,8 @@
 				{ "$ref": "#/$defs/incrementSettingCommand" },
 				{ "$ref": "#/$defs/toggleThemeCommand" },
 				{ "$ref": "#/$defs/openFolderCommand" },
+				{ "$ref": "#/$defs/createTerminalCommand" },
+				{ "$ref": "#/$defs/revealTerminalCommand" },
 				{ "$ref": "#/$defs/runInTerminalCommand" },
 				{ "$ref": "#/$defs/startDebuggingCommand" },
 				{ "$ref": "#/$defs/setEditorLanguageCommand" },
@@ -736,6 +738,111 @@
 			}
 		},
 
+		"createTerminalCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "commands.createTerminal"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"oneOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string"
+									},
+									"iconColor": {
+										"type": "string",
+										"anyOf": [
+											"string",
+											{ 
+												"enum": [
+													"terminal.ansiBlack",
+													"terminal.ansiRed",
+													"terminal.ansiGreen",
+													"terminal.ansiYellow",
+													"terminal.ansiBlue",
+													"terminal.ansiMagenta",
+													"terminal.ansiCyan",
+													"terminal.ansiWhite"
+												]
+											}
+										]
+									},
+									"cwd": {
+										"type": "string"
+									}
+								},
+								"additionalProperties": false
+							}
+						]
+					}
+				}
+			}
+		},
+
+		"revealTerminalCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "commands.revealTerminal"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"oneOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string"
+									},
+									"iconColor": {
+										"type": "string",
+										"anyOf": [
+											"string",
+											{ 
+												"enum": [
+													"terminal.ansiBlack",
+													"terminal.ansiRed",
+													"terminal.ansiGreen",
+													"terminal.ansiYellow",
+													"terminal.ansiBlue",
+													"terminal.ansiMagenta",
+													"terminal.ansiCyan",
+													"terminal.ansiWhite"
+												]
+											}
+										]
+									},
+									"cwd": {
+										"type": "string"
+									},
+									"oldest": {
+										"type": "boolean"
+									}
+								},
+								"additionalProperties": false
+							}
+						]
+					}
+				}
+			}
+		},
+
 		"runInTerminalCommand": {
 			"if": {
 				"properties": {
@@ -761,10 +868,11 @@
 										"type": "string"
 									},
 									"iconColor": {
-										"type": "string",
 										"anyOf": [
-											"string",
-											{ 
+											{
+												"type": "string"
+											},
+											{
 												"enum": [
 													"terminal.ansiBlack",
 													"terminal.ansiRed",
@@ -788,7 +896,10 @@
 										"type": "boolean"
 									},
 									"reuse": {
-										"type": "boolean"
+										"enum": [
+											"newest",
+											"oldest"
+										]
 									}
 								},
 								"additionalProperties": false
