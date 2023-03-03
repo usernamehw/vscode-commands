@@ -112,7 +112,10 @@ export const commandArgs: Record<string, unknown> = {
 		text: '',
 		name: '',
 		reveal: true,
-		cwd: '',
+	},
+	[CommandId.FocusTerminal]: {
+		name: '',
+		which: 'newest',
 	},
 	[CommandId.StartDebugging]: '',
 	[CommandId.OpenExternal]: '',
