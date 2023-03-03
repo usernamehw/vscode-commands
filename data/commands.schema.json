@@ -9,8 +9,7 @@
 				{ "$ref": "#/$defs/incrementSettingCommand" },
 				{ "$ref": "#/$defs/toggleThemeCommand" },
 				{ "$ref": "#/$defs/openFolderCommand" },
-				{ "$ref": "#/$defs/createTerminalCommand" },
-				{ "$ref": "#/$defs/revealTerminalCommand" },
+				{ "$ref": "#/$defs/focusTerminalCommand" },
 				{ "$ref": "#/$defs/runInTerminalCommand" },
 				{ "$ref": "#/$defs/startDebuggingCommand" },
 				{ "$ref": "#/$defs/setEditorLanguageCommand" },
@@ -738,11 +737,11 @@
 			}
 		},
 
-		"createTerminalCommand": {
+		"focusTerminalCommand": {
 			"if": {
 				"properties": {
 					"command": {
-						"const": "commands.createTerminal"
+						"const": "commands.focusTerminal"
 					}
 				}
 			},
@@ -751,88 +750,42 @@
 					"args": {
 						"oneOf": [
 							{
-								"type": "string"
+								"type": "string",
+								"markdownDescription": "A name to match against.  \n_If omitted, focuses newest non-task terminal._  \n_If no match, creates new terminal with given name._"
 							},
 							{
 								"type": "object",
 								"properties": {
 									"name": {
-										"type": "string"
+										"type": "string",
+										"markdownDescription": "A name to match against (or to assign if creating a new terminal)."
+									},
+									"icon": {
+										"$ref": "./codiconNames.schema.json",
+										"markdownDescription": "A codicon ID to assign to the icon (if creating a new terminal)."
 									},
 									"iconColor": {
-										"type": "string",
-										"anyOf": [
-											"string",
-											{ 
-												"enum": [
-													"terminal.ansiBlack",
-													"terminal.ansiRed",
-													"terminal.ansiGreen",
-													"terminal.ansiYellow",
-													"terminal.ansiBlue",
-													"terminal.ansiMagenta",
-													"terminal.ansiCyan",
-													"terminal.ansiWhite"
-												]
-											}
-										]
+										"$ref": "./themeColors.schema.json",
+							      "markdownDescription": "A theme color ID to assign to the icon (if creating a new terminal)."
 									},
 									"cwd": {
-										"type": "string"
-									}
-								},
-								"additionalProperties": false
-							}
-						]
-					}
-				}
-			}
-		},
-
-		"revealTerminalCommand": {
-			"if": {
-				"properties": {
-					"command": {
-						"const": "commands.revealTerminal"
-					}
-				}
-			},
-			"then": {
-				"properties": {
-					"args": {
-						"oneOf": [
-							{
-								"type": "string"
-							},
-							{
-								"type": "object",
-								"properties": {
-									"name": {
-										"type": "string"
-									},
-									"iconColor": {
 										"type": "string",
-										"anyOf": [
-											"string",
-											{ 
-												"enum": [
-													"terminal.ansiBlack",
-													"terminal.ansiRed",
-													"terminal.ansiGreen",
-													"terminal.ansiYellow",
-													"terminal.ansiBlue",
-													"terminal.ansiMagenta",
-													"terminal.ansiCyan",
-													"terminal.ansiWhite"
-												]
-											}
-										]
+										"markdownDescription": "Specify the current working directory (if creating a new terminal)."
 									},
-									"cwd": {
-										"type": "string"
-									},
-									"oldest": {
-										"type": "boolean"
+									"which": {
+										"type": "string",
+										"enum": [
+											"newest",
+											"oldest",
+											"create new"
+										],
+										"default": "newest",
+										"markdownEnumDescriptions": [
+											"Will focus newest terminal with same \"name\".  \n_If \"name\" property omitted, focuses newest non-task terminal._",
+											"Will focus oldest terminal with same \"name\".  \n_If \"name\" property omitted, focuses oldest non-task terminal._",
+											"Will create a new terminal."
+										],
+										"markdownDescription": "Specify which terminal to focus.  \n_Creates new if no match._"
 									}
 								},
 								"additionalProperties": false
@@ -856,50 +809,51 @@
 					"args": {
 						"oneOf": [
 							{
-								"type": "string"
+								"type": "string",
+								"markdownDescription": "Text to be sent to a new terminal."
 							},
 							{
 								"type": "object",
 								"properties": {
 									"text": {
-										"type": "string"
+										"type": "string",
+										"markdownDescription": "Text to be sent to the terminal."
 									},
 									"name": {
-										"type": "string"
+										"type": "string",
+										"markdownDescription": "A name to assign to the terminal.  \n_Used as a match criteria if property \"reuse\" also specified._"
+									},
+									"icon": {
+										"$ref": "./codiconNames.schema.json",
+										"markdownDescription": "A codicon ID to assign to the icon (if creating a new terminal)."
 									},
 									"iconColor": {
-										"anyOf": [
-											{
-												"type": "string"
-											},
-											{
-												"enum": [
-													"terminal.ansiBlack",
-													"terminal.ansiRed",
-													"terminal.ansiGreen",
-													"terminal.ansiYellow",
-													"terminal.ansiBlue",
-													"terminal.ansiMagenta",
-													"terminal.ansiCyan",
-													"terminal.ansiWhite"
-												]
-											}
-										]
+										"$ref": "./themeColors.schema.json",
+							      "markdownDescription": "A theme color ID to assign to the icon (if creating a new terminal)."
 									},
 									"cwd": {
-										"type": "string"
+										"type": "string",
+										"markdownDescription": "Specify the current working directory (if creating a new terminal)."
 									},
 									"reveal": {
-										"type": "boolean"
+										"type": "boolean",
+										"markdownDescription": "Whether to reveal & focus the terminal."
 									},
 									"waitForExit": {
-										"type": "boolean"
+										"type": "boolean",
+										"markdownDescription": "Will wait for the terminal to exit before running next command."
 									},
 									"reuse": {
+										"type": "string",
 										"enum": [
 											"newest",
 											"oldest"
-										]
+										],
+										"markdownEnumDescriptions": [
+											"Will reuse newest terminal with same \"name\".  \n_If \"name\" property omitted, reuses newest non-task terminal._",
+											"Will reuse oldest terminal with same \"name\".  \n_If \"name\" property omitted, reuses oldest non-task terminal._"
+										],
+										"markdownDescription": "Run \"text\" within an existing terminal.  \n_Will create new if omitted or no match._"
 									}
 								},
 								"additionalProperties": false

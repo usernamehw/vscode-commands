@@ -558,41 +558,22 @@ Example for a 2x2 grid:
 },
 ```
 
-### `commands.createTerminal` Create new terminal with specified options  
+### `commands.focusTerminal` Focus specific terminal  
 
 ```js
-"Create new terminal": {
-    "command": "commands.createTerminal",
+"Focus newest non-task terminal": {
+    "command": "commands.focusTerminal",
 },
-"Create new terminal named 'foobar' (string argument)": {
-    "command": "commands.createTerminal",
+"Focus terminal named 'foobar' (string argument)": {
+    "command": "commands.focusTerminal",
     "args": "foobar"
 },
-"Create new terminal named 'foobar'": {
-    "command": "commands.createTerminal",
+"Focus terminal named 'foobar'": {
+    "command": "commands.focusTerminal",
     "args": {
-        "name": "foobar"
-        "iconColor": "terminal.ansiCyan",// assign a color (from current theme) for the new terminal
-        // "cwd": "",
-    },
-},
-```
-
-### `commands.revealTerminal` Focus specific terminal (creating new with specified options if necessary)  
-
-```js
-"Reveal newest user-initiated terminal": {
-    "command": "commands.revealTerminal",
-},
-"Reveal newest terminal named 'foobar' (string argument)": {
-    "command": "commands.revealTerminal",
-    "args": "foobar"
-},
-"Reveal terminal named 'foobar'": {
-    "command": "commands.revealTerminal",
-    "args": {
-        "oldest": true,// reveal oldest matching terminal (or newest if omitted); create new if no match
+        "which": "newest",// focus newest matching terminal; create new if no match
         "name": "foobar",// if no match, assign a name to the new terminal
+        "icon": "zap",// if no match, assign a Codicon to the new terminal
         "iconColor": "terminal.ansiCyan",// if no match, assign a color (from current theme) to the new terminal
         // "cwd": "",
     },
@@ -613,7 +594,8 @@ Example for a 2x2 grid:
         "name": "watch",
         "reveal": true,
         "waitForExit": false,// will wait for terminal to exit before running next command
-        "reuse": "newest",// reuse same-named (or user-initiated) terminal; create new if no match
+        "reuse": "newest",// reuse newest same-named terminal; create new if no match
+        "icon": "zap",// if no match, assign a Codicon to the new terminal
         "iconColor": "terminal.ansiCyan",// if no match, assign a color (from current theme) to the new terminal
         // "cwd": "",
     },

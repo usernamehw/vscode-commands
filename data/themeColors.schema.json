@@ -1,0 +1,26 @@
+{
+  "$ref": "#/definitions/themeColors",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "themeColors": {
+      "type": "string",
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "enum": [
+            "terminal.ansiBlack",
+            "terminal.ansiRed",
+            "terminal.ansiGreen",
+            "terminal.ansiYellow",
+            "terminal.ansiBlue",
+            "terminal.ansiMagenta",
+            "terminal.ansiCyan",
+            "terminal.ansiWhite"
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,3 +1,9 @@
+import { Terminal } from "vscode";
+
+declare global {
+  var nonTaskTerminals: Set<Terminal>;
+}
+
 export interface ExtensionConfig {
 	/**
 	 * Main config. Items to show in Tree View.
