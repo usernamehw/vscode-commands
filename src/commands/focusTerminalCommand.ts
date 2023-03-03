@@ -9,7 +9,7 @@ interface FocusTerminalArgs {
 	which?: 'create new' | 'newest' | 'oldest';
 }
 
-globalThis.nonTaskTerminals ??= new Set();
+const nonTaskTerminals: Set<Terminal> = new Set();
 
 export function focusTerminalCommand(arg: FocusTerminalArgs | string, deferShow?: boolean) {
 	const allExtantTerminals = window.terminals;
