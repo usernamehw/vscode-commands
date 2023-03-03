@@ -1,6 +1,6 @@
 import { Disposable, Terminal, window } from 'vscode';
-import { focusTerminalCommand } from './focusTerminalCommand';
 import { CodiconName } from '../codiconNames';
+import { focusTerminalCommand } from './focusTerminalCommand';
 
 interface RunInTerminalArgs {
 	text?: string;
@@ -10,7 +10,7 @@ interface RunInTerminalArgs {
 	cwd?: string;
 	reveal?: boolean;
 	waitForExit?: boolean;
-	reuse?: "newest" | "oldest";
+	reuse?: 'newest' | 'oldest';
 }
 
 let onDidCloseTerminalDisposable: Disposable;

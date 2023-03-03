@@ -1,7 +1,8 @@
-import { Terminal } from "vscode";
+import { Terminal } from 'vscode';
 
 declare global {
-  var nonTaskTerminals: Set<Terminal>;
+	// eslint-disable-next-line no-var
+	var nonTaskTerminals: Set<Terminal>;
 }
 
 export interface ExtensionConfig {

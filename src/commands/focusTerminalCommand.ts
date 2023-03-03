@@ -6,7 +6,7 @@ interface FocusTerminalArgs {
 	icon?: CodiconName;
 	iconColor?: string;
 	cwd?: string;
-	which?: "newest" | "oldest" | "create new";
+	which?: 'create new' | 'newest' | 'oldest';
 }
 
 globalThis.nonTaskTerminals ??= new Set();
@@ -30,13 +30,13 @@ export function focusTerminalCommand(arg: FocusTerminalArgs | string, deferShow?
 	if (shouldAttemptReuse) {
 		if (!targetTermOpts.name) {
 			targetTermOpts.name = undefined;
-			allExtantTerminals.forEach((extantTerm) => extantTerm.creationOptions.name === undefined && nonTaskTerminals.add(extantTerm));
-			nonTaskTerminals.forEach((nonTaskTerm) => !allExtantTerminals.includes(nonTaskTerm) && nonTaskTerminals.delete(nonTaskTerm));
-			let termsToQuery = shouldMatchNewest ? [...nonTaskTerminals].reverse() : [...nonTaskTerminals];
+			allExtantTerminals.forEach(extantTerm => extantTerm.creationOptions.name === undefined && nonTaskTerminals.add(extantTerm));
+			nonTaskTerminals.forEach(nonTaskTerm => !allExtantTerminals.includes(nonTaskTerm) && nonTaskTerminals.delete(nonTaskTerm));
+			const termsToQuery = shouldMatchNewest ? [...nonTaskTerminals].reverse() : [...nonTaskTerminals];
 			targetTerm = termsToQuery[0];
 		} else {
-			let termsToQuery = shouldMatchNewest ? [...allExtantTerminals].reverse() : allExtantTerminals;
-			targetTerm = termsToQuery.find((term) => term.name === targetTermOpts.name);
+			const termsToQuery = shouldMatchNewest ? [...allExtantTerminals].reverse() : allExtantTerminals;
+			targetTerm = termsToQuery.find(term => term.name === targetTermOpts.name);
 		}
 	}
 	targetTerm ||= window.createTerminal(targetTermOpts);
