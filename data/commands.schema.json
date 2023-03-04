@@ -766,13 +766,13 @@
 									},
 									"iconColor": {
 										"$ref": "./themeColors.schema.json",
-							      "markdownDescription": "A theme color ID to assign to the icon (if creating a new terminal)."
+										"markdownDescription": "A theme color ID to assign to the icon (if creating a new terminal)."
 									},
 									"cwd": {
 										"type": "string",
 										"markdownDescription": "Specify the current working directory (if creating a new terminal)."
 									},
-									"which": {
+									"target": {
 										"type": "string",
 										"enum": [
 											"newest",
@@ -829,7 +829,7 @@
 									},
 									"iconColor": {
 										"$ref": "./themeColors.schema.json",
-							      "markdownDescription": "A theme color ID to assign to the icon (if creating a new terminal)."
+										"markdownDescription": "A theme color ID to assign to the icon (if creating a new terminal)."
 									},
 									"cwd": {
 										"type": "string",

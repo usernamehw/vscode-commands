@@ -1,7 +1,7 @@
 import { Disposable, window } from 'vscode';
 import { CodiconName } from '../codiconNames';
 import { CommandId } from '../commands';
-import { focusTerminalCommand } from './focusTerminalCommand';
+import { FocusTerminalArgs, focusTerminalCommand } from './focusTerminalCommand';
 
 interface RunInTerminalArgs {
 	text?: string;
@@ -11,7 +11,7 @@ interface RunInTerminalArgs {
 	cwd?: string;
 	reveal?: boolean;
 	waitForExit?: boolean;
-	reuse?: 'newest' | 'oldest';
+	reuse?: Exclude<FocusTerminalArgs['target'], 'create new'>;
 }
 
 export async function runInTerminalCommand(arg: RunInTerminalArgs | string): Promise<void> {
@@ -34,7 +34,7 @@ export async function runInTerminalCommand(arg: RunInTerminalArgs | string): Pro
 			} else {
 				const targetTerminal = focusTerminalCommand({
 					...arg,
-					which: arg.reuse ?? 'create new',
+					target: arg.reuse ?? 'create new',
 				}, true);
 
 				if (arg.waitForExit) {
