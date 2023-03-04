@@ -1,26 +1,57 @@
 import { window } from 'vscode';
+import { applyForTreeItem } from '../commands';
 import { $config, Constants } from '../extension';
 import { updateSetting } from '../settings';
+import { FolderTreeItem } from '../TreeViewProvider';
+import { CommandFolder } from '../types';
+import { deepCopy, forEachCommand } from '../utils';
 
 export async function newFolderCommand() {
 	await newFolder();
 }
 
-async function newFolder(): Promise<void> {
+export async function newFolder(folderTreeItem?: FolderTreeItem): Promise<void> {
 	const newFolderName = await window.showInputBox({
-		title: 'Add folder',
+		title: `New folder ${folderTreeItem ? ` inside "${folderTreeItem.getLabelName()}"` : ''}`,
 		placeHolder: 'Enter new folder name',
 	});
 	if (!newFolderName) {
 		return;
 	}
-	const newCommandsSetting = {
-		...$config.commands,
-		...{
-			[newFolderName]: {
-				nestedItems: {},
-			},
-		},
+
+	const emptyFolder: CommandFolder = {
+		nestedItems: {},
 	};
-	await updateSetting(Constants.CommandsSettingId, newCommandsSetting, 'global');
+
+	if (folderTreeItem) {
+		// New folder inside another folder
+		applyForTreeItem(async ({ treeItem, commands, settingId, configTarget }) => {
+			const commandsCopy = deepCopy(configTarget === 'workspace' ? $config.workspaceCommands : $config.commands);
+
+			forEachCommand((com, key) => {
+				if (key !== folderTreeItem.label) {
+					return;
+				}
+				if (!com.nestedItems) {
+					return;
+				}
+				// @ts-ignore
+				com.nestedItems = {
+					...com.nestedItems,
+					[newFolderName]: emptyFolder,
+				};
+			}, commandsCopy);
+
+			await updateSetting(settingId, commandsCopy, configTarget);
+		}, folderTreeItem);
+	} else {
+		// New folder in root
+		const newCommandsSetting = {
+			...$config.commands,
+			...{
+				[newFolderName]: emptyFolder,
+			},
+		};
+		await updateSetting(Constants.CommandsSettingId, newCommandsSetting, 'global');
+	}
 }

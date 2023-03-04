@@ -226,6 +226,12 @@
 				"category": "Commands"
 			},
 			{
+				"command": "commands.newFolderInFolder",
+				"title": "Add new folder inside this folder",
+				"icon": "$(new-folder)",
+				"category": "Commands"
+			},
+			{
 				"command": "commands.revealCommand",
 				"title": "Reveal in settings.json",
 				"category": "Commands"
@@ -297,6 +303,11 @@
 					"group": "4_delete"
 				},
 				{
+					"command": "commands.newFolderInFolder",
+					"when": "view == commands.tree && viewItem == folder",
+					"group": "inline"
+				},
+				{
 					"command": "commands.newCommandInFolder",
 					"when": "view == commands.tree && viewItem == folder",
 					"group": "inline"
@@ -321,6 +332,10 @@
 				},
 				{
 					"command": "commands.newCommandInFolder",
+					"when": "false"
+				},
+				{
+					"command": "commands.newFolderInFolder",
 					"when": "false"
 				},
 				{

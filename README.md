@@ -157,7 +157,7 @@ interface CommandObject {
 
     sequence?: (CommandObject | string)[];// execute multipe commands
 
-    nestedItems: {// Make into folder: Group items (1 lvl nesting max)
+    nestedItems: {// Transform this into folder: Group items
         [key: string]: CommandObject
     }
 

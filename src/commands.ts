@@ -7,6 +7,7 @@ import { focusTerminalCommand } from './commands/focusTerminalCommand';
 import { incrementSettingCommand } from './commands/incrementSettingCommand';
 import { newCommandCommand, newCommandInFolderCommand } from './commands/newCommandCommand';
 import { newFolderCommand } from './commands/newFolderCommand';
+import { newFolderInFolderCommand } from './commands/newFolderInFolderCommand';
 import { openAsQuickPickCommand } from './commands/openAsQuickPickCommand';
 import { openCommand } from './commands/openCommand';
 import { openExternalCommand } from './commands/openExternalCommand';
@@ -52,6 +53,7 @@ export const enum CommandId {
 	OpenAsQuickPick = 'commands.openAsQuickPick',
 	AssignKeybinding = 'commands.assignKeybinding',
 	ToggleStatusBar = 'commands.addToStatusBar',
+	NewFolderInFolder = 'commands.newFolderInFolder',
 	NewCommandInFolder = 'commands.newCommandInFolder',
 	RevealCommandsInSettignsGUI = 'commands.revealCommandsInSettignsGUI',
 	EscapeCommandUriArgument = 'commands.escapeCommandUriArgument',
@@ -88,6 +90,7 @@ export function registerExtensionCommands() {
 	commands.registerCommand(CommandId.RevealCommandsInSettignsGUI, revealCommandsInSettingsGUICommand);
 	commands.registerCommand(CommandId.OpenAsQuickPick, openAsQuickPickCommand);
 	commands.registerCommand(CommandId.NewCommand, newCommandCommand);
+	commands.registerCommand(CommandId.NewFolderInFolder, newFolderInFolderCommand);
 	commands.registerCommand(CommandId.NewCommandInFolder, newCommandInFolderCommand);
 	commands.registerCommand(CommandId.NewFolder, newFolderCommand);
 	commands.registerCommand(CommandId.DeleteCommand, deleteCommandCommand);
@@ -112,11 +115,14 @@ export function registerExtensionCommands() {
 	commands.registerCommand(CommandId.Open, openCommand);
 }
 
+export function isWorkspaceTreeItem(treeItem: FolderTreeItem | RunCommandTreeItem): boolean {
+	return treeItem instanceof RunCommandTreeItem && isWorkspaceCommandItem(treeItem.runnable) ||
+		treeItem instanceof FolderTreeItem && isWorkspaceCommandItem(treeItem.folder);
+}
+
 export function applyForTreeItem(
 	action: (o: { treeItem: FolderTreeItem | RunCommandTreeItem; commands: TopLevelCommands; settingId: string; configTarget: 'global' | 'workspace' })=> any,
 	treeItem: FolderTreeItem | RunCommandTreeItem) {
-	const isWorkspaceTreeItem = (treeItem: FolderTreeItem | RunCommandTreeItem) => treeItem instanceof RunCommandTreeItem && isWorkspaceCommandItem(treeItem.runnable) ||
-			treeItem instanceof FolderTreeItem && isWorkspaceCommandItem(treeItem.folder);
 	if (isWorkspaceTreeItem(treeItem)) {
 		return action({ treeItem, commands: $config.workspaceCommands, settingId: Constants.WorkspaceCommandsSettingId, configTarget: 'workspace' });
 	} else {
