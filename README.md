@@ -558,7 +558,29 @@ Example for a 2x2 grid:
 },
 ```
 
-### `commands.runInTerminal` Create new terminal and send text
+### `commands.focusTerminal` Focus specific terminal
+
+```js
+"Focus newest non-task terminal": {
+    "command": "commands.focusTerminal",
+},
+"Focus terminal named 'foobar' (string argument)": {
+    "command": "commands.focusTerminal",
+    "args": "foobar"
+},
+"Focus terminal named 'foobar'": {
+    "command": "commands.focusTerminal",
+    "args": {
+        "target": "newest",// focus newest matching terminal; create new if no match
+        "name": "foobar",// if no match, assign a name to the new terminal
+        "icon": "zap",// if no match, assign a Codicon to the new terminal
+        "iconColor": "terminal.ansiCyan",// if no match, assign a color (from current theme) to the new terminal
+        // "cwd": "",
+    },
+},
+```
+
+### `commands.runInTerminal` Send text to new (or specified) terminal
 
 ```js
 "Terminal => watch (string argument)": {
@@ -572,6 +594,9 @@ Example for a 2x2 grid:
         "name": "watch",
         "reveal": true,
         "waitForExit": false,// will wait for terminal to exit before running next command
+        "reuse": "newest",// reuse newest same-named terminal; create new if no match
+        "icon": "zap",// if no match, assign a Codicon to the new terminal
+        "iconColor": "terminal.ansiCyan",// if no match, assign a color (from current theme) to the new terminal
         // "cwd": "",
     },
 },

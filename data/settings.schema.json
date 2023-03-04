@@ -110,7 +110,8 @@
 				},
 				"iconColor": {
 					"type": "string",
-					"markdownDescription": "Use existing colors for icon [Color id list](https://code.visualstudio.com/api/references/theme-color)"
+					"markdownDescription": "Use existing colors for icon [Color id list](https://code.visualstudio.com/api/references/theme-color)",
+					"$ref": "themeColors.schema.json#/definitions/themeColors"
 				},
 				"statusBar": {
 					"$ref": "#/$defs/statusBar"

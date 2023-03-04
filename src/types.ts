@@ -1,3 +1,5 @@
+
+
 export interface ExtensionConfig {
 	/**
 	 * Main config. Items to show in Tree View.
