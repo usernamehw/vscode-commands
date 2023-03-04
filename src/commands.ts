@@ -22,6 +22,7 @@ import { setEditorLanguageCommand } from './commands/setEditorLanguageCommand';
 import { showNotificationCommand } from './commands/showNotificationCommand';
 import { showStatusBarNotificationCommand } from './commands/showStatusBarNotificationCommand';
 import { startDebuggingCommand } from './commands/startDebuggingCommand';
+import { suggestCodiconsCommand } from './commands/suggestCodiconsCommand';
 import { suggestCommandsCommand } from './commands/suggestCommandsCommand';
 import { suggestVariableCommand } from './commands/suggestVariableCommand';
 import { toggleSettingCommand } from './commands/toggleSettingCommand';
@@ -44,6 +45,7 @@ export const enum CommandId {
 	NewFolder = 'commands.newFolder',
 	DeleteCommand = 'commands.deleteCommand',
 	SuggestCommands = 'commands.suggestCommands',
+	SuggestCodicons = 'commands.suggestCodicons',
 	SuggestVariables = 'commands.suggestVariables',
 	RevealCommand = 'commands.revealCommand',
 	RevealCommand2 = 'commands.revealCommand2',
@@ -91,6 +93,7 @@ export function registerExtensionCommands() {
 	commands.registerCommand(CommandId.DeleteCommand, deleteCommandCommand);
 	commands.registerTextEditorCommand(CommandId.SuggestCommands, suggestCommandsCommand);
 	commands.registerTextEditorCommand(CommandId.SuggestVariables, suggestVariableCommand);
+	commands.registerTextEditorCommand(CommandId.SuggestCodicons, suggestCodiconsCommand);
 	commands.registerTextEditorCommand(CommandId.EscapeCommandUriArgument, escapeCommandUriArgumentCommand);
 	// ──── Additional Commands ───────────────────────────────────
 	commands.registerCommand(CommandId.ToggleSetting, toggleSettingCommand);

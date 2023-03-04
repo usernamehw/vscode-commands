@@ -106,7 +106,7 @@
 
 
 <!-- COMMANDS_START -->
-## Commands (7)
+## Commands (8)
 
 |Command|Description|
 |-|-|
@@ -114,6 +114,7 @@
 |commands.selectAndRun|Commands: Select and run command|
 |commands.rerun|Commands: Rerun last command|
 |commands.suggestCommands|Commands: Suggest (autocomplete) commands|
+|commands.suggestCodicons|Commands: Suggest (autocomplete) codicons|
 |commands.suggestVariables|Commands: Suggest variables that are supported by this extension's variable substitutions, e.g: `${workspaceFolderBasename}`.|
 |commands.newCommand|Commands: Add new command to the list|
 |commands.escapeCommandUriArgument|Commands: Escape command uri argument|
@@ -716,13 +717,9 @@ If the only purpose for a command sequence is to run it from a keybinding, then 
 
 ## Codicons
 
-To quickly find an icon (for Tree View or Status Bar) there's an extension that can show all codicons (with preview) and insert picked id into the editor:
+To quickly find an icon id (for Tree View / Status Bar / terminal) run this command: `commands.suggestCodicons` **Suggest (autocomplete) codicons**.
 
-[Codicon Names](https://marketplace.visualstudio.com/items?itemName=usernamehw.codicon-names)
-
-![Codicon Names](https://github.com/usernamehw/vscode-codicon-names/raw/HEAD/img/demo.png)
-
-There's also a [vscode-codicons](https://microsoft.github.io/vscode-codicons/dist/codicon.html) web page to browse codicons.
+There's also a [vscode-codicons](https://microsoft.github.io/vscode-codicons/dist/codicon.html) web page.
 
 ## Using your own color for tree view icon
 

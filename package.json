@@ -191,6 +191,11 @@
 				"category": "Commands"
 			},
 			{
+				"command": "commands.suggestCodicons",
+				"title": "Suggest (autocomplete) codicons",
+				"category": "Commands"
+			},
+			{
 				"command": "commands.suggestVariables",
 				"title": "Suggest (autocomplete) variables",
 				"description": "Suggest variables that are supported by this extension's variable substitutions, e.g: `${workspaceFolderBasename}`.",
