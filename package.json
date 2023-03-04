@@ -42,7 +42,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"*",
+		"onStartupFinished",
 		"onCommand:commands.run",
 		"onCommand:commands.selectAndRun",
 		"onCommand:commands.openAsQuickPick",
