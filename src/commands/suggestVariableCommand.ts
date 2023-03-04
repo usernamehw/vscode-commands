@@ -17,18 +17,22 @@ export async function suggestVariableCommand(editor: TextEditor) {
 		[VariableNames.SelectedText, 'Current selected text in the active file'],
 		[VariableNames.Clipboard, 'Current clipboard value'],
 		[VariableNames.Random, '6 random Base-10 digits'],
+		[VariableNames.RandomHex, '6 random Base-16 digits'],
 		['${env:}', 'Environment variable value'],
 		['${config:}', 'VSCode Configuration value'],
 	];
+
 	const picked = await window.showQuickPick(variables.map(variable => ({
 		label: variable[0],
 		detail: variable[1],
 	})), {
 		matchOnDetail: true,
 	});
+
 	if (!picked) {
 		return;
 	}
+
 	editor.edit(builder => {
 		builder.insert(editor.selection.active, picked.label);
 	});
