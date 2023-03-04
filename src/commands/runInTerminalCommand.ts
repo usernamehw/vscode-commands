@@ -1,5 +1,6 @@
-import { Disposable, Terminal, window } from 'vscode';
+import { Disposable, window } from 'vscode';
 import { CodiconName } from '../codiconNames';
+import { CommandId } from '../commands';
 import { focusTerminalCommand } from './focusTerminalCommand';
 
 interface RunInTerminalArgs {
@@ -13,38 +14,44 @@ interface RunInTerminalArgs {
 	reuse?: 'newest' | 'oldest';
 }
 
-let onDidCloseTerminalDisposable: Disposable;
+export async function runInTerminalCommand(arg: RunInTerminalArgs | string): Promise<void> {
+	let onDidCloseTerminalDisposable: Disposable;
 
-export async function runInTerminalCommand(arg: RunInTerminalArgs | string): Promise<unknown> {
-	let targetTerm: Terminal;
 	return new Promise((resolve, reject) => {
-		if (!arg) {
-			window.showErrorMessage('No arg provided.');
+		if (arg === undefined) {
+			window.showErrorMessage(`No "args" property provided for "${CommandId.RunInTerminal}" command.`);
 			return;
 		}
+
 		if (typeof arg === 'string') {
 			const newTerm = window.createTerminal();
 			newTerm.sendText(arg);
 			newTerm.show();
 		} else {
 			if (!arg.text) {
-				window.showErrorMessage('No "text" property provided.');
+				window.showErrorMessage(`No "text" property provided in "args" of "${CommandId.RunInTerminal}" command.`);
 				return;
 			} else {
-				targetTerm = focusTerminalCommand({ ...arg, which: arg.reuse ?? 'create new' }, true);
+				const targetTerminal = focusTerminalCommand({
+					...arg,
+					which: arg.reuse ?? 'create new',
+				}, true);
+
 				if (arg.waitForExit) {
 					onDidCloseTerminalDisposable = window.onDidCloseTerminal(closedTerminal => {
-						if (closedTerminal.name === targetTerm.name) {
-							resolve(true);
+						if (closedTerminal.name === targetTerminal.name) {
+							resolve();
 							onDidCloseTerminalDisposable?.dispose();
 						}
 					});
 				} else {
-					resolve(false);
+					resolve();
 				}
-				targetTerm.sendText(arg.text);
+
+				targetTerminal.sendText(arg.text);
+
 				if (arg.reveal) {
-					targetTerm.show();
+					targetTerminal.show();
 				}
 			}
 		}

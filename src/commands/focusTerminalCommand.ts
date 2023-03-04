@@ -1,5 +1,5 @@
 import { Terminal, TerminalOptions, ThemeColor, ThemeIcon, window } from 'vscode';
-import { CodiconName, codiconNames } from '../codiconNames';
+import { CodiconName } from '../codiconNames';
 
 interface FocusTerminalArgs {
 	name?: string;
@@ -9,40 +9,49 @@ interface FocusTerminalArgs {
 	which?: 'create new' | 'newest' | 'oldest';
 }
 
+/**
+ * Ideally, this would be terminals that are not running tasks?
+ */
 const nonTaskTerminals: Set<Terminal> = new Set();
 
-export function focusTerminalCommand(arg: FocusTerminalArgs | string, deferShow?: boolean) {
-	const allExtantTerminals = window.terminals;
-	const targetTermOpts: TerminalOptions = {};
-	let targetTerm: Terminal | undefined;
+export function focusTerminalCommand(arg: FocusTerminalArgs | string, deferShow?: boolean): Terminal {
+	const terminals = window.terminals;
+	const targetTerminalOptions: TerminalOptions = {};
+	let targetTerminal: Terminal | undefined;
 	let shouldAttemptReuse = true;
 	let shouldMatchNewest = true;
+
 	if (!arg || typeof arg === 'string') {
-		targetTermOpts.name = arg;
+		targetTerminalOptions.name = arg;
 	} else if (arg) {
 		shouldAttemptReuse = arg.which !== 'create new';
 		shouldMatchNewest = !arg.which || arg.which !== 'oldest';
-		targetTermOpts.name = arg.name;
-		targetTermOpts.cwd = arg.cwd;
-		targetTermOpts.color = arg.iconColor && new ThemeColor(arg.iconColor);
-		targetTermOpts.iconPath = (arg.icon && codiconNames.includes(arg.icon) && new ThemeIcon(arg.icon)) || undefined;
+		targetTerminalOptions.name = arg.name;
+		targetTerminalOptions.cwd = arg.cwd;
+		targetTerminalOptions.color = arg.iconColor && new ThemeColor(arg.iconColor);
+		targetTerminalOptions.iconPath = arg.icon && new ThemeIcon(arg.icon);
 	}
+
 	if (shouldAttemptReuse) {
-		if (!targetTermOpts.name) {
-			targetTermOpts.name = undefined;
-			allExtantTerminals.forEach(extantTerm => extantTerm.creationOptions.name === undefined && nonTaskTerminals.add(extantTerm));
-			nonTaskTerminals.forEach(nonTaskTerm => !allExtantTerminals.includes(nonTaskTerm) && nonTaskTerminals.delete(nonTaskTerm));
+		if (!targetTerminalOptions.name) {
+			targetTerminalOptions.name = undefined;
+			terminals.forEach(term => term.creationOptions.name === undefined && nonTaskTerminals.add(term));
+			nonTaskTerminals.forEach(nonTaskTerm => !terminals.includes(nonTaskTerm) && nonTaskTerminals.delete(nonTaskTerm));
 			const termsToQuery = shouldMatchNewest ? [...nonTaskTerminals].reverse() : [...nonTaskTerminals];
-			targetTerm = termsToQuery[0];
+			targetTerminal = termsToQuery[0];
 		} else {
-			const termsToQuery = shouldMatchNewest ? [...allExtantTerminals].reverse() : allExtantTerminals;
-			targetTerm = termsToQuery.find(term => term.name === targetTermOpts.name);
+			const termsToQuery = shouldMatchNewest ? [...terminals].reverse() : terminals;
+			targetTerminal = termsToQuery.find(term => term.name === targetTerminalOptions.name);
 		}
 	}
-	targetTerm ||= window.createTerminal(targetTermOpts);
-	nonTaskTerminals.add(targetTerm);
+
+	targetTerminal ||= window.createTerminal(targetTerminalOptions);
+
+	nonTaskTerminals.add(targetTerminal);
+
 	if (!deferShow) {
-		targetTerm.show();
+		targetTerminal.show();
 	}
-	return targetTerm;
+
+	return targetTerminal;
 }
