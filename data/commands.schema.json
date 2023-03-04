@@ -1,51 +1,51 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema",
 
-	"$defs": {
+	"definitions": {
 
 		"thisExtensionArgsTypes": {
 			"allOf": [
-				{ "$ref": "#/$defs/toggleSettingCommand" },
-				{ "$ref": "#/$defs/incrementSettingCommand" },
-				{ "$ref": "#/$defs/toggleThemeCommand" },
-				{ "$ref": "#/$defs/openFolderCommand" },
-				{ "$ref": "#/$defs/focusTerminalCommand" },
-				{ "$ref": "#/$defs/runInTerminalCommand" },
-				{ "$ref": "#/$defs/startDebuggingCommand" },
-				{ "$ref": "#/$defs/setEditorLanguageCommand" },
-				{ "$ref": "#/$defs/clipboardWriteCommand" },
-				{ "$ref": "#/$defs/showNotificationCommand" },
-				{ "$ref": "#/$defs/showStatusBarNotificationCommand" },
-				{ "$ref": "#/$defs/openExternalCommand" },
-				{ "$ref": "#/$defs/openCommand" },
-				{ "$ref": "#/$defs/revealFileIsOSCommand" },
-				{ "$ref": "#/$defs/runCommand" }
+				{ "$ref": "#/definitions/toggleSettingCommand" },
+				{ "$ref": "#/definitions/incrementSettingCommand" },
+				{ "$ref": "#/definitions/toggleThemeCommand" },
+				{ "$ref": "#/definitions/openFolderCommand" },
+				{ "$ref": "#/definitions/focusTerminalCommand" },
+				{ "$ref": "#/definitions/runInTerminalCommand" },
+				{ "$ref": "#/definitions/startDebuggingCommand" },
+				{ "$ref": "#/definitions/setEditorLanguageCommand" },
+				{ "$ref": "#/definitions/clipboardWriteCommand" },
+				{ "$ref": "#/definitions/showNotificationCommand" },
+				{ "$ref": "#/definitions/showStatusBarNotificationCommand" },
+				{ "$ref": "#/definitions/openExternalCommand" },
+				{ "$ref": "#/definitions/openCommand" },
+				{ "$ref": "#/definitions/revealFileIsOSCommand" },
+				{ "$ref": "#/definitions/runCommand" }
 			]
 		},
 
 		"argsTypes": {
 			"allOf": [
-				{ "$ref": "#/$defs/thisExtensionArgsTypes" },
-				{ "$ref": "#/$defs/typeCommand" },
-				{ "$ref": "#/$defs/runTaskCommand" },
-				{ "$ref": "#/$defs/insertSnippetCommand" },
-				{ "$ref": "#/$defs/sendSequenceCommand" },
-				{ "$ref": "#/$defs/quickOpenCommand" },
-				{ "$ref": "#/$defs/openSettingsCommand" },
-				{ "$ref": "#/$defs/openGlobalKeybindingsCommand" },
-				{ "$ref": "#/$defs/extensionsSearchCommand" },
-				{ "$ref": "#/$defs/codeActionCommand" },
-				{ "$ref": "#/$defs/findInFilesCommand" },
-				{ "$ref": "#/$defs/findWithArgsCommand" },
-				{ "$ref": "#/$defs/searchOpenNewEditorCommand" },
-				{ "$ref": "#/$defs/cursorMoveCommand" },
-				{ "$ref": "#/$defs/editorScrollCommand" },
-				{ "$ref": "#/$defs/moveActiveEditorCommand" },
-				{ "$ref": "#/$defs/emmetWrapWithAbbreviationCommand" },
-				{ "$ref": "#/$defs/openIssueReporterCommand" },
-				{ "$ref": "#/$defs/installExtensionCommand" },
-				{ "$ref": "#/$defs/uninstallExtensionCommand" },
-				{ "$ref": "#/$defs/showExtensionswithIdCommand" }
+				{ "$ref": "#/definitions/thisExtensionArgsTypes" },
+				{ "$ref": "#/definitions/typeCommand" },
+				{ "$ref": "#/definitions/runTaskCommand" },
+				{ "$ref": "#/definitions/insertSnippetCommand" },
+				{ "$ref": "#/definitions/sendSequenceCommand" },
+				{ "$ref": "#/definitions/quickOpenCommand" },
+				{ "$ref": "#/definitions/openSettingsCommand" },
+				{ "$ref": "#/definitions/openGlobalKeybindingsCommand" },
+				{ "$ref": "#/definitions/extensionsSearchCommand" },
+				{ "$ref": "#/definitions/codeActionCommand" },
+				{ "$ref": "#/definitions/findInFilesCommand" },
+				{ "$ref": "#/definitions/findWithArgsCommand" },
+				{ "$ref": "#/definitions/searchOpenNewEditorCommand" },
+				{ "$ref": "#/definitions/cursorMoveCommand" },
+				{ "$ref": "#/definitions/editorScrollCommand" },
+				{ "$ref": "#/definitions/moveActiveEditorCommand" },
+				{ "$ref": "#/definitions/emmetWrapWithAbbreviationCommand" },
+				{ "$ref": "#/definitions/openIssueReporterCommand" },
+				{ "$ref": "#/definitions/installExtensionCommand" },
+				{ "$ref": "#/definitions/uninstallExtensionCommand" },
+				{ "$ref": "#/definitions/showExtensionswithIdCommand" }
 			]
 		},
 

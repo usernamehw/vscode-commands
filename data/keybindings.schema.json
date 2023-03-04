@@ -4,6 +4,6 @@
 	"type": "array",
 
 	"items": {
-		"$ref": "commands.schema.json#/$defs/thisExtensionArgsTypes"
+		"$ref": "commands.schema.json#/definitions/thisExtensionArgsTypes"
 	}
 }

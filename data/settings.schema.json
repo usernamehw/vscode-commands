@@ -1,7 +1,7 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema",
 
-	"$defs": {
+	"definitions": {
 		"commandItem": {
 			"oneOf": [
 				{
@@ -9,7 +9,7 @@
 					"markdownDescription": "Run this command (no arguments)."
 				},
 				{
-					"$ref": "#/$defs/commandObject"
+					"$ref": "#/definitions/commandObject"
 				}
 			]
 		},
@@ -114,13 +114,13 @@
 					"$ref": "themeColors.schema.json#/definitions/themeColors"
 				},
 				"statusBar": {
-					"$ref": "#/$defs/statusBar"
+					"$ref": "#/definitions/statusBar"
 				},
 				"sequence": {
 					"markdownDescription": "Execute multiple commands.",
 					"type": "array",
 					"items": {
-						"$ref": "#/$defs/commandItem"
+						"$ref": "#/definitions/commandItem"
 					}
 				},
 				"nestedItems": {
@@ -128,7 +128,7 @@
 					"markdownDescription": "Makes this item a folder. Nested items render inside it.",
 					"patternProperties": {
 						"^.*$": {
-							"$ref": "#/$defs/commandObject"
+							"$ref": "#/definitions/commandObject"
 						}
 					},
 					"default": {}
@@ -138,7 +138,7 @@
 					"markdownDescription": "Do not show this in the Tree View."
 				}
 			},
-			"$ref": "commands.schema.json#/$defs/argsTypes",
+			"$ref": "commands.schema.json#/definitions/argsTypes",
 			"additionalProperties": false
 		}
 	},
@@ -149,7 +149,7 @@
 			"type": "object",
 			"patternProperties": {
 				"^.*$": {
-					"$ref": "#/$defs/commandItem"
+					"$ref": "#/definitions/commandItem"
 				}
 			},
 			"default": {}
@@ -158,7 +158,7 @@
 			"type": "object",
 			"patternProperties": {
 				"^.*$": {
-					"$ref": "#/$defs/commandObject"
+					"$ref": "#/definitions/commandObject"
 				}
 			},
 			"default": {}
