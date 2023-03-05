@@ -15,7 +15,7 @@
 		},
 		"statusBar": {
 			"type": "object",
-			"markdownDescription": "Show this command in the [Status Bar](https://code.visualstudio.com/docs/getstarted/userinterface).",
+			"markdownDescription": "Show this command in [Status Bar](https://code.visualstudio.com/docs/getstarted/userinterface).",
 			"properties": {
 				"alignment": {
 					"markdownDescription": "Represents the alignment of status bar items.",
@@ -85,7 +85,7 @@
 				},
 				"when": {
 					"type": "string",
-					"markdownDescription": "a `when` expression of when the command will be avaliable at the command palette. See [VSCode API](https://code.visualstudio.com/api/references/when-clause-contexts)."
+					"markdownDescription": "a `when` expression of when the command will be avaliable at the command palette. (When `#commands.populateCommandPalette#` setting enabled.) See [VSCode API](https://code.visualstudio.com/api/references/when-clause-contexts)."
 				},
 				"delay": {
 					"type": "number",
@@ -98,11 +98,12 @@
 				},
 				"icon": {
 					"type": "string",
-					"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)"
+					"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)",
+					"$ref": "./codiconNames.schema.json"
 				},
 				"markdownTooltip": {
 					"type": "string",
-					"markdownDescription": "Add custom markdown text to hover tooltip."
+					"markdownDescription": "Add custom markdown text to Tree View hover tooltip."
 				},
 				"disableTooltip": {
 					"type": "boolean",
@@ -125,7 +126,7 @@
 				},
 				"nestedItems": {
 					"type": "object",
-					"markdownDescription": "Makes this item a folder. Nested items render inside it.",
+					"markdownDescription": "Makes this item a folder.",
 					"patternProperties": {
 						"^.*$": {
 							"$ref": "#/definitions/commandObject"
