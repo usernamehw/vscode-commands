@@ -367,8 +367,7 @@
 		"vscode:prepublish": "webpack --mode production --color && npm run package-web",
 		"watch": "webpack --mode development --watch --stats minimal",
 		"watch-web": "webpack --mode development --watch --config web.webpack.config.js",
-		"package-web": "webpack --mode production --devtool hidden-source-map --config web.webpack.config.js",
-		"generateJsonSchema": "tsc scripts\\generateJsonSchema.ts && node scripts\\generateJsonSchema.js"
+		"package-web": "webpack --mode production --devtool hidden-source-map --config web.webpack.config.js"
 	},
 	"devDependencies": {
 		"@soda/friendly-errors-webpack-plugin": "^1.8.1",
