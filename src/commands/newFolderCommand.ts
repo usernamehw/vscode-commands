@@ -52,6 +52,6 @@ export async function newFolder(folderTreeItem?: FolderTreeItem): Promise<void> 
 				[newFolderName]: emptyFolder,
 			},
 		};
-		await updateSetting(Constants.CommandsSettingId, newCommandsSetting, 'global');
+		await updateSetting(Constants.ExtensionMainSettingId, newCommandsSetting, 'global');
 	}
 }

@@ -86,7 +86,7 @@ export function registerJsonSchemaCompletion(context: ExtensionContext): void {
  */
 function isCommandIdAutocomplete(comparePath: (number | string)[]): boolean {
 	return (
-		comparePath[0] === Constants.CommandsSettingId ||
+		comparePath[0] === Constants.ExtensionMainSettingId ||
 		comparePath[0] === Constants.WorkspaceCommandsSettingId
 	) && (
 		comparePath.slice(-1)?.[0] === 'command' ||

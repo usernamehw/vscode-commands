@@ -126,6 +126,6 @@ export function applyForTreeItem(
 	if (isWorkspaceTreeItem(treeItem)) {
 		return action({ treeItem, commands: $config.workspaceCommands, settingId: Constants.WorkspaceCommandsSettingId, configTarget: 'workspace' });
 	} else {
-		return action({ treeItem, commands: $config.commands, settingId: Constants.CommandsSettingId, configTarget: 'global' });
+		return action({ treeItem, commands: $config.commands, settingId: Constants.ExtensionMainSettingId, configTarget: 'global' });
 	}
 }

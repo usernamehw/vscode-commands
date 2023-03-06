@@ -60,7 +60,7 @@ async function addNewCommand(folderTreeItem?: FolderTreeItem) {
 				[newCommandKey]: newCommand,
 			},
 		};
-		await updateSetting(Constants.CommandsSettingId, newCommandsSetting, 'global');
+		await updateSetting(Constants.ExtensionMainSettingId, newCommandsSetting, 'global');
 		await openSettingsJSON('global');
 		await goToSymbol(window.activeTextEditor, newCommandKey);
 	}

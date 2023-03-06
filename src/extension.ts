@@ -13,8 +13,8 @@ import { addWorkspaceIdToCommands, getWorkspaceId, setWorkspaceIdToContext } fro
 
 export const enum Constants {
 	ExtensionId = 'usernamehw.commands',
-	ExtensionName = 'commands',
-	CommandsSettingId = 'commands.commands',
+	ExtensionSettingsPrefix = 'commands',
+	ExtensionMainSettingId = 'commands.commands',
 	WorkspaceCommandsSettingId = 'commands.workspaceCommands',
 
 	CommandPaletteWasPopulatedStorageKey = 'was_populated',
@@ -41,7 +41,7 @@ export async function activate(context: ExtensionContext) {
 	updateConfig();
 
 	$state.commandsTreeViewProvider = new CommandsTreeViewProvider({});
-	$state.commandsTreeView = window.createTreeView(`${Constants.ExtensionName}.tree`, {
+	$state.commandsTreeView = window.createTreeView(`${Constants.ExtensionSettingsPrefix}.tree`, {
 		treeDataProvider: $state.commandsTreeViewProvider,
 		showCollapseAll: true,
 	});
@@ -57,12 +57,12 @@ export async function activate(context: ExtensionContext) {
 	});
 
 	function updateConfig() {
-		$config = workspace.getConfiguration(Constants.ExtensionName) as any as ExtensionConfig;
+		$config = workspace.getConfiguration(Constants.ExtensionSettingsPrefix) as any as ExtensionConfig;
 	}
 
 	context.subscriptions.push($state.commandsTreeView);
 	context.subscriptions.push(workspace.onDidChangeConfiguration(e => {
-		if (!e.affectsConfiguration(Constants.ExtensionName)) {
+		if (!e.affectsConfiguration(Constants.ExtensionSettingsPrefix)) {
 			return;
 		}
 		updateConfig();
@@ -96,7 +96,7 @@ async function updateEverything(context: ExtensionContext) {
  */
 export function getAllCommands(): TopLevelCommands {
 	const workspaceId = getWorkspaceId($state.context);
-	const workspaceCommands = workspace.getConfiguration(Constants.ExtensionName).inspect('workspaceCommands')?.workspaceValue as ExtensionConfig['workspaceCommands'] | undefined;
+	const workspaceCommands = workspace.getConfiguration(Constants.ExtensionSettingsPrefix).inspect('workspaceCommands')?.workspaceValue as ExtensionConfig['workspaceCommands'] | undefined;
 	if (workspaceId && workspaceCommands) {
 		return {
 			...$config.commands,
