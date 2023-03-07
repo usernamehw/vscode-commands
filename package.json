@@ -9,8 +9,8 @@
 		"vscode": "^1.55.0"
 	},
 	"extensionKind": [
-		"ui",
-		"workspace"
+		"workspace",
+		"ui"
 	],
 	"repository": {
 		"type": "git",
