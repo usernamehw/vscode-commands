@@ -2,7 +2,7 @@
 	"name": "commands",
 	"displayName": "Commands",
 	"description": "Run one/multiple commands with arguments from Tree View / Status Bar / Quick Pick.",
-	"version": "1.8.0",
+	"version": "1.9.0",
 	"publisher": "usernamehw",
 	"license": "MIT",
 	"engines": {
