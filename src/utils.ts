@@ -37,20 +37,18 @@ export async function openSettingsJSON(target: 'global' | 'workspace'): Promise<
 	await commands.executeCommand(target === 'global' ? 'workbench.action.openSettingsJson' : 'workbench.action.openWorkspaceSettingsFile');
 }
 /**
- * Walk over all items (only 1 lvl nesting) from
- * `commands.commands` setting and execute callback for each item/command.
+ * Walk over all items (commands and folders) from the main setting `commands.commands`/`commands.workspaceCommands`
+ * and execute callback for each item.
  */
 export function forEachCommand(
-	callback: (item: TopLevelCommands['anykey'], key: string, parentElement: TopLevelCommands)=> void,
+	callback: (item: TopLevelCommands[string], key: string, parentElement: TopLevelCommands)=> void,
 	items: TopLevelCommands,
 ): void {
 	for (const [key, item] of Object.entries(items)) {
 		callback(item, key, items);
 
 		if (item.nestedItems) {
-			for (const [nestedKey, nestedItem] of Object.entries(item.nestedItems) || []) {
-				callback(nestedItem, nestedKey, item.nestedItems);
-			}
+			forEachCommand(callback, item.nestedItems);
 		}
 	}
 }
@@ -145,7 +143,9 @@ export function uint8ArrayToString(arr: Uint8Array): string {
 	// @ts-ignore
 	return new TextDecoder().decode(arr);
 }
-
+/**
+ * Return `true` when on the web. And also when developing extension.
+ */
 export function isOnWeb(): boolean {
 	return env.uiKind === UIKind.Web || $state.context.extensionMode === ExtensionMode.Development;
 }
