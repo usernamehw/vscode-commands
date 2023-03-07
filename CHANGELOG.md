@@ -1,3 +1,12 @@
+## 1.9.0 `07 Mar 2023`
+
+- ✨ Add `New folder inside folder` command and inline icon. Allow multiple nesting levels.
+- ✨ New command: `commands.focusTerminal` and new properties: "reuse"/"waitForExit"/"icon"/"iconColor" for `commands.runInTerminal` command [Pull request 45](https://github.com/usernamehw/vscode-commands/pull/45) by [frypf](https://github.com/frypf)
+- ✨ New command `commands.suggestCodicons` Commands: Suggest (autocomplete) codicons
+- ✨ `${random}` & `${randomHex}` variable substitutions
+- ✨ Improve autocomplete in `settings.json` - "icon" & "iconColor" have completions now
+- 🔨 Prefer workspace extension kind for remote #43
+
 ## 1.8.0 `17 Feb 2023`
 
 - ✨ Improve autocomplete in `settings.json`. Add autocomplete for "command" & "args" properties
