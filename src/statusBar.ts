@@ -37,7 +37,7 @@ export function updateStatusBarItems(items: TopLevelCommands): void {
 			}
 			if (item.nestedItems) {
 				icon = '$(folder) ';
-				mdTooltip = createFolderHoverText(item.nestedItems);
+				mdTooltip = createFolderHoverText(item);
 			}
 			const args = [{
 				workspaceId: item.workspace,

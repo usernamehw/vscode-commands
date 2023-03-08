@@ -95,7 +95,7 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 			if (Object.keys(el.nestedItems).length === 0) {
 				return undefined;
 			}
-			markdown = createFolderHoverText(el.nestedItems);
+			markdown = createFolderHoverText(el.folder);
 		} else {
 			if (isSimpleObject(el.runnable) && el.runnable.disableTooltip) {
 				return el;
