@@ -136,6 +136,15 @@ export const commandArgs: Record<string, unknown> = {
 		app: '',
 		arguments: [''],
 	},
+	[CommandId.Diff]: {
+		kind: 'openEditors',
+		title: '',
+		columnOptions: {
+			viewColumn: -2,
+			preserveFocus: false,
+			preview: true,
+		},
+	},
 };
 /**
  * Add arguments if command can accept them (even if they are optional).
