@@ -1,6 +1,6 @@
 import { commands, DocumentSymbol, env, ExtensionMode, Range, Selection, TextDocument, TextEditor, TextEditorRevealType, UIKind, window } from 'vscode';
 import { $state } from './extension';
-import { TopLevelCommands } from './types';
+import { CommandFolder, TopLevelCommands } from './types';
 
 /**
  * Emulate delay with async setTimeout().
@@ -51,6 +51,25 @@ export function forEachCommand(
 			forEachCommand(callback, item.nestedItems);
 		}
 	}
+}
+/**
+ * Given folder - return all nested commands (not folders).
+ */
+export function getAllNestedCommands(folder: CommandFolder): TopLevelCommands {
+	if (!folder.nestedItems) {
+		throw Error(`Not a folder: ${JSON.stringify(folder)}`);
+	}
+
+	const allNestedCommands: TopLevelCommands = {};
+
+	forEachCommand((item, key) => {
+		if (item.nestedItems) {
+			return;
+		}
+		allNestedCommands[key] = item;
+	}, folder.nestedItems);
+
+	return allNestedCommands;
 }
 /**
  * Get all symbols for active document.

@@ -3,7 +3,7 @@ import { $config, $state } from './extension';
 import { showQuickPick } from './quickPick';
 import { substituteVariableRecursive, substituteVariables } from './substituteVariables';
 import { CommandFolder, CommandObject, Runnable, Sequence } from './types';
-import { deepCopy, isSimpleObject, sleep } from './utils';
+import { deepCopy, getAllNestedCommands, isSimpleObject, sleep } from './utils';
 
 /**
  * Execute runnable or folder.
@@ -107,7 +107,7 @@ async function runObject(object: CommandObject): Promise<void> {
  * Run folder (show Quick pick with all commands inside that folder).
  */
 function runFolder(folder: CommandFolder): void {
-	showQuickPick(folder.nestedItems!, true);
+	showQuickPick(getAllNestedCommands(folder), true);
 }
 /**
  * Allow running a string with args: `commands.runInTerminal?npm run watch` (for runnables that are strings)
