@@ -42,12 +42,29 @@
 				{ "$ref": "#/definitions/cursorMoveCommand" },
 				{ "$ref": "#/definitions/editorScrollCommand" },
 				{ "$ref": "#/definitions/moveActiveEditorCommand" },
+				{ "$ref": "#/definitions/setEditorLayoutCommand" },
 				{ "$ref": "#/definitions/emmetWrapWithAbbreviationCommand" },
 				{ "$ref": "#/definitions/openIssueReporterCommand" },
 				{ "$ref": "#/definitions/installExtensionCommand" },
 				{ "$ref": "#/definitions/uninstallExtensionCommand" },
 				{ "$ref": "#/definitions/showExtensionswithIdCommand" }
 			]
+		},
+
+		"layoutGroups": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"groups": {
+						"$ref": "#/definitions/layoutGroups"
+					},
+					"size": {
+						"type": "number",
+						"markdownDescription": "If editor group sizes are provided, their sum must be 1 to be applied per row or column."
+					}
+				}
+			}
 		},
 
 		"typeCommand": {
@@ -61,13 +78,19 @@
 			"then": {
 				"properties": {
 					"args": {
+						"defaultSnippets": [{
+							"body": {
+								"text": "$1"
+							}
+						}],
 						"type": "object",
 						"required": [
 							"text"
 						],
 						"properties": {
 							"text": {
-								"type": "string"
+								"type": "string",
+								"markdownDescription": "Text to type into the Active Text Editor."
 							}
 						},
 						"additionalProperties": false
@@ -87,7 +110,8 @@
 			"then": {
 				"properties": {
 					"args": {
-						"type": "string"
+						"type": "string",
+						"markdownDescription": "\"label\" of the task to run. https://github.com/usernamehw/vscode-commands#workbenchactiontasksruntask-run-task-by-its-label"
 					}
 				}
 			}
@@ -105,9 +129,16 @@
 				"properties": {
 					"args": {
 						"type": "object",
+						"markdownDescription": "Insert snippet as text by using `\"snippet\"` property or insert existing by referencing it with `\"langId\"` & `\"name\"`.",
+						"defaultSnippets": [{
+							"body": {
+								"snippet": "$1"
+							}
+						}],
 						"properties": {
 							"snippet": {
-								"type": "string"
+								"type": "string",
+								"markdownDescription": "Insert [Snippet](https://code.visualstudio.com/docs/editor/userdefinedsnippets)."
 							},
 							"langId": {
 								"type": "string"
@@ -115,7 +146,8 @@
 							"name": {
 								"type": "string"
 							}
-						}
+						},
+						"additionalProperties": false
 					}
 				}
 			}
@@ -133,6 +165,12 @@
 				"properties": {
 					"args": {
 						"type": "object",
+						"markdownDescription": "Send a specific sequence of text to the terminal, including escape sequences that are interpreted specially by the shell.",
+						"defaultSnippets": [{
+							"body": {
+								"text": "$1"
+							}
+						}],
 						"required": [
 							"text"
 						],
@@ -158,7 +196,8 @@
 			"then": {
 				"properties": {
 					"args": {
-						"type": "string"
+						"type": "string",
+						"markdownDescription": "Open Command Palette with prefilled value."
 					}
 				}
 			}
@@ -175,7 +214,8 @@
 			"then": {
 				"properties": {
 					"args": {
-						"type": "string"
+						"type": "string",
+						"markdownDescription": "Open Settings UI with prefilled input value."
 					}
 				}
 			}
@@ -192,7 +232,8 @@
 			"then": {
 				"properties": {
 					"args": {
-						"type": "string"
+						"type": "string",
+						"markdownDescription": "Open Keybindings UI with prefilled input value."
 					}
 				}
 			}
@@ -209,7 +250,8 @@
 			"then": {
 				"properties": {
 					"args": {
-						"type": "string"
+						"type": "string",
+						"markdownDescription": "Open Extensions View with prefilled input value."
 					}
 				}
 			}
@@ -227,6 +269,13 @@
 				"properties": {
 					"args": {
 						"type": "object",
+						"markdownDescription": "Execute code action. https://code.visualstudio.com/docs/editor/refactoring#_keybindings-for-code-actions",
+						"defaultSnippets": [{
+							"body": {
+								"kind": "$1",
+								"apply": "${2:first}"
+							}
+						}],
 						"properties": {
 							"kind": {
 								"type": "string"
@@ -261,39 +310,55 @@
 				"properties": {
 					"args": {
 						"type": "object",
+						"defaultSnippets": [{
+							"body": {
+								"query": "$1"
+							}
+						}],
 						"properties": {
 							"query": {
-								"type": "string"
+								"type": "string",
+								"markdownDescription": "Main property. Defines what to search."
 							},
 							"replace": {
-								"type": "string"
+								"type": "string",
+								"markdownDescription": "Defines with what to replace the searched string."
 							},
 							"filesToInclude": {
-								"type": "string"
+								"type": "string",
+								"markdownDescription": "Files to include. [Glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern)."
 							},
 							"filesToExclude": {
-								"type": "string"
+								"type": "string",
+								"markdownDescription": "Files to exclude. [Glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern)."
 							},
 							"isRegex": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "When true - will treat main property as Regular Expression."
 							},
 							"isCaseSensitive": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "When true - will search matching case."
 							},
 							"matchWholeWord": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "When true - will match only whole words."
 							},
 							"preserveCase": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "When true - will preserve case when doing replacement."
 							},
 							"excludeSettingAndIgnoreFiles": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "When true - will ignore files from `search.exclude` setting."
 							},
 							"triggerSearch": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "When true - will start searching immediately."
 							},
 							"onlyOpenEditors": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "When true - will only search in open editors."
 							}
 						},
 						"additionalProperties": false
@@ -314,27 +379,39 @@
 				"properties": {
 					"args": {
 						"type": "object",
+						"defaultSnippets": [{
+							"body": {
+								"searchString": "$1"
+							}
+						}],
 						"properties": {
 							"searchString": {
-								"type": "string"
+								"type": "string",
+								"markdownDescription": "Main property. Defines what to search."
 							},
 							"replaceString": {
-								"type": "string"
+								"type": "string",
+								"markdownDescription": "Defines with what to replace the searched string."
 							},
 							"isRegex": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "When true - will treat main property as Regular Expression."
 							},
 							"isCaseSensitive": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "When true - will search matching case."
 							},
 							"matchWholeWord": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "When true - will match only whole words."
 							},
 							"preserveCase": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "When true - will preserve case when doing replacement."
 							},
 							"findInSelection": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "When true - will only search in selected text."
 							}
 						},
 						"additionalProperties": false
@@ -355,39 +432,55 @@
 				"properties": {
 					"args": {
 						"type": "object",
+						"defaultSnippets": [{
+							"body": {
+								"query": "$1"
+							}
+						}],
 						"properties": {
 							"query": {
-								"type": "string"
+								"type": "string",
+								"markdownDescription": "Main property. Defines what to search."
 							},
 							"filesToInclude": {
-								"type": "string"
+								"type": "string",
+								"markdownDescription": "Files to include. [Glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern)."
 							},
 							"filesToExclude": {
-								"type": "string"
+								"type": "string",
+								"markdownDescription": "Files to exclude. [Glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern)."
 							},
 							"contextLines": {
-								"type": "integer"
+								"type": "integer",
+								"markdownDescription": "Number of lines shown around matched lines."
 							},
 							"isRegexp": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "When true - will treat main property as Regular Expression."
 							},
 							"isCaseSensitive": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "When true - will search matching case."
 							},
 							"matchWholeWord": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "When true - will match only whole words."
 							},
 							"preserveCase": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "When true - will preserve case when doing replacement."
 							},
 							"excludeSettingAndIgnoreFiles": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "When true - will ignore files from `search.exclude` setting."
 							},
 							"triggerSearch": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "When true - will start searching immediately."
 							},
 							"showIncludesExcludes": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "When true - will show includes/exludes inputs."
 							}
 						},
 						"additionalProperties": false
@@ -408,15 +501,28 @@
 				"properties": {
 					"args": {
 						"type": "object",
+						"markdownDescription": "Move cursor to a logical position in the view",
+						"defaultSnippets": [{
+							"body": {
+								"to": "${1:down}",
+								"by": "${2:line}",
+								"value": 1
+							}
+						}],
+						"required": [
+							"to"
+						],
 						"properties": {
 							"to": {
 								"type": "string",
+								"markdownDescription": "Where to move the cursor",
 								"enum": [
 									"left", "right", "up", "down", "prevBlankLine","nextBlankLine", "wrappedLineStart", "wrappedLineEnd", "wrappedLineColumnCenter", "wrappedLineFirstNonWhitespaceCharacter", "wrappedLineLastNonWhitespaceCharacter", "viewPortTop", "viewPortCenter", "viewPortBottom", "viewPortIfOutside"
 								]
 							},
 							"by": {
 								"type": "string",
+								"markdownDescription": "Unit to move.",
 								"enum": [
 									"line",
 									"wrappedLine",
@@ -425,10 +531,14 @@
 								]
 							},
 							"value": {
-								"type": "integer"
+								"type": "integer",
+								"markdownDescription": "Number of units to move.",
+								"default": 1
 							},
 							"select": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "If 'true' makes the selection.",
+								"default": false
 							}
 						},
 						"additionalProperties": false
@@ -449,9 +559,21 @@
 				"properties": {
 					"args": {
 						"type": "object",
+						"markdownDescription": "Scroll editor in the given direction.",
+						"defaultSnippets": [{
+							"body": {
+								"to": "${1:down}",
+								"by": "${2:line}",
+								"value": 1
+							}
+						}],
+						"required": [
+							"to"
+						],
 						"properties": {
 							"to": {
 								"type": "string",
+								"markdownDescription": "A mandatory direction value.",
 								"enum": [
 									"up",
 									"down"
@@ -459,6 +581,7 @@
 							},
 							"by": {
 								"type": "string",
+								"markdownDescription": "Unit to move.",
 								"enum": [
 									"line",
 									"wrappedLine",
@@ -467,10 +590,14 @@
 								]
 							},
 							"value": {
-								"type": "integer"
+								"type": "integer",
+								"markdownDescription": "Number of units to move.",
+								"default": 1
 							},
 							"revealCursor": {
-								"type": "boolean"
+								"type": "boolean",
+								"markdownDescription": "If 'true' reveals the cursor when it is outside view port.",
+								"default": true
 							}
 						},
 						"additionalProperties": false
@@ -491,9 +618,18 @@
 				"properties": {
 					"args": {
 						"type": "object",
+						"markdownDescription": "Move the active editor by tabs or groups.",
+						"defaultSnippets": [{
+							"body": {
+								"to": "${1:down}",
+								"by": "${2:tab}",
+								"value": 1
+							}
+						}],
 						"properties": {
 							"to": {
 								"type": "string",
+								"markdownDescription": "String value providing where to move.",
 								"enum": [
 									"left",
 									"right"
@@ -501,13 +637,62 @@
 							},
 							"by": {
 								"type": "string",
+								"markdownDescription": "String value providing the unit for move.",
 								"enum": [
 									"tab",
 									"group"
 								]
 							},
 							"value": {
-								"type": "integer"
+								"type": "integer",
+								"markdownDescription": "Number value providing how many positions or an absolute position to move",
+								"default": 1
+							}
+						},
+						"additionalProperties": false
+					}
+				}
+			}
+		},
+
+		"setEditorLayoutCommand": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "vscode.setEditorLayout"
+					}
+				}
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"type": "object",
+						"markdownDescription": "Sets the editor layout",
+						"default": {
+							"orientation": 0,
+							"groups": [{
+								"groups": [{}, {}],
+								"size": 0.5
+						   },
+						   {
+							   "groups": [{}, {}],
+							   "size": 0.5
+						   }]
+					   },
+						"properties": {
+							"orientation": {
+								"type": "number",
+								"enum": [
+									0,
+									1
+								],
+								"markdownEnumDescriptions": [
+									"Horizontal",
+									"Vertical"
+								]
+							},
+							"groups": {
+								"$ref": "#/definitions/layoutGroups"
 							}
 						},
 						"additionalProperties": false
@@ -528,6 +713,13 @@
 				"properties": {
 					"args": {
 						"type": "object",
+						"markdownDescription": "Wrap text with emmet.",
+						"defaultSnippets": [{
+							"body": {
+								"abbreviation": "$1",
+								"language": "$2"
+							}
+						}],
 						"properties": {
 							"abbreviation": {
 								"type": "string"
@@ -553,6 +745,7 @@
 			"then": {
 				"properties": {
 					"args": {
+						"markdownDescription": "Opens the issue reporter with the provided extension id as the selected source",
 						"type": "string"
 					}
 				}
@@ -570,6 +763,7 @@
 			"then": {
 				"properties": {
 					"args": {
+						"markdownDescription": "Install extension by id.",
 						"type": "string"
 					}
 				}
@@ -587,6 +781,7 @@
 			"then": {
 				"properties": {
 					"args": {
+						"markdownDescription": "Uninstall extension by id.",
 						"type": "string"
 					}
 				}
@@ -604,6 +799,7 @@
 			"then": {
 				"properties": {
 					"args": {
+						"markdownDescription": "Show extensions in Extensions View by id.",
 						"type": "array",
 						"items": {
 							"type": "string"
@@ -640,7 +836,8 @@
 								],
 								"properties": {
 									"setting": {
-										"type": "string"
+										"type": "string",
+										"markdownDescription": "Setting id."
 									},
 									"target": {
 										"type": "string",
@@ -649,11 +846,19 @@
 											"workspace"
 										]
 									},
-									"value": {}
+									"value": {
+										"markdownDescription": "An array of values or a string of values separated by comma `,`."
+									}
 								},
 								"additionalProperties": false
 							}
-						]
+						],
+						"defaultSnippets": [{
+							"body": {
+								"setting": "$1",
+								"value": "$2"
+							}
+						}]
 					}
 				}
 			}
@@ -671,12 +876,14 @@
 				"properties": {
 					"args": {
 						"type": "object",
+						"markdownDescription": "Increment or decrement a setting.",
 						"required": [
 							"setting"
 						],
 						"properties": {
 							"setting": {
-								"type": "string"
+								"type": "string",
+								"markdownDescription": "Setting id."
 							},
 							"target": {
 								"type": "string",
@@ -686,7 +893,8 @@
 								]
 							},
 							"value": {
-								"type": "number"
+								"type": "number",
+								"markdownDescription": "Positive values will increment setting, negative - decrement."
 							}
 						},
 						"additionalProperties": false
@@ -707,12 +915,21 @@
 				"properties": {
 					"args": {
 						"type": "object",
+						"markdownDescription": "Toggle themes by groups (depending on active theme kind)",
+						"defaultSnippets": [{
+							"body": {
+								"dark": "$1",
+								"light": "$2"
+							}
+						}],
 						"properties": {
 							"dark": {
-								"type": "string"
+								"type": "string",
+								"markdownDescription": "Dark theme id, separated by comma `,`."
 							},
 							"light": {
-								"type": "string"
+								"type": "string",
+								"markdownDescription": "Light theme id, separated by comma `,`."
 							}
 						},
 						"additionalProperties": false
@@ -732,7 +949,8 @@
 			"then": {
 				"properties": {
 					"args": {
-						"type": "string"
+						"type": "string",
+						"markdownDescription": "Open file/folder in vscode. Relative path will open relative to the first opened workspace folder."
 					}
 				}
 			}
@@ -791,7 +1009,13 @@
 								},
 								"additionalProperties": false
 							}
-						]
+						],
+						"defaultSnippets": [{
+							"body": {
+								"name": "$1",
+								"target": "${2:newest}"
+							}
+						}]
 					}
 				}
 			}
@@ -859,7 +1083,14 @@
 								},
 								"additionalProperties": false
 							}
-						]
+						],
+						"defaultSnippets": [{
+							"body": {
+								"name": "$1",
+								"text": "$2",
+								"reveal": true
+							}
+						}]
 					}
 				}
 			}
@@ -876,6 +1107,7 @@
 			"then": {
 				"properties": {
 					"args": {
+						"markdownDescription": "Start debugging by \"name\" property from `launch.json`.",
 						"type": "string"
 					}
 				}
@@ -893,7 +1125,8 @@
 			"then": {
 				"properties": {
 					"args": {
-						"type": "string"
+						"type": "string",
+						"markdownDescription": "Set editor by [Language Id](https://code.visualstudio.com/docs/languages/identifiers#_known-language-identifiers)."
 					}
 				}
 			}
@@ -910,7 +1143,8 @@
 			"then": {
 				"properties": {
 					"args": {
-						"type": "string"
+						"type": "string",
+						"markdownDescription": "Write text into clipboard."
 					}
 				}
 			}
@@ -927,6 +1161,7 @@
 			"then": {
 				"properties": {
 					"args": {
+						"markdownDescription": "Show standard VSCode notification.",
 						"oneOf": [
 							{
 								"type": "string"
@@ -935,10 +1170,12 @@
 								"type": "object",
 								"properties": {
 									"message": {
-										"type": "string"
+										"type": "string",
+										"markdownDescription": "Message to show in notification."
 									},
 									"severity": {
 										"type": "string",
+										"markdownDescription": "Notification style (error/warning/info).",
 										"enum": [
 											"error",
 											"warning",
@@ -948,7 +1185,13 @@
 								},
 								"additionalProperties": false
 							}
-						]
+						],
+						"defaultSnippets": [{
+							"body": {
+								"message": "$1",
+								"severity": "${2:info}"
+							}
+						}]
 					}
 				}
 			}
@@ -965,6 +1208,7 @@
 			"then": {
 				"properties": {
 					"args": {
+						"markdownDescription": "Show notification in Status Bar.",
 						"oneOf": [
 							{
 								"type": "string"
@@ -973,20 +1217,28 @@
 								"type": "object",
 								"properties": {
 									"message": {
-										"type": "string"
+										"type": "string",
+										"markdownDescription": "Message to show in Status Bar."
 									},
 									"color": {
 										"type": "string",
+										"markdownDescription": "Color of the text.",
 										"format": "color"
 									},
 									"timeout": {
 										"type": "integer",
+										"markdownDescription": "Duration of notification (ms) before hiding.",
 										"default": 5000
 									}
 								},
 								"additionalProperties": false
 							}
-						]
+						],
+						"defaultSnippets": [{
+							"body": {
+								"message": "$1"
+							}
+						}]
 					}
 				}
 			}
@@ -1003,7 +1255,8 @@
 			"then": {
 				"properties": {
 					"args": {
-						"type": "string"
+						"type": "string",
+						"markdownDescription": "Open link in default browser or open other things from registered protocols, like `mailto:`,`callto:`..."
 					}
 				}
 			}
@@ -1020,6 +1273,7 @@
 			"then": {
 				"properties": {
 					"args": {
+						"markdownDescription": "Open file in default/chosen app.",
 						"oneOf": [
 							{
 								"type": "string"
@@ -1028,13 +1282,16 @@
 								"type": "object",
 								"properties": {
 									"target": {
-										"type": "string"
+										"type": "string",
+										"markdownDescription": "Absolute file path."
 									},
 									"app": {
-										"type": "string"
+										"type": "string",
+										"markdownDescription": "App as it is registered like: `code`/`firefox` or an absolute path."
 									},
 									"arguments": {
 										"type": "array",
+										"markdownDescription": "List of arguments provided when running the app.",
 										"items": {
 											"type": "string"
 										}
@@ -1060,6 +1317,7 @@
 				"properties": {
 					"args": {
 						"type": "object",
+						"markdownDescription": "Diff visible/open text editors.",
 						"properties": {
 							"kind": {
 								"type": "string",
@@ -1131,7 +1389,8 @@
 			"then": {
 				"properties": {
 					"args": {
-						"type": "string"
+						"type": "string",
+						"markdownDescription": "Open system file explorer at the specified path."
 					}
 				}
 			}
@@ -1149,6 +1408,7 @@
 				"properties": {
 					"args": {
 						"type": "array",
+						"markdownDescription": "Run multiple commands in sequence.",
 						"items": {
 							"oneOf": [
 								{
@@ -1176,10 +1436,27 @@
 											"markdownDescription": "Run this command or sequence this number of times.",
 											"minimum": 1
 										}
-									}
+									},
+									"additionalProperties": false
 								}
-							]
-						}
+							],
+							"defaultSnippets": [{
+								"body": {
+									"command": "$1",
+									"args": "$2"
+								}
+							}]
+						},
+						"defaultSnippets": [
+							{
+								"body": [
+									{
+										"command": "$1",
+										"args": "$2"
+									}
+								]
+							}
+						]
 					}
 				}
 			}

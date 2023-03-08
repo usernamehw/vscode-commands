@@ -661,7 +661,7 @@ Example for a 2x2 grid:
 },
 ```
 
-### `commands.showStatusBarNotification` Show notification in status bar
+### `commands.showStatusBarNotification` Show notification in Status Bar
 
 ```js
 "Notification in status bar": {
@@ -704,7 +704,7 @@ Example for a 2x2 grid:
 },
 ```
 
-### `commands.revealFileInOS` Open system file explorer and reveal the specified path
+### `commands.revealFileInOS` Open system file explorer at the specified path
 
 ```js
 "commands.revealFileInOS": {
