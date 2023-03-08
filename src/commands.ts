@@ -2,6 +2,7 @@ import { commands } from 'vscode';
 import { assignKeybindingCommand } from './commands/assignKeybindingCommand';
 import { clipboardWriteCommand } from './commands/clipboardWriteCommand';
 import { deleteCommandCommand } from './commands/deleteCommandCommand';
+import { diffCommand } from './commands/diffCommand';
 import { escapeCommandUriArgumentCommand } from './commands/escapeCommandUriArgumentCommand';
 import { focusTerminalCommand } from './commands/focusTerminalCommand';
 import { incrementSettingCommand } from './commands/incrementSettingCommand';
@@ -72,6 +73,7 @@ export const enum CommandId {
 	OpenExternal = 'commands.openExternal',
 	RevealFileInOS = 'commands.revealFileInOS',
 	Open = 'commands.open',
+	Diff = 'commands.diff',
 }
 /**
  * Register all commands (core + additional)
@@ -113,6 +115,7 @@ export function registerExtensionCommands() {
 	commands.registerCommand(CommandId.OpenExternal, openExternalCommand);
 	commands.registerCommand(CommandId.RevealFileInOS, revealFileInOSCommand);
 	commands.registerCommand(CommandId.Open, openCommand);
+	commands.registerCommand(CommandId.Diff, diffCommand);
 }
 
 export function isWorkspaceTreeItem(treeItem: FolderTreeItem | RunCommandTreeItem): boolean {

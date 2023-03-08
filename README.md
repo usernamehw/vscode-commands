@@ -489,11 +489,11 @@ Example for a 2x2 grid:
 
 ```js
 "Toggle workspace setting": {
-	"command": "commands.toggleSetting",
-	"args": {
-		"setting": "workbench.editor.showTabs",
-		"target": "workspace",
-	},
+    "command": "commands.toggleSetting",
+    "args": {
+        "setting": "workbench.editor.showTabs",
+        "target": "workspace",
+    },
 },
 ```
 
@@ -567,7 +567,7 @@ Example for a 2x2 grid:
 },
 "Focus terminal named 'foobar' (string argument)": {
     "command": "commands.focusTerminal",
-    "args": "foobar"
+    "args": "foobar",
 },
 "Focus terminal named 'foobar'": {
     "command": "commands.focusTerminal",
@@ -586,7 +586,7 @@ Example for a 2x2 grid:
 ```js
 "Terminal => watch (string argument)": {
     "command": "commands.runInTerminal",
-    "args": "npm run watch"
+    "args": "npm run watch",
 },
 "Terminal => watch": {
     "command": "commands.runInTerminal",
@@ -599,6 +599,21 @@ Example for a 2x2 grid:
         "icon": "zap",// if no match, assign a Codicon to the new terminal
         "iconColor": "terminal.ansiCyan",// if no match, assign a color (from current theme) to the new terminal
         // "cwd": "",
+    },
+},
+```
+
+### `commands.diff` Diff visible/open text editors
+
+```js
+"Diff open editors": {
+    "command": "commands.diff",
+    "args": {
+        "kind": "openEditors",
+        "title": "...",
+        "columnOptions": {
+            "viewColumn": -2,// `-1` - active, `-2` - beside
+        },
     },
 },
 ```
@@ -752,7 +767,6 @@ go to symbol in file
 workbench.action.terminal.newWithCwd
 `editor.action.refactor` & `editor.action.sourceAction` - both covered by `editor.action.codeAction`
 workbench.action.files.newUntitledFile (arg `viewType` eg `vscode.markdown.preview.editor`)
-vscode.diff
 vscode.openWith `commands.executeCommand("vscode.openWith", uri, MyCustomEditor.viewType);`
 editor.unfold
 editor.fold
