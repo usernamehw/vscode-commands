@@ -134,7 +134,7 @@
 |commands.treeViewWorkspaceCommandSymbol|"🎯"|Symbol used in the tree view to indicate workspace command (from `#commands.workspaceCommands#`) setting.|
 |commands.statusBarDefaultText|"same"|Controls the text of Status Bar item when adding from Tree View context menu.|
 |commands.statusBarDefaultPosition|"left"|Where to put command on Status Bar (left or right).|
-|commands.quickPickIncludeAllCommands|**false**|EXPERIMENTAL: When checked - include all commands from Command Palette to the Quick Pick.|
+|commands.quickPickIncludeAllCommands|**false**|When checked - include all commands from Command Palette to the Quick Pick.|
 |commands.populateCommandPalette|**false**|Adds all items to Command Palette (Requires editor reload after every change of main config `#commands.commands#`).|
 |commands.documentLinksEnabled|**false**|Run commands as links in documents. Links have format `@command?args@`.<br>[issues/2](https://github.com/usernamehw/vscode-commands/issues/2)|
 |commands.documentLinksPattern|""|[Glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) for `#commands.documentLinksEnabled#`. Example: `**/*.{ts,js}` - only enable in TypeScript & JavaScript files.|

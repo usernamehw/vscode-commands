@@ -122,7 +122,7 @@
 				},
 				"commands.quickPickIncludeAllCommands": {
 					"type": "boolean",
-					"markdownDescription": "EXPERIMENTAL: When checked - include all commands from Command Palette to the Quick Pick.",
+					"markdownDescription": "When checked - include all commands from Command Palette to the Quick Pick.",
 					"default": false
 				},
 				"commands.populateCommandPalette": {
