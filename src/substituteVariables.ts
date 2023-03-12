@@ -1,11 +1,14 @@
 import escapeRegExp from 'lodash/escapeRegExp';
+import { homedir } from 'os';
 import path from 'path';
 import { env, window, workspace } from 'vscode';
 
+// https://code.visualstudio.com/docs/editor/variables-reference
 // https://github.com/microsoft/vscode/blob/main/src/vs/workbench/services/configurationResolver/common/variableResolver.ts
 
 // TODO: ${userHome}
 export const enum VariableNames {
+	UserHome = '${userHome}',
 	File = '${file}', // the current opened file (absolute path?)
 	FileBasename = '${fileBasename}', // the current opened file's basename
 	FileBasenameNoExtension = '${fileBasenameNoExtension}', // the current opened file's basename with no file extension
@@ -32,6 +35,7 @@ export const enum VariableNames {
 }
 
 const variableRegexps = {
+	[VariableNames.UserHome]: new RegExp(escapeRegExp(VariableNames.UserHome), 'ig'),
 	[VariableNames.File]: new RegExp(escapeRegExp(VariableNames.File), 'ig'),
 	[VariableNames.FileBasename]: new RegExp(escapeRegExp(VariableNames.FileBasename), 'ig'),
 	[VariableNames.FileBasenameNoExtension]: new RegExp(escapeRegExp(VariableNames.FileBasenameNoExtension), 'ig'),
@@ -76,6 +80,9 @@ export async function substituteVariables(str: string): Promise<string> {
 	}
 	if (str.includes(VariableNames.ExecPath)) {
 		str = str.replace(variableRegexps[VariableNames.ExecPath], env.appRoot);
+	}
+	if (str.includes(VariableNames.UserHome)) {
+		str = str.replace(variableRegexps[VariableNames.UserHome], homedir());
 	}
 	if (str.includes(VariableNames.File) && activeTextEditor) {
 		str = str.replace(variableRegexps[VariableNames.File], activeTextEditor.document.uri.fsPath);

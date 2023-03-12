@@ -3,6 +3,7 @@ import { VariableNames } from '../substituteVariables';
 
 export async function suggestVariableCommand(editor: TextEditor) {
 	const variables: [string, string][] = [
+		[VariableNames.UserHome, 'The path of the user\'s home folder'],
 		[VariableNames.File, 'Current opened file (absolute path?)'],
 		[VariableNames.FileBasename, 'Current opened file\'s basename'],
 		[VariableNames.FileBasenameNoExtension, 'current opened file\'s basename with no file extension'],
