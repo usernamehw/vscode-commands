@@ -54,3 +54,14 @@
     }
 }
 ```
+
+## Open website query from selection:
+
+```js
+"commands.commands": {
+    "Search for selected text": {
+        "command": "commands.openExternal",
+        "args": "https://www.google.com/search?q=${selectedText}",
+    },
+}
+```
