@@ -1,9 +1,9 @@
 import { findNodeAtOffset, getNodePath, getNodeValue, parseTree, type Node } from 'jsonc-parser';
 import { CompletionItemKind, languages, Range, type CompletionItem, type ExtensionContext, type Position } from 'vscode';
-import { CommandId } from './commands';
-import { Constants } from './extension';
-import { getAllCommandPaletteCommands } from './quickPick';
-import { getAllVscodeCommands } from './utils';
+import { CommandId } from '../commands';
+import { Constants } from '../extension';
+import { getAllCommandPaletteCommands } from '../quickPick';
+import { getAllVscodeCommands } from '../utils';
 
 export function registerJsonSchemaCompletion(context: ExtensionContext): void {
 	// ────────────────────────────────────────────────────────────

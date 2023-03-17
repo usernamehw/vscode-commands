@@ -984,7 +984,7 @@
 										"markdownDescription": "A codicon ID to assign to the icon (if creating a new terminal)."
 									},
 									"iconColor": {
-										"$ref": "./themeColors.schema.json",
+										"$ref": "commandsExtension://schemas/colors",
 										"markdownDescription": "A theme color ID to assign to the icon (if creating a new terminal)."
 									},
 									"cwd": {
@@ -1053,7 +1053,7 @@
 										"markdownDescription": "A codicon ID to assign to the icon (if creating a new terminal)."
 									},
 									"iconColor": {
-										"$ref": "./themeColors.schema.json",
+										"$ref": "commandsExtension://schemas/colors",
 										"markdownDescription": "A theme color ID to assign to the icon (if creating a new terminal)."
 									},
 									"cwd": {
