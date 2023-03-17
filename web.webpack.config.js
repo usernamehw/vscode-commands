@@ -32,6 +32,7 @@ const webExtensionConfig = {
 		fallback: {
 			// see https://webpack.js.org/configuration/resolve/#resolvefallback
 			path: require.resolve('path-browserify'),
+			os: require.resolve('os-browserify/browser'),
 		},
 	},
 	module: {

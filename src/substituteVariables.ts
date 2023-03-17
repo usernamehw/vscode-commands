@@ -83,7 +83,6 @@ export async function substituteVariables(strArg: string): Promise<string> {
 		str = str.replace(variableRegexps[VariableNames.ExecPath], env.appRoot);
 	}
 	if (str.includes(VariableNames.UserHome)) {
-		// TODO: will this break the web version?
 		str = str.replace(variableRegexps[VariableNames.UserHome], homedir());
 	}
 	if (str.includes(VariableNames.File) && activeTextEditor) {

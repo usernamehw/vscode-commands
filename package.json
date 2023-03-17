@@ -379,6 +379,7 @@
 		"eslint": "^8.36.0",
 		"eslint-plugin-no-autofix": "^1.2.3",
 		"null-loader": "^4.0.1",
+		"os-browserify": "^0.3.0",
 		"path-browserify": "^1.0.1",
 		"process": "^0.11.10",
 		"ts-loader": "^9.4.2",
