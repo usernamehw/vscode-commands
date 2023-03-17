@@ -1,5 +1,5 @@
-import { Terminal, TerminalOptions, ThemeColor, ThemeIcon, window } from 'vscode';
-import { CodiconName } from '../codiconNames';
+import { ThemeColor, ThemeIcon, window, type Terminal, type TerminalOptions } from 'vscode';
+import { type CodiconName } from '../codiconNames';
 
 export interface FocusTerminalArgs {
 	name?: string;
@@ -12,7 +12,7 @@ export interface FocusTerminalArgs {
 /**
  * Ideally, this would be terminals that are not running tasks?
  */
-const nonTaskTerminals: Set<Terminal> = new Set();
+const nonTaskTerminals = new Set<Terminal>();
 
 export function focusTerminalCommand(arg: FocusTerminalArgs | string, deferShow?: boolean): Terminal {
 	const terminals = window.terminals;
@@ -33,15 +33,15 @@ export function focusTerminalCommand(arg: FocusTerminalArgs | string, deferShow?
 	}
 
 	if (shouldAttemptReuse) {
-		if (!targetTerminalOptions.name) {
+		if (targetTerminalOptions.name) {
+			const termsToQuery = shouldMatchNewest ? [...terminals].reverse() : terminals;
+			targetTerminal = termsToQuery.find(term => term.name === targetTerminalOptions.name);
+		} else {
 			targetTerminalOptions.name = undefined;
 			terminals.forEach(term => term.creationOptions.name === undefined && nonTaskTerminals.add(term));
 			nonTaskTerminals.forEach(nonTaskTerm => !terminals.includes(nonTaskTerm) && nonTaskTerminals.delete(nonTaskTerm));
 			const termsToQuery = shouldMatchNewest ? [...nonTaskTerminals].reverse() : [...nonTaskTerminals];
 			targetTerminal = termsToQuery[0];
-		} else {
-			const termsToQuery = shouldMatchNewest ? [...terminals].reverse() : terminals;
-			targetTerminal = termsToQuery.find(term => term.name === targetTerminalOptions.name);
 		}
 	}
 

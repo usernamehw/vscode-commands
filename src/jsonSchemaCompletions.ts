@@ -1,5 +1,5 @@
-import { findNodeAtOffset, getNodePath, getNodeValue, Node, parseTree } from 'jsonc-parser';
-import { CompletionItem, CompletionItemKind, ExtensionContext, languages, Position, Range } from 'vscode';
+import { findNodeAtOffset, getNodePath, getNodeValue, parseTree, type Node } from 'jsonc-parser';
+import { CompletionItemKind, languages, Range, type CompletionItem, type ExtensionContext, type Position } from 'vscode';
 import { CommandId } from './commands';
 import { Constants } from './extension';
 import { getAllCommandPaletteCommands } from './quickPick';
@@ -24,7 +24,7 @@ export function registerJsonSchemaCompletion(context: ExtensionContext): void {
 			}
 
 			const jsonPath = getNodePath(node);
-			const patchMatches = (compare: string[], useStartsWith = false) => {
+			const patchMatches = (compare: string[], useStartsWith = false): boolean | undefined => {
 				if (!useStartsWith && compare.length !== jsonPath.length) {
 					return;
 				}

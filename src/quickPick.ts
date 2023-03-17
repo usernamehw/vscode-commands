@@ -1,10 +1,10 @@
-import { commands, extensions, QuickInputButton, QuickPickItem, ThemeIcon, Uri, window, workspace } from 'vscode';
+import { commands, extensions, ThemeIcon, Uri, window, workspace, type QuickInputButton, type QuickPickItem } from 'vscode';
 import { hasArgs } from './args';
 import { CommandId } from './commands';
 import { $config, $state } from './extension';
 import { run } from './run';
-import { Runnable, TopLevelCommands } from './types';
-import { goToSymbol, openSettingsJSON, uint8ArrayToString } from './utils';
+import { type Runnable, type TopLevelCommands } from './types';
+import { goToSymbol, openSettingsJson, uint8ArrayToString } from './utils';
 import { isWorkspaceCommandItem } from './workspaceCommands';
 
 /**
@@ -41,8 +41,8 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
 	};
 
 	const userCommands: QuickPickWithRunnable[] = Object.keys(treeAsOneLevelMap).map(label => ({
-		// @ts-ignore
-		label: `${treeAsOneLevelMap[label]?.runnable.icon ? `$(${treeAsOneLevelMap[label].runnable.icon}) ` : ''}${label}`,
+		// @ts-expect-error
+		label: `${treeAsOneLevelMap[label]?.runnable?.icon ? `$(${treeAsOneLevelMap[label].runnable.icon}) ` : ''}${label}`,
 		buttons: [revealCommandButton],
 		runnable: treeAsOneLevelMap[label].runnable,
 		description: treeAsOneLevelMap[label].parentFolderName ? `$(folder) ${treeAsOneLevelMap[label].parentFolderName}` : undefined,
@@ -54,9 +54,8 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
 	quickPick.matchOnDetail = true;
 	quickPick.title = 'Run command';
 
-
 	if ($config.quickPickIncludeAllCommands && !isFolder) {
-		const allCommandPaletteCommands = convertVSCodeCommandToQuickPickItem(await getAllCommandPaletteCommands());
+		const allCommandPaletteCommands = convertVscodeCommandToQuickPickItem(await getAllCommandPaletteCommands());
 		// dedup?
 		quickPick.items = [
 			...userCommands,
@@ -73,7 +72,7 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
 		const labelWithoutCodiconIcon = removeCodiconIconFromLabel(e.item.label);
 		const clickedItem = treeAsOneLevelMap[labelWithoutCodiconIcon];
 		if (e.button.tooltip === revealCommandButton.tooltip) {
-			await openSettingsJSON(isWorkspaceCommandItem(clickedItem) ? 'workspace' : 'global');
+			await openSettingsJson(isWorkspaceCommandItem(clickedItem) ? 'workspace' : 'global');
 			goToSymbol(window.activeTextEditor, labelWithoutCodiconIcon);
 		}
 		quickPick.hide();
@@ -92,7 +91,7 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
 
 	quickPick.onDidAccept(async () => {
 		if (pickedItem) {
-			// @ts-ignore
+			// @ts-expect-error
 			await run(pickedItem.runnable);
 		}
 		quickPick.hide();
@@ -117,25 +116,25 @@ export function commandsToQuickPickItems(commandList: string[]): QuickPickItem[]
 
 type QuickPickWithRunnable = QuickPickItem & { runnable: Runnable };
 
-function convertVSCodeCommandToQuickPickItem(commanList: VSCodeCommand[]): QuickPickWithRunnable[] {
-	return commanList.map(com => ({
+function convertVscodeCommandToQuickPickItem(commanList: VscodeCommand[]): QuickPickWithRunnable[] {
+	return commanList.map((com): QuickPickWithRunnable => ({
 		label: com.title,
 		detail: com.command,
 		runnable: {
 			command: com.command,
 		},
-	} as QuickPickWithRunnable));
+	}));
 }
 
-interface VSCodeCommand {
+interface VscodeCommand {
 	command: string;
 	title: string;
 	category?: string;
 }
 
-export type VSCodeCommandWithoutCategory = Omit<VSCodeCommand, 'category'>;
+export type VscodeCommandWithoutCategory = Omit<VscodeCommand, 'category'>;
 
-export async function getAllCommandPaletteCommands(): Promise<VSCodeCommandWithoutCategory[]> {
+export async function getAllCommandPaletteCommands(): Promise<VscodeCommandWithoutCategory[]> {
 	if ($state.allCommandPaletteCommands.length) {
 		return $state.allCommandPaletteCommands;
 	}
@@ -149,12 +148,12 @@ export async function getAllCommandPaletteCommands(): Promise<VSCodeCommandWitho
 	return allCommandPaletteCommands;
 }
 
-async function getAllBuiltinCommands(): Promise<VSCodeCommandWithoutCategory[]> {
+async function getAllBuiltinCommands(): Promise<VscodeCommandWithoutCategory[]> {
 	const commandsDataPath = $state.context.asAbsolutePath('./data/commandTitleMap.json');
 	const file = await workspace.fs.readFile(Uri.file(commandsDataPath));
 	try {
 		const fileContentAsObject = JSON.parse(uint8ArrayToString(file));
-		const result: VSCodeCommandWithoutCategory[] = [];
+		const result: VscodeCommandWithoutCategory[] = [];
 		for (const key in fileContentAsObject) {
 			result.push({
 				command: key,
@@ -168,10 +167,10 @@ async function getAllBuiltinCommands(): Promise<VSCodeCommandWithoutCategory[]> 
 	return [];
 }
 
-function getAllCommandsFromExtensions(): VSCodeCommandWithoutCategory[] {
-	const coms: VSCodeCommandWithoutCategory[] = [];
+function getAllCommandsFromExtensions(): VscodeCommandWithoutCategory[] {
+	const coms: VscodeCommandWithoutCategory[] = [];
 	for (const extension of extensions.all) {
-		const contributedCommands: VSCodeCommand[] | undefined = extension.packageJSON?.contributes?.commands;
+		const contributedCommands: VscodeCommand[] | undefined = extension.packageJSON?.contributes?.commands;
 		if (contributedCommands) {
 			coms.push(...contributedCommands.map(command => ({
 				command: command.command,
@@ -187,12 +186,12 @@ function getAllCommandsFromExtensions(): VSCodeCommandWithoutCategory[] {
  * the item has "icon" property.
  */
 function removeCodiconIconFromLabel(str: string): string {
-	return str.replace(/\$\([a-z-]+\)\s/i, '');
+	return str.replace(/\$\([a-z-]+\)\s/iu, '');
 }
 /**
  * Remove codicon with the args text that shows at the end of the label
  * of the command that accepts arguments.
  */
 export function removeCodiconFromLabel(str: string): string {
-	return str.replace(/\s\(\$\([a-z-]+\)\sargs\)/i, '');
+	return str.replace(/\s\(\$\([a-z-]+\)\sargs\)/iu, '');
 }

@@ -91,7 +91,7 @@ export async function incrementSetting(arg: ToggleSettingType | string): Promise
 	} else if (isSimpleObject(arg)) {
 		settingName = arg.setting;
 		value = arg.value ?? 1;
-		target = arg.target || 'global';
+		target = arg.target ?? 'global';
 	}
 
 	if (typeof settingName !== 'string') {

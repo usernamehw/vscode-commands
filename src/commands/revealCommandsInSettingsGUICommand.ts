@@ -1,6 +1,6 @@
 import { Constants } from '../extension';
 import { openSettingGuiAt } from '../utils';
 
-export function revealCommandsInSettingsGUICommand() {
+export function revealCommandsInSettingsGuiCommand(): void {
 	openSettingGuiAt(`@ext:${Constants.ExtensionId}`);
 }

@@ -1,7 +1,7 @@
-import { Disposable, window } from 'vscode';
-import { CodiconName } from '../codiconNames';
+import { window, type Disposable } from 'vscode';
+import { type CodiconName } from '../codiconNames';
 import { CommandId } from '../commands';
-import { FocusTerminalArgs, focusTerminalCommand } from './focusTerminalCommand';
+import { focusTerminalCommand, type FocusTerminalArgs } from './focusTerminalCommand';
 
 interface RunInTerminalArgs {
 	text?: string;
@@ -27,33 +27,30 @@ export async function runInTerminalCommand(arg: RunInTerminalArgs | string): Pro
 			const newTerm = window.createTerminal();
 			newTerm.sendText(arg);
 			newTerm.show();
-		} else {
-			if (!arg.text) {
-				window.showErrorMessage(`No "text" property provided in "args" of "${CommandId.RunInTerminal}" command.`);
-				return;
+		} else if (arg.text) {
+			const targetTerminal = focusTerminalCommand({
+				...arg,
+				target: arg.reuse ?? 'create new',
+			}, true);
+
+			if (arg.waitForExit) {
+				onDidCloseTerminalDisposable = window.onDidCloseTerminal(closedTerminal => {
+					if (closedTerminal.name === targetTerminal.name) {
+						resolve();
+						onDidCloseTerminalDisposable?.dispose();
+					}
+				});
 			} else {
-				const targetTerminal = focusTerminalCommand({
-					...arg,
-					target: arg.reuse ?? 'create new',
-				}, true);
-
-				if (arg.waitForExit) {
-					onDidCloseTerminalDisposable = window.onDidCloseTerminal(closedTerminal => {
-						if (closedTerminal.name === targetTerminal.name) {
-							resolve();
-							onDidCloseTerminalDisposable?.dispose();
-						}
-					});
-				} else {
-					resolve();
-				}
-
-				targetTerminal.sendText(arg.text);
-
-				if (arg.reveal) {
-					targetTerminal.show();
-				}
+				resolve();
 			}
+
+			targetTerminal.sendText(arg.text);
+
+			if (arg.reveal) {
+				targetTerminal.show();
+			}
+		} else {
+			window.showErrorMessage(`No "text" property provided in "args" of "${CommandId.RunInTerminal}" command.`);
 		}
 	});
 }

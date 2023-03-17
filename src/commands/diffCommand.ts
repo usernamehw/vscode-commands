@@ -1,4 +1,4 @@
-import { commands, TabInputText, TextDocumentShowOptions, Uri, window } from 'vscode';
+import { commands, TabInputText, window, type TextDocumentShowOptions, type Uri } from 'vscode';
 import { CommandId } from '../commands';
 
 interface DiffArgs {
@@ -7,7 +7,7 @@ interface DiffArgs {
 	columnOptions?: TextDocumentShowOptions;
 }
 
-export async function diffCommand(arg?: DiffArgs) {
+export async function diffCommand(arg?: DiffArgs): Promise<void> {
 	if (arg === undefined) {
 		window.showErrorMessage(`${CommandId.Diff}: "args" is required.`);
 		return;
@@ -51,7 +51,6 @@ export async function diffCommand(arg?: DiffArgs) {
 		// const leftHandUri = Uri.parse(`untitled:${String(Math.random())}`);
 		// const rightHandUri = Uri.parse(`untitled:${String(Math.random())}`);
 	} else {
-		window.showErrorMessage(`${CommandId.Diff}: Unknown "kind": ${arg?.kind}`);
 		return;
 	}
 	await commands.executeCommand('vscode.diff', leftHandResource, rightHandResource, arg.title, arg.columnOptions);

@@ -1,11 +1,13 @@
-import { commands, DocumentSymbol, env, ExtensionMode, Range, Selection, TextDocument, TextEditor, TextEditorRevealType, UIKind, window } from 'vscode';
+import { commands, env, ExtensionMode, Range, Selection, TextEditorRevealType, UIKind, window, type DocumentSymbol, type TextDocument, type TextEditor } from 'vscode';
 import { $state } from './extension';
-import { CommandFolder, TopLevelCommands } from './types';
+import { type CommandFolder, type TopLevelCommands } from './types';
 
 /**
  * Emulate delay with async setTimeout().
  */
-export const sleep = async (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms));
+export const sleep = async (ms: number): Promise<void> => new Promise(resolve => {
+	setTimeout(resolve, ms);
+});
 /**
  * Return `true` when item is an object (NOT Array, NOT null)
  */
@@ -33,7 +35,7 @@ export async function openKeybindingsGuiAt(value: string): Promise<void> {
 /**
  * Open global or workspace settings.json file in the editor.
  */
-export async function openSettingsJSON(target: 'global' | 'workspace'): Promise<void> {
+export async function openSettingsJson(target: 'global' | 'workspace'): Promise<void> {
 	await commands.executeCommand(target === 'global' ? 'workbench.action.openSettingsJson' : 'workbench.action.openWorkspaceSettingsFile');
 }
 /**
@@ -140,7 +142,7 @@ export function forEachSymbol(f: (symbol: DocumentSymbol)=> void, symbols: Docum
  * Return all registered vscode commands (excluding internal).
  */
 export async function getAllVscodeCommands(): Promise<string[]> {
-	return await commands.getCommands(true);
+	return commands.getCommands(true);
 }
 /**
  * Unique id... Ehh, good enough.
@@ -155,11 +157,13 @@ export function deepCopy<T>(object: T): T {
 	return JSON.parse(JSON.stringify(object));
 }
 export function stringToUint8Array(text: string): Uint8Array {
-	// @ts-ignore
+	// @ts-expect-error TextEncoder EXISTS
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 	return new TextEncoder().encode(text);
 }
 export function uint8ArrayToString(arr: Uint8Array): string {
-	// @ts-ignore
+	// @ts-expect-error TextDecoder EXISTS
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 	return new TextDecoder().decode(arr);
 }
 /**

@@ -1,6 +1,6 @@
 import { window } from 'vscode';
 
-export function showStatusBarNotificationCommand(arg: StatusBarNotification | string) {
+export function showStatusBarNotificationCommand(arg: StatusBarNotification | string): void {
 	if (typeof arg === 'string') {
 		showTempStatusBarMessage({
 			message: arg,
@@ -10,7 +10,7 @@ export function showStatusBarNotificationCommand(arg: StatusBarNotification | st
 	}
 }
 
-function showTempStatusBarMessage(notification: StatusBarNotification) {
+function showTempStatusBarMessage(notification: StatusBarNotification): void {
 	const tempStatusBarMessage = window.createStatusBarItem();
 	tempStatusBarMessage.text = notification.message;
 	tempStatusBarMessage.color = notification.color;
@@ -19,7 +19,7 @@ function showTempStatusBarMessage(notification: StatusBarNotification) {
 	setTimeout(() => {
 		tempStatusBarMessage.hide();
 		tempStatusBarMessage.dispose();
-	}, notification.timeout || 5000);
+	}, notification.timeout ?? 5000);
 }
 
 interface StatusBarNotification {

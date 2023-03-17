@@ -4,18 +4,18 @@ import { applyForTreeItem } from '../commands';
 import { $config, Constants } from '../extension';
 import { commandsToQuickPickItems, removeCodiconFromLabel } from '../quickPick';
 import { updateSetting } from '../settings';
-import { FolderTreeItem } from '../TreeViewProvider';
-import { deepCopy, forEachCommand, getAllVscodeCommands, goToSymbol, openSettingsJSON } from '../utils';
+import { type FolderTreeItem } from '../TreeViewProvider';
+import { deepCopy, forEachCommand, getAllVscodeCommands, goToSymbol, openSettingsJson } from '../utils';
 
-export async function newCommandCommand() {
+export async function newCommandCommand(): Promise<void> {
 	await addNewCommand();
 }
 
-export async function newCommandInFolderCommand(folderTreeItem: FolderTreeItem) {
+export async function newCommandInFolderCommand(folderTreeItem: FolderTreeItem): Promise<void> {
 	await addNewCommand(folderTreeItem);
 }
 
-async function addNewCommand(folderTreeItem?: FolderTreeItem) {
+async function addNewCommand(folderTreeItem?: FolderTreeItem): Promise<void> {
 	const quickPickItems = commandsToQuickPickItems(await getAllVscodeCommands());
 	const quickPickTitle = `Add command to ${folderTreeItem ? `"${folderTreeItem.getLabelName()}"` : 'root'}.`;
 
@@ -42,7 +42,6 @@ async function addNewCommand(folderTreeItem?: FolderTreeItem) {
 				if (!com.nestedItems) {
 					return;
 				}
-				// @ts-ignore
 				com.nestedItems = {
 					...com.nestedItems,
 					[newCommandKey]: newCommand,
@@ -50,7 +49,7 @@ async function addNewCommand(folderTreeItem?: FolderTreeItem) {
 			}, commandsCopy);
 
 			await updateSetting(settingId, commandsCopy, configTarget);
-			await openSettingsJSON(configTarget);
+			await openSettingsJson(configTarget);
 			await goToSymbol(window.activeTextEditor, newCommandKey);
 		}, folderTreeItem);
 	} else {
@@ -61,7 +60,7 @@ async function addNewCommand(folderTreeItem?: FolderTreeItem) {
 			},
 		};
 		await updateSetting(Constants.ExtensionMainSettingId, newCommandsSetting, 'global');
-		await openSettingsJSON('global');
+		await openSettingsJson('global');
 		await goToSymbol(window.activeTextEditor, newCommandKey);
 	}
 }

@@ -1,5 +1,5 @@
 import { MarkdownString, Uri } from 'vscode';
-import { CommandFolder } from './types';
+import { type CommandFolder } from './types';
 import { getAllNestedCommands } from './utils';
 
 /**
@@ -16,7 +16,7 @@ export function createFolderHoverText(folder: CommandFolder): MarkdownString {
 		const commandUri = Uri.parse(
 			`command:${item.command}${commandArg}`,
 		);
-		markdown.appendMarkdown(`[${key}](${commandUri})\n\n`);
+		markdown.appendMarkdown(`[${key}](${commandUri.toString()})\n\n`);
 	}
 
 	return markdown;

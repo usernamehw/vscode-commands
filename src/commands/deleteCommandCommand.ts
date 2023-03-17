@@ -2,17 +2,17 @@ import { window, workspace } from 'vscode';
 import { applyForTreeItem } from '../commands';
 import { Constants } from '../extension';
 import { updateSetting } from '../settings';
-import { RunCommandTreeItem } from '../TreeViewProvider';
-import { TopLevelCommands } from '../types';
+import { type RunCommandTreeItem } from '../TreeViewProvider';
+import { type TopLevelCommands } from '../types';
 import { deepCopy, forEachCommand } from '../utils';
 
-export async function deleteCommandCommand(treeItem: RunCommandTreeItem) {
+export async function deleteCommandCommand(targetTreeItem: RunCommandTreeItem): Promise<void> {
 	const confirmBtnName = 'Delete';
 	/**
 	 * This: https://github.com/microsoft/vscode/issues/128233
 	 */
 	const formatSymbol = workspace.getConfiguration('window').get('dialogStyle') === 'custom' ? Constants.NestingSymbol : ' ';
-	const button = await window.showWarningMessage(`Do you want to delete "${treeItem.label}"?\n\n${JSON.stringify(treeItem.runnable, null, formatSymbol.repeat(4))}`, {
+	const button = await window.showWarningMessage(`Do you want to delete "${targetTreeItem.getLabelName()}"?\n\n${JSON.stringify(targetTreeItem.runnable, null, formatSymbol.repeat(4))}`, {
 		modal: true,
 	}, confirmBtnName);
 	if (button === confirmBtnName) {
@@ -24,6 +24,6 @@ export async function deleteCommandCommand(treeItem: RunCommandTreeItem) {
 				}
 			}, configCommands);
 			await updateSetting(settingId, configCommands, configTarget);
-		}, treeItem);
+		}, targetTreeItem);
 	}
 }

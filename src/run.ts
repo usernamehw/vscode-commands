@@ -1,8 +1,9 @@
+/* eslint-disable no-await-in-loop */
 import { commands, window } from 'vscode';
 import { $config, $state } from './extension';
 import { showQuickPick } from './quickPick';
 import { substituteVariableRecursive, substituteVariables } from './substituteVariables';
-import { CommandFolder, CommandObject, Runnable, Sequence } from './types';
+import { type CommandFolder, type CommandObject, type Runnable, type Sequence } from './types';
 import { deepCopy, getAllNestedCommands, isSimpleObject, sleep } from './utils';
 
 /**
@@ -90,7 +91,7 @@ async function runObject(object: CommandObject): Promise<void> {
 			args = await substituteVariables(args);
 		} else if (
 			Array.isArray(args) ||
-			typeof args === 'object' && args !== null
+			(typeof args === 'object' && args !== null)
 		) {
 			args = await substituteVariableRecursive(deepCopy(args));
 		}

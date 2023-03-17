@@ -1,27 +1,40 @@
-import { Command, Event, EventEmitter, MarkdownString, ThemeColor, ThemeIcon, TreeDataProvider, TreeItem, TreeItemCollapsibleState } from 'vscode';
+/* eslint-disable max-classes-per-file */
+import { EventEmitter, MarkdownString, ThemeColor, ThemeIcon, TreeItem, TreeItemCollapsibleState, type Command, type Event, type TreeDataProvider } from 'vscode';
 import { CommandId } from './commands';
 import { $config, $state } from './extension';
 import { createFolderHoverText } from './folderHoverText';
-import { CommandFolder, Runnable, TopLevelCommands } from './types';
+import { type CommandFolder, type Runnable, type TopLevelCommands } from './types';
 import { isSimpleObject } from './utils';
+
+interface RunCommandTreeItemInit {
+	label: string;
+	command: Command | undefined;
+	runnable: Runnable;
+	icon?: string;
+	iconColor?: string;
+}
 
 /**
  * Ordinary tree item. Can have icon (with or without color).
  * Shows markdown tooltip on hover with json version of it's contents.
  */
 export class RunCommandTreeItem extends TreeItem {
-	collapsibleState = TreeItemCollapsibleState.None;
-	contextValue = 'command';
-	description = '';
+	public readonly collapsibleState = TreeItemCollapsibleState.None;
+	public contextValue = 'command';
+	public description = '';
+	public command: Command | undefined;
+	public runnable: Runnable;
 
-	constructor(
-		label: string,
-		readonly command: Command | undefined,
-		readonly runnable: Runnable,
-		icon?: string,
-		iconColor?: string,
-	) {
+	constructor({
+		label,
+		command,
+		runnable,
+		icon,
+		iconColor,
+	}: RunCommandTreeItemInit) {
 		super(label);
+		this.command = command;
+		this.runnable = runnable;
 		if (icon) {
 			this.iconPath = new ThemeIcon(icon, new ThemeColor(iconColor ?? ''));
 		}
@@ -39,7 +52,8 @@ export class RunCommandTreeItem extends TreeItem {
 			this.description += ` ⌨${keybinding.key}⌨`;
 		}
 	}
-	getLabelName(): string {
+
+	public getLabelName(): string {
 		return typeof this.label === 'string' ? this.label : '';
 	}
 }
@@ -47,17 +61,20 @@ export class RunCommandTreeItem extends TreeItem {
  * Folder uses icons from active file icon theme.
  */
 export class FolderTreeItem extends TreeItem {
-	collapsibleState = $config.treeViewCollapseFolders ? TreeItemCollapsibleState.Collapsed : TreeItemCollapsibleState.Expanded;
-	contextValue = 'folder';
-	description = '';
-	iconPath = ThemeIcon.Folder;
-	nestedItems: TopLevelCommands;
+	public collapsibleState = $config.treeViewCollapseFolders ? TreeItemCollapsibleState.Collapsed : TreeItemCollapsibleState.Expanded;
+	public contextValue = 'folder';
+	public description = '';
+	public iconPath = ThemeIcon.Folder;
+	public nestedItems: TopLevelCommands;
+	public folder: CommandFolder;
 
 	constructor(
 		label: string,
-		readonly folder: CommandFolder,
+		folder: CommandFolder,
 	) {
 		super(label);
+		this.folder = folder;
+		// TODO: is this needed? already property on folder
 		this.nestedItems = folder.nestedItems!;
 
 		if (folder.workspace) {
@@ -68,57 +85,62 @@ export class FolderTreeItem extends TreeItem {
 		}
 	}
 
-	getLabelName(): string {
+	public getLabelName(): string {
 		return typeof this.label === 'string' ? this.label : '';
 	}
 }
 
-
 export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem | RunCommandTreeItem> {
 	private readonly _onDidChangeTreeData: EventEmitter<FolderTreeItem | RunCommandTreeItem | undefined> = new EventEmitter<FolderTreeItem | RunCommandTreeItem | undefined>();
-	readonly onDidChangeTreeData: Event<FolderTreeItem | RunCommandTreeItem | undefined> = this._onDidChangeTreeData.event;
+	// eslint-disable-next-line @typescript-eslint/member-ordering
+	public readonly onDidChangeTreeData: Event<FolderTreeItem | RunCommandTreeItem | undefined> = this._onDidChangeTreeData.event;
+
+	private commands: TopLevelCommands;
 
 	constructor(
-		private commands: TopLevelCommands,
-	) { }
-
-	refresh(e?: FolderTreeItem | RunCommandTreeItem): void {
-		this._onDidChangeTreeData.fire(e);
-	}
-	/**
-	 * Resolve `tooltip` only on hover
-	 */
-	resolveTreeItem(_: FolderTreeItem | RunCommandTreeItem, el: FolderTreeItem | RunCommandTreeItem) {
-		let markdown = new MarkdownString(undefined, true);
-		markdown.isTrusted = true;
-		if (el instanceof FolderTreeItem) {
-			if (Object.keys(el.nestedItems).length === 0) {
-				return undefined;
-			}
-			markdown = createFolderHoverText(el.folder);
-		} else {
-			if (isSimpleObject(el.runnable) && el.runnable.disableTooltip) {
-				return el;
-			}
-			if (isSimpleObject(el.runnable) && el.runnable.markdownTooltip) {
-				markdown.appendMarkdown(el.runnable.markdownTooltip as string);
-				markdown.appendMarkdown('\n\n---\n\n');
-			}
-			markdown.appendCodeblock(JSON.stringify(el.runnable, null, '  '), 'json');
-		}
-		el.tooltip = markdown;
-		return el;
-	}
-
-	updateCommands(commands: TopLevelCommands): void {
+		commands: TopLevelCommands,
+	) {
 		this.commands = commands;
 	}
 
-	getTreeItem(element: RunCommandTreeItem): TreeItem {
+	public refresh(e?: FolderTreeItem | RunCommandTreeItem): void {
+		this._onDidChangeTreeData.fire(e);
+	}
+
+	/**
+	 * Resolve `tooltip` only on hover
+	 */
+	public resolveTreeItem(_: FolderTreeItem | RunCommandTreeItem, item: FolderTreeItem | RunCommandTreeItem): FolderTreeItem | RunCommandTreeItem | undefined {
+		let markdown = new MarkdownString(undefined, true);
+		markdown.isTrusted = true;
+		if (item instanceof FolderTreeItem) {
+			if (Object.keys(item.nestedItems).length === 0) {
+				return undefined;
+			}
+			markdown = createFolderHoverText(item.folder);
+		} else {
+			if (isSimpleObject(item.runnable) && item.runnable.disableTooltip) {
+				return item;
+			}
+			if (isSimpleObject(item.runnable) && item.runnable.markdownTooltip) {
+				markdown.appendMarkdown(item.runnable.markdownTooltip as string);
+				markdown.appendMarkdown('\n\n---\n\n');
+			}
+			markdown.appendCodeblock(JSON.stringify(item.runnable, null, '  '), 'json');
+		}
+		item.tooltip = markdown;
+		return item;
+	}
+
+	public updateCommands(commands: TopLevelCommands): void {
+		this.commands = commands;
+	}
+
+	public getTreeItem(element: RunCommandTreeItem): TreeItem {
 		return element;
 	}
 
-	getChildren(element?: FolderTreeItem | RunCommandTreeItem): (FolderTreeItem | RunCommandTreeItem)[] {
+	public getChildren(element?: FolderTreeItem | RunCommandTreeItem): (FolderTreeItem | RunCommandTreeItem)[] {
 		if (element instanceof FolderTreeItem) {
 			return this.commandsToTreeItems(element.nestedItems);
 		} else {
@@ -126,6 +148,7 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 			return this.commandsToTreeItems(allCommands);
 		}
 	}
+
 	/**
 	 * Convert extension commands to `TreeItem` (`FolderTreeItem` or `RunCommandTreeItem`)
 	 */
@@ -151,15 +174,17 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 				));
 			} else {
 				result.push(new RunCommandTreeItem(
-					key,
 					{
-						command: CommandId.Run,
-						title: 'Run Command',
-						arguments: [runnable],
+						label: key,
+						command: {
+							command: CommandId.Run,
+							title: 'Run Command',
+							arguments: [runnable],
+						},
+						runnable,
+						icon: item.icon,
+						iconColor: item.iconColor,
 					},
-					runnable,
-					item.icon,
-					item.iconColor,
 				));
 			}
 		}

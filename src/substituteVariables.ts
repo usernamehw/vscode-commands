@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import escapeRegExp from 'lodash/escapeRegExp';
 import { homedir } from 'os';
 import path from 'path';
@@ -6,7 +7,6 @@ import { env, window, workspace } from 'vscode';
 // https://code.visualstudio.com/docs/editor/variables-reference
 // https://github.com/microsoft/vscode/blob/main/src/vs/workbench/services/configurationResolver/common/variableResolver.ts
 
-// TODO: ${userHome}
 export const enum VariableNames {
 	UserHome = '${userHome}',
 	File = '${file}', // the current opened file (absolute path?)
@@ -35,26 +35,26 @@ export const enum VariableNames {
 }
 
 const variableRegexps = {
-	[VariableNames.UserHome]: new RegExp(escapeRegExp(VariableNames.UserHome), 'ig'),
-	[VariableNames.File]: new RegExp(escapeRegExp(VariableNames.File), 'ig'),
-	[VariableNames.FileBasename]: new RegExp(escapeRegExp(VariableNames.FileBasename), 'ig'),
-	[VariableNames.FileBasenameNoExtension]: new RegExp(escapeRegExp(VariableNames.FileBasenameNoExtension), 'ig'),
-	[VariableNames.FileDirname]: new RegExp(escapeRegExp(VariableNames.FileDirname), 'ig'),
-	[VariableNames.FileExtname]: new RegExp(escapeRegExp(VariableNames.FileExtname), 'ig'),
-	[VariableNames.FileWorkspaceFolder]: new RegExp(escapeRegExp(VariableNames.FileWorkspaceFolder), 'ig'),
-	[VariableNames.WorkspaceFolder]: new RegExp(escapeRegExp(VariableNames.WorkspaceFolder), 'ig'),
-	[VariableNames.WorkspaceFolderBasename]: new RegExp(escapeRegExp(VariableNames.WorkspaceFolderBasename), 'ig'),
-	[VariableNames.ExecPath]: new RegExp(escapeRegExp(VariableNames.ExecPath), 'ig'),
-	[VariableNames.PathSeparator]: new RegExp(escapeRegExp(VariableNames.PathSeparator), 'ig'),
-	[VariableNames.LineNumber]: new RegExp(escapeRegExp(VariableNames.LineNumber), 'ig'),
-	[VariableNames.SelectedText]: new RegExp(escapeRegExp(VariableNames.SelectedText), 'ig'),
-	[VariableNames.Clipboard]: new RegExp(escapeRegExp(VariableNames.Clipboard), 'ig'),
-	[VariableNames.Random]: new RegExp(escapeRegExp(VariableNames.Random), 'ig'),
-	[VariableNames.RandomHex]: new RegExp(escapeRegExp(VariableNames.RandomHex), 'ig'),
-	[VariableNames.SingleEnvironmentVariable]: /\${env:([a-zA-Z_]+[a-zA-Z0-9_]*)}/i,
-	[VariableNames.EnvironmentVariable]: /\${env:([a-zA-Z_]+[a-zA-Z0-9_]*)}/ig,
-	[VariableNames.SingleConfigurationVariable]: /\${config:([^}]+?)}/i,
-	[VariableNames.ConfigurationVariable]: /\${config:([^}]+?)}/ig,
+	[VariableNames.UserHome]: new RegExp(escapeRegExp(VariableNames.UserHome), 'igu'),
+	[VariableNames.File]: new RegExp(escapeRegExp(VariableNames.File), 'igu'),
+	[VariableNames.FileBasename]: new RegExp(escapeRegExp(VariableNames.FileBasename), 'igu'),
+	[VariableNames.FileBasenameNoExtension]: new RegExp(escapeRegExp(VariableNames.FileBasenameNoExtension), 'igu'),
+	[VariableNames.FileDirname]: new RegExp(escapeRegExp(VariableNames.FileDirname), 'igu'),
+	[VariableNames.FileExtname]: new RegExp(escapeRegExp(VariableNames.FileExtname), 'igu'),
+	[VariableNames.FileWorkspaceFolder]: new RegExp(escapeRegExp(VariableNames.FileWorkspaceFolder), 'igu'),
+	[VariableNames.WorkspaceFolder]: new RegExp(escapeRegExp(VariableNames.WorkspaceFolder), 'igu'),
+	[VariableNames.WorkspaceFolderBasename]: new RegExp(escapeRegExp(VariableNames.WorkspaceFolderBasename), 'igu'),
+	[VariableNames.ExecPath]: new RegExp(escapeRegExp(VariableNames.ExecPath), 'igu'),
+	[VariableNames.PathSeparator]: new RegExp(escapeRegExp(VariableNames.PathSeparator), 'igu'),
+	[VariableNames.LineNumber]: new RegExp(escapeRegExp(VariableNames.LineNumber), 'igu'),
+	[VariableNames.SelectedText]: new RegExp(escapeRegExp(VariableNames.SelectedText), 'igu'),
+	[VariableNames.Clipboard]: new RegExp(escapeRegExp(VariableNames.Clipboard), 'igu'),
+	[VariableNames.Random]: new RegExp(escapeRegExp(VariableNames.Random), 'igu'),
+	[VariableNames.RandomHex]: new RegExp(escapeRegExp(VariableNames.RandomHex), 'igu'),
+	[VariableNames.SingleEnvironmentVariable]: /\$\{env:([a-zA-Z_]+[a-zA-Z0-9_]*)\}/iu,
+	[VariableNames.EnvironmentVariable]: /\$\{env:([a-zA-Z_]+[a-zA-Z0-9_]*)\}/igu,
+	[VariableNames.SingleConfigurationVariable]: /\$\{config:([^}]+?)\}/iu,
+	[VariableNames.ConfigurationVariable]: /\$\{config:([^}]+?)\}/igu,
 	// [VariableNames.relativeFile]: new RegExp(escapeRegExp(VariableNames.relativeFile), 'ig'),
 	// [VariableNames.relativeFileDirname]: new RegExp(escapeRegExp(VariableNames.relativeFileDirname), 'ig'),
 	// [VariableNames.cwd]: new RegExp(escapeRegExp(VariableNames.cwd), 'ig'),
@@ -64,7 +64,8 @@ const variableRegexps = {
  *
  * TODO: throw errors (window.showMessage) when variable exists but can't resolve
  */
-export async function substituteVariables(str: string): Promise<string> {
+export async function substituteVariables(strArg: string): Promise<string> {
+	let str = strArg;
 	const activeTextEditor = window.activeTextEditor;
 	const workspaceFolder = workspace.workspaceFolders?.[0].uri.fsPath;
 	if (str.includes(VariableNames.SelectedText) && activeTextEditor) {
@@ -82,6 +83,7 @@ export async function substituteVariables(str: string): Promise<string> {
 		str = str.replace(variableRegexps[VariableNames.ExecPath], env.appRoot);
 	}
 	if (str.includes(VariableNames.UserHome)) {
+		// TODO: will this break the web version?
 		str = str.replace(variableRegexps[VariableNames.UserHome], homedir());
 	}
 	if (str.includes(VariableNames.File) && activeTextEditor) {
@@ -123,15 +125,15 @@ export async function substituteVariables(str: string): Promise<string> {
 	if (variableRegexps[VariableNames.EnvironmentVariable].test(str)) {
 		const match = str.match(variableRegexps[VariableNames.EnvironmentVariable]);
 
-		for (const _ of match || []) {
-			str = str.replace(variableRegexps[VariableNames.SingleEnvironmentVariable], (__, g1) => process.env[g1] || g1);
+		for (const _ of match ?? []) {
+			str = str.replace(variableRegexps[VariableNames.SingleEnvironmentVariable], (__, g1: string) => process.env[g1] ?? g1);
 		}
 	}
 	if (variableRegexps[VariableNames.ConfigurationVariable].test(str)) {
 		const match = str.match(variableRegexps[VariableNames.ConfigurationVariable]);
 
-		for (const _ of match || []) {
-			str = str.replace(variableRegexps[VariableNames.SingleConfigurationVariable], (__, g1) => replaceConfigurationVariable(g1));
+		for (const _ of match ?? []) {
+			str = str.replace(variableRegexps[VariableNames.SingleConfigurationVariable], (__, g1: string) => replaceConfigurationVariable(g1));
 		}
 	}
 	return str;
@@ -159,9 +161,10 @@ function replaceConfigurationVariable(configName: string): string {
 /**
  * Walk recursively through object/array and replace variables in strings.
  */
-export async function substituteVariableRecursive(arg: unknown[] | object | string | unknown): Promise<object | string | unknown> {
+export async function substituteVariableRecursive(arg: unknown): Promise<unknown> {
 	if (typeof arg === 'string') {
-		return await substituteVariables(arg);
+		const substituted = await substituteVariables(arg);
+		return substituted;
 	}
 
 	if (Array.isArray(arg)) {
@@ -170,7 +173,7 @@ export async function substituteVariableRecursive(arg: unknown[] | object | stri
 		}
 	} else if (typeof arg === 'object' && arg !== null) {
 		for (const key in arg) {
-			// @ts-ignore
+			// @ts-expect-error
 			arg[key] = await substituteVariableRecursive(arg[key]);
 		}
 	}

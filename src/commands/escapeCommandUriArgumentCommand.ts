@@ -1,6 +1,6 @@
-import { TextEditor } from 'vscode';
+import { type TextEditor } from 'vscode';
 
-export function escapeCommandUriArgumentCommand(editor: TextEditor) {
+export function escapeCommandUriArgumentCommand(editor: TextEditor): void {
 	const selectionRange = editor.selection;
 	const selectionText = editor.document.getText(selectionRange);
 	if (!selectionText) {

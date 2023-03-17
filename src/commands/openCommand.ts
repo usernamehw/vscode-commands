@@ -1,6 +1,6 @@
 import { isOnWeb, isSimpleObject, showNotOnWebNotification } from '../utils';
 
-export async function openCommand(arg: string | { target: string; app: string; arguments?: string[] }) {
+export async function openCommand(arg: string | { target: string; app: string; arguments?: string[] }): Promise<void> {
 	if (isOnWeb()) {
 		showNotOnWebNotification('Running "commands.open"');
 		return;
@@ -12,7 +12,7 @@ export async function openCommand(arg: string | { target: string; app: string; a
 		await open(arg.target, {
 			app: {
 				name: arg.app,
-				arguments: arg.arguments || [],
+				arguments: arg.arguments ?? [],
 			},
 		});
 	}

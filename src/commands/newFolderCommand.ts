@@ -2,11 +2,11 @@ import { window } from 'vscode';
 import { applyForTreeItem } from '../commands';
 import { $config, Constants } from '../extension';
 import { updateSetting } from '../settings';
-import { FolderTreeItem } from '../TreeViewProvider';
-import { CommandFolder } from '../types';
+import { type FolderTreeItem } from '../TreeViewProvider';
+import { type CommandFolder } from '../types';
 import { deepCopy, forEachCommand } from '../utils';
 
-export async function newFolderCommand() {
+export async function newFolderCommand(): Promise<void> {
 	await newFolder();
 }
 
@@ -35,7 +35,7 @@ export async function newFolder(folderTreeItem?: FolderTreeItem): Promise<void> 
 				if (!com.nestedItems) {
 					return;
 				}
-				// @ts-ignore
+				// @ts-expect-error Fix this later
 				com.nestedItems = {
 					...com.nestedItems,
 					[newFolderName]: emptyFolder,

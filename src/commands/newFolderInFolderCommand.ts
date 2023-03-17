@@ -1,7 +1,6 @@
-import { FolderTreeItem } from '../TreeViewProvider';
+import { type FolderTreeItem } from '../TreeViewProvider';
 import { newFolder } from './newFolderCommand';
 
-
-export async function newFolderInFolderCommand(folderTreeItem?: FolderTreeItem) {
+export async function newFolderInFolderCommand(folderTreeItem?: FolderTreeItem): Promise<void> {
 	await newFolder(folderTreeItem);
 }

@@ -1,14 +1,13 @@
-import { ExtensionContext, TreeView, window, workspace } from 'vscode';
+import { window, workspace, type ExtensionContext, type TreeView } from 'vscode';
 import { updateCommandPalette } from './commandPalette';
 import { registerExtensionCommands } from './commands';
 import { updateDocumentLinkProvider } from './documentLinksProvider';
-import { getKeybindings, VSCodeKeybindingItem } from './getKeybindings';
+import { getKeybindings } from './getKeybindings';
 import { registerJsonSchemaCompletion } from './jsonSchemaCompletions';
-import { VSCodeCommandWithoutCategory } from './quickPick';
 import { updateUserCommands } from './registerUserCommands';
 import { updateStatusBarItems, updateStatusBarItemsVisibilityBasedOnActiveEditor } from './statusBar';
-import { CommandsTreeViewProvider, FolderTreeItem, RunCommandTreeItem } from './TreeViewProvider';
-import { ExtensionConfig, Runnable, TopLevelCommands } from './types';
+import { CommandsTreeViewProvider, type FolderTreeItem, type RunCommandTreeItem } from './TreeViewProvider';
+import { type ExtensionConfig, type ExtensionState, type TopLevelCommands } from './types';
 import { addWorkspaceIdToCommands, getWorkspaceId, setWorkspaceIdToContext } from './workspaceCommands';
 
 export const enum Constants {
@@ -23,19 +22,16 @@ export const enum Constants {
 }
 
 export let $config: ExtensionConfig;
-export abstract class $state {
-	static lastExecutedCommand: Runnable = { command: 'noop' };
-	static context: ExtensionContext;
-	/**
-	 * Cache all Command Palette commands for `quickPickIncludeAllCommands` feature.
-	 */
-	static allCommandPaletteCommands: VSCodeCommandWithoutCategory[] = [];
-	static commandsTreeViewProvider: CommandsTreeViewProvider;
-	static commandsTreeView: TreeView<FolderTreeItem | RunCommandTreeItem>;
-	static keybindings: VSCodeKeybindingItem[] = [];
-}
+export const $state: ExtensionState = {
+	lastExecutedCommand: { command: 'noop' },
+	context: {} as unknown as ExtensionContext,
+	allCommandPaletteCommands: [],
+	commandsTreeViewProvider: {} as unknown as CommandsTreeViewProvider,
+	commandsTreeView: {} as unknown as TreeView<FolderTreeItem | RunCommandTreeItem>,
+	keybindings: [],
+};
 
-export async function activate(context: ExtensionContext) {
+export async function activate(context: ExtensionContext): Promise<void> {
 	$state.context = context;
 
 	updateConfig();
@@ -46,7 +42,6 @@ export async function activate(context: ExtensionContext) {
 		showCollapseAll: true,
 	});
 
-
 	registerExtensionCommands();
 
 	await setWorkspaceIdToContext(context);
@@ -56,8 +51,8 @@ export async function activate(context: ExtensionContext) {
 		registerJsonSchemaCompletion(context);
 	});
 
-	function updateConfig() {
-		$config = workspace.getConfiguration(Constants.ExtensionSettingsPrefix) as any as ExtensionConfig;
+	function updateConfig(): void {
+		$config = workspace.getConfiguration(Constants.ExtensionSettingsPrefix) as unknown as ExtensionConfig;
 	}
 
 	context.subscriptions.push($state.commandsTreeView);
@@ -77,7 +72,7 @@ export async function activate(context: ExtensionContext) {
 /**
  * Function runs after every config update.
  */
-async function updateEverything(context: ExtensionContext) {
+async function updateEverything(context: ExtensionContext): Promise<void> {
 	const commands = getAllCommands();
 	$state.keybindings = [];
 	if ($config.showKeybindings) {
@@ -107,4 +102,4 @@ export function getAllCommands(): TopLevelCommands {
 	}
 }
 
-export function deactivate() { }
+export function deactivate(): void { }

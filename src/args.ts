@@ -121,7 +121,7 @@ export const commandArgs: Record<string, unknown> = {
 	[CommandId.OpenExternal]: '',
 	[CommandId.SetEditorLanguage]: '',
 	[CommandId.ClipboardWrite]: '',
-	[CommandId.RevealFileInOS]: '',
+	[CommandId.RevealFileInOs]: '',
 	[CommandId.ShowNotification]: {
 		message: '',
 		severity: 'error',

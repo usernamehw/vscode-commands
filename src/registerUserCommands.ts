@@ -1,7 +1,7 @@
-import { commands, Disposable, window } from 'vscode';
+import { commands, window, type Disposable } from 'vscode';
 import { $config } from './extension';
 import { run } from './run';
-import { TopLevelCommands } from './types';
+import { type TopLevelCommands } from './types';
 import { forEachCommand } from './utils';
 
 const registeredCommandsDisposables: Disposable[] = [];
@@ -47,7 +47,7 @@ export function updateUserCommands(items: TopLevelCommands): void {
 /**
  * Dispose user defined commands.
  */
-export function unregisterUserCommands() {
+export function unregisterUserCommands(): void {
 	for (const command of registeredCommandsDisposables) {
 		command.dispose();
 	}

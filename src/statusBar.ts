@@ -1,7 +1,7 @@
-import { languages, MarkdownString, StatusBarAlignment, StatusBarItem, TextEditor, ThemeColor, Uri, window } from 'vscode';
+import { languages, MarkdownString, StatusBarAlignment, ThemeColor, Uri, window, type StatusBarItem, type TextEditor } from 'vscode';
 import { CommandId } from './commands';
 import { createFolderHoverText } from './folderHoverText';
-import { TopLevelCommands } from './types';
+import { type TopLevelCommands } from './types';
 import { forEachCommand } from './utils';
 
 const statusBarItems: StatusBarWithActiveEditorMetadata[] = [];
@@ -23,9 +23,10 @@ export function updateStatusBarItems(items: TopLevelCommands): void {
 			const alignment = statusBarUserObject.alignment === 'right' ? StatusBarAlignment.Right : StatusBarAlignment.Left;
 			const newStatusBarItem: StatusBarWithActiveEditorMetadata = window.createStatusBarItem(statusBarUserObject.text, alignment, statusBarUserObject.priority ?? -9999);
 			let icon = item.icon ? `$(${item.icon}) ` : '';
-			newStatusBarItem.name = `Commands: ${statusBarUserObject.name || statusBarUserObject.text}`;
+			newStatusBarItem.name = `Commands: ${statusBarUserObject.name ?? statusBarUserObject.text}`;
 			newStatusBarItem.color = statusBarUserObject.color;
-			newStatusBarItem.backgroundColor = statusBarUserObject.backgroundColor === 'error' ? new ThemeColor('statusBarItem.errorBackground') :
+			newStatusBarItem.backgroundColor = statusBarUserObject.backgroundColor === 'error' ?
+				new ThemeColor('statusBarItem.errorBackground') :
 				statusBarUserObject.backgroundColor === 'warning' ? new ThemeColor('statusBarItem.warningBackground') : undefined;
 
 			let mdTooltip = new MarkdownString(undefined, true);
@@ -33,7 +34,7 @@ export function updateStatusBarItems(items: TopLevelCommands): void {
 			if (statusBarUserObject.markdownTooltip) {
 				mdTooltip.appendMarkdown(statusBarUserObject.markdownTooltip);
 			} else {
-				mdTooltip.appendText(statusBarUserObject.tooltip || key);
+				mdTooltip.appendText(statusBarUserObject.tooltip ?? key);
 			}
 			if (item.nestedItems) {
 				icon = '$(folder) ';
@@ -46,7 +47,7 @@ export function updateStatusBarItems(items: TopLevelCommands): void {
 			const revealCommandUri = Uri.parse(
 				`command:${CommandId.RevealCommand2}?${encodeURIComponent(JSON.stringify(args))}`,
 			);
-			mdTooltip.appendMarkdown(`\n\n---\n\n[Reveal in settings.json](${revealCommandUri})`);
+			mdTooltip.appendMarkdown(`\n\n---\n\n[Reveal in settings.json](${revealCommandUri.toString()})`);
 			newStatusBarItem.tooltip = mdTooltip;
 
 			newStatusBarItem.text = icon + (statusBarUserObject.text || '');
@@ -71,7 +72,7 @@ export function updateStatusBarItems(items: TopLevelCommands): void {
  * Control whether or not status bar item should be shown
  * based on active text editor.
  */
-export function updateStatusBarItemsVisibilityBasedOnActiveEditor(editor?: TextEditor) {
+export function updateStatusBarItemsVisibilityBasedOnActiveEditor(editor?: TextEditor): void {
 	// No active text editor (no editor opened).
 	if (!editor) {
 		for (const statusBarItem of statusBarItems) {
@@ -100,10 +101,10 @@ export function updateStatusBarItemsVisibilityBasedOnActiveEditor(editor?: TextE
 		if (statusBarItem.activeEditorGlob) {
 			if (languages.match({
 				pattern: statusBarItem.activeEditorGlob || '',
-			}, editor.document) !== 0) {
-				statusBarItem.show();
-			} else {
+			}, editor.document) === 0) {
 				statusBarItem.hide();
+			} else {
+				statusBarItem.show();
 			}
 		}
 	}
@@ -111,7 +112,7 @@ export function updateStatusBarItemsVisibilityBasedOnActiveEditor(editor?: TextE
 /**
  * Dispose all status bar items.
  */
-function disposeStatusBarItems() {
+function disposeStatusBarItems(): void {
 	for (const statusBarItem of statusBarItems) {
 		statusBarItem.dispose();
 	}

@@ -1,4 +1,7 @@
-
+import { type ExtensionContext, type TreeView } from 'vscode';
+import { type VsCodeKeybindingItem } from './getKeybindings';
+import { type VscodeCommandWithoutCategory } from './quickPick';
+import { type CommandsTreeViewProvider, type FolderTreeItem, type RunCommandTreeItem } from './TreeViewProvider';
 
 export interface ExtensionConfig {
 	/**
@@ -64,13 +67,21 @@ export interface ExtensionConfig {
 		showNotification: boolean;
 	};
 }
+export interface ExtensionState {
+	lastExecutedCommand: Runnable;
+	context: ExtensionContext;
+	/**
+	 * Cache all Command Palette commands for `quickPickIncludeAllCommands` feature.
+	 */
+	allCommandPaletteCommands: VscodeCommandWithoutCategory[];
+	commandsTreeViewProvider: CommandsTreeViewProvider;
+	commandsTreeView: TreeView<FolderTreeItem | RunCommandTreeItem>;
+	keybindings: VsCodeKeybindingItem[];
+}
 /**
  * Main configuration property. Can contain folders or command objects.
- * Folders cannot contain folders.
  */
-export interface TopLevelCommands {
-	[key: string]: CommandFolder & CommandObject;// TODO: ideally it would also have `| string`
-}
+export type TopLevelCommands = Record<string, CommandFolder & CommandObject>;
 
 export type Runnable = CommandObject | Sequence | string;
 

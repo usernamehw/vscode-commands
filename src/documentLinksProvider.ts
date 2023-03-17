@@ -1,10 +1,10 @@
-import { Disposable, DocumentLink, env, languages, Range, Uri, window } from 'vscode';
+import { env, languages, Range, Uri, window, type Disposable, type DocumentLink } from 'vscode';
 import { $config, Constants } from './extension';
 import { run } from './run';
 
 const documentLinkDisposables: Disposable[] = [];
 
-export function updateDocumentLinkProvider() {
+export function updateDocumentLinkProvider(): void {
 	disposeDocumentLinkDisposables();
 
 	if (!$config.documentLinksEnabled) {
@@ -20,7 +20,7 @@ export function updateDocumentLinkProvider() {
 		},
 	});
 
-	const regex = /@([a-z\d._-]+)(\?([^@]+))?@/ig;
+	const regex = /@([a-z\d._-]+)(\?([^@]+))?@/igu;
 
 	const documentLinkProviderDisposable = languages.registerDocumentLinkProvider(
 		{
@@ -52,7 +52,7 @@ export function updateDocumentLinkProvider() {
 	documentLinkDisposables.push(uriDisposable, documentLinkProviderDisposable);
 }
 
-function disposeDocumentLinkDisposables() {
+function disposeDocumentLinkDisposables(): void {
 	for (const disposable of documentLinkDisposables) {
 		disposable.dispose();
 	}

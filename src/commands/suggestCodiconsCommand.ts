@@ -1,16 +1,13 @@
-import { QuickPickItem, TextEditor, window } from 'vscode';
+import { window, type QuickPickItem, type TextEditor } from 'vscode';
 import { codiconNames } from '../codiconNames';
 
-export async function suggestCodiconsCommand(editor: TextEditor) {
-	type CustomQuickPickItem = QuickPickItem & {value: string};
+export async function suggestCodiconsCommand(editor: TextEditor): Promise<void> {
+	type CustomQuickPickItem = QuickPickItem & { value: string };
 
-	const quickPickItems = codiconNames.map(
-		codiconName =>
-			({
-				label: `$(${codiconName}) ${codiconName}`,
-				value: codiconName
-			} as CustomQuickPickItem),
-	);
+	const quickPickItems: CustomQuickPickItem[] = codiconNames.map(codiconName => ({
+		label: `$(${codiconName}) ${codiconName}`,
+		value: codiconName,
+	}));
 
 	const picked = await window.showQuickPick(quickPickItems);
 	if (!picked) {

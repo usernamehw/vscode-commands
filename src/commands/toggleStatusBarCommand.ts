@@ -2,11 +2,11 @@ import { window } from 'vscode';
 import { applyForTreeItem } from '../commands';
 import { $config } from '../extension';
 import { updateSetting } from '../settings';
-import { FolderTreeItem, RunCommandTreeItem } from '../TreeViewProvider';
-import { CommandObject, TopLevelCommands } from '../types';
+import { type FolderTreeItem, type RunCommandTreeItem } from '../TreeViewProvider';
+import { type CommandObject, type TopLevelCommands } from '../types';
 import { deepCopy } from '../utils';
 
-export async function toggleStatusBarCommand(treeItem: FolderTreeItem | RunCommandTreeItem) {
+export async function toggleStatusBarCommand(treeItem: FolderTreeItem | RunCommandTreeItem): Promise<void> {
 	const labelName = treeItem.getLabelName();
 	let newStatusBarItemText = '';
 	if ($config.statusBarDefaultText === 'pick') {
@@ -40,7 +40,7 @@ export async function toggleStatusBarCommand(treeItem: FolderTreeItem | RunComma
 		}
 		updateSetting(settingId, configCommands, configTarget);
 	}, treeItem);
-	function toggleStatusBarItem(commandObject: CommandObject) {
+	function toggleStatusBarItem(commandObject: CommandObject): void {
 		if (commandObject.statusBar) {
 			commandObject.statusBar.hidden = !commandObject.statusBar.hidden;
 		} else {

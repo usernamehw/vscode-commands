@@ -1,6 +1,6 @@
-import { Disposable, ExtensionContext, Uri, workspace } from 'vscode';
+import { Uri, workspace, type Disposable, type ExtensionContext } from 'vscode';
 import { $config, Constants } from './extension';
-import { TopLevelCommands } from './types';
+import { type TopLevelCommands } from './types';
 import { forEachCommand, stringToUint8Array, uint8ArrayToString } from './utils';
 import { getWorkspaceId, isWorkspaceCommandItem, WorkspaceConstants } from './workspaceCommands';
 
@@ -8,13 +8,13 @@ const commandPaletteCommandsList: Disposable[] = [];
 /**
  * Command format in `package.json`.
  */
-interface ICommand {
+interface Command {
 	command: string;
 	title: string;
 	category?: string;
 	enablement: string;
 }
-interface ICommandPalette {
+interface CommandPalette {
 	command: string;
 	when: string;
 }
@@ -48,9 +48,9 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 		if (context.globalState.get(Constants.CommandPaletteWasPopulatedStorageKey)) {
 			// Setting was enabled then disabled. Only in this case revert/write `package.json`
 			// so it would contain only core commands again.
-			const { coreCommands, packageJSONObject, packageJsonPath } = await getCommandsFromPackageJson(context);
-			packageJSONObject.contributes.commands = coreCommands;
-			await workspace.fs.writeFile(Uri.file(packageJsonPath), stringToUint8Array(JSON.stringify(packageJSONObject, null, '\t')));
+			const { coreCommands, packageJsonObject, packageJsonPath } = await getCommandsFromPackageJson(context);
+			packageJsonObject.contributes.commands = coreCommands;
+			await workspace.fs.writeFile(Uri.file(packageJsonPath), stringToUint8Array(JSON.stringify(packageJsonObject, null, '\t')));
 			await context.globalState.update(Constants.CommandPaletteWasPopulatedStorageKey, false);
 		}
 		return;
@@ -59,14 +59,14 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 	const {
 		coreCommands,
 		oldCommands,
-		packageJSONObject,
+		packageJsonObject,
 		packageJsonPath,
 		coreCommandPalette,
 		otherWorkspacesCommands,
 		otherWorkspacesCommandPalette,
 	} = await getCommandsFromPackageJson(context);
 
-	const userCommands: ICommand[] = [];
+	const userCommands: Command[] = [];
 	const userCommandPalette: { command: string; when: string }[] = [];
 	forEachCommand((item, key) => {
 		if (item.nestedItems) {
@@ -92,26 +92,27 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 		return;// Only write file if necessary
 	}
 
-	packageJSONObject.contributes.commands = [...coreCommands, ...otherWorkspacesCommands, ...userCommands];
-	packageJSONObject.contributes.menus.commandPalette = [...coreCommandPalette, ...otherWorkspacesCommandPalette, ...userCommandPalette];
-	await workspace.fs.writeFile(Uri.file(packageJsonPath), stringToUint8Array(JSON.stringify(packageJSONObject, null, '\t')));
+	packageJsonObject.contributes.commands = [...coreCommands, ...otherWorkspacesCommands, ...userCommands];
+	packageJsonObject.contributes.menus.commandPalette = [...coreCommandPalette, ...otherWorkspacesCommandPalette, ...userCommandPalette];
+	await workspace.fs.writeFile(Uri.file(packageJsonPath), stringToUint8Array(JSON.stringify(packageJsonObject, null, '\t')));
 	await context.globalState.update(Constants.CommandPaletteWasPopulatedStorageKey, true);
 }
 
 async function getCommandsFromPackageJson(context: ExtensionContext) {
 	const packageJsonPath = context.asAbsolutePath('./package.json');
 	const packageJsonFile = await workspace.fs.readFile(Uri.file(packageJsonPath));
-	const packageJSONObject = JSON.parse(uint8ArrayToString(packageJsonFile));
-	const oldCommands = packageJSONObject.contributes.commands as ICommand[];
-	const coreCommands: ICommand[] = (packageJSONObject.contributes.commands as ICommand[]).filter(command => coreCommandIds.includes(command.command));
-	const coreCommandPalette = (packageJSONObject.contributes.menus.commandPalette as ICommandPalette[]).filter(command => coreCommandIds.includes(command.command));
+	const packageJsonObject = JSON.parse(uint8ArrayToString(packageJsonFile));
+	const oldCommands = packageJsonObject.contributes.commands as Command[];
+	const coreCommands: Command[] = (packageJsonObject.contributes.commands as Command[]).filter(command => coreCommandIds.includes(command.command));
+	const coreCommandPalette = (packageJsonObject.contributes.menus.commandPalette as CommandPalette[]).filter(command => coreCommandIds.includes(command.command));
 	const workspaceId = getWorkspaceId(context);
 	const isOtherWorkspaceCommand = (c: string | undefined) => !workspaceId || c !== undefined && c.includes(WorkspaceConstants.ContextKey) && !c.includes(workspaceId);
-	const otherWorkspacesCommands = packageJSONObject.contributes.commands.filter((c: ICommand) => isOtherWorkspaceCommand(c.enablement));
-	const otherWorkspacesCommandPalette = packageJSONObject.contributes.menus.commandPalette.filter((c: ICommandPalette) => isOtherWorkspaceCommand(c.when));
+	const otherWorkspacesCommands = packageJsonObject.contributes.commands.filter((c: Command) => isOtherWorkspaceCommand(c.enablement));
+	const otherWorkspacesCommandPalette = packageJsonObject.contributes.menus.commandPalette.filter((c: CommandPalette) => isOtherWorkspaceCommand(c.when));
+
 	return {
 		packageJsonPath,
-		packageJSONObject,
+		packageJsonObject,
 		oldCommands,
 		coreCommands,
 		coreCommandPalette,
@@ -123,7 +124,7 @@ async function getCommandsFromPackageJson(context: ExtensionContext) {
 /**
  * Dispose user defined commands.
  */
-export function unregisterCommandPalette() {
+export function unregisterCommandPalette(): void {
 	for (const command of commandPaletteCommandsList) {
 		command.dispose();
 	}

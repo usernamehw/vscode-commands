@@ -1,7 +1,7 @@
 import path from 'path';
 import { commands, Uri, window, workspace } from 'vscode';
 
-export async function openFolderCommand(filePath: string) {
+export async function openFolderCommand(filePath: string): Promise<void> {
 	let fileUri: Uri;
 	if (filePath.startsWith('.')) {
 		// relative path - use first workspace folder

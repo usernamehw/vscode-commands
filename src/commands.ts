@@ -15,8 +15,8 @@ import { openExternalCommand } from './commands/openExternalCommand';
 import { openFolderCommand } from './commands/openFolderCommand';
 import { rerunCommand } from './commands/rerunCommand';
 import { revealCommand2Command, revealCommandCommand } from './commands/revealCommandCommand';
-import { revealCommandsInSettingsGUICommand } from './commands/revealCommandsInSettingsGUICommand';
-import { revealFileInOSCommand } from './commands/revealFileInOSCommand';
+import { revealCommandsInSettingsGuiCommand } from './commands/revealCommandsInSettingsGUICommand';
+import { revealFileInOsCommand } from './commands/revealFileInOSCommand';
 import { runCommand } from './commands/runCommand';
 import { runInTerminalCommand } from './commands/runInTerminalCommand';
 import { selectAndRunCommand } from './commands/selectAndRunCommand';
@@ -32,7 +32,7 @@ import { toggleStatusBarCommand } from './commands/toggleStatusBarCommand';
 import { toggleThemeCommand } from './commands/toggleThemeCommand';
 import { $config, Constants } from './extension';
 import { FolderTreeItem, RunCommandTreeItem } from './TreeViewProvider';
-import { TopLevelCommands } from './types';
+import { type TopLevelCommands } from './types';
 import { isWorkspaceCommandItem } from './workspaceCommands';
 
 /**
@@ -56,7 +56,7 @@ export const enum CommandId {
 	ToggleStatusBar = 'commands.addToStatusBar',
 	NewFolderInFolder = 'commands.newFolderInFolder',
 	NewCommandInFolder = 'commands.newCommandInFolder',
-	RevealCommandsInSettignsGUI = 'commands.revealCommandsInSettignsGUI',
+	RevealCommandsInSettignsGui = 'commands.revealCommandsInSettignsGUI',
 	EscapeCommandUriArgument = 'commands.escapeCommandUriArgument',
 	// ──── Additional ────────────────────────────────────────────
 	ToggleSetting = 'commands.toggleSetting',
@@ -71,7 +71,7 @@ export const enum CommandId {
 	StartDebugging = 'commands.startDebugging',
 	ToggleTheme = 'commands.toggleTheme',
 	OpenExternal = 'commands.openExternal',
-	RevealFileInOS = 'commands.revealFileInOS',
+	RevealFileInOs = 'commands.revealFileInOS',
 	Open = 'commands.open',
 	Diff = 'commands.diff',
 }
@@ -80,7 +80,7 @@ export const enum CommandId {
  * Core command is needed for this extension to operate
  * Additional commands are just useful commands that accept arguments.
  */
-export function registerExtensionCommands() {
+export function registerExtensionCommands(): void {
 	// ──── Core Commands ─────────────────────────────────────────
 	commands.registerCommand(CommandId.Run, runCommand);
 	commands.registerCommand(CommandId.Rerun, rerunCommand);
@@ -89,7 +89,7 @@ export function registerExtensionCommands() {
 	commands.registerCommand(CommandId.RevealCommand2, revealCommand2Command);
 	commands.registerCommand(CommandId.AssignKeybinding, assignKeybindingCommand);
 	commands.registerCommand(CommandId.ToggleStatusBar, toggleStatusBarCommand);
-	commands.registerCommand(CommandId.RevealCommandsInSettignsGUI, revealCommandsInSettingsGUICommand);
+	commands.registerCommand(CommandId.RevealCommandsInSettignsGui, revealCommandsInSettingsGuiCommand);
 	commands.registerCommand(CommandId.OpenAsQuickPick, openAsQuickPickCommand);
 	commands.registerCommand(CommandId.NewCommand, newCommandCommand);
 	commands.registerCommand(CommandId.NewFolderInFolder, newFolderInFolderCommand);
@@ -113,22 +113,23 @@ export function registerExtensionCommands() {
 	commands.registerCommand(CommandId.StartDebugging, startDebuggingCommand);
 	commands.registerCommand(CommandId.ToggleTheme, toggleThemeCommand);
 	commands.registerCommand(CommandId.OpenExternal, openExternalCommand);
-	commands.registerCommand(CommandId.RevealFileInOS, revealFileInOSCommand);
+	commands.registerCommand(CommandId.RevealFileInOs, revealFileInOsCommand);
 	commands.registerCommand(CommandId.Open, openCommand);
 	commands.registerCommand(CommandId.Diff, diffCommand);
 }
 
 export function isWorkspaceTreeItem(treeItem: FolderTreeItem | RunCommandTreeItem): boolean {
-	return treeItem instanceof RunCommandTreeItem && isWorkspaceCommandItem(treeItem.runnable) ||
-		treeItem instanceof FolderTreeItem && isWorkspaceCommandItem(treeItem.folder);
+	return (treeItem instanceof RunCommandTreeItem && isWorkspaceCommandItem(treeItem.runnable)) ||
+		(treeItem instanceof FolderTreeItem && isWorkspaceCommandItem(treeItem.folder));
 }
 
 export function applyForTreeItem(
-	action: (o: { treeItem: FolderTreeItem | RunCommandTreeItem; commands: TopLevelCommands; settingId: string; configTarget: 'global' | 'workspace' })=> any,
-	treeItem: FolderTreeItem | RunCommandTreeItem) {
+	action: (o: { treeItem: FolderTreeItem | RunCommandTreeItem; commands: TopLevelCommands; settingId: string; configTarget: 'global' | 'workspace' })=> void,
+	treeItem: FolderTreeItem | RunCommandTreeItem,
+): void {
 	if (isWorkspaceTreeItem(treeItem)) {
-		return action({ treeItem, commands: $config.workspaceCommands, settingId: Constants.WorkspaceCommandsSettingId, configTarget: 'workspace' });
+		action({ treeItem, commands: $config.workspaceCommands, settingId: Constants.WorkspaceCommandsSettingId, configTarget: 'workspace' });
 	} else {
-		return action({ treeItem, commands: $config.commands, settingId: Constants.ExtensionMainSettingId, configTarget: 'global' });
+		action({ treeItem, commands: $config.commands, settingId: Constants.ExtensionMainSettingId, configTarget: 'global' });
 	}
 }

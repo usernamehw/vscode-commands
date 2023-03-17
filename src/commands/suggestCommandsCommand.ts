@@ -1,8 +1,8 @@
-import { TextEditor, window } from 'vscode';
+import { window, type TextEditor } from 'vscode';
 import { commandsToQuickPickItems, removeCodiconFromLabel } from '../quickPick';
 import { getAllVscodeCommands } from '../utils';
 
-export async function suggestCommandsCommand(editor: TextEditor) {
+export async function suggestCommandsCommand(editor: TextEditor): Promise<void> {
 	const quickPickItems = commandsToQuickPickItems(await getAllVscodeCommands());
 
 	const picked = await window.showQuickPick(quickPickItems);

@@ -1,5 +1,5 @@
 import { commands, Uri } from 'vscode';
 
-export async function revealFileInOSCommand(path: string) {
+export async function revealFileInOsCommand(path: string): Promise<void> {
 	await commands.executeCommand('revealFileInOS', Uri.file(path));
 }
