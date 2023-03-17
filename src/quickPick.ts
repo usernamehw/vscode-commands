@@ -7,8 +7,17 @@ import { type Runnable, type TopLevelCommands } from './types';
 import { goToSymbol, openSettingsJson, uint8ArrayToString } from './utils';
 import { isWorkspaceCommandItem } from './workspaceCommands';
 
+type QuickPickItemWithMetadata = QuickPickItem & {
+	runnable: Runnable;
+	/**
+	 * Command id (unique key in `commands.commands`)
+	 */
+	key: string;
+};
+
 /**
  * Show quick pick with user commands. After picking one - run it.
+ * @param isFolder true when running folder
  */
 export async function showQuickPick(commandsForPicking: TopLevelCommands, isFolder = false): Promise<void> {
 	const treeAsOneLevelMap: Record<string, {
@@ -40,15 +49,17 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
 		tooltip: 'Reveal in settings.json',
 	};
 
-	const userCommands: QuickPickWithRunnable[] = Object.keys(treeAsOneLevelMap).map(label => ({
+	const userCommands: QuickPickItemWithMetadata[] = Object.keys(treeAsOneLevelMap).map(label => ({
 		// @ts-expect-error
 		label: `${treeAsOneLevelMap[label]?.runnable?.icon ? `$(${treeAsOneLevelMap[label].runnable.icon}) ` : ''}${label}`,
 		buttons: [revealCommandButton],
-		runnable: treeAsOneLevelMap[label].runnable,
 		description: treeAsOneLevelMap[label].parentFolderName ? `$(folder) ${treeAsOneLevelMap[label].parentFolderName}` : undefined,
+
+		runnable: treeAsOneLevelMap[label].runnable,
+		key: label,
 	}));
 
-	let pickedItem: QuickPickItem | undefined;
+	let pickedItem: QuickPickItemWithMetadata | undefined;
 	const quickPick = window.createQuickPick();
 	quickPick.matchOnDescription = true;
 	quickPick.matchOnDetail = true;
@@ -69,17 +80,17 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
 		newCommandButton,
 	];
 	quickPick.onDidTriggerItemButton(async e => {
-		const labelWithoutCodiconIcon = removeCodiconIconFromLabel(e.item.label);
-		const clickedItem = treeAsOneLevelMap[labelWithoutCodiconIcon];
+		const label = (e.item as QuickPickItemWithMetadata).key;
+		const clickedItem = treeAsOneLevelMap[label];
 		if (e.button.tooltip === revealCommandButton.tooltip) {
 			await openSettingsJson(isWorkspaceCommandItem(clickedItem) ? 'workspace' : 'global');
-			goToSymbol(window.activeTextEditor, labelWithoutCodiconIcon);
+			goToSymbol(window.activeTextEditor, label);
 		}
 		quickPick.hide();
 		quickPick.dispose();
 	});
 	quickPick.onDidChangeSelection(e => {
-		pickedItem = e[0];
+		pickedItem = (e as QuickPickItemWithMetadata[])[0];
 	});
 	quickPick.onDidTriggerButton(e => {
 		if (e.tooltip === newCommandButton.tooltip) {
@@ -91,7 +102,6 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
 
 	quickPick.onDidAccept(async () => {
 		if (pickedItem) {
-			// @ts-expect-error
 			await run(pickedItem.runnable);
 		}
 		quickPick.hide();
@@ -104,25 +114,26 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
  * - Convert command ids to {@link QuickPickItem `QuickPickItem[]`}
  * - Add `args` detail to commands that can accept arguments.
  */
-export function commandsToQuickPickItems(commandList: string[]): QuickPickItem[] {
-	const quickPickItems: QuickPickItem[] = [];
+export function commandsToQuickPickItems(commandList: string[]): QuickPickItemWithMetadata[] {
+	const quickPickItems: QuickPickItemWithMetadata[] = [];
 	for (const com of commandList) {
 		quickPickItems.push({
 			label: `${com}${hasArgs(com) ? ' ($(pass-filled) args)' : ''}`,
+			key: com,
+			runnable: com,
 		});
 	}
 	return quickPickItems;
 }
 
-type QuickPickWithRunnable = QuickPickItem & { runnable: Runnable };
-
-function convertVscodeCommandToQuickPickItem(commanList: VscodeCommand[]): QuickPickWithRunnable[] {
-	return commanList.map((com): QuickPickWithRunnable => ({
+function convertVscodeCommandToQuickPickItem(commanList: VscodeCommand[]): QuickPickItemWithMetadata[] {
+	return commanList.map((com): QuickPickItemWithMetadata => ({
 		label: com.title,
 		detail: com.command,
 		runnable: {
 			command: com.command,
 		},
+		key: com.title,
 	}));
 }
 
@@ -152,7 +163,7 @@ async function getAllBuiltinCommands(): Promise<VscodeCommandWithoutCategory[]> 
 	const commandsDataPath = $state.context.asAbsolutePath('./data/commandTitleMap.json');
 	const file = await workspace.fs.readFile(Uri.file(commandsDataPath));
 	try {
-		const fileContentAsObject = JSON.parse(uint8ArrayToString(file));
+		const fileContentAsObject: Record<string, string> = JSON.parse(uint8ArrayToString(file)) as Record<string, string>;
 		const result: VscodeCommandWithoutCategory[] = [];
 		for (const key in fileContentAsObject) {
 			result.push({
@@ -179,19 +190,4 @@ function getAllCommandsFromExtensions(): VscodeCommandWithoutCategory[] {
 		}
 	}
 	return coms;
-}
-
-/**
- * Remove codicon that shows at the start of the label when
- * the item has "icon" property.
- */
-function removeCodiconIconFromLabel(str: string): string {
-	return str.replace(/\$\([a-z-]+\)\s/iu, '');
-}
-/**
- * Remove codicon with the args text that shows at the end of the label
- * of the command that accepts arguments.
- */
-export function removeCodiconFromLabel(str: string): string {
-	return str.replace(/\s\(\$\([a-z-]+\)\sargs\)/iu, '');
 }

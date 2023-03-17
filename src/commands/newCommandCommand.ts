@@ -2,7 +2,7 @@ import { window } from 'vscode';
 import { addArgs } from '../args';
 import { applyForTreeItem } from '../commands';
 import { $config, Constants } from '../extension';
-import { commandsToQuickPickItems, removeCodiconFromLabel } from '../quickPick';
+import { commandsToQuickPickItems } from '../quickPick';
 import { updateSetting } from '../settings';
 import { type FolderTreeItem } from '../TreeViewProvider';
 import { deepCopy, forEachCommand, getAllVscodeCommands, goToSymbol, openSettingsJson } from '../utils';
@@ -27,9 +27,9 @@ async function addNewCommand(folderTreeItem?: FolderTreeItem): Promise<void> {
 		return;
 	}
 
-	const label = removeCodiconFromLabel(pickedCommand.label);
+	const label = pickedCommand.key;
 	const newCommand = addArgs(label);
-	const newCommandKey = `${label}_${Math.random().toString().slice(2, 4)}`;
+	const newCommandKey = `${label}_${Math.random().toString().slice(2, 5)}`;
 
 	if (folderTreeItem) {
 		applyForTreeItem(async ({ treeItem, commands, settingId, configTarget }) => {
