@@ -20,7 +20,7 @@ export function updateDocumentLinkProvider(): void {
 		},
 	});
 
-	const regex = /@([a-z\d._-]+)(\?([^@]+))?@/igu;
+	const regex = /@(?<command>[a-z\d._-]+)(?:\?(?<args>[^@]+))?@/igu;
 
 	const documentLinkProviderDisposable = languages.registerDocumentLinkProvider(
 		{
@@ -38,8 +38,8 @@ export function updateDocumentLinkProvider(): void {
 							target: Uri.from({
 								scheme: env.uriScheme,
 								authority: Constants.ExtensionId,
-								query: match[1],
-								fragment: match[3],
+								query: match.groups?.command,
+								fragment: match.groups?.args,
 							}),
 							tooltip: 'Custom command.',
 						});

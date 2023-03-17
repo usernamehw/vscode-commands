@@ -1,4 +1,4 @@
-/* eslint-disable no-await-in-loop */
+/* eslint-disable @typescript-eslint/prefer-regexp-exec, no-await-in-loop */
 import escapeRegExp from 'lodash/escapeRegExp';
 import { homedir } from 'os';
 import path from 'path';
@@ -51,10 +51,10 @@ const variableRegexps = {
 	[VariableNames.Clipboard]: new RegExp(escapeRegExp(VariableNames.Clipboard), 'igu'),
 	[VariableNames.Random]: new RegExp(escapeRegExp(VariableNames.Random), 'igu'),
 	[VariableNames.RandomHex]: new RegExp(escapeRegExp(VariableNames.RandomHex), 'igu'),
-	[VariableNames.SingleEnvironmentVariable]: /\$\{env:([a-zA-Z_]+[a-zA-Z0-9_]*)\}/iu,
-	[VariableNames.EnvironmentVariable]: /\$\{env:([a-zA-Z_]+[a-zA-Z0-9_]*)\}/igu,
-	[VariableNames.SingleConfigurationVariable]: /\$\{config:([^}]+?)\}/iu,
-	[VariableNames.ConfigurationVariable]: /\$\{config:([^}]+?)\}/igu,
+	[VariableNames.SingleEnvironmentVariable]: /\$\{env:(?<envVariableName>[a-zA-Z_]+[a-zA-Z0-9_]*)\}/iu,
+	[VariableNames.EnvironmentVariable]: /\$\{env:(?:[a-zA-Z_]+[a-zA-Z0-9_]*)\}/igu,
+	[VariableNames.SingleConfigurationVariable]: /\$\{config:(?<configName>[^}]+?)\}/iu,
+	[VariableNames.ConfigurationVariable]: /\$\{config:(?:[^}]+?)\}/igu,
 	// [VariableNames.relativeFile]: new RegExp(escapeRegExp(VariableNames.relativeFile), 'ig'),
 	// [VariableNames.relativeFileDirname]: new RegExp(escapeRegExp(VariableNames.relativeFileDirname), 'ig'),
 	// [VariableNames.cwd]: new RegExp(escapeRegExp(VariableNames.cwd), 'ig'),
