@@ -23,18 +23,22 @@ interface CommandPalette {
  */
 const coreCommandIds = [
 	'commands.openAsQuickPick',
+	'commands.selectAndRun',
 	'commands.rerun',
 	'commands.suggestCommands',
+	'commands.suggestCodicons',
+	'commands.suggestVariables',
 	'commands.newCommand',
-	'commands.newFolder',
 	'commands.deleteCommand',
-	'commands.selectAndRun',
+	'commands.newFolder',
 	'commands.newCommandInFolder',
+	'commands.newFolderInFolder',
 	'commands.revealCommand',
 	'commands.assignKeybinding',
 	'commands.addToStatusBar',
 	'commands.revealCommandsInSettignsGUI',
 	'commands.escapeCommandUriArgument',
+	'commands.run',
 ];
 /**
  * VSCode doesn't support dynamic Command Palette items: https://github.com/microsoft/vscode/issues/1422
