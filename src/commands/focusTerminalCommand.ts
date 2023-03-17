@@ -1,9 +1,8 @@
 import { ThemeColor, ThemeIcon, window, type Terminal, type TerminalOptions } from 'vscode';
-import { type CodiconName } from '../codiconNames';
 
 export interface FocusTerminalArgs {
 	name?: string;
-	icon?: CodiconName;
+	icon?: string;
 	iconColor?: string;
 	cwd?: string;
 	target?: 'create new' | 'newest' | 'oldest';
@@ -29,7 +28,9 @@ export function focusTerminalCommand(arg: FocusTerminalArgs | string, deferShow?
 		targetTerminalOptions.name = arg.name;
 		targetTerminalOptions.cwd = arg.cwd;
 		targetTerminalOptions.color = arg.iconColor && new ThemeColor(arg.iconColor);
-		targetTerminalOptions.iconPath = arg.icon && new ThemeIcon(arg.icon);
+		if (arg.icon) {
+			targetTerminalOptions.iconPath = new ThemeIcon(arg.icon);
+		}
 	}
 
 	if (shouldAttemptReuse) {

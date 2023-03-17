@@ -3,6 +3,7 @@ import { updateCommandPalette } from './commandPalette';
 import { registerExtensionCommands } from './commands';
 import { updateDocumentLinkProvider } from './documentLinksProvider';
 import { getKeybindings } from './getKeybindings';
+import { registerDynamicJsonSchema } from './jsonSchema/registerDynamicJsonSchema';
 import { registerJsonSchemaCompletion } from './jsonSchemaCompletions';
 import { updateUserCommands } from './registerUserCommands';
 import { updateStatusBarItems, updateStatusBarItemsVisibilityBasedOnActiveEditor } from './statusBar';
@@ -48,6 +49,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
 	updateEverything(context);
 
 	setTimeout(() => {
+		registerDynamicJsonSchema(context);
 		registerJsonSchemaCompletion(context);
 	});
 

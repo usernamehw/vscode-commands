@@ -1,12 +1,11 @@
 import { window, type Disposable } from 'vscode';
-import { type CodiconName } from '../codiconNames';
 import { CommandId } from '../commands';
 import { focusTerminalCommand, type FocusTerminalArgs } from './focusTerminalCommand';
 
 interface RunInTerminalArgs {
 	text?: string;
 	name?: string;
-	icon?: CodiconName;
+	icon?: string;
 	iconColor?: string;
 	cwd?: string;
 	reveal?: boolean;

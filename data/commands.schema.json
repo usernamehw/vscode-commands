@@ -980,7 +980,7 @@
 										"markdownDescription": "A name to match against (or to assign if creating a new terminal)."
 									},
 									"icon": {
-										"$ref": "./codiconNames.schema.json",
+										"$ref": "commandsExtension://schemas/codicons",
 										"markdownDescription": "A codicon ID to assign to the icon (if creating a new terminal)."
 									},
 									"iconColor": {
@@ -1049,7 +1049,7 @@
 										"markdownDescription": "A name to assign to the terminal.  \n_Used as a match criteria if property \"reuse\" also specified._"
 									},
 									"icon": {
-										"$ref": "./codiconNames.schema.json",
+										"$ref": "commandsExtension://schemas/codicons",
 										"markdownDescription": "A codicon ID to assign to the icon (if creating a new terminal)."
 									},
 									"iconColor": {

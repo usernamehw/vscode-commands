@@ -1,10 +1,10 @@
 import { window, type QuickPickItem, type TextEditor } from 'vscode';
-import { codiconNames } from '../codiconNames';
+import { getAllCodiconNames } from '../jsonSchema/registerDynamicJsonSchema';
 
 export async function suggestCodiconsCommand(editor: TextEditor): Promise<void> {
 	type CustomQuickPickItem = QuickPickItem & { value: string };
 
-	const quickPickItems: CustomQuickPickItem[] = codiconNames.map(codiconName => ({
+	const quickPickItems: CustomQuickPickItem[] = (await getAllCodiconNames()).map(codiconName => ({
 		label: `$(${codiconName}) ${codiconName}`,
 		value: codiconName,
 	}));

@@ -99,7 +99,7 @@
 				"icon": {
 					"type": "string",
 					"markdownDescription": "Add icon from codicons list [Icons list](https://code.visualstudio.com/api/references/icons-in-labels#icon-listing)",
-					"$ref": "./codiconNames.schema.json"
+					"$ref": "commandsExtension://schemas/codicons"
 				},
 				"markdownTooltip": {
 					"type": "string",
