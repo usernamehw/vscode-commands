@@ -65,7 +65,6 @@ export class FolderTreeItem extends TreeItem {
 	public contextValue = 'folder';
 	public description = '';
 	public iconPath = ThemeIcon.Folder;
-	public nestedItems: TopLevelCommands;
 	public folder: CommandFolder;
 
 	constructor(
@@ -74,8 +73,6 @@ export class FolderTreeItem extends TreeItem {
 	) {
 		super(label);
 		this.folder = folder;
-		// TODO: is this needed? already property on folder
-		this.nestedItems = folder.nestedItems!;
 
 		if (folder.workspace) {
 			this.description = $config.treeViewWorkspaceCommandSymbol;
@@ -114,7 +111,7 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 		let markdown = new MarkdownString(undefined, true);
 		markdown.isTrusted = true;
 		if (item instanceof FolderTreeItem) {
-			if (Object.keys(item.nestedItems).length === 0) {
+			if (Object.keys(item.folder.nestedItems ?? {}).length === 0) {
 				return undefined;
 			}
 			markdown = createFolderHoverText(item.folder);
@@ -142,7 +139,7 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 
 	public getChildren(element?: FolderTreeItem | RunCommandTreeItem): (FolderTreeItem | RunCommandTreeItem)[] {
 		if (element instanceof FolderTreeItem) {
-			return this.commandsToTreeItems(element.nestedItems);
+			return this.commandsToTreeItems(element.folder.nestedItems ?? {});
 		} else {
 			const allCommands = this.commands;
 			return this.commandsToTreeItems(allCommands);

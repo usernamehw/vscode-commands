@@ -113,6 +113,7 @@ export async function goToSymbol(editor: TextEditor | undefined, symbolName: str
 	}, symbols);
 
 	if (foundSymbol) {
+		// eslint-disable-next-line no-param-reassign
 		editor.selection = new Selection(foundSymbol.range.start, foundSymbol.range.start);
 		editor.revealRange(foundSymbol.range, TextEditorRevealType.AtTop);
 		// Highlight for a short time revealed range

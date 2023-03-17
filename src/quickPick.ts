@@ -50,10 +50,10 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
 	};
 
 	const userCommands: QuickPickItemWithMetadata[] = Object.keys(treeAsOneLevelMap).map(label => ({
-		// @ts-expect-error
-		label: `${treeAsOneLevelMap[label]?.runnable?.icon ? `$(${treeAsOneLevelMap[label].runnable.icon}) ` : ''}${label}`,
+		// @ts-expect-error fix later
+		label: `${treeAsOneLevelMap[label]?.runnable?.icon ? `$(${treeAsOneLevelMap[label].runnable?.icon}) ` : ''}${label}`,
 		buttons: [revealCommandButton],
-		description: treeAsOneLevelMap[label].parentFolderName ? `$(folder) ${treeAsOneLevelMap[label].parentFolderName}` : undefined,
+		description: treeAsOneLevelMap[label].parentFolderName ? `$(folder) ${treeAsOneLevelMap[label].parentFolderName ?? ''}` : undefined,
 
 		runnable: treeAsOneLevelMap[label].runnable,
 		key: label,

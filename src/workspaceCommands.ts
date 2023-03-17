@@ -22,7 +22,7 @@ export async function setWorkspaceIdToContext(context: ExtensionContext): Promis
 	return workspaceId;
 }
 
-export function isWorkspaceCommandItem(item: any): item is (CommandFolder & WorkspaceCommand) | (CommandObject & WorkspaceCommand) {
+export function isWorkspaceCommandItem(item: object): item is (CommandFolder & WorkspaceCommand) | (CommandObject & WorkspaceCommand) {
 	return 'workspace' in item;
 }
 

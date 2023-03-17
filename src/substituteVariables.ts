@@ -160,22 +160,22 @@ function replaceConfigurationVariable(configName: string): string {
 /**
  * Walk recursively through object/array and replace variables in strings.
  */
-export async function substituteVariableRecursive(arg: unknown): Promise<unknown> {
-	if (typeof arg === 'string') {
-		const substituted = await substituteVariables(arg);
+export async function substituteVariableRecursive(item: unknown): Promise<unknown> {
+	if (typeof item === 'string') {
+		const substituted = await substituteVariables(item);
 		return substituted;
 	}
 
-	if (Array.isArray(arg)) {
-		for (const [key, value] of arg.entries()) {
-			arg[key] = await substituteVariableRecursive(value);
+	if (Array.isArray(item)) {
+		for (const [key, value] of item.entries()) {
+			item[key] = await substituteVariableRecursive(value);
 		}
-	} else if (typeof arg === 'object' && arg !== null) {
-		for (const key in arg) {
-			// @ts-expect-error
-			arg[key] = await substituteVariableRecursive(arg[key]);
+	} else if (typeof item === 'object' && item !== null) {
+		for (const key in item) {
+			// @ts-expect-error implicit any :(
+			item[key] = await substituteVariableRecursive(item[key]);
 		}
 	}
 
-	return arg;
+	return item;
 }
