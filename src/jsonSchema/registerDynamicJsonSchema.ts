@@ -1,5 +1,8 @@
 import { Uri, window, workspace, type ExtensionContext } from 'vscode';
 
+/**
+ * Reference it in schema files like: `commandsExtension://schemas/codicons`
+ */
 const jsonSchemaProtocol = 'commandsExtension';
 
 export function registerDynamicJsonSchema(context: ExtensionContext): void {
@@ -40,6 +43,7 @@ export async function getAllCodiconNames(): Promise<string[]> {
 	try {
 		const documentObject = JSON.parse(documentText) as { icons: object; properties: object };
 		const allCodiconsNames: string[] = Object.keys(documentObject?.properties);
+		allCodiconsNames.sort((a, b) => a.localeCompare(b));
 		return allCodiconsNames;
 	} catch (e) {
 		window.showErrorMessage((e as Error).message);

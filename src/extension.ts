@@ -48,10 +48,8 @@ export async function activate(context: ExtensionContext): Promise<void> {
 	await setWorkspaceIdToContext(context);
 	updateEverything(context);
 
-	setTimeout(() => {
-		registerDynamicJsonSchema(context);
-		registerJsonSchemaCompletion(context);
-	});
+	registerDynamicJsonSchema(context);
+	registerJsonSchemaCompletion(context);
 
 	function updateConfig(): void {
 		$config = workspace.getConfiguration(Constants.ExtensionSettingsPrefix) as unknown as ExtensionConfig;
