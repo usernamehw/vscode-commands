@@ -820,7 +820,8 @@
 					"command": {
 						"const": "commands.toggleSetting"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -860,7 +861,8 @@
 							}
 						}]
 					}
-				}
+				},
+				"required": ["args"]
 			}
 		},
 
@@ -870,7 +872,8 @@
 					"command": {
 						"const": "commands.incrementSetting"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -899,7 +902,8 @@
 						},
 						"additionalProperties": false
 					}
-				}
+				},
+				"required": ["args"]
 			}
 		},
 
@@ -909,7 +913,8 @@
 					"command": {
 						"const": "commands.toggleTheme"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -934,7 +939,8 @@
 						},
 						"additionalProperties": false
 					}
-				}
+				},
+				"required": ["args"]
 			}
 		},
 
@@ -944,7 +950,8 @@
 					"command": {
 						"const": "commands.openFolder"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -952,7 +959,8 @@
 						"type": "string",
 						"markdownDescription": "Open file/folder in vscode. Relative path will open relative to the first opened workspace folder."
 					}
-				}
+				},
+				"required": ["args"]
 			}
 		},
 
@@ -1027,7 +1035,8 @@
 					"command": {
 						"const": "commands.runInTerminal"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -1092,7 +1101,8 @@
 							}
 						}]
 					}
-				}
+				},
+				"required": ["args"]
 			}
 		},
 
@@ -1102,7 +1112,8 @@
 					"command": {
 						"const": "commands.startDebugging"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -1110,7 +1121,8 @@
 						"markdownDescription": "Start debugging by \"name\" property from `launch.json`.",
 						"type": "string"
 					}
-				}
+				},
+				"required": ["args"]
 			}
 		},
 
@@ -1120,7 +1132,8 @@
 					"command": {
 						"const": "commands.setEditorLanguage"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -1128,7 +1141,8 @@
 						"type": "string",
 						"markdownDescription": "Set editor by [Language Id](https://code.visualstudio.com/docs/languages/identifiers#_known-language-identifiers)."
 					}
-				}
+				},
+				"required": ["args"]
 			}
 		},
 
@@ -1138,7 +1152,8 @@
 					"command": {
 						"const": "commands.clipboardWrite"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -1146,7 +1161,8 @@
 						"type": "string",
 						"markdownDescription": "Write text into clipboard."
 					}
-				}
+				},
+				"required": ["args"]
 			}
 		},
 
@@ -1156,7 +1172,8 @@
 					"command": {
 						"const": "commands.showNotification"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -1198,7 +1215,8 @@
 							}
 						}]
 					}
-				}
+				},
+				"required": ["args"]
 			}
 		},
 
@@ -1208,7 +1226,8 @@
 					"command": {
 						"const": "commands.showStatusBarNotification"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -1245,7 +1264,8 @@
 							}
 						}]
 					}
-				}
+				},
+				"required": ["args"]
 			}
 		},
 
@@ -1255,7 +1275,8 @@
 					"command": {
 						"const": "commands.openExternal"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -1263,7 +1284,8 @@
 						"type": "string",
 						"markdownDescription": "Open link in default browser or open other things from registered protocols, like `mailto:`,`callto:`..."
 					}
-				}
+				},
+				"required": ["args"]
 			}
 		},
 
@@ -1273,7 +1295,8 @@
 					"command": {
 						"const": "commands.open"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -1306,7 +1329,8 @@
 							}
 						]
 					}
-				}
+				},
+				"required": ["args"]
 			}
 		},
 
@@ -1316,7 +1340,8 @@
 					"command": {
 						"const": "commands.diff"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -1379,7 +1404,8 @@
 						},
 						"additionalProperties": false
 					}
-				}
+				},
+				"required": ["args"]
 			}
 		},
 
@@ -1389,7 +1415,8 @@
 					"command": {
 						"const": "commands.revealFileInOS"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -1397,7 +1424,8 @@
 						"type": "string",
 						"markdownDescription": "Open system file explorer at the specified path."
 					}
-				}
+				},
+				"required": ["args"]
 			}
 		},
 
@@ -1407,7 +1435,8 @@
 					"command": {
 						"const": "commands.run"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -1463,7 +1492,8 @@
 							}
 						]
 					}
-				}
+				},
+				"required": ["args"]
 			}
 		}
 

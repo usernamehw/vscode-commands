@@ -84,8 +84,12 @@ export interface ExtensionState {
 export type TopLevelItem = CommandFolder | CommandObject | string;
 export type TopLevelCommands = Record<string, TopLevelItem>;
 
+export type Sequence = (CommandObject | string)[];
 export type Runnable = CommandObject | Sequence | string;
 
+/**
+ * Most used type of command.
+ */
 export interface CommandObject {
 	command: string;
 	args?: unknown;
@@ -120,7 +124,6 @@ interface StatusBar {
 	activeEditorGlob?: string;
 	activeEditorLanguage?: string;
 }
-export type Sequence = (CommandObject | string)[];
 /**
  * Folder can only have `nestedItems` property.
  */

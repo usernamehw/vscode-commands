@@ -94,6 +94,7 @@ export const commandArgs: Record<string, unknown> = {
 		apply: 'first',
 		preferred: false,
 	},
+	[CommandId.Run]: [],
 	[CommandId.ToggleSetting]: {
 		setting: '',
 		value: [],
