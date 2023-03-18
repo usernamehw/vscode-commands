@@ -1,5 +1,6 @@
 import { env, languages, Range, Uri, window, type Disposable, type DocumentLink } from 'vscode';
 import { $config, Constants } from './extension';
+import { vscodeUtils } from './reexport';
 import { run } from './run';
 
 const documentLinkDisposables: Disposable[] = [];
@@ -13,10 +14,14 @@ export function updateDocumentLinkProvider(): void {
 
 	const uriDisposable = window.registerUriHandler({
 		handleUri(uri) {
-			run({
-				command: uri.query,
-				args: uri.fragment,
-			});
+			try {
+				run({
+					command: uri.query,
+					args: JSON.parse(uri.fragment),
+				});
+			} catch (e) {
+				vscodeUtils.showErrorNotification(e);
+			}
 		},
 	});
 

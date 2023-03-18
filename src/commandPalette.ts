@@ -1,4 +1,5 @@
 import { Uri, workspace, type Disposable, type ExtensionContext } from 'vscode';
+import { type CommandId } from './commands';
 import { $config, Constants } from './extension';
 import { extUtils, vscodeUtils } from './reexport';
 import { type TopLevelCommands } from './types';
@@ -21,7 +22,7 @@ interface CommandPalette {
 /**
  * Commands this extension contributes in **commands** section of `package.json`
  */
-const coreCommandIds = [
+const coreCommandIds: string[] = [
 	'commands.openAsQuickPick',
 	'commands.selectAndRun',
 	'commands.rerun',
@@ -39,7 +40,7 @@ const coreCommandIds = [
 	'commands.revealCommandsInSettignsGUI',
 	'commands.escapeCommandUriArgument',
 	'commands.run',
-];
+] satisfies `${CommandId}`[];
 /**
  * VSCode doesn't support dynamic Command Palette items: https://github.com/microsoft/vscode/issues/1422
  *

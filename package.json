@@ -194,6 +194,7 @@
 			{
 				"command": "commands.suggestCodicons",
 				"title": "Suggest (autocomplete) codicons",
+				"description": "Suggest [Codicons](https://code.visualstudio.com/api/references/icons-in-labels)",
 				"category": "Commands"
 			},
 			{
