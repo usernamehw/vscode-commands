@@ -119,8 +119,5 @@ export function showNotOnWebNotification(text: string): void {
 
 export function createCommandUri(commandId: string, args?: unknown): Uri {
 	const commandArg = args ? `?${encodeURIComponent(JSON.stringify(args))}` : '';
-	const commandUri = Uri.parse(
-		`command:${commandId}${commandArg}`,
-	);
-	return commandUri;
+	return Uri.parse(`command:${commandId}${commandArg}`);
 }

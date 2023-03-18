@@ -1181,6 +1181,11 @@
 											"warning",
 											"info"
 										]
+									},
+									"modal": {
+										"type": "boolean",
+										"markdownDescription": "Show message as a modal dialog.",
+										"default": false
 									}
 								},
 								"additionalProperties": false
