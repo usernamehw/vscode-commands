@@ -68,7 +68,7 @@ export interface ExtensionConfig {
 	};
 }
 export interface ExtensionState {
-	lastExecutedCommand: Runnable;
+	lastExecutedCommand: CommandFolder | Runnable;
 	context: ExtensionContext;
 	/**
 	 * Cache all Command Palette commands for `quickPickIncludeAllCommands` feature.
@@ -81,7 +81,8 @@ export interface ExtensionState {
 /**
  * Main configuration property. Can contain folders or command objects.
  */
-export type TopLevelCommands = Record<string, CommandFolder & CommandObject>;
+export type TopLevelItem = CommandFolder | CommandObject | string;
+export type TopLevelCommands = Record<string, TopLevelItem>;
 
 export type Runnable = CommandObject | Sequence | string;
 
@@ -124,8 +125,12 @@ export type Sequence = (CommandObject | string)[];
  * Folder can only have `nestedItems` property.
  */
 export interface CommandFolder {
-	nestedItems?: TopLevelCommands;
+	/**
+	 * If this exists - item is a folder.
+	 */
+	nestedItems: TopLevelCommands;
 	statusBar?: StatusBar;
 	hidden?: boolean;
 	workspace?: string;
+	when?: string;
 }

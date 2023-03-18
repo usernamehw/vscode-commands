@@ -2,7 +2,7 @@ import isEqual from 'lodash/isEqual';
 import { ConfigurationTarget, window, workspace } from 'vscode';
 import { CommandId } from './commands';
 import { $config } from './extension';
-import { isSimpleObject } from './utils';
+import { utils } from './reexport';
 
 type Target = 'global' | 'workspace';
 
@@ -33,7 +33,7 @@ export async function toggleSetting(arg: ToggleSettingType | string): Promise<vo
 		}
 		settingName = arg;
 		newValue = !currentSettingValue;
-	} else if (isSimpleObject(arg)) {
+	} else if (utils.isSimpleObject(arg)) {
 		// Passed an object of ToggleSettingType type.
 		settingName = arg.setting;
 		const currentSettingValue = settings.get(settingName);
@@ -88,7 +88,7 @@ export async function incrementSetting(arg: ToggleSettingType | string): Promise
 
 	if (typeof arg === 'string') {
 		settingName = arg;
-	} else if (isSimpleObject(arg)) {
+	} else if (utils.isSimpleObject(arg)) {
 		settingName = arg.setting;
 		value = arg.value ?? 1;
 		target = arg.target ?? 'global';

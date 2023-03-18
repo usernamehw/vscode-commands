@@ -1,10 +1,9 @@
 import { window, workspace } from 'vscode';
-import { applyForTreeItem } from '../commands';
 import { Constants } from '../extension';
+import { extUtils, utils } from '../reexport';
 import { updateSetting } from '../settings';
 import { type RunCommandTreeItem } from '../TreeViewProvider';
 import { type TopLevelCommands } from '../types';
-import { deepCopy, forEachCommand } from '../utils';
 
 export async function deleteCommandCommand(targetTreeItem: RunCommandTreeItem): Promise<void> {
 	const confirmBtnName = 'Delete';
@@ -16,9 +15,9 @@ export async function deleteCommandCommand(targetTreeItem: RunCommandTreeItem): 
 		modal: true,
 	}, confirmBtnName);
 	if (button === confirmBtnName) {
-		applyForTreeItem(async ({ treeItem, commands, settingId, configTarget }) => {
-			const configCommands: TopLevelCommands = deepCopy(commands);// config is readonly, get a copy
-			forEachCommand((item, key, parentElement) => {
+		extUtils.applyForTreeItem(async ({ treeItem, commands, settingId, configTarget }) => {
+			const configCommands: TopLevelCommands = utils.deepCopy(commands);// config is readonly, get a copy
+			extUtils.forEachCommand((item, key, parentElement) => {
 				if (key === treeItem.label) {
 					delete parentElement[key];
 				}

@@ -747,7 +747,8 @@
 				"ignorePropertyModificationsFor": [
 					"parentElement",
 					"com",
-					"item"
+					"item",
+					"commandObject"
 				]
 			}
 		],

@@ -1,25 +1,13 @@
-import { commands, env, ExtensionMode, Range, Selection, TextEditorRevealType, UIKind, window, type DocumentSymbol, type TextDocument, type TextEditor } from 'vscode';
-import { $state } from './extension';
-import { type CommandFolder, type TopLevelCommands } from './types';
+import { commands, env, ExtensionMode, Range, Selection, TextEditorRevealType, UIKind, Uri, window, type DocumentSymbol, type TextDocument, type TextEditor } from 'vscode';
+import { $state } from '../extension';
+import { sleep } from './utils';
 
 /**
- * Emulate delay with async setTimeout().
+ * Return all registered vscode commands (excluding internal).
  */
-export const sleep = async (ms: number): Promise<void> => new Promise(resolve => {
-	setTimeout(resolve, ms);
-});
-/**
- * Return `true` when item is an object (NOT Array, NOT null)
- */
-export function isSimpleObject(item: unknown): item is Record<string, unknown> {
-	if (Array.isArray(item) || item === null) {
-		return false;
-	} else if (typeof item === 'object') {
-		return true;
-	}
-	return false;
+export async function getAllVscodeCommands(): Promise<string[]> {
+	return commands.getCommands(true);
 }
-
 /**
  * Open vscode Settings GUI with input value set to the specified value.
  */
@@ -37,41 +25,6 @@ export async function openKeybindingsGuiAt(value: string): Promise<void> {
  */
 export async function openSettingsJson(target: 'global' | 'workspace'): Promise<void> {
 	await commands.executeCommand(target === 'global' ? 'workbench.action.openSettingsJson' : 'workbench.action.openWorkspaceSettingsFile');
-}
-/**
- * Walk over all items (commands and folders) from the main setting `commands.commands`/`commands.workspaceCommands`
- * and execute callback for each item.
- */
-export function forEachCommand(
-	callback: (item: TopLevelCommands[string], key: string, parentElement: TopLevelCommands)=> void,
-	items: TopLevelCommands,
-): void {
-	for (const [key, item] of Object.entries(items)) {
-		callback(item, key, items);
-
-		if (item.nestedItems) {
-			forEachCommand(callback, item.nestedItems);
-		}
-	}
-}
-/**
- * Given folder - return all nested commands (not folders).
- */
-export function getAllNestedCommands(folder: CommandFolder): TopLevelCommands {
-	if (!folder.nestedItems) {
-		throw Error(`Not a folder: ${JSON.stringify(folder)}`);
-	}
-
-	const allNestedCommands: TopLevelCommands = {};
-
-	forEachCommand((item, key) => {
-		if (item.nestedItems) {
-			return;
-		}
-		allNestedCommands[key] = item;
-	}, folder.nestedItems);
-
-	return allNestedCommands;
 }
 /**
  * Get all symbols for active document.
@@ -139,24 +92,7 @@ export function forEachSymbol(f: (symbol: DocumentSymbol)=> void, symbols: Docum
 		}
 	}
 }
-/**
- * Return all registered vscode commands (excluding internal).
- */
-export async function getAllVscodeCommands(): Promise<string[]> {
-	return commands.getCommands(true);
-}
-/**
- * Unique id... Ehh, good enough.
- */
-export function uniqueId(): string {
-	return Date.now().toString(36) + Math.random().toString(36).slice(2);
-}
-/**
- * Copy object or array (hopefully without circular references).
- */
-export function deepCopy<T>(object: T): T {
-	return JSON.parse(JSON.stringify(object));
-}
+
 export function stringToUint8Array(text: string): Uint8Array {
 	// @ts-expect-error TextEncoder EXISTS
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
@@ -176,4 +112,12 @@ export function isOnWeb(): boolean {
 
 export function showNotOnWebNotification(text: string): void {
 	window.showWarningMessage(`Not on the web, you don't. "${text}"`);
+}
+
+export function createCommandUri(commandId: string, args?: unknown): Uri {
+	const commandArg = args ? `?${encodeURIComponent(JSON.stringify(args))}` : '';
+	const commandUri = Uri.parse(
+		`command:${commandId}${commandArg}`,
+	);
+	return commandUri;
 }

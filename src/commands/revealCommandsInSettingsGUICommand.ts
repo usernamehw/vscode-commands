@@ -1,6 +1,6 @@
 import { Constants } from '../extension';
-import { openSettingGuiAt } from '../utils';
+import { vscodeUtils } from '../reexport';
 
 export function revealCommandsInSettingsGuiCommand(): void {
-	openSettingGuiAt(`@ext:${Constants.ExtensionId}`);
+	vscodeUtils.openSettingGuiAt(`@ext:${Constants.ExtensionId}`);
 }

@@ -1,6 +1,6 @@
-import { MarkdownString, Uri } from 'vscode';
+import { MarkdownString, type Uri } from 'vscode';
+import { extUtils, vscodeUtils } from './reexport';
 import { type CommandFolder } from './types';
-import { getAllNestedCommands } from './utils';
 
 /**
  * Create tooltip content for folder that contains all of the nested items.
@@ -8,14 +8,17 @@ import { getAllNestedCommands } from './utils';
 export function createFolderHoverText(folder: CommandFolder): MarkdownString {
 	const markdown = new MarkdownString(undefined, true);
 	markdown.isTrusted = true;
-	const allNestedCommands = getAllNestedCommands(folder);
+	const allNestedCommands = extUtils.getAllNestedCommands(folder);
 
 	for (const key in allNestedCommands) {
 		const item = allNestedCommands[key];
-		const commandArg = item.args ? `?${encodeURIComponent(JSON.stringify(item.args))}` : '';
-		const commandUri = Uri.parse(
-			`command:${item.command}${commandArg}`,
-		);
+
+		let commandUri: Uri;
+		if (typeof item === 'string') {
+			commandUri = vscodeUtils.createCommandUri(item);
+		} else {
+			commandUri = vscodeUtils.createCommandUri(item.command, item.args);
+		}
 		markdown.appendMarkdown(`[${key}](${commandUri.toString()})\n\n`);
 	}
 

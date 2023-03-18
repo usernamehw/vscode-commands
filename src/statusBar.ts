@@ -1,8 +1,8 @@
 import { languages, MarkdownString, StatusBarAlignment, ThemeColor, Uri, window, type StatusBarItem, type TextEditor } from 'vscode';
 import { CommandId } from './commands';
 import { createFolderHoverText } from './folderHoverText';
+import { extUtils, vscodeUtils } from './reexport';
 import { type TopLevelCommands } from './types';
-import { forEachCommand } from './utils';
 
 const statusBarItems: StatusBarWithActiveEditorMetadata[] = [];
 
@@ -17,12 +17,16 @@ type StatusBarWithActiveEditorMetadata = StatusBarItem & {
 export function updateStatusBarItems(items: TopLevelCommands): void {
 	disposeStatusBarItems();
 
-	forEachCommand((item, key) => {
+	extUtils.forEachCommand((item, key) => {
+		if (typeof item === 'string') {
+			// cannot have "statusBar" on string item
+			return;
+		}
 		if (item.statusBar && !item.statusBar.hidden) {
 			const statusBarUserObject = item.statusBar;
 			const alignment = statusBarUserObject.alignment === 'right' ? StatusBarAlignment.Right : StatusBarAlignment.Left;
 			const newStatusBarItem: StatusBarWithActiveEditorMetadata = window.createStatusBarItem(statusBarUserObject.text, alignment, statusBarUserObject.priority ?? -9999);
-			let icon = item.icon ? `$(${item.icon}) ` : '';
+			let icon = 'icon' in item ? `$(${item.icon ?? ''}) ` : '';
 			newStatusBarItem.name = `Commands: ${statusBarUserObject.name ?? statusBarUserObject.text}`;
 			newStatusBarItem.color = statusBarUserObject.color;
 			newStatusBarItem.backgroundColor = statusBarUserObject.backgroundColor === 'error' ?
@@ -36,7 +40,7 @@ export function updateStatusBarItems(items: TopLevelCommands): void {
 			} else {
 				mdTooltip.appendText(statusBarUserObject.tooltip ?? key);
 			}
-			if (item.nestedItems) {
+			if (extUtils.isCommandFolder(item)) {
 				icon = '$(folder) ';
 				mdTooltip = createFolderHoverText(item);
 			}
@@ -44,9 +48,7 @@ export function updateStatusBarItems(items: TopLevelCommands): void {
 				workspaceId: item.workspace,
 				label: key,
 			}];
-			const revealCommandUri = Uri.parse(
-				`command:${CommandId.RevealCommand2}?${encodeURIComponent(JSON.stringify(args))}`,
-			);
+			const revealCommandUri = vscodeUtils.createCommandUri(CommandId.RevealCommand2, args);
 			mdTooltip.appendMarkdown(`\n\n---\n\n[Reveal in settings.json](${revealCommandUri.toString()})`);
 			newStatusBarItem.tooltip = mdTooltip;
 

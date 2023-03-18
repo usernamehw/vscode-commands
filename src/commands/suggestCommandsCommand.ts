@@ -1,9 +1,9 @@
 import { window, type TextEditor } from 'vscode';
 import { commandsToQuickPickItems } from '../quickPick';
-import { getAllVscodeCommands } from '../utils';
+import { vscodeUtils } from '../reexport';
 
 export async function suggestCommandsCommand(editor: TextEditor): Promise<void> {
-	const quickPickItems = commandsToQuickPickItems(await getAllVscodeCommands());
+	const quickPickItems = commandsToQuickPickItems(await vscodeUtils.getAllVscodeCommands());
 
 	const picked = await window.showQuickPick(quickPickItems);
 	if (!picked) {

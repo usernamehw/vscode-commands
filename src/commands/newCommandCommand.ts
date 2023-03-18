@@ -1,11 +1,10 @@
 import { window } from 'vscode';
 import { addArgs } from '../args';
-import { applyForTreeItem } from '../commands';
 import { $config, Constants } from '../extension';
 import { commandsToQuickPickItems } from '../quickPick';
+import { extUtils, utils, vscodeUtils } from '../reexport';
 import { updateSetting } from '../settings';
 import { type FolderTreeItem } from '../TreeViewProvider';
-import { deepCopy, forEachCommand, getAllVscodeCommands, goToSymbol, openSettingsJson } from '../utils';
 
 export async function newCommandCommand(): Promise<void> {
 	await addNewCommand();
@@ -16,7 +15,7 @@ export async function newCommandInFolderCommand(folderTreeItem: FolderTreeItem):
 }
 
 async function addNewCommand(folderTreeItem?: FolderTreeItem): Promise<void> {
-	const quickPickItems = commandsToQuickPickItems(await getAllVscodeCommands());
+	const quickPickItems = commandsToQuickPickItems(await vscodeUtils.getAllVscodeCommands());
 	const quickPickTitle = `Add command to ${folderTreeItem ? `"${folderTreeItem.getLabelName()}"` : 'root'}.`;
 
 	const pickedCommand = await window.showQuickPick(quickPickItems, {
@@ -32,14 +31,14 @@ async function addNewCommand(folderTreeItem?: FolderTreeItem): Promise<void> {
 	const newCommandKey = `${label}_${Math.random().toString().slice(2, 5)}`;
 
 	if (folderTreeItem) {
-		applyForTreeItem(async ({ treeItem, commands, settingId, configTarget }) => {
-			const commandsCopy = deepCopy(configTarget === 'workspace' ? $config.workspaceCommands : $config.commands);
+		extUtils.applyForTreeItem(async ({ treeItem, commands, settingId, configTarget }) => {
+			const commandsCopy = utils.deepCopy(configTarget === 'workspace' ? $config.workspaceCommands : $config.commands);
 
-			forEachCommand((com, key) => {
+			extUtils.forEachCommand((com, key) => {
 				if (key !== folderTreeItem.label) {
 					return;
 				}
-				if (!com.nestedItems) {
+				if (!extUtils.isCommandFolder(com)) {
 					return;
 				}
 				com.nestedItems = {
@@ -49,8 +48,8 @@ async function addNewCommand(folderTreeItem?: FolderTreeItem): Promise<void> {
 			}, commandsCopy);
 
 			await updateSetting(settingId, commandsCopy, configTarget);
-			await openSettingsJson(configTarget);
-			await goToSymbol(window.activeTextEditor, newCommandKey);
+			await vscodeUtils.openSettingsJson(configTarget);
+			await vscodeUtils.goToSymbol(window.activeTextEditor, newCommandKey);
 		}, folderTreeItem);
 	} else {
 		const newCommandsSetting = {
@@ -60,7 +59,7 @@ async function addNewCommand(folderTreeItem?: FolderTreeItem): Promise<void> {
 			},
 		};
 		await updateSetting(Constants.ExtensionMainSettingId, newCommandsSetting, 'global');
-		await openSettingsJson('global');
-		await goToSymbol(window.activeTextEditor, newCommandKey);
+		await vscodeUtils.openSettingsJson('global');
+		await vscodeUtils.goToSymbol(window.activeTextEditor, newCommandKey);
 	}
 }

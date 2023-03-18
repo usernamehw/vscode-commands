@@ -3,7 +3,7 @@ import { CompletionItemKind, languages, Range, type CompletionItem, type Extensi
 import { CommandId } from '../commands';
 import { Constants } from '../extension';
 import { getAllCommandPaletteCommands } from '../quickPick';
-import { getAllVscodeCommands } from '../utils';
+import { vscodeUtils } from '../reexport';
 
 export function registerJsonSchemaCompletion(context: ExtensionContext): void {
 	// ────────────────────────────────────────────────────────────
@@ -41,7 +41,7 @@ export function registerJsonSchemaCompletion(context: ExtensionContext): void {
 				return;
 			}
 
-			const keybinding = getNodeValue(keybindingNode);
+			const keybinding = getNodeValue(keybindingNode) as { command: string };
 			if (keybinding.command !== CommandId.Run) {
 				return;
 			}
@@ -101,7 +101,7 @@ function isCommandIdAutocomplete(comparePath: (number | string)[]): boolean {
 async function getAllCommandsForAutocomplete(startPosition: Position, endPosition: Position): Promise<CompletionItem[]> {
 	const commandTitles = Object.fromEntries((await getAllCommandPaletteCommands().catch(() => []))
 		.map(({ command, title }) => [command, title]));
-	const commandsList = await getAllVscodeCommands();
+	const commandsList = await vscodeUtils.getAllVscodeCommands();
 
 	return commandsList.map((command, i) => ({
 		label: command,

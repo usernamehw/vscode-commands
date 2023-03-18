@@ -1,10 +1,9 @@
 import { window } from 'vscode';
-import { applyForTreeItem } from '../commands';
 import { $config, Constants } from '../extension';
+import { extUtils, utils } from '../reexport';
 import { updateSetting } from '../settings';
 import { type FolderTreeItem } from '../TreeViewProvider';
 import { type CommandFolder } from '../types';
-import { deepCopy, forEachCommand } from '../utils';
 
 export async function newFolderCommand(): Promise<void> {
 	await newFolder();
@@ -25,17 +24,16 @@ export async function newFolder(folderTreeItem?: FolderTreeItem): Promise<void> 
 
 	if (folderTreeItem) {
 		// New folder inside another folder
-		applyForTreeItem(async ({ treeItem, commands, settingId, configTarget }) => {
-			const commandsCopy = deepCopy(configTarget === 'workspace' ? $config.workspaceCommands : $config.commands);
+		extUtils.applyForTreeItem(async ({ treeItem, commands, settingId, configTarget }) => {
+			const commandsCopy = utils.deepCopy(configTarget === 'workspace' ? $config.workspaceCommands : $config.commands);
 
-			forEachCommand((com, key) => {
+			extUtils.forEachCommand((com, key) => {
 				if (key !== folderTreeItem.label) {
 					return;
 				}
-				if (!com.nestedItems) {
+				if (!extUtils.isCommandFolder(com)) {
 					return;
 				}
-				// @ts-expect-error Fix this later
 				com.nestedItems = {
 					...com.nestedItems,
 					[newFolderName]: emptyFolder,

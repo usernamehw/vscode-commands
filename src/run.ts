@@ -2,15 +2,15 @@
 import { commands, window } from 'vscode';
 import { $config, $state } from './extension';
 import { showQuickPick } from './quickPick';
+import { extUtils, utils } from './reexport';
 import { substituteVariableRecursive, substituteVariables } from './substituteVariables';
 import { type CommandFolder, type CommandObject, type Runnable, type Sequence } from './types';
-import { deepCopy, getAllNestedCommands, isSimpleObject, sleep } from './utils';
 
 /**
  * Execute runnable or folder.
  * Executing a folder - is to show Quick Pick to choose one of the commands inside that folder.
  */
-export async function run(runnable: CommandFolder & Runnable): Promise<void> {
+export async function run(runnable: CommandFolder | Runnable): Promise<void> {
 	$state.lastExecutedCommand = runnable;
 	if (typeof runnable === 'string') {
 		const { command, args } = parseSimplifiedArgs(runnable);
@@ -20,14 +20,14 @@ export async function run(runnable: CommandFolder & Runnable): Promise<void> {
 		});
 		return;
 	}
-	if (runnable.nestedItems) {
+	if (extUtils.isCommandFolder(runnable)) {
 		runFolder(runnable);
 		return;
 	}
 	if (Array.isArray(runnable)) {
 		await runArray(runnable);
 		return;
-	} else if (isSimpleObject(runnable)) {
+	} else if (utils.isSimpleObject(runnable)) {
 		if (Array.isArray(runnable.sequence)) {
 			await runArray(runnable.sequence);
 		} else {
@@ -75,7 +75,7 @@ async function runObject(object: CommandObject): Promise<void> {
 	}
 
 	if (object.delay) {
-		await sleep(object.delay);
+		await utils.sleep(object.delay);
 	}
 	let commandId = object.command;
 	if ($config.alias[commandId]) {
@@ -93,7 +93,7 @@ async function runObject(object: CommandObject): Promise<void> {
 			Array.isArray(args) ||
 			(typeof args === 'object' && args !== null)
 		) {
-			args = await substituteVariableRecursive(deepCopy(args));
+			args = await substituteVariableRecursive(utils.deepCopy(args));
 		}
 	}
 
@@ -108,7 +108,7 @@ async function runObject(object: CommandObject): Promise<void> {
  * Run folder (show Quick pick with all commands inside that folder).
  */
 function runFolder(folder: CommandFolder): void {
-	showQuickPick(getAllNestedCommands(folder), true);
+	showQuickPick(extUtils.getAllNestedCommands(folder), true);
 }
 /**
  * Allow running a string with args: `commands.runInTerminal?npm run watch` (for runnables that are strings)

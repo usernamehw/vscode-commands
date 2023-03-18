@@ -1,9 +1,9 @@
 import { window } from 'vscode';
+import { vscodeUtils } from '../reexport';
 import { run } from '../run';
-import { getAllVscodeCommands } from '../utils';
 
 export async function selectAndRunCommand(): Promise<void> {
-	const pickedCommand = await window.showQuickPick(await getAllVscodeCommands());
+	const pickedCommand = await window.showQuickPick(await vscodeUtils.getAllVscodeCommands());
 	if (!pickedCommand) {
 		return;
 	}

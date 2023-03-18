@@ -3,8 +3,9 @@ import { EventEmitter, MarkdownString, ThemeColor, ThemeIcon, TreeItem, TreeItem
 import { CommandId } from './commands';
 import { $config, $state } from './extension';
 import { createFolderHoverText } from './folderHoverText';
+import { extUtils } from './reexport';
 import { type CommandFolder, type Runnable, type TopLevelCommands } from './types';
-import { isSimpleObject } from './utils';
+import { isSimpleObject } from './utils/utils';
 
 interface RunCommandTreeItemInit {
 	label: string;
@@ -150,41 +151,34 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 	 * Convert extension commands to `TreeItem` (`FolderTreeItem` or `RunCommandTreeItem`)
 	 */
 	private commandsToTreeItems(items: TopLevelCommands): (FolderTreeItem | RunCommandTreeItem)[] {
-		const result: (FolderTreeItem | RunCommandTreeItem)[] = [];
+		const treeItems: (FolderTreeItem | RunCommandTreeItem)[] = [];
 		for (const key in items) {
 			const item = items[key];
-			if (item.hidden) {
+			if (typeof item !== 'string' && item.hidden) {
 				continue;
 			}
-			let runnable: Runnable = [];
 
-			if (typeof item === 'string') {
-				runnable = item;
-			} else if (isSimpleObject(item)) {
-				runnable = item;
-			}
-
-			if (item.nestedItems) {
-				result.push(new FolderTreeItem(
+			if (extUtils.isCommandFolder(item)) {
+				treeItems.push(new FolderTreeItem(
 					key,
 					item,
 				));
 			} else {
-				result.push(new RunCommandTreeItem(
+				treeItems.push(new RunCommandTreeItem(
 					{
 						label: key,
 						command: {
 							command: CommandId.Run,
 							title: 'Run Command',
-							arguments: [runnable],
+							arguments: [item],
 						},
-						runnable,
-						icon: item.icon,
-						iconColor: item.iconColor,
+						runnable: item,
+						icon: typeof item === 'string' ? undefined : item.icon,
+						iconColor: typeof item === 'string' ? undefined : item.iconColor,
 					},
 				));
 			}
 		}
-		return result;
+		return treeItems;
 	}
 }

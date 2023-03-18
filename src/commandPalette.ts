@@ -1,7 +1,7 @@
 import { Uri, workspace, type Disposable, type ExtensionContext } from 'vscode';
 import { $config, Constants } from './extension';
+import { extUtils, vscodeUtils } from './reexport';
 import { type TopLevelCommands } from './types';
-import { forEachCommand, stringToUint8Array, uint8ArrayToString } from './utils';
 import { getWorkspaceId, isWorkspaceCommandItem, WorkspaceConstants } from './workspaceCommands';
 
 const commandPaletteCommandsList: Disposable[] = [];
@@ -54,7 +54,7 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 			// so it would contain only core commands again.
 			const { coreCommands, packageJsonObject, packageJsonPath } = await getCommandsFromPackageJson(context);
 			packageJsonObject.contributes.commands = coreCommands;
-			await workspace.fs.writeFile(Uri.file(packageJsonPath), stringToUint8Array(JSON.stringify(packageJsonObject, null, '\t')));
+			await workspace.fs.writeFile(Uri.file(packageJsonPath), vscodeUtils.stringToUint8Array(JSON.stringify(packageJsonObject, null, '\t')));
 			await context.globalState.update(Constants.CommandPaletteWasPopulatedStorageKey, false);
 		}
 		return;
@@ -72,11 +72,13 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 
 	const userCommands: Command[] = [];
 	const userCommandPalette: { command: string; when: string }[] = [];
-	forEachCommand((item, key) => {
-		if (item.nestedItems) {
-			return;// Skip folders
+	extUtils.forEachCommand((item, key) => {
+		if (extUtils.isCommandFolder(item)) {
+			return;
 		}
-		const baseWhen = item.when ?? 'true';
+		const baseWhen = typeof item === 'string' ?
+			'true' :
+			item.when ?? 'true';
 		const when = isWorkspaceCommandItem(item) ? `${WorkspaceConstants.ContextKey} == ${item.workspace} && ${baseWhen}` : baseWhen;
 		userCommands.push({
 			command: key,
@@ -93,19 +95,20 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 
 	if (JSON.stringify(newCommands.sort((a, b) => a.command.localeCompare(b.command))) ===
 		JSON.stringify(oldCommands.sort((a, b) => a.command.localeCompare(b.command)))) {
-		return;// Only write file if necessary
+		// Only write file if necessary
+		return;
 	}
 
 	packageJsonObject.contributes.commands = [...coreCommands, ...otherWorkspacesCommands, ...userCommands];
 	packageJsonObject.contributes.menus.commandPalette = [...coreCommandPalette, ...otherWorkspacesCommandPalette, ...userCommandPalette];
-	await workspace.fs.writeFile(Uri.file(packageJsonPath), stringToUint8Array(JSON.stringify(packageJsonObject, null, '\t')));
+	await workspace.fs.writeFile(Uri.file(packageJsonPath), vscodeUtils.stringToUint8Array(JSON.stringify(packageJsonObject, null, '\t')));
 	await context.globalState.update(Constants.CommandPaletteWasPopulatedStorageKey, true);
 }
 
 async function getCommandsFromPackageJson(context: ExtensionContext) {
 	const packageJsonPath = context.asAbsolutePath('./package.json');
 	const packageJsonFile = await workspace.fs.readFile(Uri.file(packageJsonPath));
-	const packageJsonObject = JSON.parse(uint8ArrayToString(packageJsonFile));
+	const packageJsonObject = JSON.parse(vscodeUtils.uint8ArrayToString(packageJsonFile));
 	const oldCommands = packageJsonObject.contributes.commands as Command[];
 	const coreCommands: Command[] = (packageJsonObject.contributes.commands as Command[]).filter(command => coreCommandIds.includes(command.command));
 	const coreCommandPalette = (packageJsonObject.contributes.menus.commandPalette as CommandPalette[]).filter(command => coreCommandIds.includes(command.command));

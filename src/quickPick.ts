@@ -2,9 +2,9 @@ import { commands, extensions, ThemeIcon, Uri, window, workspace, type QuickInpu
 import { hasArgs } from './args';
 import { CommandId } from './commands';
 import { $config, $state } from './extension';
+import { extUtils, vscodeUtils } from './reexport';
 import { run } from './run';
 import { type Runnable, type TopLevelCommands } from './types';
-import { goToSymbol, openSettingsJson, uint8ArrayToString } from './utils';
 import { isWorkspaceCommandItem } from './workspaceCommands';
 
 type QuickPickItemWithMetadata = QuickPickItem & {
@@ -27,7 +27,7 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
 	function traverseCommands(items: TopLevelCommands, parentFolderName?: string): void {
 		for (const key in items) {
 			const runnable = items[key];
-			if (runnable.nestedItems) {
+			if (extUtils.isCommandFolder(runnable)) {
 				traverseCommands(runnable.nestedItems, key);
 			} else {
 				treeAsOneLevelMap[key] = {
@@ -50,7 +50,8 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
 	};
 
 	const userCommands: QuickPickItemWithMetadata[] = Object.keys(treeAsOneLevelMap).map(label => ({
-		// @ts-expect-error fix later
+		// @ts-expect-error any
+		// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 		label: `${treeAsOneLevelMap[label]?.runnable?.icon ? `$(${treeAsOneLevelMap[label].runnable?.icon}) ` : ''}${label}`,
 		buttons: [revealCommandButton],
 		description: treeAsOneLevelMap[label].parentFolderName ? `$(folder) ${treeAsOneLevelMap[label].parentFolderName ?? ''}` : undefined,
@@ -83,8 +84,8 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
 		const label = (e.item as QuickPickItemWithMetadata).key;
 		const clickedItem = treeAsOneLevelMap[label];
 		if (e.button.tooltip === revealCommandButton.tooltip) {
-			await openSettingsJson(isWorkspaceCommandItem(clickedItem) ? 'workspace' : 'global');
-			goToSymbol(window.activeTextEditor, label);
+			await vscodeUtils.openSettingsJson(isWorkspaceCommandItem(clickedItem) ? 'workspace' : 'global');
+			vscodeUtils.goToSymbol(window.activeTextEditor, label);
 		}
 		quickPick.hide();
 		quickPick.dispose();
@@ -163,7 +164,7 @@ async function getAllBuiltinCommands(): Promise<VscodeCommandWithoutCategory[]> 
 	const commandsDataPath = $state.context.asAbsolutePath('./data/commandTitleMap.json');
 	const file = await workspace.fs.readFile(Uri.file(commandsDataPath));
 	try {
-		const fileContentAsObject: Record<string, string> = JSON.parse(uint8ArrayToString(file)) as Record<string, string>;
+		const fileContentAsObject: Record<string, string> = JSON.parse(vscodeUtils.uint8ArrayToString(file)) as Record<string, string>;
 		const result: VscodeCommandWithoutCategory[] = [];
 		for (const key in fileContentAsObject) {
 			result.push({
@@ -181,7 +182,8 @@ async function getAllBuiltinCommands(): Promise<VscodeCommandWithoutCategory[]> 
 function getAllCommandsFromExtensions(): VscodeCommandWithoutCategory[] {
 	const coms: VscodeCommandWithoutCategory[] = [];
 	for (const extension of extensions.all) {
-		const contributedCommands: VscodeCommand[] | undefined = extension.packageJSON?.contributes?.commands;
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+		const contributedCommands: VscodeCommand[] | undefined = extension.packageJSON?.contributes?.commands as VscodeCommand[];
 		if (contributedCommands) {
 			coms.push(...contributedCommands.map(command => ({
 				command: command.command,

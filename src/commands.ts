@@ -118,18 +118,3 @@ export function registerExtensionCommands(): void {
 	commands.registerCommand(CommandId.Diff, diffCommand);
 }
 
-export function isWorkspaceTreeItem(treeItem: FolderTreeItem | RunCommandTreeItem): boolean {
-	return (treeItem instanceof RunCommandTreeItem && isWorkspaceCommandItem(treeItem.runnable)) ||
-		(treeItem instanceof FolderTreeItem && isWorkspaceCommandItem(treeItem.folder));
-}
-
-export function applyForTreeItem(
-	action: (o: { treeItem: FolderTreeItem | RunCommandTreeItem; commands: TopLevelCommands; settingId: string; configTarget: 'global' | 'workspace' })=> void,
-	treeItem: FolderTreeItem | RunCommandTreeItem,
-): void {
-	if (isWorkspaceTreeItem(treeItem)) {
-		action({ treeItem, commands: $config.workspaceCommands, settingId: Constants.WorkspaceCommandsSettingId, configTarget: 'workspace' });
-	} else {
-		action({ treeItem, commands: $config.commands, settingId: Constants.ExtensionMainSettingId, configTarget: 'global' });
-	}
-}
