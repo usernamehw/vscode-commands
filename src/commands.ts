@@ -30,10 +30,6 @@ import { suggestVariableCommand } from './commands/suggestVariableCommand';
 import { toggleSettingCommand } from './commands/toggleSettingCommand';
 import { toggleStatusBarCommand } from './commands/toggleStatusBarCommand';
 import { toggleThemeCommand } from './commands/toggleThemeCommand';
-import { $config, Constants } from './extension';
-import { FolderTreeItem, RunCommandTreeItem } from './TreeViewProvider';
-import { type TopLevelCommands } from './types';
-import { isWorkspaceCommandItem } from './workspaceCommands';
 
 /**
  * All command ids contributed by this extension.

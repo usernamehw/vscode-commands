@@ -63,5 +63,16 @@
         "command": "commands.openExternal",
         "args": "https://www.google.com/search?q=${selectedText}",
     },
-}
+},
+```
+
+## Open first search item (feeling lucky) from selection
+
+```js
+"commands.commands": {
+    "Feeling lucky": {
+        "command": "commands.openExternal",
+        "args": "https://duckduckgo.com/?q=%21+${selectedText}",
+    },
+},
 ```

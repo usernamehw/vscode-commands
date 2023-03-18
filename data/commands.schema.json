@@ -1281,7 +1281,17 @@
 			"then": {
 				"properties": {
 					"args": {
-						"type": "string",
+						"oneOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							}
+						],
 						"markdownDescription": "Open link in default browser or open other things from registered protocols, like `mailto:`,`callto:`..."
 					}
 				},

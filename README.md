@@ -114,7 +114,7 @@
 |commands.selectAndRun|Commands: Select and run command|
 |commands.rerun|Commands: Rerun last command|
 |commands.suggestCommands|Commands: Suggest (autocomplete) commands|
-|commands.suggestCodicons|Commands: Suggest (autocomplete) codicons|
+|commands.suggestCodicons|Commands: Suggest [Codicons](https://code.visualstudio.com/api/references/icons-in-labels)|
 |commands.suggestVariables|Commands: Suggest variables that are supported by this extension's variable substitutions, e.g: `${workspaceFolderBasename}`.|
 |commands.newCommand|Commands: Add new command to the list|
 |commands.escapeCommandUriArgument|Commands: Escape command uri argument|
@@ -681,6 +681,13 @@ Example for a 2x2 grid:
     "command": "commands.openExternal",
     "args": "https://www.google.com",
 },
+"open multiple urls": {
+    "command": "commands.openExternal",
+    "args": [
+        "https://www.google.com",
+        "https://github.com/",
+    ],
+},
 "Open Extension Preview": {
     "command": "commands.openExternal",
     "args": "vscode:extension/usernamehw.commands",
@@ -729,12 +736,6 @@ If the only purpose for a command sequence is to run it from a keybinding, then 
     ],
 },
 ```
-
-## Codicons
-
-To quickly find an icon id (for Tree View / Status Bar / terminal) run this command: `commands.suggestCodicons` **Suggest (autocomplete) codicons**.
-
-There's also a [vscode-codicons](https://microsoft.github.io/vscode-codicons/dist/codicon.html) web page.
 
 ## Using your own color for tree view icon
 
