@@ -109,6 +109,10 @@ export function isOnWeb(): boolean {
 	return env.uiKind === UIKind.Web;
 }
 
+export function showErrorNotification(e: unknown): void {
+	window.showErrorMessage((e as Error).message);
+}
+
 export function showNotOnWebNotification(text: string): void {
 	window.showWarningMessage(`Not on the web, you don't. "${text}"`);
 }

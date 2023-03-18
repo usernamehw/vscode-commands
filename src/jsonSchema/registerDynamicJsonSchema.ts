@@ -1,4 +1,5 @@
-import { Uri, window, workspace, type ExtensionContext } from 'vscode';
+import { Uri, workspace, type ExtensionContext } from 'vscode';
+import { vscodeUtils } from '../reexport';
 
 /**
  * Reference it in schema files like: `commandsExtension://schemas/codicons`
@@ -46,7 +47,7 @@ export async function getAllCodiconNames(): Promise<string[]> {
 		allCodiconsNames.sort((a, b) => a.localeCompare(b));
 		return allCodiconsNames;
 	} catch (e) {
-		window.showErrorMessage((e as Error).message);
+		vscodeUtils.showErrorNotification(e);
 		return [];
 	}
 }
@@ -67,7 +68,7 @@ async function getAllWorkbenchColors(): Promise<string[][]> {
 		}
 		return allColorsWithDescriptions;
 	} catch (e) {
-		window.showErrorMessage((e as Error).message);
+		vscodeUtils.showErrorNotification(e);
 		return [];
 	}
 }

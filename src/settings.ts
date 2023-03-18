@@ -2,7 +2,7 @@ import isEqual from 'lodash/isEqual';
 import { ConfigurationTarget, window, workspace } from 'vscode';
 import { CommandId } from './commands';
 import { $config } from './extension';
-import { utils } from './reexport';
+import { utils, vscodeUtils } from './reexport';
 
 type Target = 'global' | 'workspace';
 
@@ -71,7 +71,7 @@ export async function toggleSetting(arg: ToggleSettingType | string): Promise<vo
 	try {
 		await settings.update(settingName, newValue, target === 'workspace' ? ConfigurationTarget.Workspace : ConfigurationTarget.Global);
 	} catch (e) {
-		window.showErrorMessage((e as Error).message);
+		vscodeUtils.showErrorNotification(e);
 	}
 
 	if ($config.toggleSettings.showNotification) {
@@ -113,7 +113,7 @@ export async function incrementSetting(arg: ToggleSettingType | string): Promise
 	try {
 		await settings.update(settingName, newValue, target === 'workspace' ? ConfigurationTarget.Workspace : ConfigurationTarget.Global);
 	} catch (e) {
-		window.showErrorMessage((e as Error).message);
+		vscodeUtils.showErrorNotification(e);
 	}
 
 	if ($config.toggleSettings.showNotification) {
@@ -128,7 +128,7 @@ export async function updateSetting(settingName: string, newValue: unknown, targ
 	try {
 		await settings.update(settingName, newValue, target === 'workspace' ? ConfigurationTarget.Workspace : ConfigurationTarget.Global);
 	} catch (e) {
-		window.showErrorMessage((e as Error).message);
+		vscodeUtils.showErrorNotification(e);
 	}
 }
 /**
