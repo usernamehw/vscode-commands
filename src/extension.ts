@@ -19,6 +19,10 @@ export const enum Constants {
 
 	CommandPaletteWasPopulatedStorageKey = 'was_populated',
 
+	PackageJsonFileName = 'package.json',
+	SettingsJsonFileName = 'settings.json',
+	KeybindingsJsonFileName = 'keybindings.json',
+
 	NestingSymbol = '◦',
 }
 

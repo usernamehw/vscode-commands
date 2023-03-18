@@ -10,7 +10,7 @@ export function registerJsonSchemaCompletion(context: ExtensionContext): void {
 	// ──── keybindings.json ──────────────────────────────────────
 	// ────────────────────────────────────────────────────────────
 	context.subscriptions.push(languages.registerCompletionItemProvider({
-		pattern: '**/{keybindings.json}',
+		pattern: `**/{${Constants.KeybindingsJsonFileName}}`,
 	}, {
 		async provideCompletionItems(document, position) {
 			const root = parseTree(document.getText(), []);
@@ -54,7 +54,7 @@ export function registerJsonSchemaCompletion(context: ExtensionContext): void {
 	// ──── settings.json ─────────────────────────────────────────
 	// ────────────────────────────────────────────────────────────
 	context.subscriptions.push(languages.registerCompletionItemProvider({
-		pattern: '**/{settings.json}',
+		pattern: `**/{${Constants.SettingsJsonFileName}}`,
 	}, {
 		async provideCompletionItems(document, position) {
 			const root = parseTree(document.getText(), []);

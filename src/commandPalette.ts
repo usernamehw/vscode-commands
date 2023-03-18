@@ -106,7 +106,7 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 }
 
 async function getCommandsFromPackageJson(context: ExtensionContext) {
-	const packageJsonPath = context.asAbsolutePath('./package.json');
+	const packageJsonPath = context.asAbsolutePath(`./${Constants.PackageJsonFileName}`);
 	const packageJsonFile = await workspace.fs.readFile(Uri.file(packageJsonPath));
 	const packageJsonObject = JSON.parse(vscodeUtils.uint8ArrayToString(packageJsonFile));
 	const oldCommands = packageJsonObject.contributes.commands as Command[];

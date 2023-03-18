@@ -1,5 +1,4 @@
-import { commands, env, ExtensionMode, Range, Selection, TextEditorRevealType, UIKind, Uri, window, type DocumentSymbol, type TextDocument, type TextEditor } from 'vscode';
-import { $state } from '../extension';
+import { commands, env, Range, Selection, TextEditorRevealType, UIKind, Uri, window, type DocumentSymbol, type TextDocument, type TextEditor } from 'vscode';
 import { sleep } from './utils';
 
 /**
@@ -104,10 +103,10 @@ export function uint8ArrayToString(arr: Uint8Array): string {
 	return new TextDecoder().decode(arr);
 }
 /**
- * Return `true` when on the web. And also when developing extension.
+ * Return `true` when on the web.
  */
 export function isOnWeb(): boolean {
-	return env.uiKind === UIKind.Web || $state.context.extensionMode === ExtensionMode.Development;
+	return env.uiKind === UIKind.Web;
 }
 
 export function showNotOnWebNotification(text: string): void {
