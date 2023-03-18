@@ -956,7 +956,17 @@
 			"then": {
 				"properties": {
 					"args": {
-						"type": "string",
+						"oneOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "array",
+								"items": {
+									"type": "string"
+								}
+							}
+						],
 						"markdownDescription": "Open file/folder in vscode. Relative path will open relative to the first opened workspace folder."
 					}
 				},

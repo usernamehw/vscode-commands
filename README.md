@@ -547,7 +547,7 @@ Example for a 2x2 grid:
 ```js
 "Open file": {
     "command": "commands.openFolder",
-    "args": "C:\\temp\\temp.txt",
+    "args": "C:\\temp\\temp.txt",// Accepts array ["C:/temp/1.txt","C:/temp/2.txt"]
 },
 "Open relative file": {
     "command": "commands.openFolder",
@@ -679,14 +679,7 @@ Example for a 2x2 grid:
 ```js
 "Open google.com": {
     "command": "commands.openExternal",
-    "args": "https://www.google.com",
-},
-"open multiple urls": {
-    "command": "commands.openExternal",
-    "args": [
-        "https://www.google.com",
-        "https://github.com/",
-    ],
+    "args": "https://www.google.com",// Accepts array ["https://www.google.com","https://github.com/"]
 },
 "Open Extension Preview": {
     "command": "commands.openExternal",
