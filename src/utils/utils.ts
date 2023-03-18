@@ -28,3 +28,11 @@ export function uniqueId(): string {
 export function deepCopy<T>(object: T): T {
 	return JSON.parse(JSON.stringify(object)) as T;
 }
+
+/**
+ * True when not `undefined` and not `null`.
+ */
+export function nonNullable<T>(value: T): value is NonNullable<T> {
+	return value !== undefined &&
+		value !== null;
+}

@@ -9,7 +9,6 @@ import { isSimpleObject } from './utils/utils';
 
 interface RunCommandTreeItemInit {
 	label: string;
-	command: Command | undefined;
 	runnable: Runnable;
 	icon?: string;
 	iconColor?: string;
@@ -28,13 +27,17 @@ export class RunCommandTreeItem extends TreeItem {
 
 	constructor({
 		label,
-		command,
 		runnable,
 		icon,
 		iconColor,
 	}: RunCommandTreeItemInit) {
 		super(label);
-		this.command = command;
+
+		this.command = {
+			command: CommandId.Run,
+			title: 'Run Command',
+			arguments: [runnable],
+		};
 		this.runnable = runnable;
 		if (icon) {
 			this.iconPath = new ThemeIcon(icon, new ThemeColor(iconColor ?? ''));
@@ -167,11 +170,6 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 				treeItems.push(new RunCommandTreeItem(
 					{
 						label: key,
-						command: {
-							command: CommandId.Run,
-							title: 'Run Command',
-							arguments: [item],
-						},
 						runnable: item,
 						icon: typeof item === 'string' ? undefined : item.icon,
 						iconColor: typeof item === 'string' ? undefined : item.iconColor,

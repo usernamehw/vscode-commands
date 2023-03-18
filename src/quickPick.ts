@@ -1,9 +1,11 @@
 import { commands, extensions, ThemeIcon, Uri, window, workspace, type QuickInputButton, type QuickPickItem } from 'vscode';
 import { hasArgs } from './args';
 import { CommandId } from './commands';
+import { toggleStatusBarCommand } from './commands/toggleStatusBarCommand';
 import { $config, $state } from './extension';
-import { extUtils, vscodeUtils } from './reexport';
+import { extUtils, utils, vscodeUtils } from './reexport';
 import { run } from './run';
+import { RunCommandTreeItem } from './TreeViewProvider';
 import { type Runnable, type TopLevelCommands } from './types';
 import { isWorkspaceCommandItem } from './workspaceCommands';
 
@@ -44,16 +46,23 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
 		tooltip: 'Add new command',
 	};
 
-	const revealCommandButton: QuickInputButton = {
+	const revealCommandInlineButton: QuickInputButton = {
 		iconPath: new ThemeIcon('go-to-file'),
 		tooltip: 'Reveal in settings.json',
+	};
+	const toggleStatusBarInlineButton: QuickInputButton = {
+		iconPath: new ThemeIcon('statusBar'),
+		tooltip: 'Toggle Status Bar item',
 	};
 
 	const userCommands: QuickPickItemWithMetadata[] = Object.keys(treeAsOneLevelMap).map(label => ({
 		// @ts-expect-error any
 		// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 		label: `${treeAsOneLevelMap[label]?.runnable?.icon ? `$(${treeAsOneLevelMap[label].runnable?.icon}) ` : ''}${label}`,
-		buttons: [revealCommandButton],
+		buttons: [
+			revealCommandInlineButton,
+			typeof treeAsOneLevelMap[label].runnable === 'string' ? undefined : toggleStatusBarInlineButton,
+		].filter(utils.nonNullable),
 		description: treeAsOneLevelMap[label].parentFolderName ? `$(folder) ${treeAsOneLevelMap[label].parentFolderName ?? ''}` : undefined,
 
 		runnable: treeAsOneLevelMap[label].runnable,
@@ -83,9 +92,17 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
 	quickPick.onDidTriggerItemButton(async e => {
 		const label = (e.item as QuickPickItemWithMetadata).key;
 		const clickedItem = treeAsOneLevelMap[label];
-		if (e.button.tooltip === revealCommandButton.tooltip) {
+		if (e.button.tooltip === revealCommandInlineButton.tooltip) {
 			await vscodeUtils.openSettingsJson(isWorkspaceCommandItem(clickedItem) ? 'workspace' : 'global');
 			vscodeUtils.goToSymbol(window.activeTextEditor, label);
+		} else if (e.button.tooltip === toggleStatusBarInlineButton.tooltip) {
+			const tempTreeItem = new RunCommandTreeItem({
+				label,
+				runnable: clickedItem.runnable,
+			});
+			toggleStatusBarCommand(tempTreeItem);
+			// Don't hide it when toggling status bar
+			return;
 		}
 		quickPick.hide();
 		quickPick.dispose();
