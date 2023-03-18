@@ -745,6 +745,25 @@
 			"then": {
 				"properties": {
 					"args": {
+						"oneOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "object",
+								"properties": {
+									"extensionId": {
+										"type": "string"
+									},
+									"issueTitle": {
+										"type": "string"
+									},
+									"issueBody": {
+										"type": "string"
+									}
+								}
+							}
+						],
 						"markdownDescription": "Opens the issue reporter with the provided extension id as the selected source",
 						"type": "string"
 					}

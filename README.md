@@ -424,6 +424,15 @@ Example for a 2x2 grid:
 },
 ```
 
+### `vscode.removeFromRecentlyOpened` Remove Removes an entry with the given path from the recently opened list
+
+```js
+"Remove from recently opened": {
+	"command": "vscode.removeFromRecentlyOpened",
+	"args": "C:/temp/1.txt",
+},
+```
+
 ### `vscode.openIssueReporter` Opens the issue reporter with the provided extension id as the selected source
 
 - **extensionId** - extensionId to report an issue on
@@ -574,9 +583,6 @@ Example for a 2x2 grid:
     "args": {
         "target": "newest",// focus newest matching terminal; create new if no match
         "name": "foobar",// if no match, assign a name to the new terminal
-        "icon": "zap",// if no match, assign a Codicon to the new terminal
-        "iconColor": "terminal.ansiCyan",// if no match, assign a color (from current theme) to the new terminal
-        // "cwd": "",
     },
 },
 ```
@@ -596,9 +602,6 @@ Example for a 2x2 grid:
         "reveal": true,
         "waitForExit": false,// will wait for terminal to exit before running next command
         "reuse": "newest",// reuse newest same-named terminal; create new if no match
-        "icon": "zap",// if no match, assign a Codicon to the new terminal
-        "iconColor": "terminal.ansiCyan",// if no match, assign a color (from current theme) to the new terminal
-        // "cwd": "",
     },
 },
 ```
@@ -764,6 +767,4 @@ workbench.action.files.newUntitledFile (arg `viewType` eg `vscode.markdown.previ
 vscode.openWith `commands.executeCommand("vscode.openWith", uri, MyCustomEditor.viewType);`
 editor.unfold
 editor.fold
-
-TODO: https://github.com/microsoft/vscode-docs/blob/main/api/references/commands.md Sync changes periodically
 -->
