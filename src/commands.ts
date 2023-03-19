@@ -2,7 +2,6 @@ import { commands } from 'vscode';
 import { assignKeybindingCommand } from './commands/assignKeybindingCommand';
 import { clipboardWriteCommand } from './commands/clipboardWriteCommand';
 import { deleteCommandCommand } from './commands/deleteCommandCommand';
-import { diffCommand } from './commands/diffCommand';
 import { escapeCommandUriArgumentCommand } from './commands/escapeCommandUriArgumentCommand';
 import { focusTerminalCommand } from './commands/focusTerminalCommand';
 import { incrementSettingCommand } from './commands/incrementSettingCommand';
@@ -26,7 +25,7 @@ import { showStatusBarNotificationCommand } from './commands/showStatusBarNotifi
 import { startDebuggingCommand } from './commands/startDebuggingCommand';
 import { suggestCodiconsCommand } from './commands/suggestCodiconsCommand';
 import { suggestCommandsCommand } from './commands/suggestCommandsCommand';
-import { suggestVariableCommand } from './commands/suggestVariableCommand';
+import { suggestVariablesCommand } from './commands/suggestVariablesCommand';
 import { toggleSettingCommand } from './commands/toggleSettingCommand';
 import { toggleStatusBarCommand } from './commands/toggleStatusBarCommand';
 import { toggleThemeCommand } from './commands/toggleThemeCommand';
@@ -36,23 +35,41 @@ import { toggleThemeCommand } from './commands/toggleThemeCommand';
  */
 export const enum CommandId {
 	// ──── Core ──────────────────────────────────────────────────
+	/** {@link runCommand} */
 	Run = 'commands.run',
+	/** {@link rerunCommand} */
 	Rerun = 'commands.rerun',
+	/** {@link selectAndRunCommand} */
 	SelectAndRun = 'commands.selectAndRun',
+	/** {@link newCommandCommand} */
 	NewCommand = 'commands.newCommand',
+	/** {@link newFolderCommand} */
 	NewFolder = 'commands.newFolder',
+	/** {@link deleteCommandCommand} */
 	DeleteCommand = 'commands.deleteCommand',
+	/** {@link suggestCommandsCommand} */
 	SuggestCommands = 'commands.suggestCommands',
+	/** {@link suggestCodiconsCommand} */
 	SuggestCodicons = 'commands.suggestCodicons',
+	/** {@link suggestVariablesCommand} */
 	SuggestVariables = 'commands.suggestVariables',
+	/** {@link revealCommandCommand} */
 	RevealCommand = 'commands.revealCommand',
+	/** {@link revealCommand2Command} Command for markdown hover. */
 	RevealCommand2 = 'commands.revealCommand2',
+	/** {@link openAsQuickPickCommand} Command for markdown hover. */
 	OpenAsQuickPick = 'commands.openAsQuickPick',
+	/** {@link assignKeybindingCommand} Command for markdown hover. */
 	AssignKeybinding = 'commands.assignKeybinding',
+	/** {@link toggleStatusBarCommand} Command for markdown hover. */
 	ToggleStatusBar = 'commands.addToStatusBar',
+	/** {@link newFolderInFolderCommand} Command for markdown hover. */
 	NewFolderInFolder = 'commands.newFolderInFolder',
+	/** {@link newCommandInFolderCommand} Command for markdown hover. */
 	NewCommandInFolder = 'commands.newCommandInFolder',
+	/** {@link revealCommandsInSettingsGuiCommand} Command for markdown hover. */
 	RevealCommandsInSettignsGui = 'commands.revealCommandsInSettignsGUI',
+	/** {@link escapeCommandUriArgumentCommand} Command for markdown hover. */
 	EscapeCommandUriArgument = 'commands.escapeCommandUriArgument',
 	// ──── Additional ────────────────────────────────────────────
 	ToggleSetting = 'commands.toggleSetting',
@@ -93,7 +110,7 @@ export function registerExtensionCommands(): void {
 	commands.registerCommand(CommandId.NewFolder, newFolderCommand);
 	commands.registerCommand(CommandId.DeleteCommand, deleteCommandCommand);
 	commands.registerTextEditorCommand(CommandId.SuggestCommands, suggestCommandsCommand);
-	commands.registerTextEditorCommand(CommandId.SuggestVariables, suggestVariableCommand);
+	commands.registerTextEditorCommand(CommandId.SuggestVariables, suggestVariablesCommand);
 	commands.registerTextEditorCommand(CommandId.SuggestCodicons, suggestCodiconsCommand);
 	commands.registerTextEditorCommand(CommandId.EscapeCommandUriArgument, escapeCommandUriArgumentCommand);
 	// ──── Additional Commands ───────────────────────────────────

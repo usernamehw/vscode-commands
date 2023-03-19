@@ -1,7 +1,7 @@
 import { window, type TextEditor } from 'vscode';
 import { VariableNames } from '../substituteVariables';
 
-export async function suggestVariableCommand(editor: TextEditor): Promise<void> {
+export async function suggestVariablesCommand(editor: TextEditor): Promise<void> {
 	const variables: [string, string][] = [
 		[VariableNames.UserHome, 'The path of the user\'s home folder'],
 		[VariableNames.File, 'Current opened file (absolute path?)'],

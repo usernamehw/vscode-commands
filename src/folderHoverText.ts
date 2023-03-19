@@ -1,4 +1,5 @@
 import { MarkdownString, type Uri } from 'vscode';
+import { CommandId } from './commands';
 import { extUtils, vscodeUtils } from './reexport';
 import { type CommandFolder } from './types';
 
@@ -16,6 +17,8 @@ export function createFolderHoverText(folder: CommandFolder): MarkdownString {
 		let commandUri: Uri;
 		if (typeof item === 'string') {
 			commandUri = vscodeUtils.createCommandUri(item);
+		} else if (item.sequence) {
+			commandUri = vscodeUtils.createCommandUri(CommandId.Run, key);
 		} else {
 			commandUri = vscodeUtils.createCommandUri(item.command, item.args);
 		}

@@ -1,4 +1,5 @@
 import { window, type MessageOptions } from 'vscode';
+import { CommandId } from '../commands';
 
 interface NotificationArgs {
 	message: string;
@@ -9,6 +10,11 @@ interface NotificationArgs {
 export function showNotificationCommand(arg: NotificationArgs | string): void {
 	if (typeof arg === 'string') {
 		window.showInformationMessage(arg);
+		return;
+	}
+
+	if (!arg) {
+		window.showErrorMessage(`"args" required for ${CommandId.ShowNotification} command.`);
 		return;
 	}
 
