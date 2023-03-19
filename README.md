@@ -424,7 +424,7 @@ Example for a 2x2 grid:
 },
 ```
 
-### `vscode.removeFromRecentlyOpened` Remove Removes an entry with the given path from the recently opened list
+### `vscode.removeFromRecentlyOpened` Removes an entry with the given path from the recently opened list
 
 ```js
 "Remove from recently opened": {
@@ -602,21 +602,6 @@ Example for a 2x2 grid:
         "reveal": true,
         "waitForExit": false,// will wait for terminal to exit before running next command
         "reuse": "newest",// reuse newest same-named terminal; create new if no match
-    },
-},
-```
-
-### `commands.diff` Diff visible/open text editors
-
-```js
-"Diff open editors": {
-    "command": "commands.diff",
-    "args": {
-        "kind": "openEditors",
-        "title": "...",
-        "columnOptions": {
-            "viewColumn": -2,// `-1` - active, `-2` - beside
-        },
     },
 },
 ```

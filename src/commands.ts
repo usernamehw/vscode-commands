@@ -111,6 +111,6 @@ export function registerExtensionCommands(): void {
 	commands.registerCommand(CommandId.OpenExternal, openExternalCommand);
 	commands.registerCommand(CommandId.RevealFileInOs, revealFileInOsCommand);
 	commands.registerCommand(CommandId.Open, openCommand);
-	commands.registerCommand(CommandId.Diff, diffCommand);
+	// commands.registerCommand(CommandId.Diff, diffCommand);
 }
 

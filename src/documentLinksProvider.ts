@@ -1,6 +1,5 @@
 import { env, languages, Range, Uri, window, type Disposable, type DocumentLink } from 'vscode';
 import { $config, Constants } from './extension';
-import { vscodeUtils } from './reexport';
 import { run } from './run';
 
 const documentLinkDisposables: Disposable[] = [];
@@ -14,14 +13,16 @@ export function updateDocumentLinkProvider(): void {
 
 	const uriDisposable = window.registerUriHandler({
 		handleUri(uri) {
+			let args: unknown;
 			try {
-				run({
-					command: uri.query,
-					args: JSON.parse(uri.fragment),
-				});
+				args = JSON.parse(uri.fragment) as unknown;
 			} catch (e) {
-				vscodeUtils.showErrorNotification(e);
+				window.showErrorMessage(`Invalid JSON: \`${uri.fragment}\` Document link args must be a valid json string.`);
 			}
+			run({
+				command: uri.query,
+				args,
+			});
 		},
 	});
 
