@@ -296,7 +296,7 @@
 				},
 				{
 					"command": "commands.assignKeybinding",
-					"when": "view == commands.tree && viewItem =~ /command|stringCommand/",
+					"when": "view == commands.tree && viewItem =~ /command|stringCommand|folder/",
 					"group": "3_keybinding"
 				},
 				{
