@@ -1,3 +1,12 @@
+## 1.10.0 `19 Mar 2023`
+
+- ✨ Toggle "statusBar" from inline button in Quick Pick
+- ✨ `commands.suggestCodicons` doesn't use hardcoded list of codicons anymore (uses current vscode version list)
+- ✨ `${userHome}` variable substitution
+- ✨ `commands.openExternal` & `commands.openFolder` to be able to accept array "args"
+- 🐛 Status bar folder hover should include commands from all of the nested levels (recursive)
+- 💥 Document link args must be valid json now: `@commands.runInTerminal?ls@` => @commands.runInTerminal?"ls"@. Consequently, object/array args allowed in document links.
+
 ## 1.9.0 `07 Mar 2023`
 
 - ✨ Add `New folder inside folder` command and inline icon. Allow multiple nesting levels.
