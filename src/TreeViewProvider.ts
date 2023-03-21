@@ -115,9 +115,6 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 		let markdown = new MarkdownString(undefined, true);
 		markdown.isTrusted = true;
 		if (item instanceof FolderTreeItem) {
-			if (Object.keys(item.folder.nestedItems ?? {}).length === 0) {
-				return undefined;
-			}
 			markdown = createFolderHoverText(item.folder);
 		} else {
 			if (isSimpleObject(item.runnable) && item.runnable.disableTooltip) {

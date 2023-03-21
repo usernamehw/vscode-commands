@@ -11,6 +11,11 @@ export function createFolderHoverText(folder: CommandFolder): MarkdownString {
 	markdown.isTrusted = true;
 	const allNestedCommands = extUtils.getAllNestedCommands(folder);
 
+	if (Object.keys(allNestedCommands).length === 0) {
+		markdown.appendText('<Empty>');
+		return markdown;
+	}
+
 	for (const key in allNestedCommands) {
 		const item = allNestedCommands[key];
 
