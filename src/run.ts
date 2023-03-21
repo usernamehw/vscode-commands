@@ -108,7 +108,12 @@ async function runObject(object: CommandObject): Promise<void> {
  * Run folder (show Quick pick with all commands inside that folder).
  */
 function runFolder(folder: CommandFolder): void {
-	showQuickPick(extUtils.getAllNestedCommands(folder), true);
+	const allNestedCommands = extUtils.getAllNestedCommands(folder);
+	if (Object.keys(allNestedCommands).length === 0) {
+		window.showWarningMessage('Empty folder. No "nestedItems" to run.');
+		return;
+	}
+	showQuickPick(allNestedCommands, true);
 }
 /**
  * Allow running a string with args: `commands.runInTerminal?npm run watch` (for runnables that are strings)
