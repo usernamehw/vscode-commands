@@ -1,7 +1,6 @@
 import isEqual from 'lodash/isEqual';
 import { ConfigurationTarget, window, workspace } from 'vscode';
 import { CommandId } from './commands';
-import { $config } from './extension';
 import { utils, vscodeUtils } from './reexport';
 
 type Target = 'global' | 'workspace';
@@ -13,12 +12,16 @@ export interface ToggleSettingType {
 	setting: string;
 	value?: unknown[] | string;
 	target?: Target;
+	showNotification?: boolean;
 }
 
 /**
  * Toggle global user setting.
  */
-export async function toggleSetting(arg: ToggleSettingType | string): Promise<void> {
+export async function toggleSetting(arg: ToggleSettingType | string, showNotificationConfig: boolean): Promise<void> {
+	const showNotification = typeof arg === 'string' ?
+		showNotificationConfig :
+		arg.showNotification ?? showNotificationConfig;
 	const settings = workspace.getConfiguration(undefined, null);
 	let newValue: unknown;
 	let settingName: string;
@@ -74,14 +77,17 @@ export async function toggleSetting(arg: ToggleSettingType | string): Promise<vo
 		vscodeUtils.showErrorNotification(e);
 	}
 
-	if ($config.toggleSettings.showNotification) {
+	if (showNotification) {
 		window.showInformationMessage(`"${settingName}": ${JSON.stringify(newValue)}`);
 	}
 }
 /**
  * Increment global user setting. To decrement - just pass a negative number.
  */
-export async function incrementSetting(arg: ToggleSettingType | string): Promise<void> {
+export async function incrementSetting(arg: ToggleSettingType | string, showNotificationConfig: boolean): Promise<void> {
+	const showNotification = typeof arg === 'string' ?
+		showNotificationConfig :
+		arg.showNotification ?? showNotificationConfig;
 	let settingName: unknown;
 	let value: unknown = 1;
 	let target: Target = 'global';
@@ -116,7 +122,7 @@ export async function incrementSetting(arg: ToggleSettingType | string): Promise
 		vscodeUtils.showErrorNotification(e);
 	}
 
-	if ($config.toggleSettings.showNotification) {
+	if (showNotification) {
 		window.showInformationMessage(`"${settingName}": ${newValue}`);
 	}
 }

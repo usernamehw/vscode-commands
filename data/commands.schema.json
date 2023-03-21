@@ -867,7 +867,12 @@
 										]
 									},
 									"value": {
-										"markdownDescription": "An array of values or a string of values separated by comma `,`."
+										"markdownDescription": "An array of values or a string of values separated by comma `,`.",
+										"default": []
+									},
+									"showNotification": {
+										"type": "boolean",
+										"markdownDescription": "Show notification with the new value of the setting. Overrides global setting `commands.toggleSettings.showNotification`."
 									}
 								},
 								"additionalProperties": false
@@ -876,7 +881,7 @@
 						"defaultSnippets": [{
 							"body": {
 								"setting": "$1",
-								"value": "$2"
+								"value": ["$2"]
 							}
 						}]
 					}
@@ -916,7 +921,12 @@
 							},
 							"value": {
 								"type": "number",
-								"markdownDescription": "Positive values will increment setting, negative - decrement."
+								"markdownDescription": "Positive values will increment setting, negative - decrement.",
+								"default": 1
+							},
+							"showNotification": {
+								"type": "boolean",
+								"markdownDescription": "Show notification with the new value of the setting. Overrides global setting `commands.toggleSettings.showNotification`."
 							}
 						},
 						"additionalProperties": false
