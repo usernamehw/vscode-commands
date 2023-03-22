@@ -170,6 +170,13 @@
 				}
 			]
 		},
+		"viewsWelcome": [
+			{
+				"view": "commands.tree",
+				"contents": "No commands defined in \"commands.commands\".\n\n[New Command](command:commands.newCommand)",
+				"when": "commands:emptyCommands"
+			}
+		],
 		"commands": [
 			{
 				"command": "commands.openAsQuickPick",

@@ -1,4 +1,4 @@
-import { window, workspace, type ExtensionContext, type TreeView } from 'vscode';
+import { commands, window, workspace, type ExtensionContext, type TreeView } from 'vscode';
 import { updateCommandPalette } from './commandPalette';
 import { registerExtensionCommands } from './commands';
 import { updateDocumentLinkProvider } from './documentLinksProvider';
@@ -77,17 +77,18 @@ export async function activate(context: ExtensionContext): Promise<void> {
  * Function runs after every config update.
  */
 async function updateEverything(context: ExtensionContext): Promise<void> {
-	const commands = getAllCommands();
+	const allCommands = getAllCommands();
 	$state.keybindings = [];
 	if ($config.showKeybindings) {
 		$state.keybindings = await getKeybindings(context);
 	}
-	$state.commandsTreeViewProvider.updateCommands(commands);
+	$state.commandsTreeViewProvider.updateCommands(allCommands);
 	$state.commandsTreeViewProvider.refresh();
-	updateUserCommands(commands);
-	updateStatusBarItems(commands);
-	updateCommandPalette(commands, context);
+	updateUserCommands(allCommands);
+	updateStatusBarItems(allCommands);
+	updateCommandPalette(allCommands, context);
 	updateDocumentLinkProvider();
+	updateWelcomeViewContext(Object.keys(allCommands).length === 0);
 }
 
 /**
@@ -104,6 +105,10 @@ export function getAllCommands(): TopLevelCommands {
 	} else {
 		return $config.commands;
 	}
+}
+
+function updateWelcomeViewContext(isEmpty: boolean): void {
+	commands.executeCommand('setContext', 'commands:emptyCommands', isEmpty);
 }
 
 export function deactivate(): void { }
