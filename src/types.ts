@@ -67,17 +67,6 @@ export interface ExtensionConfig {
 		showNotification: boolean;
 	};
 }
-export interface ExtensionState {
-	lastExecutedCommand: CommandFolder | Runnable;
-	context: ExtensionContext;
-	/**
-	 * Cache all Command Palette commands for `quickPickIncludeAllCommands` feature.
-	 */
-	allCommandPaletteCommands: VscodeCommandWithoutCategory[];
-	commandsTreeViewProvider: CommandsTreeViewProvider;
-	commandsTreeView: TreeView<FolderTreeItem | RunCommandTreeItem>;
-	keybindings: VsCodeKeybindingItem[];
-}
 /**
  * Main configuration property. Can contain folders or command objects.
  */

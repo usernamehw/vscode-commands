@@ -2,13 +2,14 @@ import { commands, window, workspace, type ExtensionContext, type TreeView } fro
 import { updateCommandPalette } from './commandPalette';
 import { registerExtensionCommands } from './commands';
 import { updateDocumentLinkProvider } from './documentLinksProvider';
-import { getKeybindings } from './getKeybindings';
+import { getKeybindings, type VsCodeKeybindingItem } from './getKeybindings';
 import { registerJsonSchemaCompletion } from './jsonSchema/jsonSchemaCompletions';
 import { registerDynamicJsonSchema } from './jsonSchema/registerDynamicJsonSchema';
+import { type VscodeCommandWithoutCategory } from './quickPick';
 import { updateUserCommands } from './registerUserCommands';
 import { updateStatusBarItems, updateStatusBarItemsVisibilityBasedOnActiveEditor } from './statusBar';
 import { CommandsTreeViewProvider, type FolderTreeItem, type RunCommandTreeItem } from './TreeViewProvider';
-import { type ExtensionConfig, type ExtensionState, type TopLevelCommands } from './types';
+import { type ExtensionConfig, type Runnable, type TopLevelCommands } from './types';
 import { addWorkspaceIdToCommands, getWorkspaceId, setWorkspaceIdToContext } from './workspaceCommands';
 
 export const enum Constants {
@@ -27,14 +28,17 @@ export const enum Constants {
 }
 
 export let $config: ExtensionConfig;
-export const $state: ExtensionState = {
-	lastExecutedCommand: { command: 'noop' },
-	context: {} as unknown as ExtensionContext,
-	allCommandPaletteCommands: [],
-	commandsTreeViewProvider: {} as unknown as CommandsTreeViewProvider,
-	commandsTreeView: {} as unknown as TreeView<FolderTreeItem | RunCommandTreeItem>,
-	keybindings: [],
-};
+export abstract class $state {
+	public static lastExecutedCommand: Runnable = { command: 'noop' };
+	public static context: ExtensionContext;
+	/**
+	 * Cache all Command Palette commands for `quickPickIncludeAllCommands` feature.
+	 */
+	public static allCommandPaletteCommands: VscodeCommandWithoutCategory[] = [];
+	public static commandsTreeViewProvider: CommandsTreeViewProvider;
+	public static commandsTreeView: TreeView<FolderTreeItem | RunCommandTreeItem>;
+	public static keybindings: VsCodeKeybindingItem[] = [];
+}
 
 export async function activate(context: ExtensionContext): Promise<void> {
 	$state.context = context;
