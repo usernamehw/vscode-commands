@@ -1,10 +1,9 @@
 import { $config, Constants } from '../extension';
-import { extUtils } from '../reexport';
 import { FolderTreeItem, RunCommandTreeItem } from '../TreeViewProvider';
 import { type CommandFolder, type Sequence, type TopLevelCommands, type TopLevelItem } from '../types';
 import { isWorkspaceCommandItem } from '../workspaceCommands';
 
-export function isCommandFolder(item: Sequence | TopLevelItem): item is CommandFolder {
+function isCommandFolder(item: Sequence | TopLevelItem): item is CommandFolder {
 	return typeof item !== 'string' && ('nestedItems' as keyof CommandFolder) in item;
 }
 
@@ -12,14 +11,14 @@ export function isCommandFolder(item: Sequence | TopLevelItem): item is CommandF
  * Walk over all items (commands and folders) from the main setting `commands.commands`/`commands.workspaceCommands`
  * and execute callback for each item.
  */
-export function forEachCommand(
+function forEachCommand(
 	callback: (item: TopLevelCommands[string], key: string, parentElement: TopLevelCommands)=> void,
 	items: TopLevelCommands,
 ): void {
 	for (const [key, item] of Object.entries(items)) {
 		callback(item, key, items);
 
-		if (extUtils.isCommandFolder(item)) {
+		if (isCommandFolder(item)) {
 			forEachCommand(callback, item.nestedItems);
 		}
 	}
@@ -29,7 +28,7 @@ type TopLevelCommandNoFolders = Record<string, Exclude<TopLevelItem, CommandFold
 /**
  * Given folder - return all nested commands (not folders).
  */
-export function getAllNestedCommands(folder: CommandFolder): TopLevelCommandNoFolders {
+function getAllNestedCommands(folder: CommandFolder): TopLevelCommandNoFolders {
 	if (!folder.nestedItems) {
 		throw Error(`Not a folder: ${JSON.stringify(folder)}`);
 	}
@@ -37,7 +36,7 @@ export function getAllNestedCommands(folder: CommandFolder): TopLevelCommandNoFo
 	const allNestedCommands: TopLevelCommandNoFolders = {};
 
 	forEachCommand((item, key) => {
-		if (extUtils.isCommandFolder(item)) {
+		if (isCommandFolder(item)) {
 			return;
 		}
 		allNestedCommands[key] = item;
@@ -51,7 +50,7 @@ function isWorkspaceTreeItem(treeItem: FolderTreeItem | RunCommandTreeItem): boo
 		(treeItem instanceof FolderTreeItem && isWorkspaceCommandItem(treeItem.folder));
 }
 
-export function applyForTreeItem(
+function applyForTreeItem(
 	action: (o: { treeItem: FolderTreeItem | RunCommandTreeItem; commands: TopLevelCommands; settingId: string; configTarget: 'global' | 'workspace' })=> void,
 	treeItem: FolderTreeItem | RunCommandTreeItem,
 ): void {
@@ -61,3 +60,11 @@ export function applyForTreeItem(
 		action({ treeItem, commands: $config.commands, settingId: Constants.ExtensionMainSettingId, configTarget: 'global' });
 	}
 }
+
+export const extensionUtils = {
+	isCommandFolder,
+	forEachCommand,
+	getAllNestedCommands,
+	isWorkspaceTreeItem,
+	applyForTreeItem,
+};

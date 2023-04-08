@@ -3,9 +3,9 @@ import { EventEmitter, MarkdownString, ThemeColor, ThemeIcon, TreeItem, TreeItem
 import { CommandId } from './commands';
 import { $config, $state } from './extension';
 import { createFolderHoverText } from './folderHoverText';
-import { extUtils } from './reexport';
 import { type CommandFolder, type Runnable, type TopLevelCommands } from './types';
-import { isSimpleObject } from './utils/utils';
+import { extensionUtils } from './utils/extensionUtils';
+import { utils } from './utils/utils';
 
 interface RunCommandTreeItemInit {
 	label: string;
@@ -117,10 +117,10 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 		if (item instanceof FolderTreeItem) {
 			markdown = createFolderHoverText(item.folder);
 		} else {
-			if (isSimpleObject(item.runnable) && item.runnable.disableTooltip) {
+			if (utils.isSimpleObject(item.runnable) && item.runnable.disableTooltip) {
 				return item;
 			}
-			if (isSimpleObject(item.runnable) && item.runnable.markdownTooltip) {
+			if (utils.isSimpleObject(item.runnable) && item.runnable.markdownTooltip) {
 				markdown.appendMarkdown(item.runnable.markdownTooltip as string);
 				markdown.appendMarkdown('\n\n---\n\n');
 			}
@@ -158,7 +158,7 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 				continue;
 			}
 
-			if (extUtils.isCommandFolder(item)) {
+			if (extensionUtils.isCommandFolder(item)) {
 				treeItems.push(new FolderTreeItem(
 					key,
 					item,

@@ -1,8 +1,9 @@
-import { Uri, workspace, type Disposable, type ExtensionContext } from 'vscode';
+import { type Disposable, type ExtensionContext } from 'vscode';
 import { type CommandId } from './commands';
 import { $config, Constants } from './extension';
-import { extUtils, vscodeUtils } from './reexport';
 import { type TopLevelCommands } from './types';
+import { extensionUtils } from './utils/extensionUtils';
+import { vscodeUtils } from './utils/vscodeUtils';
 import { getWorkspaceId, isWorkspaceCommandItem, WorkspaceConstants } from './workspaceCommands';
 
 const commandPaletteCommandsList: Disposable[] = [];
@@ -55,7 +56,7 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 			// so it would contain only core commands again.
 			const { coreCommands, packageJsonObject, packageJsonPath } = await getCommandsFromPackageJson(context);
 			packageJsonObject.contributes.commands = coreCommands;
-			await workspace.fs.writeFile(Uri.file(packageJsonPath), vscodeUtils.stringToUint8Array(JSON.stringify(packageJsonObject, null, '\t')));
+			await vscodeUtils.writeFileVscode(packageJsonPath, JSON.stringify(packageJsonObject, null, '\t'));
 			await context.globalState.update(Constants.CommandPaletteWasPopulatedStorageKey, false);
 		}
 		return;
@@ -73,8 +74,8 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 
 	const userCommands: Command[] = [];
 	const userCommandPalette: { command: string; when: string }[] = [];
-	extUtils.forEachCommand((item, key) => {
-		if (extUtils.isCommandFolder(item)) {
+	extensionUtils.forEachCommand((item, key) => {
+		if (extensionUtils.isCommandFolder(item)) {
 			return;
 		}
 		const baseWhen = typeof item === 'string' ?
@@ -102,14 +103,14 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 
 	packageJsonObject.contributes.commands = [...coreCommands, ...otherWorkspacesCommands, ...userCommands];
 	packageJsonObject.contributes.menus.commandPalette = [...coreCommandPalette, ...otherWorkspacesCommandPalette, ...userCommandPalette];
-	await workspace.fs.writeFile(Uri.file(packageJsonPath), vscodeUtils.stringToUint8Array(JSON.stringify(packageJsonObject, null, '\t')));
+	await vscodeUtils.writeFileVscode(packageJsonPath, JSON.stringify(packageJsonObject, null, '\t'));
 	await context.globalState.update(Constants.CommandPaletteWasPopulatedStorageKey, true);
 }
 
 async function getCommandsFromPackageJson(context: ExtensionContext) {
 	const packageJsonPath = context.asAbsolutePath(`./${Constants.PackageJsonFileName}`);
-	const packageJsonFile = await workspace.fs.readFile(Uri.file(packageJsonPath));
-	const packageJsonObject = JSON.parse(vscodeUtils.uint8ArrayToString(packageJsonFile));
+	const packageJsonContent = await vscodeUtils.readFileVscode(packageJsonPath);
+	const packageJsonObject = JSON.parse(packageJsonContent);
 	const oldCommands = packageJsonObject.contributes.commands as Command[];
 	const coreCommands: Command[] = (packageJsonObject.contributes.commands as Command[]).filter(command => coreCommandIds.includes(command.command));
 	const coreCommandPalette = (packageJsonObject.contributes.menus.commandPalette as CommandPalette[]).filter(command => coreCommandIds.includes(command.command));

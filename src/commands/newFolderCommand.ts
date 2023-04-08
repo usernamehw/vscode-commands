@@ -1,9 +1,10 @@
 import { window } from 'vscode';
 import { $config, Constants } from '../extension';
-import { extUtils, utils } from '../reexport';
 import { updateSetting } from '../settings';
 import { type FolderTreeItem } from '../TreeViewProvider';
 import { type CommandFolder } from '../types';
+import { extensionUtils } from '../utils/extensionUtils';
+import { utils } from '../utils/utils';
 
 export async function newFolderCommand(): Promise<void> {
 	await newFolder();
@@ -24,14 +25,14 @@ export async function newFolder(folderTreeItem?: FolderTreeItem): Promise<void> 
 
 	if (folderTreeItem) {
 		// New folder inside another folder
-		extUtils.applyForTreeItem(async ({ treeItem, commands, settingId, configTarget }) => {
+		extensionUtils.applyForTreeItem(async ({ treeItem, commands, settingId, configTarget }) => {
 			const commandsCopy = utils.deepCopy(configTarget === 'workspace' ? $config.workspaceCommands : $config.commands);
 
-			extUtils.forEachCommand((com, key) => {
+			extensionUtils.forEachCommand((com, key) => {
 				if (key !== folderTreeItem.label) {
 					return;
 				}
-				if (!extUtils.isCommandFolder(com)) {
+				if (!extensionUtils.isCommandFolder(com)) {
 					return;
 				}
 				com.nestedItems = {

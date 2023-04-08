@@ -3,10 +3,12 @@ import { hasArgs } from './args';
 import { CommandId } from './commands';
 import { toggleStatusBarCommand } from './commands/toggleStatusBarCommand';
 import { $config, $state } from './extension';
-import { extUtils, utils, vscodeUtils } from './reexport';
 import { run } from './run';
 import { RunCommandTreeItem } from './TreeViewProvider';
 import { type Runnable, type TopLevelCommands } from './types';
+import { extensionUtils } from './utils/extensionUtils';
+import { utils } from './utils/utils';
+import { vscodeUtils } from './utils/vscodeUtils';
 import { isWorkspaceCommandItem } from './workspaceCommands';
 
 type QuickPickItemWithMetadata = QuickPickItem & {
@@ -29,7 +31,7 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
 	function traverseCommands(items: TopLevelCommands, parentFolderName?: string): void {
 		for (const key in items) {
 			const runnable = items[key];
-			if (extUtils.isCommandFolder(runnable)) {
+			if (extensionUtils.isCommandFolder(runnable)) {
 				traverseCommands(runnable.nestedItems, key);
 			} else {
 				treeAsOneLevelMap[key] = {
@@ -179,9 +181,9 @@ export async function getAllCommandPaletteCommands(): Promise<VscodeCommandWitho
 
 async function getAllBuiltinCommands(): Promise<VscodeCommandWithoutCategory[]> {
 	const commandsDataPath = $state.context.asAbsolutePath('./data/commandTitleMap.json');
-	const file = await workspace.fs.readFile(Uri.file(commandsDataPath));
 	try {
-		const fileContentAsObject: Record<string, string> = JSON.parse(vscodeUtils.uint8ArrayToString(file)) as Record<string, string>;
+		const titleMapContent = await vscodeUtils.readFileVscode(commandsDataPath);
+		const fileContentAsObject: Record<string, string> = JSON.parse(titleMapContent) as Record<string, string>;
 		const result: VscodeCommandWithoutCategory[] = [];
 		for (const key in fileContentAsObject) {
 			result.push({

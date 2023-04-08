@@ -1,10 +1,11 @@
 import { window } from 'vscode';
-import { extUtils, vscodeUtils } from '../reexport';
 import { type RunCommandTreeItem } from '../TreeViewProvider';
+import { extensionUtils } from '../utils/extensionUtils';
+import { vscodeUtils } from '../utils/vscodeUtils';
 
 export function revealCommandCommand(treeItem: RunCommandTreeItem): void {
 	const symbolName = treeItem.getLabelName();
-	extUtils.applyForTreeItem(async ({ configTarget }) => {
+	extensionUtils.applyForTreeItem(async ({ configTarget }) => {
 		await vscodeUtils.openSettingsJson(configTarget);
 		vscodeUtils.goToSymbol(window.activeTextEditor, symbolName);
 	}, treeItem);

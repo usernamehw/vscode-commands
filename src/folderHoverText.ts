@@ -1,7 +1,8 @@
 import { MarkdownString, type Uri } from 'vscode';
 import { CommandId } from './commands';
-import { extUtils, vscodeUtils } from './reexport';
 import { type CommandFolder } from './types';
+import { extensionUtils } from './utils/extensionUtils';
+import { vscodeUtils } from './utils/vscodeUtils';
 
 /**
  * Create tooltip content for folder that contains all of the nested items.
@@ -9,7 +10,7 @@ import { type CommandFolder } from './types';
 export function createFolderHoverText(folder: CommandFolder): MarkdownString {
 	const markdown = new MarkdownString(undefined, true);
 	markdown.isTrusted = true;
-	const allNestedCommands = extUtils.getAllNestedCommands(folder);
+	const allNestedCommands = extensionUtils.getAllNestedCommands(folder);
 
 	if (Object.keys(allNestedCommands).length === 0) {
 		markdown.appendText('<Empty>');

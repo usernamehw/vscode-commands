@@ -1,10 +1,10 @@
 import { window } from 'vscode';
 import { $config } from '../extension';
-import { extUtils } from '../reexport';
 import { updateSetting } from '../settings';
 import { type FolderTreeItem, type RunCommandTreeItem } from '../TreeViewProvider';
 import { type CommandFolder, type CommandObject, type TopLevelCommands } from '../types';
-import { deepCopy } from '../utils/utils';
+import { extensionUtils } from '../utils/extensionUtils';
+import { utils } from '../utils/utils';
 
 export async function toggleStatusBarCommand(treeItem: FolderTreeItem | RunCommandTreeItem): Promise<void> {
 	const labelName = treeItem.getLabelName();
@@ -20,15 +20,15 @@ export async function toggleStatusBarCommand(treeItem: FolderTreeItem | RunComma
 	} else {
 		newStatusBarItemText = labelName;
 	}
-	extUtils.applyForTreeItem(({ commands, settingId, configTarget }) => {
-		const configCommands: TopLevelCommands = deepCopy(commands);
+	extensionUtils.applyForTreeItem(({ commands, settingId, configTarget }) => {
+		const configCommands: TopLevelCommands = utils.deepCopy(commands);
 		for (const key in configCommands) {
 			const commandObject = configCommands[key];
 			if (key === labelName) {
 				toggleStatusBarItem(commandObject);
 				break;
 			}
-			if (extUtils.isCommandFolder(commandObject)) {
+			if (extensionUtils.isCommandFolder(commandObject)) {
 				for (const key2 in commandObject.nestedItems) {
 					const nestedItem = commandObject.nestedItems[key2];
 					if (key2 === labelName) {

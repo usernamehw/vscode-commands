@@ -1,28 +1,28 @@
-import { commands, env, Range, Selection, TextEditorRevealType, UIKind, Uri, window, type DocumentSymbol, type TextDocument, type TextEditor } from 'vscode';
-import { sleep } from './utils';
+import { commands, env, Range, Selection, TextEditorRevealType, UIKind, Uri, window, workspace, type DocumentSymbol, type TextDocument, type TextEditor } from 'vscode';
+import { utils } from './utils';
 
 /**
  * Return all registered vscode commands (excluding internal).
  */
-export async function getAllVscodeCommands(): Promise<string[]> {
+async function getAllVscodeCommands(): Promise<string[]> {
 	return commands.getCommands(true);
 }
 /**
  * Open vscode Settings GUI with input value set to the specified value.
  */
-export async function openSettingGuiAt(settingName: string): Promise<void> {
+async function openSettingGuiAt(settingName: string): Promise<void> {
 	await commands.executeCommand('workbench.action.openSettings', settingName);
 }
 /**
  * Open vscode Keybindings GUI with input value set to the specified value.
  */
-export async function openKeybindingsGuiAt(value: string): Promise<void> {
+async function openKeybindingsGuiAt(value: string): Promise<void> {
 	await commands.executeCommand('workbench.action.openGlobalKeybindings', value);
 }
 /**
  * Open global or workspace settings.json file in the editor.
  */
-export async function openSettingsJson(target: 'global' | 'workspace'): Promise<void> {
+async function openSettingsJson(target: 'global' | 'workspace'): Promise<void> {
 	await commands.executeCommand(target === 'global' ? 'workbench.action.openSettingsJson' : 'workbench.action.openWorkspaceSettingsFile');
 }
 /**
@@ -31,15 +31,15 @@ export async function openSettingsJson(target: 'global' | 'workspace'): Promise<
 async function getSymbols(document: TextDocument): Promise<DocumentSymbol[]> {
 	let symbols = await commands.executeCommand<DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', document.uri);
 	if (!symbols || symbols.length === 0) {
-		await sleep(700);
+		await utils.sleep(500);
 		symbols = await commands.executeCommand<DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', document.uri);
 	}
 	if (!symbols || symbols.length === 0) {
-		await sleep(1200);
+		await utils.sleep(1000);
 		symbols = await commands.executeCommand<DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', document.uri);
 	}
 	if (!symbols || symbols.length === 0) {
-		await sleep(2000);
+		await utils.sleep(2000);
 		symbols = await commands.executeCommand<DocumentSymbol[]>('vscode.executeDocumentSymbolProvider', document.uri);
 	}
 	return symbols || [];
@@ -50,7 +50,7 @@ async function getSymbols(document: TextDocument): Promise<DocumentSymbol[]> {
  * - Briefly highlight the entire line
  * - Move cursor to the symbol position
  */
-export async function goToSymbol(editor: TextEditor | undefined, symbolName: string): Promise<void> {
+async function goToSymbol(editor: TextEditor | undefined, symbolName: string): Promise<void> {
 	if (!editor) {
 		window.showErrorMessage('No TextEditor provided.');
 		return;
@@ -83,7 +83,7 @@ export async function goToSymbol(editor: TextEditor | undefined, symbolName: str
 /**
  * Recursively walk through document symbols.
  */
-export function forEachSymbol(f: (symbol: DocumentSymbol)=> void, symbols: DocumentSymbol[]): void {
+function forEachSymbol(f: (symbol: DocumentSymbol)=> void, symbols: DocumentSymbol[]): void {
 	for (const symbol of symbols) {
 		f(symbol);
 		if (symbol.children.length) {
@@ -91,33 +91,61 @@ export function forEachSymbol(f: (symbol: DocumentSymbol)=> void, symbols: Docum
 		}
 	}
 }
-
-export function stringToUint8Array(text: string): Uint8Array {
-	// @ts-expect-error TextEncoder EXISTS
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-	return new TextEncoder().encode(text);
+async function readFileVscode(pathOrUri: Uri | string): Promise<string> {
+	try {
+		const uri = typeof pathOrUri === 'string' ? Uri.file(pathOrUri) : pathOrUri;
+		const file = await workspace.fs.readFile(uri);
+		// @ts-expect-error TextDecoder EXISTS
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+		return new TextDecoder().decode(file);
+	} catch (e) {
+		window.showErrorMessage((e as Error).message);
+		return '';
+	}
 }
-export function uint8ArrayToString(arr: Uint8Array): string {
-	// @ts-expect-error TextDecoder EXISTS
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-	return new TextDecoder().decode(arr);
+async function writeFileVscode(pathOrUri: Uri | string, content: string): Promise<void> {
+	try {
+		const uri = typeof pathOrUri === 'string' ? Uri.file(pathOrUri) : pathOrUri;
+		// @ts-expect-error TextDecoder EXISTS
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+		const encodedContent: Uint8Array = new TextEncoder().encode(content);
+		await workspace.fs.writeFile(uri, encodedContent);
+	} catch (e) {
+		window.showErrorMessage((e as Error).message);
+	}
 }
 /**
  * Return `true` when on the web.
  */
-export function isOnWeb(): boolean {
+function isOnWeb(): boolean {
 	return env.uiKind === UIKind.Web;
 }
 
-export function showErrorNotification(e: unknown): void {
+function showErrorNotification(e: unknown): void {
 	window.showErrorMessage((e as Error).message);
 }
 
-export function showNotOnWebNotification(text: string): void {
+function showNotOnWebNotification(text: string): void {
 	window.showWarningMessage(`Not on the web, you don't. "${text}"`);
 }
-
-export function createCommandUri(commandId: string, args?: unknown): Uri {
+/**
+ * Create [Command URI](https://code.visualstudio.com/api/extension-guides/command#command-uris)
+ */
+function createCommandUri(commandId: string, args?: unknown): Uri {
 	const commandArg = args ? `?${encodeURIComponent(JSON.stringify(args))}` : '';
 	return Uri.parse(`command:${commandId}${commandArg}`);
 }
+
+export const vscodeUtils = {
+	getAllVscodeCommands,
+	openSettingGuiAt,
+	openKeybindingsGuiAt,
+	openSettingsJson,
+	goToSymbol,
+	isOnWeb,
+	showErrorNotification,
+	showNotOnWebNotification,
+	createCommandUri,
+	readFileVscode,
+	writeFileVscode,
+};

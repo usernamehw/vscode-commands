@@ -1,7 +1,8 @@
 import isEqual from 'lodash/isEqual';
 import { ConfigurationTarget, window, workspace } from 'vscode';
 import { CommandId } from './commands';
-import { utils, vscodeUtils } from './reexport';
+import { utils } from './utils/utils';
+import { vscodeUtils } from './utils/vscodeUtils';
 
 type Target = 'global' | 'workspace';
 

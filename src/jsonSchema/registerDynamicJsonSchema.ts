@@ -1,5 +1,5 @@
 import { Uri, workspace, type ExtensionContext } from 'vscode';
-import { vscodeUtils } from '../reexport';
+import { vscodeUtils } from '../utils/vscodeUtils';
 
 /**
  * Reference it in schema files like: `commandsExtension://schemas/codicons`

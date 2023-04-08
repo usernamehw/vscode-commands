@@ -1,8 +1,9 @@
-import { languages, MarkdownString, StatusBarAlignment, ThemeColor, Uri, window, type StatusBarItem, type TextEditor } from 'vscode';
+import { languages, MarkdownString, StatusBarAlignment, ThemeColor, window, type StatusBarItem, type TextEditor } from 'vscode';
 import { CommandId } from './commands';
 import { createFolderHoverText } from './folderHoverText';
-import { extUtils, vscodeUtils } from './reexport';
 import { type TopLevelCommands } from './types';
+import { extensionUtils } from './utils/extensionUtils';
+import { vscodeUtils } from './utils/vscodeUtils';
 
 const statusBarItems: StatusBarWithActiveEditorMetadata[] = [];
 
@@ -17,7 +18,7 @@ type StatusBarWithActiveEditorMetadata = StatusBarItem & {
 export function updateStatusBarItems(items: TopLevelCommands): void {
 	disposeStatusBarItems();
 
-	extUtils.forEachCommand((item, key) => {
+	extensionUtils.forEachCommand((item, key) => {
 		if (typeof item === 'string') {
 			// cannot have "statusBar" on string item
 			return;
@@ -40,7 +41,7 @@ export function updateStatusBarItems(items: TopLevelCommands): void {
 			} else {
 				mdTooltip.appendText(statusBarUserObject.tooltip ?? key);
 			}
-			if (extUtils.isCommandFolder(item)) {
+			if (extensionUtils.isCommandFolder(item)) {
 				icon = '$(folder) ';
 				mdTooltip = createFolderHoverText(item);
 			}

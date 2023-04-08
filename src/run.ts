@@ -2,9 +2,10 @@
 import { commands, window } from 'vscode';
 import { $config, $state } from './extension';
 import { showQuickPick } from './quickPick';
-import { extUtils, utils } from './reexport';
 import { substituteVariableRecursive, substituteVariables } from './substituteVariables';
 import { type CommandFolder, type CommandObject, type Runnable, type Sequence } from './types';
+import { extensionUtils } from './utils/extensionUtils';
+import { utils } from './utils/utils';
 
 /**
  * Execute runnable or folder.
@@ -20,7 +21,7 @@ export async function run(runnable: CommandFolder | Runnable): Promise<void> {
 		});
 		return;
 	}
-	if (extUtils.isCommandFolder(runnable)) {
+	if (extensionUtils.isCommandFolder(runnable)) {
 		runFolder(runnable);
 		return;
 	}
@@ -108,7 +109,7 @@ async function runObject(object: CommandObject): Promise<void> {
  * Run folder (show Quick pick with all commands inside that folder).
  */
 function runFolder(folder: CommandFolder): void {
-	const allNestedCommands = extUtils.getAllNestedCommands(folder);
+	const allNestedCommands = extensionUtils.getAllNestedCommands(folder);
 	if (Object.keys(allNestedCommands).length === 0) {
 		window.showWarningMessage('Empty folder. No "nestedItems" to run.');
 		return;

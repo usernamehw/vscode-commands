@@ -1,4 +1,5 @@
-import { utils, vscodeUtils } from '../reexport';
+import { utils } from '../utils/utils';
+import { vscodeUtils } from '../utils/vscodeUtils';
 
 export async function openCommand(arg: string | { target: string; app: string; arguments?: string[] }): Promise<void> {
 	if (vscodeUtils.isOnWeb()) {

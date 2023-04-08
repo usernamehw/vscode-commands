@@ -1,8 +1,8 @@
 import { commands, window, type Disposable } from 'vscode';
 import { $config } from './extension';
-import { extUtils } from './reexport';
 import { run } from './run';
 import { type TopLevelCommands } from './types';
+import { extensionUtils } from './utils/extensionUtils';
 
 const registeredCommandsDisposables: Disposable[] = [];
 
@@ -12,7 +12,7 @@ const registeredCommandsDisposables: Disposable[] = [];
 export function updateUserCommands(items: TopLevelCommands): void {
 	unregisterUserCommands();
 
-	extUtils.forEachCommand((item, key) => {
+	extensionUtils.forEachCommand((item, key) => {
 		if (key === '') {
 			// Don't show error message for empty string. User is likely typing.
 			return;

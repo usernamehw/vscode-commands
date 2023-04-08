@@ -3,7 +3,7 @@ import { CompletionItemKind, languages, Range, type CompletionItem, type Extensi
 import { CommandId } from '../commands';
 import { Constants } from '../extension';
 import { getAllCommandPaletteCommands } from '../quickPick';
-import { vscodeUtils } from '../reexport';
+import { vscodeUtils } from '../utils/vscodeUtils';
 
 export function registerJsonSchemaCompletion(context: ExtensionContext): void {
 	// ────────────────────────────────────────────────────────────
