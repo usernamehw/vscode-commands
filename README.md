@@ -106,7 +106,7 @@
 
 
 <!-- COMMANDS_START -->
-## Commands (8)
+## Commands (9)
 
 |Command|Description|
 |-|-|
@@ -116,6 +116,7 @@
 |commands.suggestCommands|Commands: Suggest (autocomplete) commands|
 |commands.suggestCodicons|Commands: Suggest [Codicons](https://code.visualstudio.com/api/references/icons-in-labels)|
 |commands.suggestVariables|Commands: Suggest variables that are supported by this extension's variable substitutions, e.g: `${workspaceFolderBasename}`.|
+|commands.suggestSettings|Commands: Suggest setting ids (user & workspace).|
 |commands.newCommand|Commands: Add new command to the list|
 |commands.escapeCommandUriArgument|Commands: Escape command uri argument|
 <!-- COMMANDS_END -->

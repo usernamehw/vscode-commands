@@ -857,7 +857,8 @@
 								"properties": {
 									"setting": {
 										"type": "string",
-										"markdownDescription": "Setting id."
+										"markdownDescription": "Setting id.",
+										"$ref": "commandsExtension://schemas/settings"
 									},
 									"target": {
 										"type": "string",
@@ -910,7 +911,8 @@
 						"properties": {
 							"setting": {
 								"type": "string",
-								"markdownDescription": "Setting id."
+								"markdownDescription": "Setting id.",
+								"$ref": "commandsExtension://schemas/settings"
 							},
 							"target": {
 								"type": "string",

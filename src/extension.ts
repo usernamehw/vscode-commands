@@ -9,7 +9,7 @@ import { type VscodeCommandWithoutCategory } from './quickPick';
 import { updateUserCommands } from './registerUserCommands';
 import { updateStatusBarItems, updateStatusBarItemsVisibilityBasedOnActiveEditor } from './statusBar';
 import { CommandsTreeViewProvider, type FolderTreeItem, type RunCommandTreeItem } from './TreeViewProvider';
-import { type ExtensionConfig, type Runnable, type TopLevelCommands } from './types';
+import { type CommandFolder, type ExtensionConfig, type Runnable, type TopLevelCommands } from './types';
 import { addWorkspaceIdToCommands, getWorkspaceId, setWorkspaceIdToContext } from './workspaceCommands';
 
 export const enum Constants {
@@ -29,7 +29,7 @@ export const enum Constants {
 
 export let $config: ExtensionConfig;
 export abstract class $state {
-	public static lastExecutedCommand: Runnable = { command: 'noop' };
+	public static lastExecutedCommand: CommandFolder | Runnable = { command: 'noop' };
 	public static context: ExtensionContext;
 	/**
 	 * Cache all Command Palette commands for `quickPickIncludeAllCommands` feature.

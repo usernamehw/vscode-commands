@@ -211,6 +211,12 @@
 				"category": "Commands"
 			},
 			{
+				"command": "commands.suggestSettings",
+				"title": "Suggest (autocomplete) Settings",
+				"description": "Suggest setting ids (user & workspace).",
+				"category": "Commands"
+			},
+			{
 				"command": "commands.newCommand",
 				"title": "Add new command to the list",
 				"icon": "$(add)",

@@ -25,6 +25,7 @@ import { showStatusBarNotificationCommand } from './commands/showStatusBarNotifi
 import { startDebuggingCommand } from './commands/startDebuggingCommand';
 import { suggestCodiconsCommand } from './commands/suggestCodiconsCommand';
 import { suggestCommandsCommand } from './commands/suggestCommandsCommand';
+import { suggestSettingsCommand } from './commands/suggestSettingsCommand';
 import { suggestVariablesCommand } from './commands/suggestVariablesCommand';
 import { toggleSettingCommand } from './commands/toggleSettingCommand';
 import { toggleStatusBarCommand } from './commands/toggleStatusBarCommand';
@@ -51,6 +52,8 @@ export const enum CommandId {
 	SuggestCommands = 'commands.suggestCommands',
 	/** {@link suggestCodiconsCommand} */
 	SuggestCodicons = 'commands.suggestCodicons',
+	/** {@link suggestSettingsCommand} */
+	SuggestSettings = 'commands.suggestSettings',
 	/** {@link suggestVariablesCommand} */
 	SuggestVariables = 'commands.suggestVariables',
 	/** {@link revealCommandCommand} */
@@ -112,6 +115,7 @@ export function registerExtensionCommands(): void {
 	commands.registerTextEditorCommand(CommandId.SuggestCommands, suggestCommandsCommand);
 	commands.registerTextEditorCommand(CommandId.SuggestVariables, suggestVariablesCommand);
 	commands.registerTextEditorCommand(CommandId.SuggestCodicons, suggestCodiconsCommand);
+	commands.registerTextEditorCommand(CommandId.SuggestSettings, suggestSettingsCommand);
 	commands.registerTextEditorCommand(CommandId.EscapeCommandUriArgument, escapeCommandUriArgumentCommand);
 	// ──── Additional Commands ───────────────────────────────────
 	commands.registerCommand(CommandId.ToggleSetting, toggleSettingCommand);

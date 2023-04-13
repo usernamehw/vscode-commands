@@ -36,6 +36,12 @@ function nonNullable<T>(value: T): value is NonNullable<T> {
 	return value !== undefined &&
 		value !== null;
 }
+/**
+ * Keep only unique items (for primitives).
+ */
+function unique<T>(arr: T[]): T[] {
+	return Array.from(new Set(arr));
+}
 
 export const utils = {
 	sleep,
@@ -43,4 +49,5 @@ export const utils = {
 	uniqueId,
 	deepCopy,
 	nonNullable,
+	unique,
 };
