@@ -61,7 +61,7 @@ function applyForTreeItem(
 	}
 }
 
-export const extensionUtils = {
+export const extUtils = {
 	isCommandFolder,
 	forEachCommand,
 	getAllNestedCommands,

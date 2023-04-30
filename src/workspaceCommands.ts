@@ -1,6 +1,6 @@
 import { commands, type ExtensionContext } from 'vscode';
 import { type CommandFolder, type CommandObject, type TopLevelCommands } from './types';
-import { extensionUtils } from './utils/extensionUtils';
+import { extUtils } from './utils/extUtils';
 import { utils } from './utils/utils';
 
 export const enum WorkspaceConstants {
@@ -30,7 +30,7 @@ export function isWorkspaceCommandItem(item: object | string): item is (CommandF
 
 export function addWorkspaceIdToCommands(workspaceCommands: TopLevelCommands, workspaceId: string): TopLevelCommands {
 	const itemsDeepCopy = utils.deepCopy(workspaceCommands);
-	extensionUtils.forEachCommand(item => {
+	extUtils.forEachCommand(item => {
 		if (typeof item !== 'string') {
 			item.workspace = workspaceId;
 		}

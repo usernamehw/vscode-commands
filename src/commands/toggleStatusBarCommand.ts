@@ -3,7 +3,7 @@ import { $config } from '../extension';
 import { updateSetting } from '../settings';
 import { type FolderTreeItem, type RunCommandTreeItem } from '../TreeViewProvider';
 import { type CommandFolder, type CommandObject, type TopLevelCommands } from '../types';
-import { extensionUtils } from '../utils/extensionUtils';
+import { extUtils } from '../utils/extUtils';
 import { utils } from '../utils/utils';
 
 export async function toggleStatusBarCommand(treeItem: FolderTreeItem | RunCommandTreeItem): Promise<void> {
@@ -20,7 +20,7 @@ export async function toggleStatusBarCommand(treeItem: FolderTreeItem | RunComma
 	} else {
 		newStatusBarItemText = labelName;
 	}
-	extensionUtils.applyForTreeItem(({ commands, settingId, configTarget }) => {
+	extUtils.applyForTreeItem(({ commands, settingId, configTarget }) => {
 		const configCommands: TopLevelCommands = utils.deepCopy(commands);
 		for (const key in configCommands) {
 			const commandObject = configCommands[key];
@@ -28,7 +28,7 @@ export async function toggleStatusBarCommand(treeItem: FolderTreeItem | RunComma
 				toggleStatusBarItem(commandObject);
 				break;
 			}
-			if (extensionUtils.isCommandFolder(commandObject)) {
+			if (extUtils.isCommandFolder(commandObject)) {
 				for (const key2 in commandObject.nestedItems) {
 					const nestedItem = commandObject.nestedItems[key2];
 					if (key2 === labelName) {

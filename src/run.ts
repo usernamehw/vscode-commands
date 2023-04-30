@@ -4,7 +4,7 @@ import { $config, $state } from './extension';
 import { showQuickPick } from './quickPick';
 import { substituteVariableRecursive, substituteVariables } from './substituteVariables';
 import { type CommandFolder, type CommandObject, type Runnable, type Sequence } from './types';
-import { extensionUtils } from './utils/extensionUtils';
+import { extUtils } from './utils/extUtils';
 import { utils } from './utils/utils';
 
 /**
@@ -21,7 +21,7 @@ export async function run(runnable: CommandFolder | Runnable): Promise<void> {
 		});
 		return;
 	}
-	if (extensionUtils.isCommandFolder(runnable)) {
+	if (extUtils.isCommandFolder(runnable)) {
 		runFolder(runnable);
 		return;
 	}
@@ -109,7 +109,7 @@ async function runObject(object: CommandObject): Promise<void> {
  * Run folder (show Quick pick with all commands inside that folder).
  */
 function runFolder(folder: CommandFolder): void {
-	const allNestedCommands = extensionUtils.getAllNestedCommands(folder);
+	const allNestedCommands = extUtils.getAllNestedCommands(folder);
 	if (Object.keys(allNestedCommands).length === 0) {
 		window.showWarningMessage('Empty folder. No "nestedItems" to run.');
 		return;

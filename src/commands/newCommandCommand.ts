@@ -4,7 +4,7 @@ import { $config, Constants } from '../extension';
 import { commandsToQuickPickItems } from '../quickPick';
 import { updateSetting } from '../settings';
 import { type FolderTreeItem } from '../TreeViewProvider';
-import { extensionUtils } from '../utils/extensionUtils';
+import { extUtils } from '../utils/extUtils';
 import { utils } from '../utils/utils';
 import { vscodeUtils } from '../utils/vscodeUtils';
 
@@ -33,14 +33,14 @@ async function addNewCommand(folderTreeItem?: FolderTreeItem): Promise<void> {
 	const newCommandKey = `${label}_${Math.random().toString().slice(2, 5)}`;
 
 	if (folderTreeItem) {
-		extensionUtils.applyForTreeItem(async ({ treeItem, commands, settingId, configTarget }) => {
+		extUtils.applyForTreeItem(async ({ treeItem, commands, settingId, configTarget }) => {
 			const commandsCopy = utils.deepCopy(configTarget === 'workspace' ? $config.workspaceCommands : $config.commands);
 
-			extensionUtils.forEachCommand((com, key) => {
+			extUtils.forEachCommand((com, key) => {
 				if (key !== folderTreeItem.label) {
 					return;
 				}
-				if (!extensionUtils.isCommandFolder(com)) {
+				if (!extUtils.isCommandFolder(com)) {
 					return;
 				}
 				com.nestedItems = {

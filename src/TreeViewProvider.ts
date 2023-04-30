@@ -4,7 +4,7 @@ import { CommandId } from './commands';
 import { $config, $state } from './extension';
 import { createFolderHoverText } from './folderHoverText';
 import { type CommandFolder, type Runnable, type TopLevelCommands } from './types';
-import { extensionUtils } from './utils/extensionUtils';
+import { extUtils } from './utils/extUtils';
 import { utils } from './utils/utils';
 
 interface RunCommandTreeItemInit {
@@ -158,7 +158,7 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 				continue;
 			}
 
-			if (extensionUtils.isCommandFolder(item)) {
+			if (extUtils.isCommandFolder(item)) {
 				treeItems.push(new FolderTreeItem(
 					key,
 					item,

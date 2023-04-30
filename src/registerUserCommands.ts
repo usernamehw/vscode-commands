@@ -2,7 +2,7 @@ import { commands, window, type Disposable } from 'vscode';
 import { $config } from './extension';
 import { run } from './run';
 import { type TopLevelCommands } from './types';
-import { extensionUtils } from './utils/extensionUtils';
+import { extUtils } from './utils/extUtils';
 
 const registeredCommandsDisposables: Disposable[] = [];
 
@@ -12,7 +12,7 @@ const registeredCommandsDisposables: Disposable[] = [];
 export function updateUserCommands(items: TopLevelCommands): void {
 	unregisterUserCommands();
 
-	extensionUtils.forEachCommand((item, key) => {
+	extUtils.forEachCommand((item, key) => {
 		if (key === '') {
 			// Don't show error message for empty string. User is likely typing.
 			return;

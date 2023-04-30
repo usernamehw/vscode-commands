@@ -1,4 +1,4 @@
-import { commands, extensions, ThemeIcon, Uri, window, workspace, type QuickInputButton, type QuickPickItem } from 'vscode';
+import { commands, extensions, ThemeIcon, window, type QuickInputButton, type QuickPickItem } from 'vscode';
 import { hasArgs } from './args';
 import { CommandId } from './commands';
 import { toggleStatusBarCommand } from './commands/toggleStatusBarCommand';
@@ -6,7 +6,7 @@ import { $config, $state } from './extension';
 import { run } from './run';
 import { RunCommandTreeItem } from './TreeViewProvider';
 import { type Runnable, type TopLevelCommands } from './types';
-import { extensionUtils } from './utils/extensionUtils';
+import { extUtils } from './utils/extUtils';
 import { utils } from './utils/utils';
 import { vscodeUtils } from './utils/vscodeUtils';
 import { isWorkspaceCommandItem } from './workspaceCommands';
@@ -31,7 +31,7 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
 	function traverseCommands(items: TopLevelCommands, parentFolderName?: string): void {
 		for (const key in items) {
 			const runnable = items[key];
-			if (extensionUtils.isCommandFolder(runnable)) {
+			if (extUtils.isCommandFolder(runnable)) {
 				traverseCommands(runnable.nestedItems, key);
 			} else {
 				treeAsOneLevelMap[key] = {

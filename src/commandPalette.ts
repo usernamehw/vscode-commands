@@ -2,7 +2,7 @@ import { type Disposable, type ExtensionContext } from 'vscode';
 import { type CommandId } from './commands';
 import { $config, Constants } from './extension';
 import { type TopLevelCommands } from './types';
-import { extensionUtils } from './utils/extensionUtils';
+import { extUtils } from './utils/extUtils';
 import { vscodeUtils } from './utils/vscodeUtils';
 import { getWorkspaceId, isWorkspaceCommandItem, WorkspaceConstants } from './workspaceCommands';
 
@@ -74,8 +74,8 @@ export async function updateCommandPalette(items: TopLevelCommands, context: Ext
 
 	const userCommands: Command[] = [];
 	const userCommandPalette: { command: string; when: string }[] = [];
-	extensionUtils.forEachCommand((item, key) => {
-		if (extensionUtils.isCommandFolder(item)) {
+	extUtils.forEachCommand((item, key) => {
+		if (extUtils.isCommandFolder(item)) {
 			return;
 		}
 		const baseWhen = typeof item === 'string' ?

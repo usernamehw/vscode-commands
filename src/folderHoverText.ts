@@ -1,7 +1,7 @@
 import { MarkdownString, type Uri } from 'vscode';
 import { CommandId } from './commands';
 import { type CommandFolder } from './types';
-import { extensionUtils } from './utils/extensionUtils';
+import { extUtils } from './utils/extUtils';
 import { vscodeUtils } from './utils/vscodeUtils';
 
 /**
@@ -10,7 +10,7 @@ import { vscodeUtils } from './utils/vscodeUtils';
 export function createFolderHoverText(folder: CommandFolder): MarkdownString {
 	const markdown = new MarkdownString(undefined, true);
 	markdown.isTrusted = true;
-	const allNestedCommands = extensionUtils.getAllNestedCommands(folder);
+	const allNestedCommands = extUtils.getAllNestedCommands(folder);
 
 	if (Object.keys(allNestedCommands).length === 0) {
 		markdown.appendText('<Empty>');

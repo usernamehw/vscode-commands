@@ -3,7 +3,7 @@ import { Constants } from '../extension';
 import { updateSetting } from '../settings';
 import { type RunCommandTreeItem } from '../TreeViewProvider';
 import { type TopLevelCommands } from '../types';
-import { extensionUtils } from '../utils/extensionUtils';
+import { extUtils } from '../utils/extUtils';
 import { utils } from '../utils/utils';
 
 export async function deleteCommandCommand(targetTreeItem: RunCommandTreeItem): Promise<void> {
@@ -16,9 +16,9 @@ export async function deleteCommandCommand(targetTreeItem: RunCommandTreeItem): 
 		modal: true,
 	}, confirmBtnName);
 	if (button === confirmBtnName) {
-		extensionUtils.applyForTreeItem(async ({ treeItem, commands, settingId, configTarget }) => {
+		extUtils.applyForTreeItem(async ({ treeItem, commands, settingId, configTarget }) => {
 			const configCommands: TopLevelCommands = utils.deepCopy(commands);// config is readonly, get a copy
-			extensionUtils.forEachCommand((item, key, parentElement) => {
+			extUtils.forEachCommand((item, key, parentElement) => {
 				if (key === treeItem.label) {
 					delete parentElement[key];
 				}
