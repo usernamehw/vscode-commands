@@ -176,7 +176,7 @@ interface CommandObject {
         activeEditorGlob?: string// only show status bar item when active editor matches glob pattern
         activeEditorLanguage?: string;// only show status bar item when active editor language id matches
         updateEvents?: {// update status bar text (substitute variables)
-            kind: 'onDidConfigurationChange' | 'onDidChangeActiveTextEditor' | 'onDidChangeTextEditorSelection';
+            kind: 'onDidConfigurationChange' | 'onDidChangeActiveTextEditor' | 'onDidChangeTextEditorSelection' | 'interval';
         }[]
     };
 }

@@ -29,6 +29,10 @@ export interface StatusBarUpdateEvents {
 	onDidChangeTextEditorSelection: {
 		statusBarItemId: string;
 	}[];
+	interval: {
+		statusBarItemId: string;
+		value: number;
+	}[];
 }
 
 /**
@@ -41,6 +45,7 @@ export function updateStatusBarItems(items: TopLevelCommands, variableSubstituti
 		onDidConfigurationChange: [],
 		onDidChangeActiveTextEditor: [],
 		onDidChangeTextEditorSelection: [],
+		interval: [],
 	};
 
 	extUtils.forEachCommand((item, key) => {
@@ -67,6 +72,11 @@ export function updateStatusBarItems(items: TopLevelCommands, variableSubstituti
 			} else if (updateEvent.kind === 'onDidChangeTextEditorSelection') {
 				statusBarUpdateEvents.onDidChangeTextEditorSelection.push({
 					statusBarItemId: uniqueId,
+				});
+			} else if (updateEvent.kind === 'interval') {
+				statusBarUpdateEvents.interval.push({
+					statusBarItemId: uniqueId,
+					value: updateEvent.value,
 				});
 			}
 		}

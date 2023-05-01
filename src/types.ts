@@ -120,7 +120,11 @@ interface UpdateEventonDidChangeActiveTextEditor {
 interface UpdateEventonDidChangeTextEditorSelection {
 	kind: 'onDidChangeTextEditorSelection';
 }
-type UpdateEvent = UpdateEventonDidChangeActiveTextEditor | UpdateEventonDidChangeTextEditorSelection | UpdateEventonDidConfigurationChange;
+interface UpdateEventInterval {
+	kind: 'interval';
+	value: number;
+}
+type UpdateEvent = UpdateEventInterval | UpdateEventonDidChangeActiveTextEditor | UpdateEventonDidChangeTextEditorSelection | UpdateEventonDidConfigurationChange;
 /**
  * Folder can only have `nestedItems` property.
  */

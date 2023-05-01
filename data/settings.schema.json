@@ -80,12 +80,14 @@
 								"enum": [
 									"onDidConfigurationChange",
 									"onDidChangeActiveTextEditor",
-									"onDidChangeTextEditorSelection"
+									"onDidChangeTextEditorSelection",
+									"interval"
 								],
 								"markdownEnumDescriptions": [
 									"Fires when configuration changes.",
 									"Fires when switching text editors (won't work on non-editor (webview,settingsUI,...).",
-									"Fires when selection changes (cursor moves, selection changes)."
+									"Fires when selection changes (cursor moves, selection changes).",
+									"Fires every `\"value\"` milliseconds."
 								]
 							}
 						},
@@ -103,6 +105,25 @@
 									"type": "array",
 									"items": {
 										"$ref": "commandsExtension://schemas/settings"
+									}
+								}
+							}
+						},
+						"else": {
+							"if": {
+								"properties": {
+									"kind": {
+										"const": "interval"
+									}
+								},
+								"required": ["kind"]
+							},
+							"then": {
+								"properties": {
+									"value": {
+										"type": "integer",
+										"default": 1000,
+										"minimum": 1000
 									}
 								}
 							}

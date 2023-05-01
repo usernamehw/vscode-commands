@@ -40,6 +40,7 @@ export abstract class $state {
 	public static keybindings: VsCodeKeybindingItem[] = [];
 
 	public static statusBarUpdateEventDisposables: Disposable[] = [];
+	public static statusBarUpdateEventTimerIds: (NodeJS.Timeout | number | string | undefined)[] = [];
 }
 
 export async function activate(context: ExtensionContext): Promise<void> {
@@ -93,15 +94,16 @@ async function updateEverything(context: ExtensionContext): Promise<void> {
 	updateUserCommands(allCommands);
 
 	const statusBarUpdateEvents = updateStatusBarItems(allCommands, $config.variableSubstitutionEnabled);
-	updateStatusBarUpdateEvents(statusBarUpdateEvents);
+	updateStatusBarUpdateEvents(statusBarUpdateEvents, $config.variableSubstitutionEnabled);
 
 	updateCommandPalette(allCommands, context);
 	updateDocumentLinkProvider();
 	updateWelcomeViewContext(Object.keys(allCommands).length === 0);
 }
 
-function updateStatusBarUpdateEvents(statusBarUpdateEvents: StatusBarUpdateEvents): void {
+function updateStatusBarUpdateEvents(statusBarUpdateEvents: StatusBarUpdateEvents, variableSubstitutionEnabled: boolean): void {
 	disposeStatusBarUpdateEvents();
+	disposeIntervalTimerIds();
 
 	if (statusBarUpdateEvents.onDidConfigurationChange.length) {
 		$state.statusBarUpdateEventDisposables.push(workspace.onDidChangeConfiguration(e => {
@@ -117,20 +119,28 @@ function updateStatusBarUpdateEvents(statusBarUpdateEvents: StatusBarUpdateEvent
 					statusBarIds.push(conf.statusBarItemId);
 				}
 			}
-			updateStatusBarTextFromEvents($config.variableSubstitutionEnabled, statusBarIds);
+			updateStatusBarTextFromEvents(variableSubstitutionEnabled, statusBarIds);
 		}));
 	}
 
 	if (statusBarUpdateEvents.onDidChangeActiveTextEditor.length) {
 		$state.statusBarUpdateEventDisposables.push(window.onDidChangeActiveTextEditor(e => {
-			updateStatusBarTextFromEvents($config.variableSubstitutionEnabled, statusBarUpdateEvents.onDidChangeActiveTextEditor.map(e2 => e2.statusBarItemId));
+			updateStatusBarTextFromEvents(variableSubstitutionEnabled, statusBarUpdateEvents.onDidChangeActiveTextEditor.map(e2 => e2.statusBarItemId));
 		}));
 	}
 
 	if (statusBarUpdateEvents.onDidChangeTextEditorSelection.length) {
 		$state.statusBarUpdateEventDisposables.push(window.onDidChangeTextEditorSelection(e => {
-			updateStatusBarTextFromEvents($config.variableSubstitutionEnabled, statusBarUpdateEvents.onDidChangeTextEditorSelection.map(e2 => e2.statusBarItemId));
+			updateStatusBarTextFromEvents(variableSubstitutionEnabled, statusBarUpdateEvents.onDidChangeTextEditorSelection.map(e2 => e2.statusBarItemId));
 		}));
+	}
+
+	if (statusBarUpdateEvents.interval.length) {
+		for (const interval of statusBarUpdateEvents.interval) {
+			setInterval(() => {
+				updateStatusBarTextFromEvents(variableSubstitutionEnabled, [interval.statusBarItemId]);
+			}, interval.value);
+		}
 	}
 }
 function disposeStatusBarUpdateEvents(): void {
@@ -138,6 +148,12 @@ function disposeStatusBarUpdateEvents(): void {
 		disposable?.dispose();
 	}
 	$state.statusBarUpdateEventDisposables = [];
+}
+function disposeIntervalTimerIds(): void {
+	for (const timerId of $state.statusBarUpdateEventTimerIds) {
+		clearInterval(timerId);
+	}
+	$state.statusBarUpdateEventTimerIds = [];
 }
 
 /**
