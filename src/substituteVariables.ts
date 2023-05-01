@@ -3,6 +3,7 @@ import escapeRegExp from 'lodash/escapeRegExp';
 import { homedir } from 'os';
 import path from 'path';
 import { env, window, workspace } from 'vscode';
+import { vscodeUtils } from './utils/vscodeUtils';
 
 // https://code.visualstudio.com/docs/editor/variables-reference
 // https://github.com/microsoft/vscode/blob/main/src/vs/workbench/services/configurationResolver/common/variableResolver.ts
@@ -21,6 +22,7 @@ export const enum VariableNames {
 	PathSeparator = '${pathSeparator}', // `/` on macOS or linux, `\` on Windows
 	LineNumber = '${lineNumber}', // the current selected line number in the active file
 	SelectedText = '${selectedText}', // the current selected text in the active file
+	SelectedLineCount = '${selectedLineCount}', // number of selected lines in the active file
 	Clipboard = '${clipboard}', // current clipboard value
 	EnvironmentVariable = '${env}',
 	SingleEnvironmentVariable = 'env',
@@ -48,6 +50,7 @@ const variableRegexps = {
 	[VariableNames.PathSeparator]: new RegExp(escapeRegExp(VariableNames.PathSeparator), 'igu'),
 	[VariableNames.LineNumber]: new RegExp(escapeRegExp(VariableNames.LineNumber), 'igu'),
 	[VariableNames.SelectedText]: new RegExp(escapeRegExp(VariableNames.SelectedText), 'igu'),
+	[VariableNames.SelectedLineCount]: new RegExp(escapeRegExp(VariableNames.SelectedLineCount), 'igu'),
 	[VariableNames.Clipboard]: new RegExp(escapeRegExp(VariableNames.Clipboard), 'igu'),
 	[VariableNames.Random]: new RegExp(escapeRegExp(VariableNames.Random), 'igu'),
 	[VariableNames.RandomHex]: new RegExp(escapeRegExp(VariableNames.RandomHex), 'igu'),
@@ -72,6 +75,10 @@ export async function substituteVariables(strArg: string): Promise<string> {
 		const selection = activeTextEditor.selection;
 		const selectedText = activeTextEditor.document.getText(selection);
 		str = str.replace(variableRegexps[VariableNames.SelectedText], selectedText);
+	}
+	if (str.includes(VariableNames.SelectedLineCount) && activeTextEditor) {
+		const selectedLineCount = vscodeUtils.getSelectedLineNumbers(activeTextEditor).length;
+		str = str.replace(variableRegexps[VariableNames.SelectedLineCount], selectedLineCount > 1 ? String(selectedLineCount) : '');
 	}
 	if (str.includes(VariableNames.PathSeparator)) {
 		str = str.replace(variableRegexps[VariableNames.PathSeparator], path.sep);

@@ -135,6 +135,15 @@ function createCommandUri(commandId: string, args?: unknown): Uri {
 	const commandArg = args ? `?${encodeURIComponent(JSON.stringify(args))}` : '';
 	return Uri.parse(`command:${commandId}${commandArg}`);
 }
+function getSelectedLineNumbers(editor: TextEditor): number[] {
+	const lineNumbers = new Set<number>();
+	for (const selection of editor.selections) {
+		for (let i = selection.start.line; i <= selection.end.line; i++) {
+			lineNumbers.add(i);
+		}
+	}
+	return Array.from(lineNumbers);
+}
 
 export const vscodeUtils = {
 	getAllVscodeCommands,
@@ -148,4 +157,5 @@ export const vscodeUtils = {
 	createCommandUri,
 	readFileVscode,
 	writeFileVscode,
+	getSelectedLineNumbers,
 };
