@@ -76,7 +76,7 @@ export function updateStatusBarItems(items: TopLevelCommands, variableSubstituti
 			} else if (updateEvent.kind === 'interval') {
 				statusBarUpdateEvents.interval.push({
 					statusBarItemId: uniqueId,
-					value: updateEvent.value,
+					value: updateEvent.value ?? 1000,
 				});
 			}
 		}

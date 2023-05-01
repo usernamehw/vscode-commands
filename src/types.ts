@@ -122,7 +122,7 @@ interface UpdateEventonDidChangeTextEditorSelection {
 }
 interface UpdateEventInterval {
 	kind: 'interval';
-	value: number;
+	value?: number;
 }
 type UpdateEvent = UpdateEventInterval | UpdateEventonDidChangeActiveTextEditor | UpdateEventonDidChangeTextEditorSelection | UpdateEventonDidConfigurationChange;
 /**
