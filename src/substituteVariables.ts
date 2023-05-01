@@ -30,6 +30,20 @@ export const enum VariableNames {
 	Random = '${random}',
 	RandomHex = '${randomHex}',
 	SingleConfigurationVariable = 'config',
+	CurrentYear = '${currentYear}',
+	CurrentYearShort = '${currentYearShort}',
+	CurrentMonth = '${currentMonth}',
+	CurrentMonthName = '${currentMonthName}',
+	CurrentMonthNameShort = '${currentMonthNameShort}',
+	CurrentDate = '${currentDate}',
+	CurrentDayName = '${currentDayName}',
+	CurrentDayNameShort = '${currentDayNameShort}',
+	CurrentHour = '${currentHour}',
+	CurrentMinute = '${currentMinute}',
+	CurrentSecond = '${currentSecond}',
+	CurrentSecondsUnix = '${currentSecondsUnix}',
+	CurrentTimezoneOffset = '${currentTimezoneOffset}',
+	// CURRENT_TIMEZONE_OFFSET   `+/-hh:mm` https://github.com/microsoft/vscode/blob/34cba75c513878d683004561c799dd5cd13f5222/src/vs/editor/contrib/snippet/browser/snippetVariables.ts#L296C24-L303
 	// ────────────────────────────────────────────────────────────
 	// relativeFile = '${relativeFile}', // the current opened file relative to `workspaceFolder`
 	// relativeFileDirname = '${relativeFileDirname}', // the current opened file's dirname relative to `workspaceFolder`
@@ -58,10 +72,28 @@ const variableRegexps = {
 	[VariableNames.EnvironmentVariable]: /\$\{env:(?:[a-zA-Z_]+[a-zA-Z0-9_]*)\}/igu,
 	[VariableNames.SingleConfigurationVariable]: /\$\{config:(?<configName>[^}]+?)\}/iu,
 	[VariableNames.ConfigurationVariable]: /\$\{config:(?:[^}]+?)\}/igu,
+	[VariableNames.CurrentYear]: new RegExp(escapeRegExp(VariableNames.CurrentYear), 'igu'),
+	[VariableNames.CurrentYearShort]: new RegExp(escapeRegExp(VariableNames.CurrentYearShort), 'igu'),
+	[VariableNames.CurrentMonth]: new RegExp(escapeRegExp(VariableNames.CurrentMonth), 'igu'),
+	[VariableNames.CurrentMonthName]: new RegExp(escapeRegExp(VariableNames.CurrentMonthName), 'igu'),
+	[VariableNames.CurrentMonthNameShort]: new RegExp(escapeRegExp(VariableNames.CurrentMonthNameShort), 'igu'),
+	[VariableNames.CurrentDate]: new RegExp(escapeRegExp(VariableNames.CurrentDate), 'igu'),
+	[VariableNames.CurrentDayName]: new RegExp(escapeRegExp(VariableNames.CurrentDayName), 'igu'),
+	[VariableNames.CurrentDayNameShort]: new RegExp(escapeRegExp(VariableNames.CurrentDayNameShort), 'igu'),
+	[VariableNames.CurrentHour]: new RegExp(escapeRegExp(VariableNames.CurrentHour), 'igu'),
+	[VariableNames.CurrentMinute]: new RegExp(escapeRegExp(VariableNames.CurrentMinute), 'igu'),
+	[VariableNames.CurrentSecond]: new RegExp(escapeRegExp(VariableNames.CurrentSecond), 'igu'),
+	[VariableNames.CurrentSecondsUnix]: new RegExp(escapeRegExp(VariableNames.CurrentSecondsUnix), 'igu'),
+	[VariableNames.CurrentTimezoneOffset]: new RegExp(escapeRegExp(VariableNames.CurrentTimezoneOffset), 'igu'),
 	// [VariableNames.relativeFile]: new RegExp(escapeRegExp(VariableNames.relativeFile), 'ig'),
 	// [VariableNames.relativeFileDirname]: new RegExp(escapeRegExp(VariableNames.relativeFileDirname), 'ig'),
 	// [VariableNames.cwd]: new RegExp(escapeRegExp(VariableNames.cwd), 'ig'),
 } satisfies Record<VariableNames, RegExp>;
+
+const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const dayNamesShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const monthNamesShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 /**
  * Try to emulate variable substitution in tasks https://code.visualstudio.com/docs/editor/variables-reference
  *
@@ -142,6 +174,54 @@ export async function substituteVariables(strArg: string): Promise<string> {
 			str = str.replace(variableRegexps[VariableNames.SingleConfigurationVariable], (__, g1: string) => replaceConfigurationVariable(g1));
 		}
 	}
+
+	if (str.includes(VariableNames.CurrentYear)) {
+		str = str.replace(variableRegexps[VariableNames.CurrentYear], String(new Date().getFullYear()));
+	}
+	if (str.includes(VariableNames.CurrentYearShort)) {
+		str = str.replace(variableRegexps[VariableNames.CurrentYearShort], String(new Date().getFullYear()).slice(-2));
+	}
+	if (str.includes(VariableNames.CurrentMonth)) {
+		str = str.replace(variableRegexps[VariableNames.CurrentMonth], String(new Date().getMonth().valueOf() + 1).padStart(2, '0'));
+	}
+	if (str.includes(VariableNames.CurrentDate)) {
+		str = str.replace(variableRegexps[VariableNames.CurrentDate], String(new Date().getDate().valueOf()).padStart(2, '0'));
+	}
+	if (str.includes(VariableNames.CurrentHour)) {
+		str = str.replace(variableRegexps[VariableNames.CurrentHour], String(new Date().getHours().valueOf()).padStart(2, '0'));
+	}
+	if (str.includes(VariableNames.CurrentMinute)) {
+		str = str.replace(variableRegexps[VariableNames.CurrentMinute], String(new Date().getMinutes().valueOf()).padStart(2, '0'));
+	}
+	if (str.includes(VariableNames.CurrentSecond)) {
+		str = str.replace(variableRegexps[VariableNames.CurrentSecond], String(new Date().getSeconds().valueOf()).padStart(2, '0'));
+	}
+	if (str.includes(VariableNames.CurrentDayName)) {
+		str = str.replace(variableRegexps[VariableNames.CurrentDayName], dayNames[new Date().getDay()]);
+	}
+	if (str.includes(VariableNames.CurrentDayNameShort)) {
+		str = str.replace(variableRegexps[VariableNames.CurrentDayNameShort], dayNamesShort[new Date().getDay()]);
+	}
+	if (str.includes(VariableNames.CurrentMonthName)) {
+		str = str.replace(variableRegexps[VariableNames.CurrentMonthName], monthNames[new Date().getMonth()]);
+	}
+	if (str.includes(VariableNames.CurrentMonthNameShort)) {
+		str = str.replace(variableRegexps[VariableNames.CurrentMonthNameShort], monthNamesShort[new Date().getMonth()]);
+	}
+	if (str.includes(VariableNames.CurrentSecondsUnix)) {
+		str = str.replace(variableRegexps[VariableNames.CurrentSecondsUnix], String(Math.floor(new Date().getTime() / 1000)));
+	}
+	if (str.includes(VariableNames.CurrentTimezoneOffset)) {
+		const rawTimeOffset = new Date().getTimezoneOffset();
+		const sign = rawTimeOffset > 0 ? '-' : '+';
+		const hours = Math.trunc(Math.abs(rawTimeOffset / 60));
+		const hoursString = (hours < 10 ? `0${hours}` : String(hours));
+		const minutes = Math.abs(rawTimeOffset) - (hours * 60);
+		const minutesString = (minutes < 10 ? `0${minutes}` : minutes);
+		const offset = `${sign + hoursString}:${minutesString}`;
+		str = str.replace(variableRegexps[VariableNames.CurrentTimezoneOffset], offset);
+	}
+
 	return str;
 }
 
