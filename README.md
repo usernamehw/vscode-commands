@@ -175,6 +175,9 @@ interface CommandObject {
         backgroundColor?: 'error' | 'warning';// status bar item background color
         activeEditorGlob?: string// only show status bar item when active editor matches glob pattern
         activeEditorLanguage?: string;// only show status bar item when active editor language id matches
+        updateEvents?: {// update status bar text (substitute variables)
+            kind: 'onDidConfigurationChange' | 'onDidChangeActiveTextEditor' | 'onDidChangeTextEditorSelection';
+        }[]
     };
 }
 ```

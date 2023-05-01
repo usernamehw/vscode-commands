@@ -1,7 +1,3 @@
-import { type ExtensionContext, type TreeView } from 'vscode';
-import { type VsCodeKeybindingItem } from './getKeybindings';
-import { type VscodeCommandWithoutCategory } from './quickPick';
-import { type CommandsTreeViewProvider, type FolderTreeItem, type RunCommandTreeItem } from './TreeViewProvider';
 
 export interface ExtensionConfig {
 	/**
@@ -112,7 +108,19 @@ interface StatusBar {
 	backgroundColor?: 'error' | 'warning';
 	activeEditorGlob?: string;
 	activeEditorLanguage?: string;
+	updateEvents?: UpdateEvent[];
 }
+interface UpdateEventonDidConfigurationChange {
+	kind: 'onDidConfigurationChange';
+	settings?: string[];
+}
+interface UpdateEventonDidChangeActiveTextEditor {
+	kind: 'onDidChangeActiveTextEditor';
+}
+interface UpdateEventonDidChangeTextEditorSelection {
+	kind: 'onDidChangeTextEditorSelection';
+}
+type UpdateEvent = UpdateEventonDidChangeActiveTextEditor | UpdateEventonDidChangeTextEditorSelection | UpdateEventonDidConfigurationChange;
 /**
  * Folder can only have `nestedItems` property.
  */

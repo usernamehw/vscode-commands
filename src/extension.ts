@@ -1,4 +1,4 @@
-import { commands, window, workspace, type ExtensionContext, type TreeView } from 'vscode';
+import { commands, window, workspace, type Disposable, type ExtensionContext, type TreeView } from 'vscode';
 import { updateCommandPalette } from './commandPalette';
 import { registerExtensionCommands } from './commands';
 import { updateDocumentLinkProvider } from './documentLinksProvider';
@@ -7,7 +7,7 @@ import { registerJsonSchemaCompletion } from './jsonSchema/jsonSchemaCompletions
 import { registerDynamicJsonSchema } from './jsonSchema/registerDynamicJsonSchema';
 import { type VscodeCommandWithoutCategory } from './quickPick';
 import { updateUserCommands } from './registerUserCommands';
-import { updateStatusBarItems, updateStatusBarItemsVisibilityBasedOnActiveEditor } from './statusBar';
+import { updateStatusBarItems, updateStatusBarItemsVisibilityBasedOnActiveEditor, updateStatusBarTextFromEvents, type StatusBarUpdateEvents } from './statusBar';
 import { CommandsTreeViewProvider, type FolderTreeItem, type RunCommandTreeItem } from './TreeViewProvider';
 import { type CommandFolder, type ExtensionConfig, type Runnable, type TopLevelCommands } from './types';
 import { addWorkspaceIdToCommands, getWorkspaceId, setWorkspaceIdToContext } from './workspaceCommands';
@@ -38,6 +38,8 @@ export abstract class $state {
 	public static commandsTreeViewProvider: CommandsTreeViewProvider;
 	public static commandsTreeView: TreeView<FolderTreeItem | RunCommandTreeItem>;
 	public static keybindings: VsCodeKeybindingItem[] = [];
+
+	public static statusBarUpdateEventDisposables: Disposable[] = [];
 }
 
 export async function activate(context: ExtensionContext): Promise<void> {
@@ -89,10 +91,53 @@ async function updateEverything(context: ExtensionContext): Promise<void> {
 	$state.commandsTreeViewProvider.updateCommands(allCommands);
 	$state.commandsTreeViewProvider.refresh();
 	updateUserCommands(allCommands);
-	updateStatusBarItems(allCommands);
+
+	const statusBarUpdateEvents = updateStatusBarItems(allCommands, $config.variableSubstitutionEnabled);
+	updateStatusBarUpdateEvents(statusBarUpdateEvents);
+
 	updateCommandPalette(allCommands, context);
 	updateDocumentLinkProvider();
 	updateWelcomeViewContext(Object.keys(allCommands).length === 0);
+}
+
+function updateStatusBarUpdateEvents(statusBarUpdateEvents: StatusBarUpdateEvents): void {
+	disposeStatusBarUpdateEvents();
+
+	if (statusBarUpdateEvents.onDidConfigurationChange.length) {
+		$state.statusBarUpdateEventDisposables.push(workspace.onDidChangeConfiguration(e => {
+			const statusBarIds: string[] = [];
+			for (const conf of statusBarUpdateEvents.onDidConfigurationChange) {
+				if (conf.settings?.length) {
+					for (const setting of conf.settings) {
+						if (e.affectsConfiguration(setting)) {
+							statusBarIds.push(conf.statusBarItemId);
+						}
+					}
+				} else {
+					statusBarIds.push(conf.statusBarItemId);
+				}
+			}
+			updateStatusBarTextFromEvents($config.variableSubstitutionEnabled, statusBarIds);
+		}));
+	}
+
+	if (statusBarUpdateEvents.onDidChangeActiveTextEditor.length) {
+		$state.statusBarUpdateEventDisposables.push(window.onDidChangeActiveTextEditor(e => {
+			updateStatusBarTextFromEvents($config.variableSubstitutionEnabled, statusBarUpdateEvents.onDidChangeActiveTextEditor.map(e2 => e2.statusBarItemId));
+		}));
+	}
+
+	if (statusBarUpdateEvents.onDidChangeTextEditorSelection.length) {
+		$state.statusBarUpdateEventDisposables.push(window.onDidChangeTextEditorSelection(e => {
+			updateStatusBarTextFromEvents($config.variableSubstitutionEnabled, statusBarUpdateEvents.onDidChangeTextEditorSelection.map(e2 => e2.statusBarItemId));
+		}));
+	}
+}
+function disposeStatusBarUpdateEvents(): void {
+	for (const disposable of $state.statusBarUpdateEventDisposables) {
+		disposable?.dispose();
+	}
+	$state.statusBarUpdateEventDisposables = [];
 }
 
 /**

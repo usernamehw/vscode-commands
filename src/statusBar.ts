@@ -1,74 +1,126 @@
 import { languages, MarkdownString, StatusBarAlignment, ThemeColor, window, type StatusBarItem, type TextEditor } from 'vscode';
 import { CommandId } from './commands';
 import { createFolderHoverText } from './folderHoverText';
+import { substituteVariables } from './substituteVariables';
 import { type TopLevelCommands } from './types';
 import { extUtils } from './utils/extUtils';
+import { utils } from './utils/utils';
 import { vscodeUtils } from './utils/vscodeUtils';
 
 const statusBarItems: StatusBarWithActiveEditorMetadata[] = [];
 
 type StatusBarWithActiveEditorMetadata = StatusBarItem & {
+	uniqueId: string;
+	originalText: string;
+	icon: string;
 	activeEditorGlob?: string;
 	activeEditorLanguage?: string;
 };
 
+export interface StatusBarUpdateEvents {
+	onDidConfigurationChange: {
+		statusBarItemId: string;
+		settings?: string[];
+	}[];
+
+	onDidChangeActiveTextEditor: {
+		statusBarItemId: string;
+	}[];
+	onDidChangeTextEditorSelection: {
+		statusBarItemId: string;
+	}[];
+}
+
 /**
  * Dispose and refresh all status bar items.
  */
-export function updateStatusBarItems(items: TopLevelCommands): void {
+export function updateStatusBarItems(items: TopLevelCommands, variableSubstitutionEnabled: boolean): StatusBarUpdateEvents {
 	disposeStatusBarItems();
+
+	const statusBarUpdateEvents: StatusBarUpdateEvents = {
+		onDidConfigurationChange: [],
+		onDidChangeActiveTextEditor: [],
+		onDidChangeTextEditorSelection: [],
+	};
 
 	extUtils.forEachCommand((item, key) => {
 		if (typeof item === 'string') {
 			// cannot have "statusBar" on string item
 			return;
 		}
-		if (item.statusBar && !item.statusBar.hidden) {
-			const statusBarUserObject = item.statusBar;
-			const alignment = statusBarUserObject.alignment === 'right' ? StatusBarAlignment.Right : StatusBarAlignment.Left;
-			const newStatusBarItem: StatusBarWithActiveEditorMetadata = window.createStatusBarItem(statusBarUserObject.text, alignment, statusBarUserObject.priority ?? -9999);
-			let icon = 'icon' in item ? `$(${item.icon ?? ''}) ` : '';
-			newStatusBarItem.name = `Commands: ${statusBarUserObject.name ?? statusBarUserObject.text}`;
-			newStatusBarItem.color = statusBarUserObject.color;
-			newStatusBarItem.backgroundColor = statusBarUserObject.backgroundColor === 'error' ?
-				new ThemeColor('statusBarItem.errorBackground') :
-				statusBarUserObject.backgroundColor === 'warning' ? new ThemeColor('statusBarItem.warningBackground') : undefined;
-
-			let mdTooltip = new MarkdownString(undefined, true);
-			mdTooltip.isTrusted = true;
-			if (statusBarUserObject.markdownTooltip) {
-				mdTooltip.appendMarkdown(statusBarUserObject.markdownTooltip);
-			} else {
-				mdTooltip.appendText(statusBarUserObject.tooltip ?? key);
-			}
-			if (extUtils.isCommandFolder(item)) {
-				icon = '$(folder) ';
-				mdTooltip = createFolderHoverText(item);
-			}
-			const args = [{
-				workspaceId: item.workspace,
-				label: key,
-			}];
-			const revealCommandUri = vscodeUtils.createCommandUri(CommandId.RevealCommand2, args);
-			mdTooltip.appendMarkdown(`\n\n---\n\n[Reveal in settings.json](${revealCommandUri.toString()})`);
-			newStatusBarItem.tooltip = mdTooltip;
-
-			newStatusBarItem.text = icon + (statusBarUserObject.text || '');
-			newStatusBarItem.command = {
-				command: CommandId.Run,
-				title: 'Run Command',
-				arguments: [item],
-			};
-
-			newStatusBarItem.activeEditorGlob = item.statusBar.activeEditorGlob;
-			newStatusBarItem.activeEditorLanguage = item.statusBar.activeEditorLanguage;
-
-			newStatusBarItem.show();
-			statusBarItems.push(newStatusBarItem);
+		if (!item.statusBar || item.statusBar.hidden) {
+			return;
 		}
+
+		const uniqueId = utils.uniqueId();
+
+		for (const updateEvent of item.statusBar.updateEvents ?? []) {
+			if (updateEvent.kind === 'onDidConfigurationChange') {
+				statusBarUpdateEvents.onDidConfigurationChange.push({
+					statusBarItemId: uniqueId,
+					settings: updateEvent.settings,
+				});
+			} else if (updateEvent.kind === 'onDidChangeActiveTextEditor') {
+				statusBarUpdateEvents.onDidChangeActiveTextEditor.push({
+					statusBarItemId: uniqueId,
+				});
+			} else if (updateEvent.kind === 'onDidChangeTextEditorSelection') {
+				statusBarUpdateEvents.onDidChangeTextEditorSelection.push({
+					statusBarItemId: uniqueId,
+				});
+			}
+		}
+
+		const statusBarUserObject = item.statusBar;
+		const alignment = statusBarUserObject.alignment === 'right' ? StatusBarAlignment.Right : StatusBarAlignment.Left;
+		const newStatusBarItem: StatusBarWithActiveEditorMetadata = window.createStatusBarItem(statusBarUserObject.text, alignment, statusBarUserObject.priority ?? -9999) as StatusBarWithActiveEditorMetadata;
+		newStatusBarItem.uniqueId = uniqueId;
+		newStatusBarItem.originalText = statusBarUserObject.text;
+		let icon = 'icon' in item ? `$(${item.icon ?? ''}) ` : '';
+		newStatusBarItem.name = `Commands: ${statusBarUserObject.name ?? statusBarUserObject.text}`;
+		newStatusBarItem.color = statusBarUserObject.color;
+		newStatusBarItem.backgroundColor = statusBarUserObject.backgroundColor === 'error' ?
+			new ThemeColor('statusBarItem.errorBackground') :
+			statusBarUserObject.backgroundColor === 'warning' ? new ThemeColor('statusBarItem.warningBackground') : undefined;
+
+		let mdTooltip = new MarkdownString(undefined, true);
+		mdTooltip.isTrusted = true;
+		if (statusBarUserObject.markdownTooltip) {
+			mdTooltip.appendMarkdown(statusBarUserObject.markdownTooltip);
+		} else {
+			mdTooltip.appendText(statusBarUserObject.tooltip ?? key);
+		}
+		if (extUtils.isCommandFolder(item)) {
+			icon = '$(folder) ';
+			mdTooltip = createFolderHoverText(item);
+		}
+		const args = [{
+			workspaceId: item.workspace,
+			label: key,
+		}];
+		const revealCommandUri = vscodeUtils.createCommandUri(CommandId.RevealCommand2, args);
+		mdTooltip.appendMarkdown(`\n\n---\n\n[Reveal in settings.json](${revealCommandUri.toString()})`);
+		newStatusBarItem.tooltip = mdTooltip;
+
+		newStatusBarItem.text = icon + (statusBarUserObject.text || '');
+		newStatusBarItem.icon = icon;
+		newStatusBarItem.command = {
+			command: CommandId.Run,
+			title: 'Run Command',
+			arguments: [item],
+		};
+
+		newStatusBarItem.activeEditorGlob = item.statusBar.activeEditorGlob;
+		newStatusBarItem.activeEditorLanguage = item.statusBar.activeEditorLanguage;
+
+		newStatusBarItem.show();
+		statusBarItems.push(newStatusBarItem);
 	}, items);
 
 	updateStatusBarItemsVisibilityBasedOnActiveEditor(window.activeTextEditor);
+	updateStatusBarTextFromEvents(variableSubstitutionEnabled, statusBarItems.map(item => item.uniqueId));
+
+	return statusBarUpdateEvents;
 }
 
 /**
@@ -110,6 +162,22 @@ export function updateStatusBarItemsVisibilityBasedOnActiveEditor(editor?: TextE
 				statusBarItem.show();
 			}
 		}
+	}
+}
+/**
+ * Apply variable substitution for status bar text.
+ */
+export async function updateStatusBarTextFromEvents(variableSubstitutionEnabled: boolean, statusBarItemIds: string[]): Promise<void> {
+	if (!variableSubstitutionEnabled) {
+		return;
+	}
+
+	for (const statusBarItem of statusBarItems) {
+		if (!statusBarItemIds.includes(statusBarItem.uniqueId)) {
+			continue;
+		}
+		const newText = await substituteVariables(statusBarItem.originalText);
+		statusBarItem.text = statusBarItem.icon + newText;
 	}
 }
 /**

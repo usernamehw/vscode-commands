@@ -69,6 +69,45 @@
 						"error",
 						"warning"
 					]
+				},
+				"updateEvents": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"kind": {
+								"type": "string",
+								"enum": [
+									"onDidConfigurationChange",
+									"onDidChangeActiveTextEditor",
+									"onDidChangeTextEditorSelection"
+								],
+								"markdownEnumDescriptions": [
+									"Fires when configuration changes.",
+									"Fires when switching text editors (won't work on non-editor (webview,settingsUI,...).",
+									"Fires when selection changes (cursor moves, selection changes)."
+								]
+							}
+						},
+						"if": {
+							"properties": {
+								"kind": {
+									"const": "onDidConfigurationChange"
+								}
+							},
+							"required": ["kind"]
+						},
+						"then": {
+							"properties": {
+								"settings": {
+									"type": "array",
+									"items": {
+										"$ref": "commandsExtension://schemas/settings"
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 		},
