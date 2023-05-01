@@ -1,3 +1,11 @@
+## 1.11.0 `01 May 2023`
+
+- 💥 Enable `"commands.variableSubstitutionEnabled"` by default
+- ✨ Add variables: `${currentYear}`, `${currentYearShort}`, `${currentMonth}`, `${currentMonthName}`, `${currentMonthNameShort}`, `${currentDate}`, `${currentDayName}`, `${currentDayNameShort}`, `${currentHour}`, `${currentMinute}`, `${currentSecond}`, `${currentSecondsUnix}`, `${currentTimezoneOffset}`, `${selectedLineCount}`
+- ✨ Status bar items now use variable substitution on `"text"` property
+- ✨ Status bar now has `"updateEvents"` property that defines when to update its text
+- ✨ Commands that require setting names now have autocomplete. New command: `commands.suggestSettings`.
+
 ## 1.10.0 `19 Mar 2023`
 
 - ✨ Toggle "statusBar" from inline button in Quick Pick
