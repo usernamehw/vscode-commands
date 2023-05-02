@@ -100,6 +100,10 @@ const monthNamesShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
  * TODO: throw errors (window.showMessage) when variable exists but can't resolve
  */
 export async function substituteVariables(strArg: string): Promise<string> {
+	if (!/\$\{[^}]+\}/u.test(strArg)) {
+		return strArg;
+	}
+
 	let str = strArg;
 	const activeTextEditor = window.activeTextEditor;
 	const workspaceFolder = workspace.workspaceFolders?.[0].uri.fsPath;
