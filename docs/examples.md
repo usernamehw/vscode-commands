@@ -1,4 +1,4 @@
-## Status Bar granular zoom in/out buttons:
+## Status Bar granular zoom in/out buttons
 
 ```js
 "commands.commands": {
@@ -23,7 +23,7 @@
 },
 ```
 
-## Replace Activity Bar with icons in Status Bar:
+## Replace Activity Bar with icons in Status Bar
 
 ```js
 "commands.commands": {
@@ -55,7 +55,35 @@
 }
 ```
 
-## Open website query from selection:
+## Show project name(workspace folder) in status bar
+
+```js
+"Workspace folder": {
+	"command": "workbench.action.openRecent",
+	"statusBar": {
+		"text": "|${workspaceFolderBasename}|",
+	},
+},
+```
+
+## Show time in status bar
+
+```js
+"Time": {
+	"command": "noop",
+	"statusBar": {
+		"text": "${currentHour}:${currentMinute}:${currentSecond}",
+		"updateEvents": [
+			{
+				"kind": "interval",
+				"value": 1000,
+			},
+		],
+	},
+},
+```
+
+## Open website query from selection
 
 ```js
 "commands.commands": {
