@@ -1,3 +1,15 @@
+
+<table>
+    <thead>
+        <tr>
+            <th>Example</th>
+            <th>Demo</th>
+        </tr>
+    </thead>
+<!-- ──────────────────────────────────────────────────────────── -->
+<tr>
+<td>
+
 ## Status Bar granular zoom in/out buttons
 
 ```js
@@ -22,6 +34,15 @@
     },
 },
 ```
+
+</td>
+<td>
+TODO: gif
+</td>
+</tr>
+<!-- ──────────────────────────────────────────────────────────── -->
+<tr>
+<td>
 
 ## Replace Activity Bar with icons in Status Bar
 
@@ -55,6 +76,15 @@
 }
 ```
 
+</td>
+<td>
+TODO: gif
+</td>
+</tr>
+<!-- ──────────────────────────────────────────────────────────── -->
+<tr>
+<td>
+
 ## Show project name(workspace folder) in status bar
 
 ```js
@@ -65,6 +95,15 @@
 	},
 },
 ```
+
+</td>
+<td>
+TODO: gif
+</td>
+</tr>
+<!-- ──────────────────────────────────────────────────────────── -->
+<tr>
+<td>
 
 ## Show time in status bar
 
@@ -83,6 +122,15 @@
 },
 ```
 
+</td>
+<td>
+TODO: gif
+</td>
+</tr>
+<!-- ──────────────────────────────────────────────────────────── -->
+<tr>
+<td>
+
 ## Search for to-do items in opened workspace
 
 ```js
@@ -96,6 +144,15 @@
 },
 ```
 
+</td>
+<td>
+TODO: gif
+</td>
+</tr>
+<!-- ──────────────────────────────────────────────────────────── -->
+<tr>
+<td>
+
 ## Open website query from selection
 
 ```js
@@ -107,6 +164,15 @@
 },
 ```
 
+</td>
+<td>
+TODO: gif
+</td>
+</tr>
+<!-- ──────────────────────────────────────────────────────────── -->
+<tr>
+<td>
+
 ## Open first search item (feeling lucky) from selection
 
 ```js
@@ -117,3 +183,12 @@
     },
 },
 ```
+
+</td>
+<td>
+TODO: gif
+</td>
+</tr>
+<!-- ──────────────────────────────────────────────────────────── -->
+
+</table>
