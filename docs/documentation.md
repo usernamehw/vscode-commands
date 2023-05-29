@@ -32,6 +32,7 @@ Variable | Description
 `${selectedText}` | The current selected text in the active file
 `${execPath}` | Location of Code.exe
 `${pathSeparator}` | `/` on macOS or linux, `\` on Windows
+`${/}` | alias to ${pathSeparator}.  `/` on macOS or linux, `\` on Windows
 `${clipboard}` | Current clipboard value
 `${random}` | 6 random Base-10 digits
 `${randomHex}` | 6 random Base-16 digits

@@ -29,6 +29,7 @@ export const enum VariableNames {
 	SelectedText = '${selectedText}', // the current selected text in the active file
 	ExecPath = '${execPath}', //  location of Code.exe
 	PathSeparator = '${pathSeparator}', // `/` on macOS or linux, `\` on Windows
+	PathSeparatorAlias = '${/}', // alias to ${pathSeparator}
 	// ────────────────────────────────────────────────────────────
 	// https://code.visualstudio.com/docs/editor/userdefinedsnippets#_variables
 	// ────────────────────────────────────────────────────────────
@@ -52,7 +53,7 @@ export const enum VariableNames {
 	// ──── Additional ────────────────────────────────────────────
 	// ────────────────────────────────────────────────────────────
 	SelectedLineCount = '${selectedLineCount}', // number of selected lines in the active file
-	
+
 	EnvironmentVariable = '${env}',
 	SingleEnvironmentVariable = 'env',
 	ConfigurationVariable = '${config}',
@@ -72,6 +73,7 @@ const variableRegexps = {
 	[VariableNames.WorkspaceFolderBasename]: new RegExp(escapeRegExp(VariableNames.WorkspaceFolderBasename), 'igu'),
 	[VariableNames.ExecPath]: new RegExp(escapeRegExp(VariableNames.ExecPath), 'igu'),
 	[VariableNames.PathSeparator]: new RegExp(escapeRegExp(VariableNames.PathSeparator), 'igu'),
+	[VariableNames.PathSeparatorAlias]: new RegExp(escapeRegExp(VariableNames.PathSeparatorAlias), 'igu'),
 	[VariableNames.LineNumber]: new RegExp(escapeRegExp(VariableNames.LineNumber), 'igu'),
 	[VariableNames.SelectedText]: new RegExp(escapeRegExp(VariableNames.SelectedText), 'igu'),
 	[VariableNames.SelectedLineCount]: new RegExp(escapeRegExp(VariableNames.SelectedLineCount), 'igu'),
@@ -128,6 +130,9 @@ export async function substituteVariables(strArg: string): Promise<string> {
 	}
 	if (str.includes(VariableNames.PathSeparator)) {
 		str = str.replace(variableRegexps[VariableNames.PathSeparator], path.sep);
+	}
+	if (str.includes(VariableNames.PathSeparatorAlias)) {
+		str = str.replace(variableRegexps[VariableNames.PathSeparatorAlias], path.sep);
 	}
 	if (str.includes(VariableNames.LineNumber) && activeTextEditor) {
 		str = str.replace(variableRegexps[VariableNames.LineNumber], String(activeTextEditor.selection.active.line + 1));
