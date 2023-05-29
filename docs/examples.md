@@ -83,6 +83,19 @@
 },
 ```
 
+## Search for to-do items in opened workspace
+
+```js
+"Search for to-do": {
+    "command": "workbench.action.findInFiles",
+    "args": {
+        "query": "TODO|FIXME",
+        "isRegex": true,
+        "triggerSearch": true,
+    },
+},
+```
+
 ## Open website query from selection
 
 ```js
