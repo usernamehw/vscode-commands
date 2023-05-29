@@ -37,7 +37,7 @@ export interface ExtensionConfig {
 	 */
 	populateCommandPalette: boolean;
 	/**
-	 * Allow string `\"args\"` to contain some of the variables from [variables-reference](https://code.visualstudio.com/docs/editor/variables-reference)
+	 * Allow `\"args\"` to replace variables: [📚 Docs](https://github.com/usernamehw/vscode-commands/blob/master/docs/documentation.md#variable-substitution).
 	 */
 	variableSubstitutionEnabled: boolean;
 	/**

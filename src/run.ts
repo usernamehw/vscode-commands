@@ -2,7 +2,7 @@
 import { commands, window } from 'vscode';
 import { $config, $state } from './extension';
 import { showQuickPick } from './quickPick';
-import { substituteVariableRecursive, substituteVariables } from './substituteVariables';
+import { substituteVariableRecursive } from './substituteVariables';
 import { type CommandFolder, type CommandObject, type Runnable, type Sequence } from './types';
 import { extUtils } from './utils/extUtils';
 import { utils } from './utils/utils';
@@ -88,14 +88,7 @@ async function runObject(object: CommandObject): Promise<void> {
 
 	let args = object.args;
 	if ($config.variableSubstitutionEnabled) {
-		if (typeof args === 'string') {
-			args = await substituteVariables(args);
-		} else if (
-			Array.isArray(args) ||
-			(typeof args === 'object' && args !== null)
-		) {
-			args = await substituteVariableRecursive(utils.deepCopy(args));
-		}
+		args = await substituteVariableRecursive(utils.deepCopy(args));
 	}
 
 	try {
