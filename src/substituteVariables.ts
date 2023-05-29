@@ -5,31 +5,36 @@ import path from 'path';
 import { env, window, workspace } from 'vscode';
 import { vscodeUtils } from './utils/vscodeUtils';
 
-// https://code.visualstudio.com/docs/editor/variables-reference
 // https://github.com/microsoft/vscode/blob/main/src/vs/workbench/services/configurationResolver/common/variableResolver.ts
+// https://github.com/microsoft/vscode/blob/main/src/vs/editor/contrib/snippet/browser/snippetVariables.ts
 
 export const enum VariableNames {
+	// ────────────────────────────────────────────────────────────
+	// https://code.visualstudio.com/docs/editor/variables-reference
+	// ────────────────────────────────────────────────────────────
 	UserHome = '${userHome}',
+	WorkspaceFolder = '${workspaceFolder}', // the path of the folder opened in VS Code
+	WorkspaceFolderBasename = '${workspaceFolderBasename}', // the name of the folder opened in VS Code without any slashes (/)
 	File = '${file}', // the current opened file (absolute path?)
+	FileWorkspaceFolder = '${fileWorkspaceFolder}', // the current opened file's workspace folder
+	// RelativeFile = '${relativeFile}', // the current opened file relative to `workspaceFolder`
+	// RelativeFileDirname = '${relativeFileDirname}', // the current opened file's dirname relative to `workspaceFolder`
 	FileBasename = '${fileBasename}', // the current opened file's basename
 	FileBasenameNoExtension = '${fileBasenameNoExtension}', // the current opened file's basename with no file extension
 	FileExtname = '${fileExtname}', // the current opened file's extension
 	FileDirname = '${fileDirname}', // the current opened file's dirname
-	FileWorkspaceFolder = '${fileWorkspaceFolder}', // the current opened file's workspace folder
-	WorkspaceFolder = '${workspaceFolder}', // the path of the folder opened in VS Code
-	WorkspaceFolderBasename = '${workspaceFolderBasename}', // the name of the folder opened in VS Code without any slashes (/)
-	ExecPath = '${execPath}', //  location of Code.exe
-	PathSeparator = '${pathSeparator}', // `/` on macOS or linux, `\` on Windows
+	// FileDirnameBasename = '${fileDirnameBasename}', // the current opened file's folder name
+	// cwd = '${cwd}', // the task runner's current working directory on startup
 	LineNumber = '${lineNumber}', // the current selected line number in the active file
 	SelectedText = '${selectedText}', // the current selected text in the active file
-	SelectedLineCount = '${selectedLineCount}', // number of selected lines in the active file
+	ExecPath = '${execPath}', //  location of Code.exe
+	PathSeparator = '${pathSeparator}', // `/` on macOS or linux, `\` on Windows
+	// ────────────────────────────────────────────────────────────
+	// https://code.visualstudio.com/docs/editor/userdefinedsnippets#_variables
+	// ────────────────────────────────────────────────────────────
 	Clipboard = '${clipboard}', // current clipboard value
-	EnvironmentVariable = '${env}',
-	SingleEnvironmentVariable = 'env',
-	ConfigurationVariable = '${config}',
-	Random = '${random}',
-	RandomHex = '${randomHex}',
-	SingleConfigurationVariable = 'config',
+	Random = '${random}', // 6 random Base-10 digits
+	RandomHex = '${randomHex}', // 6 random Base-16 digits
 	CurrentYear = '${currentYear}',
 	CurrentYearShort = '${currentYearShort}',
 	CurrentMonth = '${currentMonth}',
@@ -43,11 +48,16 @@ export const enum VariableNames {
 	CurrentSecond = '${currentSecond}',
 	CurrentSecondsUnix = '${currentSecondsUnix}',
 	CurrentTimezoneOffset = '${currentTimezoneOffset}',
-	// CURRENT_TIMEZONE_OFFSET   `+/-hh:mm` https://github.com/microsoft/vscode/blob/34cba75c513878d683004561c799dd5cd13f5222/src/vs/editor/contrib/snippet/browser/snippetVariables.ts#L296C24-L303
 	// ────────────────────────────────────────────────────────────
-	// relativeFile = '${relativeFile}', // the current opened file relative to `workspaceFolder`
-	// relativeFileDirname = '${relativeFileDirname}', // the current opened file's dirname relative to `workspaceFolder`
-	// cwd = '${cwd}', // the task runner's current working directory on startup
+	// ──── Additional ────────────────────────────────────────────
+	// ────────────────────────────────────────────────────────────
+	SelectedLineCount = '${selectedLineCount}', // number of selected lines in the active file
+	
+	EnvironmentVariable = '${env}',
+	SingleEnvironmentVariable = 'env',
+	ConfigurationVariable = '${config}',
+	SingleConfigurationVariable = 'config',
+	// CURRENT_TIMEZONE_OFFSET   `+/-hh:mm` https://github.com/microsoft/vscode/blob/34cba75c513878d683004561c799dd5cd13f5222/src/vs/editor/contrib/snippet/browser/snippetVariables.ts#L296C24-L303
 }
 
 const variableRegexps = {
