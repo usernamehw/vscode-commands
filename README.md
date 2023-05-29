@@ -115,7 +115,7 @@
 |commands.rerun|Commands: Rerun last command|
 |commands.suggestCommands|Commands: Suggest (autocomplete) commands|
 |commands.suggestCodicons|Commands: Suggest [Codicons](https://code.visualstudio.com/api/references/icons-in-labels)|
-|commands.suggestVariables|Commands: Suggest variables that are supported by this extension's variable substitutions, e.g: `${workspaceFolderBasename}`.|
+|commands.suggestVariables|Commands: Suggest variables that are supported by this extension's variable substitutions, e.g: `${workspaceFolderBasename}`. [📚 Docs](https://github.com/usernamehw/vscode-commands/blob/master/docs/documentation.md#variable-substitution)|
 |commands.suggestSettings|Commands: Suggest setting ids (user & workspace).|
 |commands.newCommand|Commands: Add new command to the list|
 |commands.escapeCommandUriArgument|Commands: Escape command uri argument|
@@ -139,7 +139,7 @@
 |commands.populateCommandPalette|**false**|Adds all items to Command Palette (Requires editor reload after every change of main config `#commands.commands#`).|
 |commands.documentLinksEnabled|**false**|Run commands as links in documents. Links have format `@command?args@`.<br>[issues/2](https://github.com/usernamehw/vscode-commands/issues/2)|
 |commands.documentLinksPattern|""|[Glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) for `#commands.documentLinksEnabled#`. Example: `**/*.{ts,js}` - only enable in TypeScript & JavaScript files.|
-|commands.variableSubstitutionEnabled|**true**|Allow `"args"` (of type string) to contain some of the variables from [variables-reference](https://code.visualstudio.com/docs/editor/variables-reference). Supported:<br>- `${userHome}` - The path of the user's home folder<br>- `${file}` -  the current opened file absolute path <br>- `${fileBasename}` - the current opened file's basename <br>- `${fileBasenameNoExtension}` - the current opened file's basename with no file extension <br>- `${fileExtname}` - the current opened file's extension <br>- `${fileDirname}` - the current opened file's dirname <br>- `${fileWorkspaceFolder}` - the path of the folder opened in VS Code <br>- `${workspaceFolderBasename}` - the name of the folder opened in VS Code without any slashes (/) <br>- `${execPath}` - location of Code.exe <br>- `${pathSeparator}` - `/` on macOS or linux, `\` on Windows <br>- `${lineNumber}` - the current selected line number in the active file <br>- `${selectedText}` - the current selected text in the active file<br>- `${clipboard}` - current clipboard value<br>- `${random}` - 6 random Base-10 digits<br>- `${randomHex}` - 6 random Base-16 digits|
+|commands.variableSubstitutionEnabled|**true**|Allow `"args"` to replace variables: [📚 Docs](https://github.com/usernamehw/vscode-commands/blob/master/docs/documentation.md#variable-substitution).|
 |commands.toggleSettings.showNotification|**false**|When enabled - show notification after using `commands.toggleSetting` or `commands.incrementSetting`.|
 <!-- SETTINGS_END -->
 
@@ -736,7 +736,8 @@ If the only purpose for a command sequence is to run it from a keybinding, then 
 },
 ```
 
-## [More examples](https://github.com/usernamehw/vscode-commands/tree/master/docs/examples.md)
+## [📚 More examples](https://github.com/usernamehw/vscode-commands/tree/master/docs/examples.md)
+## [📚 Docs](https://github.com/usernamehw/vscode-commands/blob/master/docs/documentation.md)
 
 ## Upstream issues
 

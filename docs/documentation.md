@@ -5,6 +5,7 @@
 <!-- https://code.visualstudio.com/docs/editor/variables-reference -->
 <!-- https://code.visualstudio.com/docs/editor/userdefinedsnippets#_variables -->
 <!-- https://github.com/usernamehw/vscode-commands/issues/9 -->
+<!-- [📚 Docs](https://github.com/usernamehw/vscode-commands/blob/master/docs/documentation.md#variable-substitution) -->
 
 Controlled by `"commands.variableSubstitutionEnabled"` setting.
 
@@ -51,3 +52,16 @@ Variable | Description
 `${env:Name}`| [Environment variable](https://en.wikipedia.org/wiki/Environment_variable). Example: `${env:USERNAME}`
 `${config:Name}`| [VSCode configuration](https://code.visualstudio.com/docs/getstarted/settings#_default-settings) variable. Example: `${config:editor.fontSize}`
 
+## Document links
+
+Controlled by `"commands.documentLinksEnabled"` setting.
+
+Choose documents with the setting `"commands.documentLinksPattern"` by [glob pattern](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) and run commands as document links.
+
+It has format:
+
+```plaintext
+@COMMAND_ID?COMMAND_ARGS@
+```
+
+<!-- TODO: add gif -->

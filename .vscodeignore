@@ -22,7 +22,8 @@ web.webpack.config.js
 webpack.config.js
 
 dist/extension.js.LICENSE.txt
-docs
 
 img/*.*
 !img/icon.png
+
+docs
