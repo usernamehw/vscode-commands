@@ -2,7 +2,7 @@ import { window, type TextEditor } from 'vscode';
 import { VariableNames } from '../substituteVariables';
 
 export async function suggestVariablesCommand(editor: TextEditor): Promise<void> {
-	const variables: [string, string][] = [
+	const variables: [VariableNames, string][] = [
 		[VariableNames.UserHome, 'The path of the user\'s home folder'],
 		[VariableNames.File, 'Current opened file (absolute path?)'],
 		[VariableNames.FileBasename, 'Current opened file\'s basename'],
@@ -34,12 +34,12 @@ export async function suggestVariablesCommand(editor: TextEditor): Promise<void>
 		[VariableNames.CurrentSecondsUnix, 'The number of seconds since the Unix epoch'],
 		[VariableNames.CurrentTimezoneOffset, 'Current timezone offset'],
 
-		['${env:}', 'Environment variable value'],
-		['${config:}', 'VSCode Configuration value'],
+		[VariableNames.EnvironmentVariablePrefix, 'Environment variable value'],
+		[VariableNames.ConfigurationVariablePrefix, 'VSCode Configuration value'],
 	];
 
 	const picked = await window.showQuickPick(variables.map(variable => ({
-		label: variable[0],
+		label: `\${${variable[0]}}`,
 		detail: variable[1],
 	})), {
 		matchOnDetail: true,

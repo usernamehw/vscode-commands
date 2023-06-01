@@ -198,7 +198,7 @@
 		"@typescript-eslint/no-namespace": 1,
 		"@typescript-eslint/no-non-null-asserted-nullish-coalescing": 1,
 		"@typescript-eslint/no-non-null-asserted-optional-chain": 1,
-		"@typescript-eslint/no-non-null-assertion": 1,
+		"@typescript-eslint/no-non-null-assertion": 0,
 		"@typescript-eslint/no-redundant-type-constituents": 1,
 		"@typescript-eslint/no-require-imports": 1,
 		"@typescript-eslint/no-this-alias": [

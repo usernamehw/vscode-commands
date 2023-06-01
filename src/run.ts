@@ -88,6 +88,7 @@ async function runObject(object: CommandObject): Promise<void> {
 
 	let args = object.args;
 	if ($config.variableSubstitutionEnabled) {
+		// TODO: not when undefined
 		args = await substituteVariableRecursive(utils.deepCopy(args));
 	}
 
