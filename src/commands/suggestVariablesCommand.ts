@@ -1,5 +1,6 @@
 import { window, type TextEditor } from 'vscode';
 import { VariableNames } from '../substituteVariables';
+import { extUtils } from '../utils/extUtils';
 
 export async function suggestVariablesCommand(editor: TextEditor): Promise<void> {
 	const variables: [VariableNames, string][] = [
@@ -36,10 +37,11 @@ export async function suggestVariablesCommand(editor: TextEditor): Promise<void>
 
 		[VariableNames.EnvironmentVariablePrefix, 'Environment variable value'],
 		[VariableNames.ConfigurationVariablePrefix, 'VSCode Configuration value'],
+		[VariableNames.CommandVariablePrefix, 'VSCode command return value'],
 	];
 
 	const picked = await window.showQuickPick(variables.map(variable => ({
-		label: `\${${variable[0]}}`,
+		label: extUtils.wrapVariable(variable[0]),
 		detail: variable[1],
 	})), {
 		matchOnDetail: true,

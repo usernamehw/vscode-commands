@@ -1,6 +1,7 @@
 import { homedir } from 'os';
 import path from 'path';
-import { env, window, workspace } from 'vscode';
+import { commands, env, window, workspace } from 'vscode';
+import { extUtils } from './utils/extUtils';
 import { utils } from './utils/utils';
 import { vscodeUtils } from './utils/vscodeUtils';
 
@@ -56,6 +57,7 @@ export const enum VariableNames {
 	SelectedLineCount = 'selectedLineCount', // number of selected lines in the active file
 	EnvironmentVariablePrefix = 'env:',
 	ConfigurationVariablePrefix = 'config:',
+	CommandVariablePrefix = 'command:',
 }
 
 const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -227,6 +229,10 @@ async function replaceSingleVariable(variableName: VariableNames): Promise<strin
 				const configVariableName = variableName.slice(VariableNames.ConfigurationVariablePrefix.length);
 				return replaceConfigurationVariable(configVariableName);
 			}
+			if (variableName.startsWith(VariableNames.CommandVariablePrefix)) {
+				const commandVarialbeName = variableName.slice(VariableNames.CommandVariablePrefix.length);
+				return replaceCommandVariable(commandVarialbeName);
+			}
 			console.error(`Commands: Unknown variable name: "${variableName}".`);
 		}
 	}
@@ -251,6 +257,29 @@ function replaceConfigurationVariable(configName: string): string {
 	}
 
 	return String(configValue);
+}
+/**
+ * Replace `command:commandId` variable with the result of
+ * executing that command.
+ */
+async function replaceCommandVariable(commandId: string): Promise<string> {
+	const commandReturnValue = await commands.executeCommand(commandId);
+
+	// Command variables ignore everything except string return value
+	// https://code.visualstudio.com/docs/editor/variables-reference#_command-variables
+	if (commandReturnValue === undefined || commandReturnValue === null) {
+		return extUtils.wrapVariable(VariableNames.CommandVariablePrefix + commandId);
+	}
+
+	// This extension returns Array or Object as json stringified strings, though.
+	if (
+		Array.isArray(commandReturnValue) ||
+		(commandReturnValue !== null && typeof commandReturnValue === 'object')
+	) {
+		return JSON.stringify(commandReturnValue);
+	}
+
+	return String(commandReturnValue);
 }
 
 /**

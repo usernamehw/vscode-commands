@@ -52,6 +52,7 @@ Variable | Description
 `${selectedLineCount}`| Number of lines with cursor or selected lines. Empty string when only 1 line selected
 `${env:Name}`| [Environment variable](https://en.wikipedia.org/wiki/Environment_variable). Example: `${env:USERNAME}`
 `${config:Name}`| [VSCode configuration](https://code.visualstudio.com/docs/getstarted/settings#_default-settings) variable. Example: `${config:editor.fontSize}`
+`${command:Name}`| [VSCode command](https://code.visualstudio.com/docs/editor/variables-reference#_command-variables) variable. Unlike VSCode command variable - this extension json stringifies Arrays and Objects.
 
 ## Document links
 

@@ -60,6 +60,15 @@ function applyForTreeItem(
 		action({ treeItem, commands: $config.commands, settingId: Constants.ExtensionMainSettingId, configTarget: 'global' });
 	}
 }
+/**
+ * Transform
+ * `"variable"`
+ * into
+ * `"${variable}"`.
+ */
+function wrapVariable(variableName: string): string {
+	return `\${${variableName}}`;
+}
 
 export const extUtils = {
 	isCommandFolder,
@@ -67,4 +76,5 @@ export const extUtils = {
 	getAllNestedCommands,
 	isWorkspaceTreeItem,
 	applyForTreeItem,
+	wrapVariable,
 };
