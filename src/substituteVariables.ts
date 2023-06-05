@@ -1,6 +1,7 @@
 import { homedir } from 'os';
 import path from 'path';
 import { commands, env, window, workspace } from 'vscode';
+import { type Inputs } from './types';
 import { extUtils } from './utils/extUtils';
 import { utils } from './utils/utils';
 import { vscodeUtils } from './utils/vscodeUtils';
@@ -58,6 +59,7 @@ export const enum VariableNames {
 	EnvironmentVariablePrefix = 'env:',
 	ConfigurationVariablePrefix = 'config:',
 	CommandVariablePrefix = 'command:',
+	InputVariablePrefix = 'input:',
 }
 
 const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -69,16 +71,16 @@ const monthNamesShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
  *
  * TODO: throw errors (window.showMessage) when variable exists but can't resolve
  */
-export async function substituteVariables(strArg: string): Promise<string> {
+export async function substituteVariables(strArg: string, inputs: Inputs | undefined): Promise<string> {
 	const replacedString = await utils.replaceAsync(strArg, /\$\{[^}]+\}/giu, async match => {
 		const variableName = match.slice(2, -1);// Remove `${` and `}` from match
-		return replaceSingleVariable(variableName as VariableNames);
+		return replaceSingleVariable(variableName, inputs);
 	});
 
 	return replacedString;
 }
 
-async function replaceSingleVariable(variableName: VariableNames): Promise<string> {
+async function replaceSingleVariable(variableName: string, inputs: Inputs | undefined): Promise<string> {
 	const activeTextEditor = window.activeTextEditor;
 	const workspaceFolderFsPath = workspace.workspaceFolders?.[0].uri.fsPath;
 
@@ -223,7 +225,11 @@ async function replaceSingleVariable(variableName: VariableNames): Promise<strin
 		default: {
 			if (variableName.startsWith(VariableNames.EnvironmentVariablePrefix)) {
 				const environmentVariableName = variableName.slice(VariableNames.EnvironmentVariablePrefix.length);
-				return process.env[environmentVariableName] ?? environmentVariableName;
+				const environmentVariableValue = process.env[environmentVariableName];
+				if (environmentVariableValue === undefined) {
+					break;
+				}
+				return environmentVariableValue;
 			}
 			if (variableName.startsWith(VariableNames.ConfigurationVariablePrefix)) {
 				const configVariableName = variableName.slice(VariableNames.ConfigurationVariablePrefix.length);
@@ -231,7 +237,15 @@ async function replaceSingleVariable(variableName: VariableNames): Promise<strin
 			}
 			if (variableName.startsWith(VariableNames.CommandVariablePrefix)) {
 				const commandVarialbeName = variableName.slice(VariableNames.CommandVariablePrefix.length);
-				return replaceCommandVariable(commandVarialbeName);
+				return replaceCommandVariable(commandVarialbeName, undefined);
+			}
+			if (variableName.startsWith(VariableNames.InputVariablePrefix)) {
+				const inputVariableName = variableName.slice(VariableNames.InputVariablePrefix.length);
+				const inputVariableValue = await replaceInputVariable(inputVariableName, inputs);
+				if (inputVariableValue === undefined) {
+					break;
+				}
+				return inputVariableValue;
 			}
 			console.error(`Commands: Unknown variable name: "${variableName}".`);
 		}
@@ -262,8 +276,8 @@ function replaceConfigurationVariable(configName: string): string {
  * Replace `command:commandId` variable with the result of
  * executing that command.
  */
-async function replaceCommandVariable(commandId: string): Promise<string> {
-	const commandReturnValue = await commands.executeCommand(commandId);
+async function replaceCommandVariable(commandId: string, args: unknown): Promise<string> {
+	const commandReturnValue = await commands.executeCommand(commandId, args);
 
 	// Command variables ignore everything except string return value
 	// https://code.visualstudio.com/docs/editor/variables-reference#_command-variables
@@ -281,26 +295,59 @@ async function replaceCommandVariable(commandId: string): Promise<string> {
 
 	return String(commandReturnValue);
 }
+async function replaceInputVariable(inputName: string, inputs: Inputs | undefined): Promise<string | undefined> {
+	if (!inputs) {
+		window.showErrorMessage(`Missing "inputs" property to resolve "${inputName}" variable.`);
+		return extUtils.wrapVariable(inputName);
+	}
+
+	const foundInput = inputs.find((input => input.id === inputName));
+	if (!foundInput) {
+		window.showErrorMessage(`Missing input with the "id" of "${inputName}" from the array of "inputs" to resolve the variable.`);
+		return extUtils.wrapVariable(inputName);
+	}
+
+	if (foundInput.type === 'pickString') {
+		const quickPickResult = defaultStringValue(await window.showQuickPick(foundInput.options, {
+			title: foundInput.description,
+		}), foundInput.default);
+		return quickPickResult;
+	} else if (foundInput.type === 'promptString') {
+		const inputResult = defaultStringValue(await window.showInputBox({
+			title: foundInput.description,
+			password: foundInput.password,
+		}), foundInput.default);
+		return inputResult;
+	} else if (foundInput.type === 'command') {
+		return replaceCommandVariable(foundInput.command, foundInput.args);
+	}
+
+	return extUtils.wrapVariable(VariableNames.InputVariablePrefix + inputName);
+}
 
 /**
  * Walk recursively through object/array and replace variables in strings.
  */
-export async function substituteVariableRecursive(item: unknown): Promise<unknown> {
+export async function substituteVariableRecursive(item: unknown, inputs: Inputs | undefined): Promise<unknown> {
 	if (typeof item === 'string') {
-		const substituted = await substituteVariables(item);
+		const substituted = await substituteVariables(item, inputs);
 		return substituted;
 	}
 
 	if (Array.isArray(item)) {
 		for (const [key, value] of item.entries()) {
-			item[key] = await substituteVariableRecursive(value);
+			item[key] = await substituteVariableRecursive(value, inputs);
 		}
 	} else if (typeof item === 'object' && item !== null) {
 		for (const key in item) {
 			// @ts-expect-error implicit any :(
-			item[key] = await substituteVariableRecursive(item[key]);
+			item[key] = await substituteVariableRecursive(item[key], inputs);
 		}
 	}
 
 	return item;
+}
+
+function defaultStringValue(value: string | undefined, defaultValue: string | undefined): string | undefined {
+	return value === '' || value === undefined ? defaultValue : value;
 }

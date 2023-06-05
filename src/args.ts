@@ -125,7 +125,6 @@ export const commandArgs: Record<string, unknown> = {
 	[CommandId.RevealFileInOs]: '',
 	[CommandId.ShowNotification]: {
 		message: '',
-		severity: 'error',
 	},
 	[CommandId.ShowStatusBarNotification]: {
 		message: '',

@@ -43,20 +43,16 @@ function unique<T>(arr: T[]): T[] {
 	return Array.from(new Set(arr));
 }
 
-// From https://stackoverflow.com/questions/33631041/javascript-async-await-in-replace
 /**
- * Replace all matches in a string (async).
+ * Replace all matches in a string (async, sequential).
  */
 async function replaceAsync(str: string, regex: RegExp, asyncFn: (match: string, ...args: string[])=> Promise<string>): Promise<string> {
-	const promises: ReturnType<typeof asyncFn>[] = [];
+	const data: string[] = [];
+	const matches = str.match(regex);
 
-	str.replace(regex, (match, ...args: string[]) => {
-		const promise = asyncFn(match, ...args);
-		promises.push(promise);
-		return '';// doesn't matter, str not modified here
-	});
-
-	const data = await Promise.all(promises);
+	for await (const match of matches ?? []) {
+		data.push(await asyncFn(match));
+	}
 
 	return str.replace(regex, () => data.shift()!);
 }

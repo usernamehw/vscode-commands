@@ -53,6 +53,8 @@ Variable | Description
 `${env:Name}`| [Environment variable](https://en.wikipedia.org/wiki/Environment_variable). Example: `${env:USERNAME}`
 `${config:Name}`| [VSCode configuration](https://code.visualstudio.com/docs/getstarted/settings#_default-settings) variable. Example: `${config:editor.fontSize}`
 `${command:Name}`| [VSCode command](https://code.visualstudio.com/docs/editor/variables-reference#_command-variables) variable. Unlike VSCode command variable - this extension json stringifies Arrays and Objects.
+`${input:Name}`| Pick string or type string. Similar to [Input variables in VSCode](https://code.visualstudio.com/docs/editor/variables-reference#_input-variables).
+
 
 ## Document links
 

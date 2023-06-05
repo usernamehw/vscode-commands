@@ -197,6 +197,99 @@
 				"hidden": {
 					"type": "boolean",
 					"markdownDescription": "Do not show this in the Tree View."
+				},
+				"inputs": {
+					"type": "array",
+					"description": "Inputs similar to VSCode input variables https://code.visualstudio.com/docs/editor/variables-reference#_input-variables",
+					"items": {
+						"oneOf": [
+							{
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "string",
+										"minLength": 1
+									},
+									"type": {
+										"type": "string",
+										"enum": ["pickString"]
+									},
+									"options": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										},
+										"minItems": 1
+									},
+									"description": {
+										"type": "string"
+									},
+									"default": {
+										"type": "string",
+										"description": "Default value that will be used if the user doesn't enter something else."
+									}
+								},
+								"required": [
+									"id",
+									"type",
+									"options"
+								],
+								"additionalProperties": false
+							},
+							{
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "string",
+										"minLength": 1
+									},
+									"type": {
+										"type": "string",
+										"enum": ["promptString"]
+									},
+									"description": {
+										"type": "string"
+									},
+									"default": {
+										"type": "string",
+										"description": "Default value that will be used if the user doesn't enter something else."
+									},
+									"password": {
+										"type": "boolean",
+										"description": "Set to true to input with a password prompt that will not show the typed value."
+									}
+								},
+								"required": [
+									"id",
+									"type"
+								],
+								"additionalProperties": false
+							},
+							{
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "string",
+										"minLength": 1
+									},
+									"type": {
+										"type": "string",
+										"enum": ["command"]
+									},
+									"command": {
+										"type": "string"
+									},
+									"args": {}
+								},
+								"required": [
+									"id",
+									"type",
+									"command"
+								],
+								"additionalProperties": false
+							}
+						]
+					}
 				}
 			},
 			"$ref": "commands.schema.json#/definitions/argsTypes",

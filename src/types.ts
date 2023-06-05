@@ -72,6 +72,28 @@ export type TopLevelCommands = Record<string, TopLevelItem>;
 export type Sequence = (CommandObject | string)[];
 export type Runnable = CommandObject | Sequence | string;
 
+export type Inputs = (InputCommand | InputPickString | InputPromptString)[];
+interface InputPromptString {
+	id: string;
+	type: 'promptString';
+	description?: string;
+	default?: string;
+	password?: boolean;
+}
+interface InputPickString {
+	id: string;
+	type: 'pickString';
+	options: string[];
+	description?: string;
+	default?: string;
+}
+interface InputCommand {
+	id: string;
+	type: 'command';
+	command: string;
+	args?: unknown;
+}
+
 /**
  * Most used type of command.
  */
@@ -92,6 +114,7 @@ export interface CommandObject {
 	hidden?: boolean;
 	when?: string;
 	workspace?: string;
+	inputs?: Inputs;
 }
 /**
  * Add command/folder to status bar

@@ -38,6 +38,7 @@ export async function suggestVariablesCommand(editor: TextEditor): Promise<void>
 		[VariableNames.EnvironmentVariablePrefix, 'Environment variable value'],
 		[VariableNames.ConfigurationVariablePrefix, 'VSCode Configuration value'],
 		[VariableNames.CommandVariablePrefix, 'VSCode command return value'],
+		[VariableNames.InputVariablePrefix, 'Type or pick a string'],
 	];
 
 	const picked = await window.showQuickPick(variables.map(variable => ({
