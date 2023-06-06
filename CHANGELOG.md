@@ -1,3 +1,9 @@
+## 1.12.0 `06 Jun 2023`
+
+- ✨ Support `${command:Name}` variable, like https://code.visualstudio.com/docs/editor/variables-reference#_command-variables
+- ✨ Support `${input:Name}` variable, like https://code.visualstudio.com/docs/editor/variables-reference#_input-variables
+- ✨ Alias for `${pathSeparator}` - `${/}`
+
 ## 1.11.0 `01 May 2023`
 
 - 💥 Enable `"commands.variableSubstitutionEnabled"` by default

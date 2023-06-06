@@ -155,6 +155,7 @@ interface CommandObject {
     markdownTooltip?: string;// add custom markdown text to hover tooltip
     disableTooltip?: boolean;// do not show the hover tooltip for this Tree View Item
     hidden?: boolean;// Do not show this in Tree View
+    inputs?: {...}[];// Objects for input variable substitution like https://code.visualstudio.com/docs/editor/variables-reference#_input-variables
 
     sequence?: (CommandObject | string)[];// execute multipe commands
 
