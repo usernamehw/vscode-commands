@@ -89,10 +89,10 @@ TODO: gif
 
 ```js
 "Workspace folder": {
-	"command": "workbench.action.openRecent",
-	"statusBar": {
-		"text": "|${workspaceFolderBasename}|",
-	},
+    "command": "workbench.action.openRecent",
+    "statusBar": {
+        "text": "|${workspaceFolderBasename}|",
+    },
 },
 ```
 
@@ -109,16 +109,16 @@ TODO: gif
 
 ```js
 "Time": {
-	"command": "noop",
-	"statusBar": {
-		"text": "${currentHour}:${currentMinute}:${currentSecond}",
-		"updateEvents": [
-			{
-				"kind": "interval",
-				"value": 1000,
-			},
-		],
-	},
+    "command": "noop",
+    "statusBar": {
+        "text": "${currentHour}:${currentMinute}:${currentSecond}",
+        "updateEvents": [
+            {
+                "kind": "interval",
+                "value": 1000,
+            },
+        ],
+    },
 },
 ```
 
@@ -156,11 +156,9 @@ TODO: gif
 ## Open website query from selection
 
 ```js
-"commands.commands": {
-    "Search for selected text": {
-        "command": "commands.openExternal",
-        "args": "https://www.google.com/search?q=${selectedText}",
-    },
+"Search for selected text": {
+    "command": "commands.openExternal",
+    "args": "https://www.google.com/search?q=${selectedText}",
 },
 ```
 
@@ -176,11 +174,51 @@ TODO: gif
 ## Open first search item (feeling lucky) from selection
 
 ```js
-"commands.commands": {
-    "Feeling lucky": {
-        "command": "commands.openExternal",
-        "args": "https://duckduckgo.com/?q=%21+${selectedText}",
+"Feeling lucky": {
+    "command": "commands.openExternal",
+    "args": "https://duckduckgo.com/?q=%21+${selectedText}",
+},
+```
+
+</td>
+<td>
+TODO: gif
+</td>
+</tr>
+<!-- ──────────────────────────────────────────────────────────── -->
+<tr>
+<td>
+
+## Run cli command with prompts
+
+```js
+"Create vite project": {
+    "command": "commands.runInTerminal",
+    "args": {
+        "text": "npm create vite@latest ${input:folderName} -- --template ${input:template}",
+        "reveal": true,
+        "reuse": "newest",
     },
+    "inputs": [
+        {
+            "type": "promptString",
+            "id": "folderName",
+            "description": "Enter folder name.",
+        },
+        {
+            "type": "pickString",
+            "id": "template",
+            "description": "Pick template.",
+            "options": [
+                "react",
+                "react-ts",
+                "vue",
+                "vue-ts",
+                "svelte",
+                "svelte-ts",
+            ],
+        },
+    ],
 },
 ```
 
