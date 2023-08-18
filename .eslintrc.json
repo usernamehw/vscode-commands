@@ -10,8 +10,7 @@
 		"project": "./tsconfig.json"
 	},
 	"plugins": [
-		"@typescript-eslint",
-		"no-autofix"
+		"@typescript-eslint"
 	],
 	"parser": "@typescript-eslint/parser",
 	"extends": [
@@ -21,14 +20,6 @@
 		"plugin:@typescript-eslint/strict"
 	],
 	"rules": {
-		// ────────────────────────────────────────────────────────────
-		// ──── `no-autofix` plugin ───────────────────────────────────
-		// ────────────────────────────────────────────────────────────
-		"prefer-const": 0,
-		"no-autofix/prefer-const": 1,
-
-
-
 		// ────────────────────────────────────────────────────────────
 		// ──── TypeScript Rules ──────────────────────────────────────
 		// ────────────────────────────────────────────────────────────
@@ -800,6 +791,7 @@
 				"allowNamedFunctions": true
 			}
 		],
+		"prefer-const": 1,
 		"prefer-destructuring": 0,
 		"prefer-exponentiation-operator": 1,
 		"prefer-named-capture-group": 1,
