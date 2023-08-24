@@ -73,7 +73,8 @@
 					"command": {
 						"const": "type"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -105,7 +106,8 @@
 					"command": {
 						"const": "workbench.action.tasks.runTask"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -123,7 +125,8 @@
 					"command": {
 						"const": "editor.action.insertSnippet"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -159,7 +162,8 @@
 					"command": {
 						"const": "workbench.action.terminal.sendSequence"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -191,7 +195,8 @@
 					"command": {
 						"const": "workbench.action.quickOpen"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -209,7 +214,8 @@
 					"command": {
 						"const": "workbench.action.openSettings"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -227,7 +233,8 @@
 					"command": {
 						"const": "workbench.action.openGlobalKeybindings"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -245,7 +252,8 @@
 					"command": {
 						"const": "workbench.extensions.search"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -263,7 +271,8 @@
 					"command": {
 						"const": "editor.action.codeAction"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -304,7 +313,8 @@
 					"command": {
 						"const": "workbench.action.findInFiles"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -373,7 +383,8 @@
 					"command": {
 						"const": "editor.actions.findWithArgs"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -426,7 +437,8 @@
 					"command": {
 						"const": "search.action.openNewEditor"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -495,7 +507,8 @@
 					"command": {
 						"const": "cursorMove"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -553,7 +566,8 @@
 					"command": {
 						"const": "editorScroll"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -612,7 +626,8 @@
 					"command": {
 						"const": "moveActiveEditor"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -661,7 +676,8 @@
 					"command": {
 						"const": "vscode.setEditorLayout"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -707,7 +723,8 @@
 					"command": {
 						"const": "editor.emmet.action.wrapWithAbbreviation"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -740,7 +757,8 @@
 					"command": {
 						"const": "vscode.openIssueReporter"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -777,7 +795,8 @@
 					"command": {
 						"const": "workbench.extensions.installExtension"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -795,7 +814,8 @@
 					"command": {
 						"const": "workbench.extensions.uninstallExtension"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -813,7 +833,8 @@
 					"command": {
 						"const": "workbench.extensions.action.showExtensionsWithIds"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
@@ -1011,7 +1032,8 @@
 					"command": {
 						"const": "commands.focusTerminal"
 					}
-				}
+				},
+				"required": ["command"]
 			},
 			"then": {
 				"properties": {
