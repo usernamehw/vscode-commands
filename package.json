@@ -51,7 +51,8 @@
 		"onCommand:commands.assignKeybinding",
 		"onCommand:commands.addToStatusBar",
 		"onCommand:commands.suggestCommands",
-		"onCommand:commands.suggestVariables"
+		"onCommand:commands.suggestVariables",
+		"onCommand:commands.suggestColors"
 	],
 	"main": "./dist/extension",
 	"browser": "./dist/web/extension",
@@ -214,6 +215,12 @@
 				"command": "commands.suggestSettings",
 				"title": "Suggest (autocomplete) Settings",
 				"description": "Suggest setting ids (user & workspace).",
+				"category": "Commands"
+			},
+			{
+				"command": "commands.suggestColors",
+				"title": "Suggest (autocomplete) Colors",
+				"description": "Suggest theme color ids [theme-color](https://code.visualstudio.com/api/references/theme-color).",
 				"category": "Commands"
 			},
 			{

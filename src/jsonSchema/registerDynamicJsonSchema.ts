@@ -63,7 +63,7 @@ export async function getAllCodiconNames(): Promise<string[]> {
 	}
 }
 
-async function getAllWorkbenchColors(): Promise<string[][]> {
+export async function getAllWorkbenchColors(): Promise<string[][]> {
 	const document = await workspace.openTextDocument(Uri.parse('vscode://schemas/workbench-colors'));
 	const documentText = document.getText();
 	const allColorsWithDescriptions: string[][] = [];

@@ -24,6 +24,7 @@ import { showNotificationCommand } from './commands/showNotificationCommand';
 import { showStatusBarNotificationCommand } from './commands/showStatusBarNotificationCommand';
 import { startDebuggingCommand } from './commands/startDebuggingCommand';
 import { suggestCodiconsCommand } from './commands/suggestCodiconsCommand';
+import { suggestColorsCommand } from './commands/suggestColorsCommand';
 import { suggestCommandsCommand } from './commands/suggestCommandsCommand';
 import { suggestSettingsCommand } from './commands/suggestSettingsCommand';
 import { suggestVariablesCommand } from './commands/suggestVariablesCommand';
@@ -56,6 +57,8 @@ export const enum CommandId {
 	SuggestSettings = 'commands.suggestSettings',
 	/** {@link suggestVariablesCommand} */
 	SuggestVariables = 'commands.suggestVariables',
+	/** {@link suggestColorsCommand} */
+	SuggestColors = 'commands.suggestColors',
 	/** {@link revealCommandCommand} */
 	RevealCommand = 'commands.revealCommand',
 	/** {@link revealCommand2Command} Command for markdown hover. */
@@ -116,6 +119,7 @@ export function registerExtensionCommands(): void {
 	commands.registerTextEditorCommand(CommandId.SuggestVariables, suggestVariablesCommand);
 	commands.registerTextEditorCommand(CommandId.SuggestCodicons, suggestCodiconsCommand);
 	commands.registerTextEditorCommand(CommandId.SuggestSettings, suggestSettingsCommand);
+	commands.registerTextEditorCommand(CommandId.SuggestColors, suggestColorsCommand);
 	commands.registerTextEditorCommand(CommandId.EscapeCommandUriArgument, escapeCommandUriArgumentCommand);
 	// ──── Additional Commands ───────────────────────────────────
 	commands.registerCommand(CommandId.ToggleSetting, toggleSettingCommand);

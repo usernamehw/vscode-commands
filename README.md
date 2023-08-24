@@ -106,7 +106,7 @@
 
 
 <!-- COMMANDS_START -->
-## Commands (9)
+## Commands (10)
 
 |Command|Description|
 |-|-|
@@ -117,6 +117,7 @@
 |commands.suggestCodicons|Commands: Suggest [Codicons](https://code.visualstudio.com/api/references/icons-in-labels)|
 |commands.suggestVariables|Commands: Suggest variables that are supported by this extension's variable substitutions, e.g: `${workspaceFolderBasename}`. [📚 Docs](https://github.com/usernamehw/vscode-commands/blob/master/docs/documentation.md#variable-substitution)|
 |commands.suggestSettings|Commands: Suggest setting ids (user & workspace).|
+|commands.suggestColors|Commands: Suggest theme color ids [theme-color](https://code.visualstudio.com/api/references/theme-color).|
 |commands.newCommand|Commands: Add new command to the list|
 |commands.escapeCommandUriArgument|Commands: Escape command uri argument|
 <!-- COMMANDS_END -->
