@@ -84,7 +84,7 @@ export function updateStatusBarItems(items: TopLevelCommands, variableSubstituti
 
 		const statusBarUserObject = item.statusBar;
 		const alignment = statusBarUserObject.alignment === 'right' ? StatusBarAlignment.Right : StatusBarAlignment.Left;
-		const newStatusBarItem: StatusBarWithActiveEditorMetadata = window.createStatusBarItem(statusBarUserObject.text, alignment, statusBarUserObject.priority ?? -9999) as StatusBarWithActiveEditorMetadata;
+		const newStatusBarItem: StatusBarWithActiveEditorMetadata = window.createStatusBarItem(key, alignment, statusBarUserObject.priority ?? -9999) as StatusBarWithActiveEditorMetadata;
 		newStatusBarItem.uniqueId = uniqueId;
 		newStatusBarItem.originalText = statusBarUserObject.text;
 		let icon = 'icon' in item ? `$(${item.icon ?? ''}) ` : '';
