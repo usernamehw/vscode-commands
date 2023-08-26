@@ -88,8 +88,7 @@ export async function substituteVariables(strArg: string, inputs: Inputs | undef
 function isSingleVariable(text: string): boolean {
 	if (text.startsWith('${') && text.endsWith('}')) {
 		const variableText = text.slice(2, -1);
-		if (variableText.includes('$') ||
-			variableText.includes('{') ||
+		if (variableText.includes('${') &&
 			variableText.includes('}')) {
 			return false;
 		}
