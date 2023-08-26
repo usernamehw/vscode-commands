@@ -47,7 +47,8 @@
 				{ "$ref": "#/definitions/openIssueReporterCommand" },
 				{ "$ref": "#/definitions/installExtensionCommand" },
 				{ "$ref": "#/definitions/uninstallExtensionCommand" },
-				{ "$ref": "#/definitions/showExtensionswithIdCommand" }
+				{ "$ref": "#/definitions/showExtensionswithIdCommand" },
+				{ "$ref": "#/definitions/openSettingsJson" }
 			]
 		},
 
@@ -844,6 +845,41 @@
 						"items": {
 							"type": "string"
 						}
+					}
+				}
+			}
+		},
+
+		"openSettingsJson": {
+			"if": {
+				"properties": {
+					"command": {
+						"const": "workbench.action.openSettingsJson"
+					}
+				},
+				"required": ["command"]
+			},
+			"then": {
+				"properties": {
+					"args": {
+						"markdownDescription": "Open settings.json file.",
+						"type": "object",
+						"properties": {
+							"openToSide": {
+								"type": "boolean"
+							},
+							"revealSetting": {
+								"type": "object",
+								"properties": {
+									"key": {
+										"type": "string",
+										"$ref": "commandsExtension://schemas/settings"
+									}
+								},
+								"additionalProperties": false
+							}
+						},
+						"additionalProperties": false
 					}
 				}
 			}

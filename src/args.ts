@@ -94,6 +94,12 @@ export const commandArgs: Record<string, unknown> = {
 		apply: 'first',
 		preferred: false,
 	},
+	'workbench.action.openSettingsJson': {
+		openToSide: false,
+		revealSetting: {
+			key: '',
+		},
+	},
 	[CommandId.Run]: [],
 	[CommandId.ToggleSetting]: {
 		setting: '',

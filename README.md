@@ -430,12 +430,26 @@ Example for a 2x2 grid:
 },
 ```
 
+### `workbench.action.openSettingsJson` Opens `settings.json` file
+
+```js
+"Reveal setting json": {
+    "command": "workbench.action.openSettingsJson",
+    "args": {
+        "openToSide": true,
+        "revealSetting": {
+            "key": "editor.fontSize",
+        },
+    },
+},
+```
+
 ### `vscode.removeFromRecentlyOpened` Removes an entry with the given path from the recently opened list
 
 ```js
 "Remove from recently opened": {
-	"command": "vscode.removeFromRecentlyOpened",
-	"args": "C:/temp/1.txt",
+    "command": "vscode.removeFromRecentlyOpened",
+    "args": "C:/temp/1.txt",
 },
 ```
 
