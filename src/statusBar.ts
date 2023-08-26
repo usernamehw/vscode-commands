@@ -11,7 +11,7 @@ const statusBarItems: StatusBarWithActiveEditorMetadata[] = [];
 
 type StatusBarWithActiveEditorMetadata = StatusBarItem & {
 	uniqueId: string;
-	originalText: string;
+	originalText?: string;
 	icon: string;
 	activeEditorGlob?: string;
 	activeEditorLanguage?: string;
@@ -186,6 +186,9 @@ export async function updateStatusBarTextFromEvents(variableSubstitutionEnabled:
 
 	for (const statusBarItem of statusBarItems) {
 		if (!statusBarItemIds.includes(statusBarItem.uniqueId)) {
+			continue;
+		}
+		if (statusBarItem.originalText === undefined) {
 			continue;
 		}
 		const newText = await substituteVariables(statusBarItem.originalText, statusBarItem.inputs);
