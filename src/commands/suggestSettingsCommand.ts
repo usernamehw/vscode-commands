@@ -4,6 +4,7 @@ import { getAllSettingIds } from '../jsonSchema/registerDynamicJsonSchema';
 export async function suggestSettingsCommand(editor: TextEditor): Promise<void> {
 	const quickPickItems = (await getAllSettingIds()).map(setting => ({
 		label: setting[0],
+		detail: setting[1],
 	}));
 
 	const picked = await window.showQuickPick(quickPickItems);
