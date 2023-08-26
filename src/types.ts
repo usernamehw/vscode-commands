@@ -79,6 +79,7 @@ interface InputPromptString {
 	description?: string;
 	default?: string;
 	password?: boolean;
+	convertType?: 'boolean' | 'number';
 }
 interface InputPickString {
 	id: string;

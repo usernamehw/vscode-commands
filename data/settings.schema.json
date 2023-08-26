@@ -250,6 +250,13 @@
 									"description": {
 										"type": "string"
 									},
+									"convertType": {
+										"type": "string",
+										"enum": [
+											"boolean",
+											"number"
+										]
+									},
 									"default": {
 										"type": "string",
 										"description": "Default value that will be used if the user doesn't enter something else."

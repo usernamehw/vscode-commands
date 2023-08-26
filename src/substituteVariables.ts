@@ -71,16 +71,34 @@ const monthNamesShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
  *
  * TODO: throw errors (window.showMessage) when variable exists but can't resolve
  */
-export async function substituteVariables(strArg: string, inputs: Inputs | undefined): Promise<string> {
+export async function substituteVariables(strArg: string, inputs: Inputs | undefined): Promise<boolean | number | string> {
+	if (isSingleVariable(strArg)) {
+		return replaceSingleVariable(strArg.slice(2, -1), inputs);
+	}
 	const replacedString = await utils.replaceAsync(strArg, /\$\{[^}]+\}/giu, async match => {
 		const variableName = match.slice(2, -1);// Remove `${` and `}` from match
-		return replaceSingleVariable(variableName, inputs);
+		return String(await replaceSingleVariable(variableName, inputs));
 	});
 
 	return replacedString;
 }
+/**
+ * Return true when string contains only 1 varialbe.
+ */
+function isSingleVariable(text: string): boolean {
+	if (text.startsWith('${') && text.endsWith('}')) {
+		const variableText = text.slice(2, -1);
+		if (variableText.includes('$') ||
+			variableText.includes('{') ||
+			variableText.includes('}')) {
+			return false;
+		}
+		return true;
+	}
+	return false;
+}
 
-async function replaceSingleVariable(variableName: string, inputs: Inputs | undefined): Promise<string> {
+async function replaceSingleVariable(variableName: string, inputs: Inputs | undefined): Promise<boolean | number | string> {
 	const activeTextEditor = window.activeTextEditor;
 	const workspaceFolderFsPath = workspace.workspaceFolders?.[0].uri.fsPath;
 
@@ -295,7 +313,7 @@ async function replaceCommandVariable(commandId: string, args: unknown): Promise
 
 	return String(commandReturnValue);
 }
-async function replaceInputVariable(inputName: string, inputs: Inputs | undefined): Promise<string | undefined> {
+async function replaceInputVariable(inputName: string, inputs: Inputs | undefined): Promise<boolean | number | string | undefined> {
 	if (!inputs) {
 		window.showErrorMessage(`Missing "inputs" property to resolve "${inputName}" variable.`);
 		return extUtils.wrapVariable(inputName);
@@ -317,6 +335,13 @@ async function replaceInputVariable(inputName: string, inputs: Inputs | undefine
 			title: foundInput.description,
 			password: foundInput.password,
 		}), foundInput.default);
+
+		if (foundInput?.convertType === 'boolean') {
+			return Boolean(inputResult);
+		} else if (foundInput?.convertType === 'number') {
+			return Number(inputResult);
+		}
+
 		return inputResult;
 	} else if (foundInput.type === 'command') {
 		return replaceCommandVariable(foundInput.command, foundInput.args);
