@@ -92,8 +92,8 @@ export async function getAllSettingIds(): Promise<string[][]> {
 		const userSettingsObject = JSON.parse(userSettingsText) as { properties: Record<string, { markdownDescription?: string; description?: string }> };
 		const workspaceSettingsObject = JSON.parse(workspaceSettingsText) as { properties: Record<string, { markdownDescription?: string; description?: string }> };
 		const allSettingNames: string[] = utils.unique([
-			...Object.keys(userSettingsObject?.properties),
-			...Object.keys(workspaceSettingsObject?.properties),
+			...Object.keys(userSettingsObject?.properties ?? {}),
+			...Object.keys(workspaceSettingsObject?.properties ?? {}),
 		]);
 		allSettingNames.sort((a, b) => a.localeCompare(b));
 		const allSettingsWithDescriptions: string[][] = allSettingNames.map(settingId => [

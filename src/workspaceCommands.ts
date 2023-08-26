@@ -29,7 +29,7 @@ export function isWorkspaceCommandItem(item: object | string): item is (CommandF
 }
 
 export function addWorkspaceIdToCommands(workspaceCommands: TopLevelCommands, workspaceId: string): TopLevelCommands {
-	const itemsDeepCopy = utils.deepCopy(workspaceCommands);
+	const itemsDeepCopy = utils.deepCopy(workspaceCommands ?? {});
 	extUtils.forEachCommand(item => {
 		if (typeof item !== 'string') {
 			item.workspace = workspaceId;
