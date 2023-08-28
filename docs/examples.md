@@ -228,5 +228,35 @@ TODO: gif
 </td>
 </tr>
 <!-- ──────────────────────────────────────────────────────────── -->
+<tr>
+<td>
+
+## Set setting to specific value (prompt + convertType)
+
+```js
+"Set editor font size": {
+    "command": "commands.toggleSetting",
+    "args": {
+        "setting": "editor.fontSize",
+        "value": [
+            "${input:fontSize}",
+        ],
+    },
+    "inputs": [
+        {
+            "id": "fontSize",
+            "type": "promptString",
+            "convertType": "number",
+        },
+    ],
+},
+```
+
+</td>
+<td>
+TODO: gif
+</td>
+</tr>
+<!-- ──────────────────────────────────────────────────────────── -->
 
 </table>
