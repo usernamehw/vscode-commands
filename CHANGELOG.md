@@ -1,3 +1,8 @@
+## 1.13.0 `28 Aug 2023`
+
+- ✨ Suggest workbench color command: `commands.suggestColors`
+- ✨ "convertType" property for input of type "promptString" (only "boolean" or "number") [example](https://github.com/usernamehw/vscode-commands/blob/master/docs/examples.md#set-setting-to-specific-value-prompt--converttype)
+
 ## 1.12.0 `06 Jun 2023`
 
 - ✨ Support `${command:Name}` variable, like https://code.visualstudio.com/docs/editor/variables-reference#_command-variables

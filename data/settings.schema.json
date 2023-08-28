@@ -255,7 +255,8 @@
 										"enum": [
 											"boolean",
 											"number"
-										]
+										],
+										"description": "Will only work when there's only ONE variable and no other text."
 									},
 									"default": {
 										"type": "string",
