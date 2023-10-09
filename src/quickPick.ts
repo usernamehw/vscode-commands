@@ -120,9 +120,9 @@ export async function showQuickPick(commandsForPicking: TopLevelCommands, isFold
 		quickPick.dispose();
 	});
 
-	quickPick.onDidAccept(async () => {
+	quickPick.onDidAccept(() => {
 		if (pickedItem) {
-			await run(pickedItem.runnable);
+			run(pickedItem.runnable);
 		}
 		quickPick.hide();
 		quickPick.dispose();
