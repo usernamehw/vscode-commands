@@ -23,7 +23,7 @@ async function openKeybindingsGuiAt(value: string): Promise<void> {
  * Open global or workspace settings.json file in the editor.
  */
 async function openSettingsJson(target: 'global' | 'workspace'): Promise<void> {
-	await commands.executeCommand(target === 'global' ? 'workbench.action.openSettingsJson' : 'workbench.action.openWorkspaceSettingsFile');
+	await commands.executeCommand(target === 'global' ? 'workbench.action.openApplicationSettingsJson' : 'workbench.action.openWorkspaceSettingsFile');
 }
 /**
  * Get all symbols for active document.

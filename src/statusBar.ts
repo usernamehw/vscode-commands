@@ -110,7 +110,7 @@ export function updateStatusBarItems(items: TopLevelCommands, variableSubstituti
 			label: key,
 		}];
 		const revealCommandUri = vscodeUtils.createCommandUri(CommandId.RevealCommand2, args);
-		mdTooltip.appendMarkdown(`\n\n---\n\n[Reveal in settings.json](${revealCommandUri.toString()})`);
+		mdTooltip.appendMarkdown(`\n\n---\n\n[Reveal in \`settings.json\`](${revealCommandUri.toString()})`);
 		newStatusBarItem.tooltip = mdTooltip;
 
 		newStatusBarItem.text = icon + (statusBarUserObject.text || '');
@@ -192,7 +192,7 @@ export async function updateStatusBarTextFromEvents(variableSubstitutionEnabled:
 			continue;
 		}
 		const newText = await substituteVariables(statusBarItem.originalText, statusBarItem.inputs);
-		statusBarItem.text = statusBarItem.icon + newText;
+		statusBarItem.text = statusBarItem.icon + String(newText);
 	}
 }
 /**
