@@ -47,7 +47,7 @@
 				},
 				"activeEditorLanguage": {
 					"type": "string",
-					"markdownDescription": "Only show when active editor [Language Id](https://code.visualstudio.com/docs/languages/identifiers) matches."
+					"markdownDescription": "Only show when active editor [Language Id](https://code.visualstudio.com/docs/languages/identifiers) matches. Separate with comma `,` to match multiple languages."
 				},
 				"tooltip": {
 					"markdownDescription": "Show when hovering over status bar item.",

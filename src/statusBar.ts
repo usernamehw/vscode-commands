@@ -159,7 +159,10 @@ export function updateStatusBarItemsVisibilityBasedOnActiveEditor(editor?: TextE
 			continue;
 		}
 		if (statusBarItem.activeEditorLanguage) {
-			if (editor.document.languageId === statusBarItem.activeEditorLanguage) {
+			const languagesAsArray = statusBarItem.activeEditorLanguage
+				.split(',')
+				.map(languageId => languageId.trim());
+			if (languagesAsArray.includes(editor.document.languageId)) {
 				statusBarItem.show();
 			} else {
 				statusBarItem.hide();
