@@ -1,3 +1,4 @@
+import { QuickPickItem } from "vscode";
 
 export interface ExtensionConfig {
 	/**
@@ -81,6 +82,13 @@ interface InputPromptString {
 	password?: boolean;
 	convertType?: 'boolean' | 'number';
 }
+
+interface InputQuickPickitem extends QuickPickItem {
+	value: string;
+}
+
+export type InputPickStringOption = InputQuickPickitem | string | undefined;
+
 interface InputPickString {
 	id: string;
 	type: 'pickString';
