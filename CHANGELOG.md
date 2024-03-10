@@ -1,3 +1,7 @@
+## 1.13.1 `10 Mar 2024`
+
+- ✨ Support label-value in pickString options [Pull request 62](https://github.com/usernamehw/vscode-commands/pull/62) by [0biWanKenobi](https://github.com/0biWanKenobi)
+
 ## 1.13.0 `28 Aug 2023`
 
 - ✨ Suggest workbench color command: `commands.suggestColors`
