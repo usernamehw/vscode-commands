@@ -1,7 +1,7 @@
 import { homedir } from 'os';
 import path from 'path';
 import { commands, env, window, workspace } from 'vscode';
-import { type Inputs } from './types';
+import { type Inputs, type InputPickStringOption } from './types';
 import { extUtils } from './utils/extUtils';
 import { utils } from './utils/utils';
 import { vscodeUtils } from './utils/vscodeUtils';
@@ -325,9 +325,12 @@ async function replaceInputVariable(inputName: string, inputs: Inputs | undefine
 	}
 
 	if (foundInput.type === 'pickString') {
-		const quickPickResult = defaultStringValue(await window.showQuickPick(foundInput.options, {
+		const quickPickRawResult = await window.showQuickPick(foundInput.options, {
 			title: foundInput.description,
-		}), foundInput.default);
+		}) as InputPickStringOption;
+		// pickString supports either strings or objects in the form of { label: string, value: string }
+		const quickPickResultValue = typeof quickPickRawResult === 'string' ? quickPickRawResult : quickPickRawResult?.value;
+		const quickPickResult = defaultStringValue(quickPickResultValue, foundInput.default);
 		return quickPickResult;
 	} else if (foundInput.type === 'promptString') {
 		const inputResult = defaultStringValue(await window.showInputBox({

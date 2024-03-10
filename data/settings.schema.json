@@ -1,6 +1,5 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema",
-
 	"definitions": {
 		"commandItem": {
 			"oneOf": [
@@ -12,6 +11,19 @@
 					"$ref": "#/definitions/commandObject"
 				}
 			]
+		},
+		"pickStringOptionObject": {
+			"type": "object",
+			"properties": {
+				"label": {
+					"type": "string",
+					"minLength": 1
+				},
+				"value": {
+					"type": "string",
+					"minLength": 1
+				}
+			}
 		},
 		"statusBar": {
 			"type": "object",
@@ -217,7 +229,14 @@
 									"options": {
 										"type": "array",
 										"items": {
-											"type": "string"
+											"oneOf": [
+												{
+													"type": "string"
+												},
+												{
+													"$ref": "#/definitions/pickStringOptionObject"
+												}
+											]
 										},
 										"minItems": 1
 									},
