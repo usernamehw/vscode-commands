@@ -95,7 +95,6 @@ async function readFileVscode(pathOrUri: Uri | string): Promise<string> {
 	try {
 		const uri = typeof pathOrUri === 'string' ? Uri.file(pathOrUri) : pathOrUri;
 		const file = await workspace.fs.readFile(uri);
-		// @ts-expect-error TextDecoder EXISTS
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 		return new TextDecoder().decode(file);
 	} catch (e) {
@@ -106,7 +105,6 @@ async function readFileVscode(pathOrUri: Uri | string): Promise<string> {
 async function writeFileVscode(pathOrUri: Uri | string, content: string): Promise<void> {
 	try {
 		const uri = typeof pathOrUri === 'string' ? Uri.file(pathOrUri) : pathOrUri;
-		// @ts-expect-error TextDecoder EXISTS
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 		const encodedContent: Uint8Array = new TextEncoder().encode(content);
 		await workspace.fs.writeFile(uri, encodedContent);
@@ -144,6 +142,26 @@ function getSelectedLineNumbers(editor: TextEditor): number[] {
 	}
 	return Array.from(lineNumbers);
 }
+/** VSCode span accepts only #fff #fff0 #fffff #ffffff00 var(--vscode...) color formats. */
+type ColorFormat = `#${string}` | `var(--vscode-${string}`;
+/**
+ * Create a styled span to use in MarkdownString.
+ *
+ * `editorError.foreground` => `--vscode-editorError-foreground`
+ */
+function createStyledMarkdown({
+	strMd = '',
+	backgroundColor = 'var(--vscode-editorHoverWidget-background)',
+	color = 'var(--vscode-editorHoverWidget-foreground)',
+}: {
+	strMd?: string;
+	backgroundColor?: ColorFormat;
+	color?: string;
+}): string {
+	const colorStyle = color ? `color:${color};` : '';
+	const backgroundStyle = backgroundColor ? `background-color:${backgroundColor};` : '';
+	return `<span style="${colorStyle}${backgroundStyle}">${strMd}</span>`;
+}
 
 export const vscodeUtils = {
 	getAllVscodeCommands,
@@ -158,4 +176,5 @@ export const vscodeUtils = {
 	readFileVscode,
 	writeFileVscode,
 	getSelectedLineNumbers,
+	createStyledMarkdown,
 };

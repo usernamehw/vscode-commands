@@ -23,6 +23,7 @@ import { setEditorLanguageCommand } from './commands/setEditorLanguageCommand';
 import { showNotificationCommand } from './commands/showNotificationCommand';
 import { showStatusBarNotificationCommand } from './commands/showStatusBarNotificationCommand';
 import { startDebuggingCommand } from './commands/startDebuggingCommand';
+import { startWatchTerminalCommand } from './commands/startTerminalWatchCommand';
 import { suggestCodiconsCommand } from './commands/suggestCodiconsCommand';
 import { suggestColorsCommand } from './commands/suggestColorsCommand';
 import { suggestCommandsCommand } from './commands/suggestCommandsCommand';
@@ -31,6 +32,7 @@ import { suggestVariablesCommand } from './commands/suggestVariablesCommand';
 import { toggleSettingCommand } from './commands/toggleSettingCommand';
 import { toggleStatusBarCommand } from './commands/toggleStatusBarCommand';
 import { toggleThemeCommand } from './commands/toggleThemeCommand';
+import { watchTerminalStatusBarOnClickCommand } from './commands/watchTerminalStatusBarOnClickCommand';
 
 /**
  * All command ids contributed by this extension.
@@ -77,6 +79,10 @@ export const enum CommandId {
 	RevealCommandsInSettignsGui = 'commands.revealCommandsInSettignsGUI',
 	/** {@link escapeCommandUriArgumentCommand} Command for markdown hover. */
 	EscapeCommandUriArgument = 'commands.escapeCommandUriArgument',
+	/** {@link startTerminalWatchCommand} */
+	StartTerminalWatch = 'commands.startTerminalWatch',
+	/** {@link watchTerminalStatusBarOnClickCommand} */
+	WatchTerminalStatusBarOnClickCommand = 'commands.watchTerminalStatusBarOnClickCommand',
 	// ──── Additional ────────────────────────────────────────────
 	ToggleSetting = 'commands.toggleSetting',
 	IncrementSetting = 'commands.incrementSetting',
@@ -115,6 +121,8 @@ export function registerExtensionCommands(): void {
 	commands.registerCommand(CommandId.NewCommandInFolder, newCommandInFolderCommand);
 	commands.registerCommand(CommandId.NewFolder, newFolderCommand);
 	commands.registerCommand(CommandId.DeleteCommand, deleteCommandCommand);
+	commands.registerCommand(CommandId.StartTerminalWatch, startWatchTerminalCommand);
+	commands.registerCommand(CommandId.WatchTerminalStatusBarOnClickCommand, watchTerminalStatusBarOnClickCommand);
 	commands.registerTextEditorCommand(CommandId.SuggestCommands, suggestCommandsCommand);
 	commands.registerTextEditorCommand(CommandId.SuggestVariables, suggestVariablesCommand);
 	commands.registerTextEditorCommand(CommandId.SuggestCodicons, suggestCodiconsCommand);

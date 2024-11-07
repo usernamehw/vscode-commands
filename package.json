@@ -6,7 +6,7 @@
 	"publisher": "usernamehw",
 	"license": "MIT",
 	"engines": {
-		"vscode": "^1.55.0"
+		"vscode": "^1.94.0"
 	},
 	"extensionKind": [
 		"workspace",
@@ -43,16 +43,7 @@
 	],
 	"activationEvents": [
 		"onStartupFinished",
-		"onFileSystem:commandsExtension",
-		"onCommand:commands.run",
-		"onCommand:commands.selectAndRun",
-		"onCommand:commands.openAsQuickPick",
-		"onCommand:commands.revealCommand",
-		"onCommand:commands.assignKeybinding",
-		"onCommand:commands.addToStatusBar",
-		"onCommand:commands.suggestCommands",
-		"onCommand:commands.suggestVariables",
-		"onCommand:commands.suggestColors"
+		"onFileSystem:commandsExtension"
 	],
 	"main": "./dist/extension",
 	"browser": "./dist/web/extension",
@@ -153,6 +144,80 @@
 					"type": "boolean",
 					"markdownDescription": "When enabled - show notification after using `commands.toggleSetting` or `commands.incrementSetting`.",
 					"default": false
+				},
+				"commands.watchTerminalStatusBar": {
+					"type": "object",
+					"markdownDescription": "Enable status bar indicator that is supposed to show the status of a running in terminal command (`dev` | `watch`...). Will only work with contributed terminal profile `Commands:Watch`. Status of errors might not be perfect because it relies on simple text match.",
+					"properties": {
+						"enabled": {
+							"type": "boolean",
+							"default": false
+						},
+						"defaultText": {
+							"type": "string",
+							"markdownDescription": "Text when no command in running in target terminal.",
+							"default": "⬤"
+						},
+						"errorText": {
+							"type": "string",
+							"markdownDescription": "Text when terminal output matches with `whenError`.",
+							"default": "🔴"
+						},
+						"successText": {
+							"type": "string",
+							"markdownDescription": "Text when terminal output doesn't match anything from `whenError`.",
+							"default": "🟢"
+						},
+						"commandOnClick": {
+							"type": "string",
+							"markdownDescription": "Command to run when clicking on status bar item when nothing is running.",
+							"default": "commands.startTerminalWatch"
+						},
+						"commandOnClickWhenRunning": {
+							"type": "string",
+							"markdownDescription": "Command to run when clicking on status bar item when terminal has a running command. Accepts: `showTerminal` | `killTerminal` | ANY_COMMAND_ID",
+							"default": "showTerminal"
+						},
+						"sendText": {
+							"type": "string",
+							"markdownDescription": "Text to send to terminal when clicking on status bar item.",
+							"default": "npm run dev"
+						},
+						"errorWhen": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							},
+							"markdownDescription": "Match output of terminal to show status bar item with error state. Can be picked with someting more specific like `\\x1b[31m\\x1b[1mERROR` (whatever build system shows as errors for your programming language).",
+							"default": [
+								"error"
+							]
+						},
+						"highlightErrorWithBackground": {
+							"type": "boolean",
+							"markdownDescription": "Highlight status bar with background color (usually red).",
+							"default": false
+						},
+						"tooltipEnabled": {
+							"type": "boolean",
+							"markdownDescription": "Enable hover tooltip for status bar item.",
+							"default": true
+						}
+					},
+					"default": {
+						"enabled": false,
+						"defaultText": "⬤",
+						"errorText": "🔴",
+						"successText": "🟢",
+						"commandOnClick": "commands.startTerminalWatch",
+						"commandOnClickWhenRunning": "showTerminal",
+						"sendText": "npm run dev",
+						"errorWhen": [
+							"error"
+						],
+						"highlightErrorWithBackground": false,
+						"tooltipEnabled": true
+					}
 				}
 			}
 		},
@@ -285,6 +350,11 @@
 				"command": "commands.run",
 				"title": "Run custom command",
 				"category": "Commands"
+			},
+			{
+				"command": "commands.startTerminalWatch",
+				"title": "Start Terminal Watching",
+				"category": "Commands"
 			}
 		],
 		"menus": {
@@ -376,6 +446,14 @@
 				}
 			]
 		},
+		"terminal": {
+			"profiles": [
+				{
+					"id": "commands.watch",
+					"title": "Commands:Watch"
+				}
+			]
+		},
 		"jsonValidation": [
 			{
 				"fileMatch": "**/keybindings.json",
@@ -395,19 +473,19 @@
 	},
 	"devDependencies": {
 		"@soda/friendly-errors-webpack-plugin": "^1.8.1",
-		"@types/lodash": "^4.14.202",
-		"@types/node": "^14.18.63",
-		"@types/vscode": "^1.55.0",
+		"@types/lodash": "^4.17.13",
+		"@types/node": "^20.17.6",
+		"@types/vscode": "^1.94.0",
 		"@typescript-eslint/eslint-plugin": "^5.62.0",
 		"@typescript-eslint/parser": "^5.62.0",
-		"eslint": "^8.57.0",
+		"eslint": "^8.57.1",
 		"null-loader": "^4.0.1",
 		"os-browserify": "^0.3.0",
 		"path-browserify": "^1.0.1",
 		"process": "^0.11.10",
 		"ts-loader": "^9.5.1",
-		"typescript": "^5.4.2",
-		"webpack": "^5.90.3",
+		"typescript": "^5.6.3",
+		"webpack": "^5.96.1",
 		"webpack-cli": "^5.1.4"
 	},
 	"dependencies": {

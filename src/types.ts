@@ -1,4 +1,4 @@
-import { QuickPickItem } from "vscode";
+import { QuickPickItem } from 'vscode';
 
 export interface ExtensionConfig {
 	/**
@@ -62,6 +62,22 @@ export interface ExtensionConfig {
 		* When enabled - show notification after using `commands.toggleSetting` or `commands.incrementSetting`.
 		*/
 		showNotification: boolean;
+	};
+
+	/**
+	 * Enable status bar indicator that is supposed to show the status of a running in terminal command (`dev` | `watch`...). Will only work with contributed terminal profile `Commands:Watch`. Status of errors might not be perfect because it relies on simple text match.
+	 */
+	watchTerminalStatusBar: {
+		enabled: boolean;
+		defaultText: string;
+		errorText: string;
+		successText: string;
+		commandOnClick: string;
+		commandOnClickWhenRunning: string;
+		sendText: string;
+		errorWhen: string[];
+		highlightErrorWithBackground: boolean;
+		tooltipEnabled: boolean;
 	};
 }
 /**

@@ -8,6 +8,7 @@ import { registerDynamicJsonSchema } from './jsonSchema/registerDynamicJsonSchem
 import { type VscodeCommandWithoutCategory } from './quickPick';
 import { updateUserCommands } from './registerUserCommands';
 import { updateStatusBarItems, updateStatusBarItemsVisibilityBasedOnActiveEditor, updateStatusBarTextFromEvents, type StatusBarUpdateEvents } from './statusBar';
+import { initTerminalIndicatorStatusBar } from './terminalIndicator/terminalIndicatorStatusBar';
 import { CommandsTreeViewProvider, type FolderTreeItem, type RunCommandTreeItem } from './TreeViewProvider';
 import { type CommandFolder, type ExtensionConfig, type Runnable, type TopLevelCommands } from './types';
 import { addWorkspaceIdToCommands, getWorkspaceId, setWorkspaceIdToContext } from './workspaceCommands';
@@ -25,6 +26,7 @@ export const enum Constants {
 	KeybindingsJsonFileName = 'keybindings.json',
 
 	NestingSymbol = '◦',
+	NonBreakingSpaceSymbol = ' ',
 }
 
 export let $config: ExtensionConfig;
@@ -95,6 +97,8 @@ async function updateEverything(context: ExtensionContext): Promise<void> {
 
 	const statusBarUpdateEvents = updateStatusBarItems(allCommands, $config.variableSubstitutionEnabled);
 	updateStatusBarUpdateEvents(statusBarUpdateEvents, $config.variableSubstitutionEnabled);
+
+	initTerminalIndicatorStatusBar();
 
 	updateCommandPalette(allCommands, context);
 	updateDocumentLinkProvider();

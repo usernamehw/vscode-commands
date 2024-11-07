@@ -27,6 +27,7 @@ export function focusTerminalCommand(arg: FocusTerminalArgs | string, deferShow?
 		shouldMatchNewest = !arg.target || arg.target !== 'oldest';
 		targetTerminalOptions.name = arg.name;
 		targetTerminalOptions.cwd = arg.cwd;
+		// @ts-expect-error future me problem
 		targetTerminalOptions.color = arg.iconColor && new ThemeColor(arg.iconColor);
 		if (arg.icon) {
 			targetTerminalOptions.iconPath = new ThemeIcon(arg.icon);

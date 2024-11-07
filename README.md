@@ -106,7 +106,7 @@
 
 
 <!-- COMMANDS_START -->
-## Commands (10)
+## Commands (11)
 
 |Command|Description|
 |-|-|
@@ -120,14 +120,16 @@
 |commands.suggestColors|Commands: Suggest theme color ids [theme-color](https://code.visualstudio.com/api/references/theme-color).|
 |commands.newCommand|Commands: Add new command to the list|
 |commands.escapeCommandUriArgument|Commands: Escape command uri argument|
+|commands.startTerminalWatch|Commands: Start Terminal Watching|
 <!-- COMMANDS_END -->
 
 <!-- SETTINGS_START -->
-## Settings (15)
+## Settings (16)
 
 |Setting|Default|Description|
 |-|-|-|
 |commands.commands|\{\}|Main extension property. Commands that will be rendered in the View.|
+|commands.variableSubstitutionEnabled|**true**|Allow `"args"` to replace variables: [📚 Docs](https://github.com/usernamehw/vscode-commands/blob/master/docs/documentation.md#variable-substitution).|
 |commands.workspaceCommands|\{\}|Commands that will be rendered in the View, specific to the workspace.|
 |commands.alias|\{\}|Use shorter command ids. Extension registers aliased commands so that they can be also used in keybindings.|
 |commands.showKeybindings|**false**|Whether or not to show keyboard shortcuts assigned to command contributed by user. (Currently only displayed in Tree View).|
@@ -139,9 +141,9 @@
 |commands.quickPickIncludeAllCommands|**false**|When checked - include all commands from Command Palette to the Quick Pick.|
 |commands.populateCommandPalette|**false**|Adds all items to Command Palette (Requires editor reload after every change of main config `#commands.commands#`).|
 |commands.documentLinksEnabled|**false**|Run commands as links in documents. Links have format `@command?args@`.<br>[issues/2](https://github.com/usernamehw/vscode-commands/issues/2)|
-|commands.documentLinksPattern|""|[Glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern) for `#commands.documentLinksEnabled#`. Example: `**/*.{ts,js}` - only enable in TypeScript & JavaScript files.|
-|commands.variableSubstitutionEnabled|**true**|Allow `"args"` to replace variables: [📚 Docs](https://github.com/usernamehw/vscode-commands/blob/master/docs/documentation.md#variable-substitution).|
+|commands.documentLinksPattern|""|[Glob](https://code.visualstudio.com/docs/editor/glob-patterns) for `#commands.documentLinksEnabled#`. Example: `**/*.{ts,js}` - only enable in TypeScript & JavaScript files.|
 |commands.toggleSettings.showNotification|**false**|When enabled - show notification after using `commands.toggleSetting` or `commands.incrementSetting`.|
+|commands.watchTerminalStatusBar|{...}|Enable status bar indicator that is supposed to show the status of a running in terminal command (`dev` \| `watch`...). Will only work with contributed terminal profile `Commands:Watch`. Status of errors might not be perfect because it relies on simple text match.|
 <!-- SETTINGS_END -->
 
 ```ts
