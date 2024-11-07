@@ -1,3 +1,7 @@
+## 1.14.0 `07 Nov 2024`
+
+- ✨ Status bar terminal indicator for running command (`dev` | `watch`...) `"commands.watchTerminalStatusBar"` [Issue 65](https://github.com/usernamehw/vscode-commands/issues/65)
+
 ## 1.13.1 `10 Mar 2024`
 
 - ✨ Support label-value in pickString options [Pull request 62](https://github.com/usernamehw/vscode-commands/pull/62) by [0biWanKenobi](https://github.com/0biWanKenobi)
