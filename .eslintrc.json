@@ -23,6 +23,7 @@
 		// ────────────────────────────────────────────────────────────
 		// ──── TypeScript Rules ──────────────────────────────────────
 		// ────────────────────────────────────────────────────────────
+		"@typescript-eslint/no-unsafe-enum-comparison": 0,
 		"@typescript-eslint/adjacent-overload-signatures": 1,
 		"@typescript-eslint/array-type": [
 			1,

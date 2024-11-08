@@ -3,7 +3,6 @@ import { CommandId } from '../commands';
 import { $config, Constants } from '../extension';
 import { vscodeUtils } from '../utils/vscodeUtils';
 
-const terminalProfileName = 'Commands:Watch';// matches contributed profile in `package.json` file
 let isWatchRunning = false;
 
 let statusBarItem: StatusBarItem;
@@ -24,7 +23,7 @@ export function initTerminalIndicatorStatusBar(): void {
 		provideTerminalProfile(_token) {
 			return {
 				options: {
-					name: terminalProfileName,
+					name: Constants.ExtensionTerminalProfileTitle,
 				},
 			};
 		},
@@ -33,32 +32,25 @@ export function initTerminalIndicatorStatusBar(): void {
 	// terminalDisposables.push(window.onDidChangeTerminalShellIntegration(e => {}));
 
 	terminalDisposables.push(window.onDidStartTerminalShellExecution(e => {
-		if (e.terminal.name === terminalProfileName) {
+		if (e.terminal.name === Constants.ExtensionTerminalProfileTitle) {
 			startUpdatingStatusBar();
 		}
 	}));
 
-	window.onDidCloseTerminal(terminal => {
-		if (terminal.name === terminalProfileName) {
+	terminalDisposables.push(window.onDidCloseTerminal(terminal => {
+		if (terminal.name === Constants.ExtensionTerminalProfileTitle) {
 			theEnd();
 		}
-	});
+	}));
 
 	terminalDisposables.push(window.onDidEndTerminalShellExecution(e => {
-		if (e.terminal.name === terminalProfileName) {
+		if (e.terminal.name === Constants.ExtensionTerminalProfileTitle) {
 			theEnd();
 		}
 	}));
 
 	// Old/restored terminals don't get shellIntegration? kill them idk
-	const terminalExisted = killTerminalIfExists();
-	if (terminalExisted) {
-		setTimeout(() => {
-			createTerminalIfDoesntExist();
-		}, 1000);
-	} else {
-		createTerminalIfDoesntExist();
-	}
+	killTargetTerminalIfExists();
 
 	statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left, -100_000);
 	statusBarItem.text = $config.watchTerminalStatusBar.defaultText;
@@ -68,16 +60,16 @@ export function initTerminalIndicatorStatusBar(): void {
 
 function getTargetTerminal(): Terminal {
 	for (const terminal of window.terminals) {
-		if (terminal.name === terminalProfileName) {
+		if (terminal.name === Constants.ExtensionTerminalProfileTitle) {
 			return terminal;
 		}
 	}
 
-	window.showErrorMessage(`Cannot find terminal ${terminalProfileName}`);
-	throw new Error(`Cannot find terminal ${terminalProfileName}`);
+	window.showErrorMessage(`Cannot find terminal ${Constants.ExtensionTerminalProfileTitle}`);
+	throw new Error(`Cannot find terminal ${Constants.ExtensionTerminalProfileTitle}`);
 }
 function isNoTargetTerminal(): boolean {
-	return window.terminals.find(term => term.name === terminalProfileName) === undefined;
+	return window.terminals.find(term => term.name === Constants.ExtensionTerminalProfileTitle) === undefined;
 }
 
 function theEnd(): void {
@@ -104,21 +96,16 @@ export function startWatchTerminal(): void {
 	}
 }
 
-function killTerminalIfExists(): boolean {
-	const terminal = window.terminals.find(term => term.name === terminalProfileName);
-	if (terminal) {
-		terminal.dispose();
-		return true;
-	}
-	return false;
+function killTargetTerminalIfExists(): void {
+	window.terminals.find(term => term.name === Constants.ExtensionTerminalProfileTitle)?.dispose();
 }
 
 function createTerminalIfDoesntExist(): void {
-	if (window.terminals.find(terminal => terminal.name === terminalProfileName)) {
+	if (window.terminals.find(terminal => terminal.name === Constants.ExtensionTerminalProfileTitle)) {
 		return;
 	}
 
-	terminalDisposables.push(window.createTerminal(terminalProfileName));
+	terminalDisposables.push(window.createTerminal(Constants.ExtensionTerminalProfileTitle));
 }
 
 async function startUpdatingStatusBar(): Promise<void> {

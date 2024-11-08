@@ -18,6 +18,8 @@ export const enum Constants {
 	ExtensionSettingsPrefix = 'commands',
 	ExtensionMainSettingId = 'commands.commands',
 	WorkspaceCommandsSettingId = 'commands.workspaceCommands',
+	/** Matches contributed profile in `package.json` file */
+	ExtensionTerminalProfileTitle = 'Commands:Watch',
 
 	CommandPaletteWasPopulatedStorageKey = 'was_populated',
 
