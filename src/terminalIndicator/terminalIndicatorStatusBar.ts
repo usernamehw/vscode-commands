@@ -160,12 +160,13 @@ function prepareTerminalHover(message: string): MarkdownString {
 	md.supportHtml = true;
 	md.appendMarkdown('[]()\n');// always hover
 
+	// remove all ansi symbols
 	// https://stackoverflow.com/questions/25245716/remove-all-ansi-colors-styles-from-strings
-	message = message
-		// eslint-disable-next-line no-control-regex
-		.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/gu, '')
-		// .replace(/\n{2,}/u, '\n\n')
-		.trim();
+	// eslint-disable-next-line no-control-regex
+	message = message.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/gu, '');
+
+	// fix newlines in markdown 2 of \n is one newline
+	message = message.replace(/[\n\r]/gu, () => '\n\n');
 
 	message = message.replace(/ERROR/gu, match => vscodeUtils.createStyledMarkdown({
 		strMd: `${Constants.NonBreakingSpaceSymbol}${match}${Constants.NonBreakingSpaceSymbol}`,
@@ -178,7 +179,7 @@ function prepareTerminalHover(message: string): MarkdownString {
 		color: '#fafafa',
 	}));
 
-	md.appendMarkdown(message);
+	md.appendMarkdown(message.trim());
 
 	return md;
 }
