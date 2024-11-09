@@ -71,12 +71,15 @@ export interface ExtensionConfig {
 		enabled: boolean;
 		defaultText: string;
 		errorText: string;
+		warningText: string;
 		successText: string;
 		commandOnClick: string;
 		commandOnClickWhenRunning: string;
 		sendText: string;
 		errorWhen: string[];
+		warningWhen: string[];
 		highlightErrorWithBackground: boolean;
+		highlightWarningWithBackground: boolean;
 		tooltipEnabled: boolean;
 	};
 }

@@ -160,12 +160,17 @@
 						},
 						"errorText": {
 							"type": "string",
-							"markdownDescription": "Text when terminal output matches with `whenError`.",
+							"markdownDescription": "Text when terminal output matches with `errorWhen`.",
 							"default": "🔴"
+						},
+						"warningText": {
+							"type": "string",
+							"markdownDescription": "Text when terminal output matches with `warningWhen`.",
+							"default": "🟠"
 						},
 						"successText": {
 							"type": "string",
-							"markdownDescription": "Text when terminal output doesn't match anything from `whenError`.",
+							"markdownDescription": "Text when terminal output doesn't match anything from `errorWhen` and `warningWhen`.",
 							"default": "🟢"
 						},
 						"commandOnClick": {
@@ -193,9 +198,24 @@
 								"error"
 							]
 						},
+						"warningWhen": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							},
+							"markdownDescription": "Match output of terminal to show status bar item with warning state. Can be picked with someting more specific like `\\x1b[31m\\x1b[1mERROR` (whatever build system shows as errors for your programming language).",
+							"default": [
+								"warning"
+							]
+						},
 						"highlightErrorWithBackground": {
 							"type": "boolean",
-							"markdownDescription": "Highlight status bar with background color (usually red).",
+							"markdownDescription": "Highlight status bar item with background color (usually red).",
+							"default": false
+						},
+						"highlightWarningWithBackground": {
+							"type": "boolean",
+							"markdownDescription": "Highlight status bar item with background color (usually orange).",
 							"default": false
 						},
 						"tooltipEnabled": {
@@ -208,6 +228,7 @@
 						"enabled": false,
 						"defaultText": "⬤",
 						"errorText": "🔴",
+						"warningText": "🟠",
 						"successText": "🟢",
 						"commandOnClick": "commands.startTerminalWatch",
 						"commandOnClickWhenRunning": "showTerminal",
@@ -215,7 +236,11 @@
 						"errorWhen": [
 							"error"
 						],
+						"warningWhen": [
+							"warning"
+						],
 						"highlightErrorWithBackground": false,
+						"highlightWarningWithBackground": false,
 						"tooltipEnabled": true
 					}
 				}

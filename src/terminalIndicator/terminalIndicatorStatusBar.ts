@@ -1,3 +1,4 @@
+import throttle from 'lodash/throttle';
 import { commands, Disposable, MarkdownString, StatusBarAlignment, StatusBarItem, Terminal, ThemeColor, window } from 'vscode';
 import { CommandId } from '../commands';
 import { $config, Constants } from '../extension';
@@ -7,6 +8,7 @@ let isWatchRunning = false;
 
 let statusBarItem: StatusBarItem;
 const errorBackgroundColor = new ThemeColor('statusBarItem.errorBackground');
+const warningBackgroundColor = new ThemeColor('statusBarItem.warningBackground');
 const terminalDisposables: Disposable[] = [];
 
 export function initTerminalIndicatorStatusBar(): void {
@@ -120,20 +122,41 @@ async function startUpdatingStatusBar(): Promise<void> {
 	const command = terminal.shellIntegration.executeCommand($config.watchTerminalStatusBar.sendText);
 	const stream = command.read();
 	for await (const data of stream) {
-		updateTerminalIndicatorStatusBar(data);
+		updateTerminalIndicatorThrottled(data);
 	}
 }
 
-export function updateTerminalIndicatorStatusBar(data: string): void {
+const updateTerminalIndicatorThrottled = throttle(updateTerminalIndicatorStatusBar, 200, {
+	leading: false,
+	trailing: true,
+});
+
+function updateTerminalIndicatorStatusBar(data: string): void {
+	let hasErrors = false;
+	let hasWarnings = false;
+
 	for (const errorWhen of $config.watchTerminalStatusBar.errorWhen) {
 		if (data.includes(errorWhen)) {
-			statusBarItem.text = $config.watchTerminalStatusBar.errorText;
-			statusBarItem.backgroundColor = $config.watchTerminalStatusBar.highlightErrorWithBackground ? errorBackgroundColor : undefined;
+			hasErrors = true;
 			break;
-		} else {
-			statusBarItem.text = $config.watchTerminalStatusBar.successText;
-			statusBarItem.backgroundColor = undefined;
 		}
+	}
+	for (const warningWhen of $config.watchTerminalStatusBar.warningWhen) {
+		if (data.includes(warningWhen)) {
+			hasWarnings = true;
+			break;
+		}
+	}
+
+	if (hasErrors) {
+		statusBarItem.text = $config.watchTerminalStatusBar.errorText;
+		statusBarItem.backgroundColor = $config.watchTerminalStatusBar.highlightErrorWithBackground ? errorBackgroundColor : undefined;
+	} else if (hasWarnings) {
+		statusBarItem.text = $config.watchTerminalStatusBar.warningText;
+		statusBarItem.backgroundColor = $config.watchTerminalStatusBar.highlightWarningWithBackground ? warningBackgroundColor : undefined;
+	} else {
+		statusBarItem.text = $config.watchTerminalStatusBar.successText;
+		statusBarItem.backgroundColor = undefined;
 	}
 
 	if ($config.watchTerminalStatusBar.tooltipEnabled) {
@@ -163,6 +186,11 @@ function prepareTerminalHover(message: string): MarkdownString {
 	message = message.replace(/DONE/gu, match => vscodeUtils.createStyledMarkdown({
 		strMd: `${Constants.NonBreakingSpaceSymbol}${match}${Constants.NonBreakingSpaceSymbol}`,
 		backgroundColor: '#669900',
+		color: '#fafafa',
+	}));
+	message = message.replace(/WARNING/gu, match => vscodeUtils.createStyledMarkdown({
+		strMd: `${Constants.NonBreakingSpaceSymbol}${match}${Constants.NonBreakingSpaceSymbol}`,
+		backgroundColor: '#ee9900',
 		color: '#fafafa',
 	}));
 
