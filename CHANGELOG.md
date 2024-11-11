@@ -1,3 +1,8 @@
+## 1.14.1 `11 Nov 2024`
+
+- 🔨 Downgrade required VSCode version to **1.93.0**
+- ✨ Add warning state for status bar terminal indicator
+
 ## 1.14.0 `07 Nov 2024`
 
 - ✨ Status bar terminal indicator for running command (`dev` | `watch`...) `"commands.watchTerminalStatusBar"` [Issue 65](https://github.com/usernamehw/vscode-commands/issues/65)
