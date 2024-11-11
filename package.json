@@ -6,7 +6,7 @@
 	"publisher": "usernamehw",
 	"license": "MIT",
 	"engines": {
-		"vscode": "^1.94.0"
+		"vscode": "^1.93.0"
 	},
 	"extensionKind": [
 		"workspace",
@@ -500,7 +500,7 @@
 		"@soda/friendly-errors-webpack-plugin": "^1.8.1",
 		"@types/lodash": "^4.17.13",
 		"@types/node": "^20.17.6",
-		"@types/vscode": "^1.94.0",
+		"@types/vscode": "^1.93.0",
 		"@typescript-eslint/eslint-plugin": "^5.62.0",
 		"@typescript-eslint/parser": "^5.62.0",
 		"eslint": "^8.57.1",
