@@ -31,7 +31,11 @@ export function initTerminalIndicatorStatusBar(): void {
 		},
 	}));
 
-	// terminalDisposables.push(window.onDidChangeTerminalShellIntegration(e => {}));
+	terminalDisposables.push(window.onDidChangeTerminalShellIntegration(e => {
+		if (e.terminal.name === Constants.ExtensionTerminalProfileTitle && e.shellIntegration) {
+			startUpdatingStatusBar();
+		}
+	}));
 
 	terminalDisposables.push(window.onDidStartTerminalShellExecution(e => {
 		if (e.terminal.name === Constants.ExtensionTerminalProfileTitle) {
@@ -88,11 +92,7 @@ export function startWatchTerminal(): void {
 	}
 
 	if (isNoTargetTerminal()) {
-		createTerminalIfDoesntExist();
-		setTimeout(() => {
-			// shellIntegrarion is "undefined" after terminal creation?
-			startUpdatingStatusBar();
-		}, 1000);
+		createTerminalIfDoesntExist();// create terminal should trigger `onDidChangeTerminalShellIntegration`
 	} else {
 		startUpdatingStatusBar();
 	}
