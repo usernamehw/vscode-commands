@@ -81,6 +81,8 @@ export interface ExtensionConfig {
 		highlightErrorWithBackground: boolean;
 		highlightWarningWithBackground: boolean;
 		tooltipEnabled: boolean;
+		alignment: 'left' | 'right';
+		priority: number;
 	};
 }
 /**

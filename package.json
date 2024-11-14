@@ -222,6 +222,20 @@
 							"type": "boolean",
 							"markdownDescription": "Enable hover tooltip for status bar item.",
 							"default": true
+						},
+						"alignment": {
+							"type": "string",
+							"markdownDescription": "Pick alignment for status bar item: left/right.",
+							"enum": [
+								"left",
+								"right"
+							],
+							"default": "left"
+						},
+						"priority": {
+							"type": "integer",
+							"markdownDescription": "The priority of the status bar item. Higher values mean the item should be shown more to the left.",
+							"default": -100000
 						}
 					},
 					"default": {
@@ -241,7 +255,9 @@
 						],
 						"highlightErrorWithBackground": false,
 						"highlightWarningWithBackground": false,
-						"tooltipEnabled": true
+						"tooltipEnabled": true,
+						"alignment": "left",
+						"priority": -100000
 					}
 				}
 			}

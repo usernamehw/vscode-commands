@@ -1,5 +1,5 @@
 import throttle from 'lodash/throttle';
-import { commands, Disposable, MarkdownString, StatusBarAlignment, StatusBarItem, Terminal, ThemeColor, window } from 'vscode';
+import { commands, Disposable, MarkdownString, StatusBarAlignment, StatusBarItem, Terminal, ThemeColor, window, workspace } from 'vscode';
 import { CommandId } from '../commands';
 import { $config, Constants } from '../extension';
 import { vscodeUtils } from '../utils/vscodeUtils';
@@ -18,6 +18,11 @@ export function initTerminalIndicatorStatusBar(): void {
 	statusBarItem?.dispose();
 
 	if (!$config.watchTerminalStatusBar.enabled) {
+		return;
+	}
+
+	if (!workspace.getConfiguration('terminal.integrated.shellIntegration').get('enabled')) {
+		window.showErrorMessage('Setting "terminal.integrated.shellIntegration.enabled" is disabled. It\'s required for "commands.watchTerminalStatusBar" feature to work.');
 		return;
 	}
 
@@ -58,7 +63,9 @@ export function initTerminalIndicatorStatusBar(): void {
 	// Old/restored terminals don't get shellIntegration? kill them idk
 	killTargetTerminalIfExists();
 
-	statusBarItem = window.createStatusBarItem(StatusBarAlignment.Left, -100_000);
+	const alignment = $config.watchTerminalStatusBar.alignment === 'right' ? StatusBarAlignment.Right : StatusBarAlignment.Left;
+	const priority = $config.watchTerminalStatusBar.priority ?? -100_000;
+	statusBarItem = window.createStatusBarItem(alignment, priority);
 	statusBarItem.text = $config.watchTerminalStatusBar.defaultText;
 	statusBarItem.command = CommandId.WatchTerminalStatusBarOnClickCommand;
 	statusBarItem.show();
