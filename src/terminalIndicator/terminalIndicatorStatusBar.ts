@@ -1,5 +1,5 @@
 import throttle from 'lodash/throttle';
-import { commands, Disposable, MarkdownString, StatusBarAlignment, StatusBarItem, Terminal, ThemeColor, window, workspace } from 'vscode';
+import { commands, Disposable, MarkdownString, StatusBarAlignment, StatusBarItem, Terminal, ThemeColor, ThemeIcon, window, workspace } from 'vscode';
 import { CommandId } from '../commands';
 import { $config, Constants } from '../extension';
 import { vscodeUtils } from '../utils/vscodeUtils';
@@ -27,6 +27,7 @@ export function initTerminalIndicatorStatusBar(): void {
 	}
 
 	terminalDisposables.push(window.registerTerminalProfileProvider('commands.watch', {
+		// Doesn't do anything?
 		provideTerminalProfile(_token) {
 			return {
 				options: {
@@ -114,7 +115,13 @@ function createTerminalIfDoesntExist(): void {
 		return;
 	}
 
-	terminalDisposables.push(window.createTerminal(Constants.ExtensionTerminalProfileTitle));
+	const terminal = window.createTerminal({
+		name: Constants.ExtensionTerminalProfileTitle,
+		iconPath: $config.watchTerminalStatusBar.terminalIcon ? new ThemeIcon($config.watchTerminalStatusBar.terminalIcon) : undefined,
+		color: $config.watchTerminalStatusBar.terminalIconColor ? new ThemeColor($config.watchTerminalStatusBar.terminalIconColor) : undefined,
+	});
+
+	terminalDisposables.push(terminal);
 }
 
 async function startUpdatingStatusBar(): Promise<void> {

@@ -188,6 +188,18 @@
 							"markdownDescription": "Text to send to terminal when clicking on status bar item.",
 							"default": "npm run dev"
 						},
+						"terminalIcon": {
+							"type": "string",
+							"markdownDescription": "Change codicon for terminal.",
+							"default": "play-circle",
+							"$ref": "commandsExtension://schemas/codicons"
+						},
+						"terminalIconColor": {
+							"type": "string",
+							"markdownDescription": "Change codicon color for terminal icon.",
+							"default": "",
+							"$ref": "commandsExtension://schemas/colors"
+						},
 						"errorWhen": {
 							"type": "array",
 							"items": {
@@ -247,6 +259,8 @@
 						"commandOnClick": "commands.startTerminalWatch",
 						"commandOnClickWhenRunning": "showTerminal",
 						"sendText": "npm run dev",
+						"terminalIcon": "play-circle",
+						"terminalIconColor": "",
 						"errorWhen": [
 							"error"
 						],
