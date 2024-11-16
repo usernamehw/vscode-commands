@@ -156,7 +156,7 @@
 						"defaultText": {
 							"type": "string",
 							"markdownDescription": "Text when no command in running in target terminal.",
-							"default": "⬤"
+							"default": "$(play-circle)"
 						},
 						"errorText": {
 							"type": "string",
@@ -187,6 +187,11 @@
 							"type": "string",
 							"markdownDescription": "Text to send to terminal when clicking on status bar item.",
 							"default": "npm run dev"
+						},
+						"showTerminal": {
+							"type": "boolean",
+							"markdownDescription": "Reveal terminal right after its creation.",
+							"default": false
 						},
 						"terminalIcon": {
 							"type": "string",
@@ -252,13 +257,14 @@
 					},
 					"default": {
 						"enabled": false,
-						"defaultText": "⬤",
+						"defaultText": "$(play-circle)",
 						"errorText": "🔴",
 						"warningText": "🟠",
 						"successText": "🟢",
 						"commandOnClick": "commands.startTerminalWatch",
 						"commandOnClickWhenRunning": "showTerminal",
 						"sendText": "npm run dev",
+						"showTerminal": false,
 						"terminalIcon": "play-circle",
 						"terminalIconColor": "",
 						"errorWhen": [

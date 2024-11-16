@@ -121,17 +121,22 @@ function createTerminalIfDoesntExist(): void {
 		color: $config.watchTerminalStatusBar.terminalIconColor ? new ThemeColor($config.watchTerminalStatusBar.terminalIconColor) : undefined,
 	});
 
+	if ($config.watchTerminalStatusBar.showTerminal) {
+		terminal.show();
+	}
+
 	terminalDisposables.push(terminal);
 }
 
 async function startUpdatingStatusBar(): Promise<void> {
-	isWatchRunning = true;
 	const terminal = getTargetTerminal();
 
 	if (terminal.shellIntegration === undefined) {
-		window.showErrorMessage(`"shellIntegration" is "undefined"`);
+		window.showErrorMessage(`"shellIntegration" is "undefined". Maybe manual installation needed https://code.visualstudio.com/docs/terminal/shell-integration#_manual-installation`);
 		return;
 	}
+
+	isWatchRunning = true;
 
 	const command = terminal.shellIntegration.executeCommand($config.watchTerminalStatusBar.sendText);
 	const stream = command.read();

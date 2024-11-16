@@ -76,6 +76,7 @@ export interface ExtensionConfig {
 		commandOnClick: string;
 		commandOnClickWhenRunning: string;
 		sendText: string;
+		showTerminal: boolean;
 		terminalIcon: string;
 		terminalIconColor: string;
 		errorWhen: string[];
