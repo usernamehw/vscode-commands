@@ -84,6 +84,7 @@ export interface ExtensionConfig {
 		highlightErrorWithBackground: boolean;
 		highlightWarningWithBackground: boolean;
 		tooltipEnabled: boolean;
+		replaceInTooltip: Record<string, string>;
 		alignment: 'left' | 'right';
 		priority: number;
 	};

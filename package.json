@@ -240,6 +240,11 @@
 							"markdownDescription": "Enable hover tooltip for status bar item.",
 							"default": true
 						},
+						"replaceInTooltip": {
+							"type": "object",
+							"markdownDescription": "Replace text in status bar hover. (key - regex|string, value - replace text).Use \\`/REGEX_TEXT/REGEX_FLAGS\\` key for Regular Expression. Any other key would be considered plain text.",
+							"default": {}
+						},
 						"alignment": {
 							"type": "string",
 							"markdownDescription": "Pick alignment for status bar item: left/right.",
@@ -276,6 +281,7 @@
 						"highlightErrorWithBackground": false,
 						"highlightWarningWithBackground": false,
 						"tooltipEnabled": true,
+						"replaceInTooltip": {},
 						"alignment": "left",
 						"priority": -100000
 					}

@@ -189,6 +189,20 @@ function prepareTerminalHover(message: string): MarkdownString {
 	md.supportHtml = true;
 	md.appendMarkdown('[]()\n');// always hover
 
+	for (const regexString in $config.watchTerminalStatusBar.replaceInTooltip ?? {}) {
+		let replaceTarget: RegExp | string;
+		const replaceText = $config.watchTerminalStatusBar.replaceInTooltip[regexString];
+		const isRegexRegex = /\/(?<regex>.+?)\/(?<flag>[dgimsuvy]+)?/u.exec(regexString);
+
+		if (isRegexRegex) {
+			replaceTarget = new RegExp(isRegexRegex.groups?.regex ?? '', isRegexRegex.groups?.flag ?? 'u');
+		} else {
+			replaceTarget = regexString;
+		}
+
+		message = message.replace(replaceTarget, replaceText);
+	}
+
 	// remove all ansi symbols
 	// https://stackoverflow.com/questions/25245716/remove-all-ansi-colors-styles-from-strings
 	// eslint-disable-next-line no-control-regex
