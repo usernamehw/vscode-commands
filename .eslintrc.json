@@ -719,7 +719,7 @@
 		"no-label-var": 1,
 		"no-labels": 0,
 		"no-lone-blocks": 1,
-		"no-lonely-if": 1,
+		"no-lonely-if": 0,
 		"no-mixed-operators": 1,
 		"no-multi-assign": 1,
 		"no-multi-str": 1,

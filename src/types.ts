@@ -81,6 +81,7 @@ export interface ExtensionConfig {
 		terminalIconColor: string;
 		errorWhen: string[];
 		warningWhen: string[];
+		successWhen: string[];
 		highlightErrorWithBackground: boolean;
 		highlightWarningWithBackground: boolean;
 		tooltipEnabled: boolean;

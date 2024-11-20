@@ -88,9 +88,8 @@ function isNoTargetTerminal(): boolean {
 
 function theEnd(): void {
 	isWatchRunning = false;
-	statusBarItem.text = $config.watchTerminalStatusBar.defaultText;
 	statusBarItem.tooltip = '';
-	statusBarItem.backgroundColor = undefined;
+	setStatusBarStatusDefault();
 }
 
 export function startWatchTerminal(): void {
@@ -100,7 +99,8 @@ export function startWatchTerminal(): void {
 	}
 
 	if (isNoTargetTerminal()) {
-		createTerminalIfDoesntExist();// create terminal should trigger `onDidChangeTerminalShellIntegration`
+		// create terminal will trigger `onDidChangeTerminalShellIntegration` which will trigger `startUpdatingStatusBar`
+		createTerminalIfDoesntExist();
 	} else {
 		startUpdatingStatusBar();
 	}
@@ -153,6 +153,7 @@ const updateTerminalIndicatorThrottled = throttle(updateTerminalIndicatorStatusB
 function updateTerminalIndicatorStatusBar(data: string): void {
 	let hasErrors = false;
 	let hasWarnings = false;
+	let hasSuccess = false;
 
 	for (const errorWhen of $config.watchTerminalStatusBar.errorWhen) {
 		if (data.includes(errorWhen)) {
@@ -167,20 +168,54 @@ function updateTerminalIndicatorStatusBar(data: string): void {
 		}
 	}
 
+	for (const successWhen of $config.watchTerminalStatusBar.successWhen) {
+		if (data.includes(successWhen)) {
+			hasSuccess = true;
+			break;
+		}
+	}
+
 	if (hasErrors) {
-		statusBarItem.text = $config.watchTerminalStatusBar.errorText;
-		statusBarItem.backgroundColor = $config.watchTerminalStatusBar.highlightErrorWithBackground ? errorBackgroundColor : undefined;
+		// Matched with user setting `errorWhen`
+		setStatusBarStatusError();
 	} else if (hasWarnings) {
-		statusBarItem.text = $config.watchTerminalStatusBar.warningText;
-		statusBarItem.backgroundColor = $config.watchTerminalStatusBar.highlightWarningWithBackground ? warningBackgroundColor : undefined;
+		// Matched with user setting `warningWhen`
+		setStatusBarStatusWarning();
 	} else {
-		statusBarItem.text = $config.watchTerminalStatusBar.successText;
-		statusBarItem.backgroundColor = undefined;
+		// 0 Errors & 0 Warnings matches from user settings `errorWhen` / `warningWhen`
+		if ($config.watchTerminalStatusBar.successWhen.length === 0) {
+			// User didn't specify any conditions for success with setting `successWhen`
+			setStatusBarStatusSuccess();
+		} else {
+			// Check if output is really a success or not
+			if (hasSuccess) {
+				setStatusBarStatusSuccess();
+			} else {
+				setStatusBarStatusDefault();// TODO: Maybe different status?
+			}
+		}
 	}
 
 	if ($config.watchTerminalStatusBar.tooltipEnabled) {
 		statusBarItem.tooltip = prepareTerminalHover(data);
 	}
+}
+
+function setStatusBarStatusDefault(): void {
+	statusBarItem.text = $config.watchTerminalStatusBar.defaultText;
+	statusBarItem.backgroundColor = undefined;
+}
+function setStatusBarStatusError(): void {
+	statusBarItem.text = $config.watchTerminalStatusBar.errorText;
+	statusBarItem.backgroundColor = $config.watchTerminalStatusBar.highlightErrorWithBackground ? errorBackgroundColor : undefined;
+}
+function setStatusBarStatusWarning(): void {
+	statusBarItem.text = $config.watchTerminalStatusBar.warningText;
+	statusBarItem.backgroundColor = $config.watchTerminalStatusBar.highlightWarningWithBackground ? warningBackgroundColor : undefined;
+}
+function setStatusBarStatusSuccess(): void {
+	statusBarItem.text = $config.watchTerminalStatusBar.successText;
+	statusBarItem.backgroundColor = undefined;
 }
 
 function prepareTerminalHover(message: string): MarkdownString {

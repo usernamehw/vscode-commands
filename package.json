@@ -225,6 +225,14 @@
 								"warning"
 							]
 						},
+						"successWhen": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							},
+							"markdownDescription": "By default: if output doesn't match `errorWhen` & `warningWhen` => then the state will be success. It may not be true in case of loading or some error occurring that is not in the `errorWhen` array. When this array is not empty => success state will only be when output matches one of the array items of this setting.",
+							"default": []
+						},
 						"highlightErrorWithBackground": {
 							"type": "boolean",
 							"markdownDescription": "Highlight status bar item with background color (usually red).",
