@@ -57,6 +57,10 @@ async function replaceAsync(str: string, regex: RegExp, asyncFn: (match: string,
 	return str.replace(regex, () => data.shift()!);
 }
 
+function isWindowsOs(): boolean {
+	return process.platform === 'win32';
+}
+
 export const utils = {
 	sleep,
 	isSimpleObject,
@@ -65,4 +69,5 @@ export const utils = {
 	nonNullable,
 	unique,
 	replaceAsync,
+	isWindowsOs,
 };

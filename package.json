@@ -230,7 +230,7 @@
 							"items": {
 								"type": "string"
 							},
-							"markdownDescription": "By default: if output doesn't match `errorWhen` & `warningWhen` => then the state will be success. It may not be true in case of loading or some error occurring that is not in the `errorWhen` array. When this array is not empty => success state will only be when output matches one of the array items of this setting.",
+							"markdownDescription": "Set precise condition when state is `success`. By default: if output doesn't match `errorWhen` & `warningWhen` => then the state will be success. It may not be true in case of loading or some error occurring that is not in the `errorWhen` array. When this array is not empty => success state will only be when output matches one of the array items of this setting. Example when running TypeScript compiler with `--watch` flag `tsc --watch` - the success string would be `Found 0 errors`.",
 							"default": []
 						},
 						"highlightErrorWithBackground": {

@@ -41,8 +41,9 @@ export function registerJsonSchemaCompletion(context: ExtensionContext): void {
 				return;
 			}
 
-			const keybinding = getNodeValue(keybindingNode) as { command: string };
-			if (keybinding.command !== CommandId.Run) {
+			const keybinding = getNodeValue(keybindingNode) as { command: string } | undefined;
+
+			if (keybinding?.command !== CommandId.Run) {
 				return;
 			}
 

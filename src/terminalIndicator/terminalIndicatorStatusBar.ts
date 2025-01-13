@@ -266,6 +266,14 @@ function prepareTerminalHover(message: string): MarkdownString {
 
 	return md;
 }
+// TODO: recognize absolute/relative paths
+// function getAllAbsoluteFilePaths(str: string): string[] {
+// 	if (utils.isWindowsOs()) {
+// 		return str.match(/[A-Z]:(\\[^\\\n]+)+\\?( \d+:(\d+)|(\d+-\d+))?/gu);
+// 	} else {
+// 		// return str.match(/.../g);
+// 	}
+// }
 
 export function terminalOnClick(): void {
 	if (isWatchRunning) {
