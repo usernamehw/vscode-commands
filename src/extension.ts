@@ -18,6 +18,7 @@ export const enum Constants {
 	ExtensionSettingsPrefix = 'commands',
 	ExtensionMainSettingId = 'commands.commands',
 	WorkspaceCommandsSettingId = 'commands.workspaceCommands',
+	WatchTerminalSettingId = 'commands.watchTerminalStatusBar',
 	/** Matches contributed profile in `package.json` file */
 	ExtensionTerminalProfileTitle = 'Commands:Watch',
 
@@ -61,7 +62,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
 	registerExtensionCommands();
 
 	await setWorkspaceIdToContext(context);
-	updateEverything(context);
+	updateEverything(context, 'startup');
 
 	registerDynamicJsonSchema(context);
 	registerJsonSchemaCompletion(context);
@@ -75,8 +76,13 @@ export async function activate(context: ExtensionContext): Promise<void> {
 		if (!e.affectsConfiguration(Constants.ExtensionSettingsPrefix)) {
 			return;
 		}
+
 		updateConfig();
-		updateEverything(context);
+		updateEverything(context, e.affectsConfiguration(Constants.WatchTerminalSettingId) ? 'watchTerminalSettingUpdated' : '');
+
+		if (e.affectsConfiguration(Constants.WatchTerminalSettingId)) {
+			initTerminalIndicatorStatusBar();
+		}
 	}));
 
 	context.subscriptions.push(window.onDidChangeActiveTextEditor(editor => {
@@ -87,7 +93,7 @@ export async function activate(context: ExtensionContext): Promise<void> {
 /**
  * Function runs after every config update.
  */
-async function updateEverything(context: ExtensionContext): Promise<void> {
+async function updateEverything(context: ExtensionContext, updateWatchTerminalReason?: '' | 'startup' | 'watchTerminalSettingUpdated'): Promise<void> {
 	const allCommands = getAllCommands();
 	$state.keybindings = [];
 	if ($config.showKeybindings) {
@@ -100,7 +106,9 @@ async function updateEverything(context: ExtensionContext): Promise<void> {
 	const statusBarUpdateEvents = updateStatusBarItems(allCommands, $config.variableSubstitutionEnabled);
 	updateStatusBarUpdateEvents(statusBarUpdateEvents, $config.variableSubstitutionEnabled);
 
-	initTerminalIndicatorStatusBar();
+	if (updateWatchTerminalReason) {
+		initTerminalIndicatorStatusBar();
+	}
 
 	updateCommandPalette(allCommands, context);
 	updateDocumentLinkProvider();
