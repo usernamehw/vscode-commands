@@ -156,22 +156,22 @@
 						"defaultText": {
 							"type": "string",
 							"markdownDescription": "Text when no command in running in target terminal.",
-							"default": "$(play-circle)"
+							"default": " $(play-circle) "
 						},
 						"errorText": {
 							"type": "string",
 							"markdownDescription": "Text when terminal output matches with `errorWhen`.",
-							"default": "🔴"
+							"default": " 🔴 "
 						},
 						"warningText": {
 							"type": "string",
 							"markdownDescription": "Text when terminal output matches with `warningWhen`.",
-							"default": "🟠"
+							"default": " 🟠 "
 						},
 						"successText": {
 							"type": "string",
 							"markdownDescription": "Text when terminal output doesn't match anything from `errorWhen` and `warningWhen`.",
-							"default": "🟢"
+							"default": " 🟢 "
 						},
 						"commandOnClick": {
 							"type": "string",
@@ -270,10 +270,10 @@
 					},
 					"default": {
 						"enabled": false,
-						"defaultText": "$(play-circle)",
-						"errorText": "🔴",
-						"warningText": "🟠",
-						"successText": "🟢",
+						"defaultText": " $(play-circle) ",
+						"errorText": " 🔴 ",
+						"warningText": " 🟠 ",
+						"successText": " 🟢 ",
 						"commandOnClick": "commands.startTerminalWatch",
 						"commandOnClickWhenRunning": "showTerminal",
 						"sendText": "npm run dev",
@@ -286,6 +286,7 @@
 						"warningWhen": [
 							"warning"
 						],
+						"successWhen": [],
 						"highlightErrorWithBackground": false,
 						"highlightWarningWithBackground": false,
 						"tooltipEnabled": true,
