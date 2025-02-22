@@ -33,6 +33,7 @@ import { toggleSettingCommand } from './commands/toggleSettingCommand';
 import { toggleStatusBarCommand } from './commands/toggleStatusBarCommand';
 import { toggleThemeCommand } from './commands/toggleThemeCommand';
 import { watchTerminalStatusBarOnClickCommand } from './commands/watchTerminalStatusBarOnClickCommand';
+import { modifiedExtensionSettings } from './commands/extensionModifiedSettings';
 
 /**
  * All command ids contributed by this extension.
@@ -99,6 +100,7 @@ export const enum CommandId {
 	RevealFileInOs = 'commands.revealFileInOS',
 	Open = 'commands.open',
 	Diff = 'commands.diff',
+	ExtensionModifiedSettings = 'commands.extensionModifiedSettings',
 }
 /**
  * Register all commands (core + additional)
@@ -144,6 +146,7 @@ export function registerExtensionCommands(): void {
 	commands.registerCommand(CommandId.OpenExternal, openExternalCommand);
 	commands.registerCommand(CommandId.RevealFileInOs, revealFileInOsCommand);
 	commands.registerCommand(CommandId.Open, openCommand);
+	commands.registerCommand(CommandId.ExtensionModifiedSettings, modifiedExtensionSettings);
 	// commands.registerCommand(CommandId.Diff, diffCommand);
 }
 

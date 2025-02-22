@@ -430,6 +430,11 @@
 				"command": "commands.startTerminalWatch",
 				"title": "Start Terminal Watching",
 				"category": "Commands"
+			},
+			{
+				"command": "commands.extensionModifiedSettings",
+				"title": "Show modified settings from Extension",
+				"category": "Commands"
 			}
 		],
 		"menus": {

@@ -637,7 +637,7 @@ Example for a 2x2 grid:
 },
 ```
 
-### `commands.setEditorLanguage` Change active editor [language id](https://code.visualstudio.com/docs/languages/identifiers#_known-language-identifiers)
+### `commands.setEditorLanguage` Change active editor [language id](https://code.visualstudio.com/docs/languages/identifiers#_known-language-identifiers). VSCode supports this now even without extension: [#213688](https://github.com/microsoft/vscode/issues/213688)
 
 ```js
 "Set Language JavaScript": {
@@ -722,6 +722,8 @@ Example for a 2x2 grid:
     "args": "C:/Users",
 },
 ```
+
+### `commands.extensionModifiedSettings` Pick an extension and show all modified settings(not default) from it
 
 ---
 

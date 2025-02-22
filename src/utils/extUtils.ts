@@ -70,6 +70,15 @@ function wrapVariable(variableName: string): string {
 	return `\${${variableName}}`;
 }
 
+function isRegexString(regexString: string): RegExp | undefined {
+	const isRegex = /\/(?<regex>.+?)\/(?<flag>[dgimsuvy]+)?/u.exec(regexString);
+	if (!isRegex) {
+		return;
+	}
+
+	return new RegExp(isRegex[0], isRegex.groups!.flag);
+}
+
 export const extUtils = {
 	isCommandFolder,
 	forEachCommand,
@@ -77,4 +86,5 @@ export const extUtils = {
 	isWorkspaceTreeItem,
 	applyForTreeItem,
 	wrapVariable,
+	isRegexString,
 };

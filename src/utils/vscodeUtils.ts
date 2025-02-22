@@ -163,6 +163,14 @@ function createStyledMarkdown({
 	return `<span style="${colorStyle}${backgroundStyle}">${strMd}</span>`;
 }
 
+async function openInUntitled(content: string, language?: string): Promise<TextEditor> {
+	const document = await workspace.openTextDocument({
+		language,
+		content,
+	});
+	return window.showTextDocument(document);
+}
+
 export const vscodeUtils = {
 	getAllVscodeCommands,
 	openSettingGuiAt,
@@ -177,4 +185,5 @@ export const vscodeUtils = {
 	writeFileVscode,
 	getSelectedLineNumbers,
 	createStyledMarkdown,
+	openInUntitled,
 };
