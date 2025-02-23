@@ -1,3 +1,12 @@
+## 1.15.0 `23 Feb 2025`
+
+- ✨ New Command: `commands.extensionModifiedSettings` **Show modified settings from Extension** - pick any extension and get all modified settings (JSON)
+- ✨ "Watch Terminal": Configure alignment/priority for status bar item
+- ✨ "Watch Terminal": Configure icon/iconColor for terminal icon
+- ✨ "Watch Terminal": Explicit `success` state with `"successWhen"` property
+- 🐛 "Watch Terminal": Don't kill terminal on any config change
+- 🐛 "Watch Terminal": Wait for `onDidChangeTerminalShellIntegration` event (instead of unreliable timeout)
+
 ## 1.14.1 `11 Nov 2024`
 
 - 🔨 Downgrade required VSCode version to **1.93.0**

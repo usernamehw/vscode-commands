@@ -106,7 +106,7 @@
 
 
 <!-- COMMANDS_START -->
-## Commands (11)
+## Commands (12)
 
 |Command|Description|
 |-|-|
@@ -121,6 +121,7 @@
 |commands.newCommand|Commands: Add new command to the list|
 |commands.escapeCommandUriArgument|Commands: Escape command uri argument|
 |commands.startTerminalWatch|Commands: Start Terminal Watching|
+|commands.extensionModifiedSettings|Commands: Show modified settings from Extension|
 <!-- COMMANDS_END -->
 
 <!-- SETTINGS_START -->
