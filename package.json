@@ -97,6 +97,11 @@
 					"markdownDescription": "Symbol used in the tree view to indicate that command is also visible in the status bar.",
 					"default": "💠"
 				},
+				"commands.treeViewStatusBarInvisibleSymbol": {
+					"type": "string",
+					"markdownDescription": "Symbol used in the tree view to indicate that status bar item exists but is invisible (`\"hidden\": true,`).",
+					"default": "🔶"
+				},
 				"commands.treeViewWorkspaceCommandSymbol": {
 					"type": "string",
 					"markdownDescription": "Symbol used in the tree view to indicate workspace command (from `#commands.workspaceCommands#`) setting.",
@@ -310,7 +315,8 @@
 			"commands": [
 				{
 					"id": "commands.tree",
-					"name": "View"
+					"name": "View",
+					"icon": "$(play-circle)"
 				}
 			]
 		},

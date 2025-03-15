@@ -51,6 +51,9 @@ export class RunCommandTreeItem extends TreeItem {
 		if (typeof runnable !== 'string' && !Array.isArray(runnable) && runnable.statusBar && !runnable.statusBar.hidden) {
 			this.description += $config.treeViewStatusBarVisibleSymbol;
 		}
+		if (typeof runnable !== 'string' && !Array.isArray(runnable) && runnable.statusBar && runnable.statusBar.hidden) {
+			this.description += $config.treeViewStatusBarInvisibleSymbol;
+		}
 		const keybinding = $state.keybindings.find(keyItem => keyItem.command === label);
 		if (keybinding) {
 			this.description += ` ⌨${keybinding.key}⌨`;
@@ -83,6 +86,9 @@ export class FolderTreeItem extends TreeItem {
 		}
 		if (folder.statusBar && !folder.statusBar.hidden) {
 			this.description += $config.treeViewStatusBarVisibleSymbol;
+		}
+		if (folder?.statusBar?.hidden) {
+			this.description += $config.treeViewStatusBarInvisibleSymbol;
 		}
 	}
 

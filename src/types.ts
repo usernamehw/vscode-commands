@@ -26,6 +26,10 @@ export interface ExtensionConfig {
 	 */
 	treeViewStatusBarVisibleSymbol: string;
 	/**
+	 * Symbol used in the tree view to indicate that status bar item exists but is invisible (`\"hidden\": true,`).
+	 */
+	treeViewStatusBarInvisibleSymbol: string;
+	/**
 	 * Symbol used in the tree view to indicate workspace command (from `#commands.workspaceCommands#`) setting.
 	 */
 	treeViewWorkspaceCommandSymbol: string;
