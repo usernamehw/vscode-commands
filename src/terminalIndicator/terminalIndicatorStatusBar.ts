@@ -68,6 +68,7 @@ export function initTerminalIndicatorStatusBar(): void {
 	const priority = $config.watchTerminalStatusBar.priority ?? -100_000;
 	statusBarItem = window.createStatusBarItem(alignment, priority);
 	statusBarItem.text = $config.watchTerminalStatusBar.defaultText;
+	statusBarItem.tooltip = 'Start terminal watch';
 	statusBarItem.command = CommandId.WatchTerminalStatusBarOnClickCommand;
 	statusBarItem.show();
 }

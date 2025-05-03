@@ -158,7 +158,7 @@ export interface CommandObject {
 /**
  * Add command/folder to status bar
  */
-interface StatusBar {
+export interface StatusBar {
 	alignment?: 'left' | 'right';
 	text: string;
 	name?: string;
@@ -171,6 +171,7 @@ interface StatusBar {
 	activeEditorGlob?: string;
 	activeEditorLanguage?: string;
 	updateEvents?: UpdateEvent[];
+	replaceVariableValue?: Record<string, Record<string, string>>;
 }
 interface UpdateEventonDidConfigurationChange {
 	kind: 'onDidConfigurationChange';

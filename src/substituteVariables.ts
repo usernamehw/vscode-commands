@@ -1,7 +1,9 @@
+import isEqual from 'lodash/isEqual';
+import omit from 'lodash/omit';
 import { homedir } from 'os';
 import path from 'path';
 import { commands, env, window, workspace } from 'vscode';
-import { type Inputs, type InputPickStringOption } from './types';
+import { type InputPickStringOption, type Inputs, StatusBar } from './types';
 import { extUtils } from './utils/extUtils';
 import { utils } from './utils/utils';
 import { vscodeUtils } from './utils/vscodeUtils';
@@ -71,13 +73,29 @@ const monthNamesShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
  *
  * TODO: throw errors (window.showMessage) when variable exists but can't resolve
  */
-export async function substituteVariables(strArg: string, inputs: Inputs | undefined): Promise<boolean | number | string> {
+export async function substituteVariables({
+	strArg,
+	inputs,
+	replaceVariableValue,
+}: {
+	strArg: string;
+	inputs: Inputs | undefined;
+	replaceVariableValue?: StatusBar['replaceVariableValue'];
+}): Promise<boolean | number | string> {
 	if (isSingleVariable(strArg)) {
-		return replaceSingleVariable(strArg.slice(2, -1), inputs);
+		return replaceSingleVariable({
+			variableName: strArg.slice(2, -1),
+			inputs,
+			replaceVariableValue,
+		});
 	}
 	const replacedString = await utils.replaceAsync(strArg, /\$\{[^}]+\}/giu, async match => {
 		const variableName = match.slice(2, -1);// Remove `${` and `}` from match
-		return String(await replaceSingleVariable(variableName, inputs));
+		return String(await replaceSingleVariable({
+			variableName,
+			inputs,
+			replaceVariableValue,
+		}));
 	});
 
 	return replacedString;
@@ -97,9 +115,19 @@ function isSingleVariable(text: string): boolean {
 	return false;
 }
 
-async function replaceSingleVariable(variableName: string, inputs: Inputs | undefined): Promise<boolean | number | string> {
+async function replaceSingleVariable({
+	variableName,
+	inputs,
+	replaceVariableValue,
+}: {
+	variableName: string;
+	inputs: Inputs | undefined;
+	replaceVariableValue: StatusBar['replaceVariableValue'] | undefined;
+}): Promise<boolean | number | string> {
 	const activeTextEditor = window.activeTextEditor;
 	const workspaceFolderFsPath = workspace.workspaceFolders?.[0].uri.fsPath;
+	let replacedValue = `\${${variableName}}`;
+	let isConfigVariable = false;
 
 	switch (variableName) {
 		case VariableNames.SelectedText: {
@@ -107,72 +135,85 @@ async function replaceSingleVariable(variableName: string, inputs: Inputs | unde
 				break;
 			}
 			const selectedText = activeTextEditor.document.getText(activeTextEditor.selection);
-			return selectedText;
+			replacedValue = selectedText;
+			break;
 		}
 		case VariableNames.LineNumber: {
 			if (!activeTextEditor) {
 				break;
 			}
-			return String(activeTextEditor.selection.active.line + 1);
+			replacedValue = String(activeTextEditor.selection.active.line + 1);
+			break;
 		}
 		case VariableNames.SelectedLineCount: {
 			if (!activeTextEditor) {
 				break;
 			}
 			const selectedLineCount = vscodeUtils.getSelectedLineNumbers(activeTextEditor).length;
-			return selectedLineCount > 1 ? String(selectedLineCount) : '';
+			replacedValue = selectedLineCount > 1 ? String(selectedLineCount) : '';
+			break;
 		}
 		case VariableNames.PathSeparator:
 		case VariableNames.PathSeparatorAlias: {
-			return path.sep;
+			replacedValue = path.sep;
+			break;
 		}
 		case VariableNames.ExecPath: {
-			return env.appRoot;
+			replacedValue = env.appRoot;
+			break;
 		}
 		case VariableNames.UserHome: {
-			return homedir();
+			replacedValue = homedir();
+			break;
 		}
 		case VariableNames.File: {
 			if (!activeTextEditor) {
 				break;
 			}
-			return activeTextEditor.document.uri.fsPath;
+			replacedValue = activeTextEditor.document.uri.fsPath;
+			break;
 		}
 		case VariableNames.FileBasename: {
 			if (!activeTextEditor) {
 				break;
 			}
-			return path.basename(activeTextEditor.document.uri.fsPath);
+			replacedValue = path.basename(activeTextEditor.document.uri.fsPath);
+			break;
 		}
 		case VariableNames.FileBasenameNoExtension: {
 			if (!activeTextEditor) {
 				break;
 			}
-			return path.basename(activeTextEditor.document.uri.fsPath, path.extname(activeTextEditor.document.uri.fsPath));
+			replacedValue = path.basename(activeTextEditor.document.uri.fsPath, path.extname(activeTextEditor.document.uri.fsPath));
+			break;
 		}
 		case VariableNames.FileExtname: {
 			if (!activeTextEditor) {
 				break;
 			}
-			return path.extname(activeTextEditor.document.uri.fsPath);
+			replacedValue = path.extname(activeTextEditor.document.uri.fsPath);
+			break;
 		}
 		case VariableNames.FileDirname: {
 			if (!activeTextEditor) {
 				break;
 			}
-			return path.dirname(activeTextEditor.document.uri.fsPath);
+			replacedValue = path.dirname(activeTextEditor.document.uri.fsPath);
+			break;
 		}
 		case VariableNames.WorkspaceFolder: {
 			if (!workspaceFolderFsPath) {
 				break;
 			}
-			return workspaceFolderFsPath;
+			replacedValue = workspaceFolderFsPath;
+			break;
 		}
 		case VariableNames.WorkspaceFolderBasename: {
 			if (!workspaceFolderFsPath) {
 				break;
 			}
-			return path.basename(workspaceFolderFsPath);
+			replacedValue = path.basename(workspaceFolderFsPath);
+			break;
 		}
 		case VariableNames.FileWorkspaceFolder: {
 			if (!activeTextEditor || !workspaceFolderFsPath) {
@@ -180,54 +221,70 @@ async function replaceSingleVariable(variableName: string, inputs: Inputs | unde
 			}
 			const fileWorkspaceFolder = workspace.getWorkspaceFolder(activeTextEditor.document.uri)?.uri.fsPath;
 			if (fileWorkspaceFolder) {
-				return fileWorkspaceFolder;
+				replacedValue = fileWorkspaceFolder;
+				break;
 			}
 			break;
 		}
 		case VariableNames.Random: {
-			return String(Math.random()).slice(2, 8);
+			replacedValue = String(Math.random()).slice(2, 8);
+			break;
 		}
 		case VariableNames.RandomHex: {
-			return Math.random().toString(16).slice(2, 8);
+			replacedValue = Math.random().toString(16).slice(2, 8);
+			break;
 		}
 		case VariableNames.Clipboard: {
-			return env.clipboard.readText();
+			replacedValue = await env.clipboard.readText();
+			break;
 		}
 		case VariableNames.CurrentYear: {
-			return String(new Date().getFullYear());
+			replacedValue = String(new Date().getFullYear());
+			break;
 		}
 		case VariableNames.CurrentYearShort: {
-			return String(new Date().getFullYear()).slice(-2);
+			replacedValue = String(new Date().getFullYear()).slice(-2);
+			break;
 		}
 		case VariableNames.CurrentMonth: {
-			return String(new Date().getMonth().valueOf() + 1).padStart(2, '0');
+			replacedValue = String(new Date().getMonth().valueOf() + 1).padStart(2, '0');
+			break;
 		}
 		case VariableNames.CurrentDate: {
-			return String(new Date().getDate().valueOf()).padStart(2, '0');
+			replacedValue = String(new Date().getDate().valueOf()).padStart(2, '0');
+			break;
 		}
 		case VariableNames.CurrentHour: {
-			return String(new Date().getHours().valueOf()).padStart(2, '0');
+			replacedValue = String(new Date().getHours().valueOf()).padStart(2, '0');
+			break;
 		}
 		case VariableNames.CurrentMinute: {
-			return String(new Date().getMinutes().valueOf()).padStart(2, '0');
+			replacedValue = String(new Date().getMinutes().valueOf()).padStart(2, '0');
+			break;
 		}
 		case VariableNames.CurrentSecond: {
-			return String(new Date().getSeconds().valueOf()).padStart(2, '0');
+			replacedValue = String(new Date().getSeconds().valueOf()).padStart(2, '0');
+			break;
 		}
 		case VariableNames.CurrentDayName: {
-			return dayNames[new Date().getDay()];
+			replacedValue = dayNames[new Date().getDay()];
+			break;
 		}
 		case VariableNames.CurrentDayNameShort: {
-			return dayNamesShort[new Date().getDay()];
+			replacedValue = dayNamesShort[new Date().getDay()];
+			break;
 		}
 		case VariableNames.CurrentMonthName: {
-			return monthNames[new Date().getMonth()];
+			replacedValue = monthNames[new Date().getMonth()];
+			break;
 		}
 		case VariableNames.CurrentMonthNameShort: {
-			return monthNamesShort[new Date().getMonth()];
+			replacedValue = monthNamesShort[new Date().getMonth()];
+			break;
 		}
 		case VariableNames.CurrentSecondsUnix: {
-			return String(Math.floor(new Date().getTime() / 1000));
+			replacedValue = String(Math.floor(new Date().getTime() / 1000));
+			break;
 		}
 		case VariableNames.CurrentTimezoneOffset: {
 			const rawTimeOffset = new Date().getTimezoneOffset();
@@ -237,7 +294,8 @@ async function replaceSingleVariable(variableName: string, inputs: Inputs | unde
 			const minutes = Math.abs(rawTimeOffset) - (hours * 60);
 			const minutesString = (minutes < 10 ? `0${minutes}` : minutes);
 			const offset = `${sign + hoursString}:${minutesString}`;
-			return offset;
+			replacedValue = offset;
+			break;
 		}
 		default: {
 			if (variableName.startsWith(VariableNames.EnvironmentVariablePrefix)) {
@@ -246,15 +304,19 @@ async function replaceSingleVariable(variableName: string, inputs: Inputs | unde
 				if (environmentVariableValue === undefined) {
 					break;
 				}
-				return environmentVariableValue;
+				replacedValue = environmentVariableValue;
+				break;
 			}
 			if (variableName.startsWith(VariableNames.ConfigurationVariablePrefix)) {
 				const configVariableName = variableName.slice(VariableNames.ConfigurationVariablePrefix.length);
-				return replaceConfigurationVariable(configVariableName);
+				replacedValue = replaceConfigurationVariable(configVariableName, replaceVariableValue);
+				isConfigVariable = true;
+				break;
 			}
 			if (variableName.startsWith(VariableNames.CommandVariablePrefix)) {
 				const commandVarialbeName = variableName.slice(VariableNames.CommandVariablePrefix.length);
-				return replaceCommandVariable(commandVarialbeName, undefined);
+				replacedValue = await replaceCommandVariable(commandVarialbeName, undefined);
+				break;
 			}
 			if (variableName.startsWith(VariableNames.InputVariablePrefix)) {
 				const inputVariableName = variableName.slice(VariableNames.InputVariablePrefix.length);
@@ -262,16 +324,74 @@ async function replaceSingleVariable(variableName: string, inputs: Inputs | unde
 				if (inputVariableValue === undefined) {
 					break;
 				}
-				return inputVariableValue;
+				replacedValue = String(inputVariableValue);
+				break;
 			}
 			console.error(`Commands: Unknown variable name: "${variableName}".`);
 		}
 	}
 
-	return `\${${variableName}}`;
+	if (replaceVariableValue) {
+		replacedValue = processVariableValue({
+			replaceVariableValue,
+			variableName,
+			variableValue: replacedValue,
+			isConfigVariable,
+		});
+	}
+
+	return replacedValue;
+}
+function processVariableValue({
+	variableName,
+	variableValue,
+	replaceVariableValue,
+	isConfigVariable,
+}: {
+	variableName: string;
+	variableValue: string;
+	replaceVariableValue: NonNullable<StatusBar['replaceVariableValue']>;
+	isConfigVariable: boolean;
+}): string {
+	for (const keyVariableName in replaceVariableValue) {
+		if (keyVariableName !== variableName) {
+			continue;
+		}
+		const replaceBranches = replaceVariableValue[keyVariableName];
+		const elsePart = replaceBranches.else;
+		const allBranchesWithoutElse = omit(replaceBranches, ['else']);
+
+		for (const keyBranch in allBranchesWithoutElse) {
+			let parsedKey = '';
+			try {
+				parsedKey = JSON.parse(keyBranch) as string;
+			} catch (e) {
+				window.showErrorMessage(`Invalid JSON key: ${(e as Error).message}`);
+				return variableValue;
+			}
+
+			if (isConfigVariable) {
+				try {
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+					variableValue = JSON.parse(variableValue);
+				} catch (e) {
+				}
+			}
+
+			if (isEqual(parsedKey, variableValue)) {
+				return allBranchesWithoutElse[keyBranch];
+			}
+		}
+
+		if (elsePart) {
+			return elsePart;
+		}
+	}
+
+	return variableValue;
 }
 
-function replaceConfigurationVariable(configName: string): string {
+function replaceConfigurationVariable(configName: string, replaceVariableValue: StatusBar['replaceVariableValue'] | undefined): string {
 	if (!configName.includes('.')) {
 		window.showErrorMessage(`Need a dot (.) in the name of configuration. "${configName}"`);
 		return configName;
@@ -279,6 +399,11 @@ function replaceConfigurationVariable(configName: string): string {
 
 	const configParts = configName.split('.');
 	const configValue = workspace.getConfiguration(configParts[0]).get(configParts.slice(1).join('.'));
+
+	// Replace variable value will use JSON.parse() on all config values for comparison
+	if (replaceVariableValue) {
+		return JSON.stringify(configValue);
+	}
 
 	if (
 		Array.isArray(configValue) ||
@@ -357,7 +482,10 @@ async function replaceInputVariable(inputName: string, inputs: Inputs | undefine
  */
 export async function substituteVariableRecursive(item: unknown, inputs: Inputs | undefined): Promise<unknown> {
 	if (typeof item === 'string') {
-		const substituted = await substituteVariables(item, inputs);
+		const substituted = await substituteVariables({
+			strArg: item,
+			inputs,
+		});
 		return substituted;
 	}
 

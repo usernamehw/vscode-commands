@@ -2,7 +2,7 @@ import { MarkdownString, StatusBarAlignment, ThemeColor, languages, window, type
 import { CommandId } from './commands';
 import { createFolderHoverText } from './folderHoverText';
 import { substituteVariables } from './substituteVariables';
-import { type Inputs, type TopLevelCommands } from './types';
+import { StatusBar, type Inputs, type TopLevelCommands } from './types';
 import { extUtils } from './utils/extUtils';
 import { utils } from './utils/utils';
 import { vscodeUtils } from './utils/vscodeUtils';
@@ -16,6 +16,7 @@ type StatusBarWithActiveEditorMetadata = StatusBarItem & {
 	activeEditorGlob?: string;
 	activeEditorLanguage?: string;
 	inputs?: Inputs;
+	replaceVariableValue?: StatusBar['replaceVariableValue'];
 };
 
 export interface StatusBarUpdateEvents {
@@ -124,6 +125,7 @@ export function updateStatusBarItems(items: TopLevelCommands, variableSubstituti
 		newStatusBarItem.activeEditorGlob = item.statusBar.activeEditorGlob;
 		newStatusBarItem.activeEditorLanguage = item.statusBar.activeEditorLanguage;
 		newStatusBarItem.inputs = extUtils.isCommandFolder(item) ? undefined : item.inputs;
+		newStatusBarItem.replaceVariableValue = item.statusBar.replaceVariableValue;
 
 		newStatusBarItem.show();
 		statusBarItems.push(newStatusBarItem);
@@ -194,7 +196,11 @@ export async function updateStatusBarTextFromEvents(variableSubstitutionEnabled:
 		if (statusBarItem.originalText === undefined) {
 			continue;
 		}
-		const newText = await substituteVariables(statusBarItem.originalText, statusBarItem.inputs);
+		const newText = await substituteVariables({
+			strArg: statusBarItem.originalText,
+			inputs: statusBarItem.inputs,
+			replaceVariableValue: statusBarItem.replaceVariableValue,
+		});
 		statusBarItem.text = statusBarItem.icon + String(newText);
 	}
 }

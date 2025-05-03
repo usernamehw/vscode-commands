@@ -82,6 +82,21 @@
 						"warning"
 					]
 				},
+				"replaceVariableValue": {
+					"type": "object",
+					"patternProperties": {
+						"^.*$": {
+							"type": "object",
+							"patternProperties": {
+								"^.*$": {
+									"type": "string",
+									"default": ""
+								}
+							}
+						}
+					},
+					"markdownDescription": "Process replaced variable value. Match example: \n\n```json\n\"workbench.activityBar.location\": {\n\t\"\\\"top\\\"\": \"⬆️\",\n\t\"\\\"bottom\\\"\": \"⬇️\",\n\t\"\\\"hidden\\\"\": \"❔\",\n\t\"else\": \"⬅️\"\n}\n```"
+				},
 				"updateEvents": {
 					"type": "array",
 					"items": {

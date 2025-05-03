@@ -182,7 +182,8 @@ interface CommandObject {
         activeEditorLanguage?: string;// only show status bar item when active editor language id matches
         updateEvents?: {// update status bar text (substitute variables)
             kind: 'onDidConfigurationChange' | 'onDidChangeActiveTextEditor' | 'onDidChangeTextEditorSelection' | 'interval';
-        }[]
+        }[];
+        replaceVariableValue?: Record<string, Record<string, string>>;// Process variable value and replace with with your own text for Status Bar
     };
 }
 ```
