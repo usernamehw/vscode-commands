@@ -1,3 +1,8 @@
+## 1.16.0 `03 May 2025`
+
+- ✨ Replace variable value for Status Bar text https://github.com/usernamehw/vscode-commands/issues/50
+- ✨ New setting that shows hidden Status Bar items in Tree View `"commands.treeViewStatusBarInvisibleSymbol"`
+
 ## 1.15.0 `23 Feb 2025`
 
 - ✨ New Command: `commands.extensionModifiedSettings` **Show modified settings from Extension** - pick any extension and get all modified settings (JSON)
