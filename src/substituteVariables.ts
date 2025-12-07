@@ -69,9 +69,7 @@ const dayNamesShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const monthNamesShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 /**
- * Try to emulate variable substitution in tasks https://code.visualstudio.com/docs/editor/variables-reference
- *
- * TODO: throw errors (window.showMessage) when variable exists but can't resolve
+ * Replace all variables in a string (similar to https://code.visualstudio.com/docs/editor/variables-reference).
  */
 export async function substituteVariables({
 	strArg,
@@ -81,24 +79,37 @@ export async function substituteVariables({
 	strArg: string;
 	inputs: Inputs | undefined;
 	replaceVariableValue?: StatusBar['replaceVariableValue'];
-}): Promise<boolean | number | string> {
+}): Promise<{
+		replaced: boolean | number | string;
+		abort: boolean;
+	}> {
+	// Single variable
 	if (isSingleVariable(strArg)) {
-		return replaceSingleVariable({
+		 return replaceSingleVariable({
 			variableName: strArg.slice(2, -1),
 			inputs,
 			replaceVariableValue,
 		});
 	}
+	let abort = false;
+	// Multiple variables
 	const replacedString = await utils.replaceAsync(strArg, /\$\{[^}]+\}/giu, async match => {
 		const variableName = match.slice(2, -1);// Remove `${` and `}` from match
-		return String(await replaceSingleVariable({
+		const replaced = await replaceSingleVariable({
 			variableName,
 			inputs,
 			replaceVariableValue,
-		}));
+		});
+		if (replaced.abort) {
+			abort = true;
+		}
+		return String(replaced.replaced);
 	});
 
-	return replacedString;
+	return {
+		abort,
+		replaced: replacedString,
+	};
 }
 /**
  * Return true when string contains only 1 varialbe.
@@ -123,11 +134,15 @@ async function replaceSingleVariable({
 	variableName: string;
 	inputs: Inputs | undefined;
 	replaceVariableValue: StatusBar['replaceVariableValue'] | undefined;
-}): Promise<boolean | number | string> {
+}): Promise<{
+		replaced: boolean | number | string;
+		abort: boolean;
+	}> {
 	const activeTextEditor = window.activeTextEditor;
 	const workspaceFolderFsPath = workspace.workspaceFolders?.[0].uri.fsPath;
 	let replacedValue = `\${${variableName}}`;
 	let isConfigVariable = false;
+	let abort = false;
 
 	switch (variableName) {
 		case VariableNames.SelectedText: {
@@ -302,6 +317,7 @@ async function replaceSingleVariable({
 				const environmentVariableName = variableName.slice(VariableNames.EnvironmentVariablePrefix.length);
 				const environmentVariableValue = process.env[environmentVariableName];
 				if (environmentVariableValue === undefined) {
+					abort = true;
 					break;
 				}
 				replacedValue = environmentVariableValue;
@@ -322,6 +338,7 @@ async function replaceSingleVariable({
 				const inputVariableName = variableName.slice(VariableNames.InputVariablePrefix.length);
 				const inputVariableValue = await replaceInputVariable(inputVariableName, inputs);
 				if (inputVariableValue === undefined) {
+					abort = true;
 					break;
 				}
 				replacedValue = String(inputVariableValue);
@@ -340,7 +357,10 @@ async function replaceSingleVariable({
 		});
 	}
 
-	return replacedValue;
+	return {
+		replaced: replacedValue,
+		abort,
+	};
 }
 function processVariableValue({
 	variableName,
@@ -480,27 +500,47 @@ async function replaceInputVariable(inputName: string, inputs: Inputs | undefine
 /**
  * Walk recursively through object/array and replace variables in strings.
  */
-export async function substituteVariableRecursive(item: unknown, inputs: Inputs | undefined): Promise<unknown> {
+export async function substituteVariableRecursive(item: unknown, inputs: Inputs | undefined): Promise<{
+	abort: boolean;
+	args: unknown;
+}> {
 	if (typeof item === 'string') {
 		const substituted = await substituteVariables({
 			strArg: item,
 			inputs,
 		});
-		return substituted;
+		return {
+			abort: substituted.abort,
+			args: substituted.replaced,
+		};
 	}
+
+	let abort = false;
 
 	if (Array.isArray(item)) {
 		for (const [key, value] of item.entries()) {
-			item[key] = await substituteVariableRecursive(value, inputs);
+			const substituted = await substituteVariableRecursive(value, inputs);
+			item[key] = substituted.args;
+			if (substituted.abort) {
+				abort = true;
+			}
 		}
 	} else if (typeof item === 'object' && item !== null) {
 		for (const key in item) {
 			// @ts-expect-error implicit any :(
-			item[key] = await substituteVariableRecursive(item[key], inputs);
+			const substituted = await substituteVariableRecursive(item[key], inputs);
+			// @ts-expect-error implicit any :(
+			item[key] = substituted.args;
+			if (substituted.abort) {
+				abort = true;
+			}
 		}
 	}
 
-	return item;
+	return {
+		abort,
+		args: item,
+	};
 }
 
 function defaultStringValue(value: string | undefined, defaultValue: string | undefined): string | undefined {

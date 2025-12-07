@@ -1,6 +1,6 @@
 /* eslint-disable no-await-in-loop */
 import { commands, window } from 'vscode';
-import { $config, $state } from './extension';
+import { $config, $state, Constants } from './extension';
 import { showQuickPick } from './quickPick';
 import { substituteVariableRecursive } from './substituteVariables';
 import { type CommandFolder, type CommandObject, type Runnable, type Sequence } from './types';
@@ -88,7 +88,12 @@ async function runObject(object: CommandObject): Promise<void> {
 
 	let args = object.args;
 	if ($config.variableSubstitutionEnabled && args !== undefined) {
-		args = await substituteVariableRecursive(utils.deepCopy(args), object.inputs);
+		const substituted = await substituteVariableRecursive(utils.deepCopy(args), object.inputs);
+		if (substituted.abort) {
+			console.warn(`[${Constants.ExtensionId}] Command aborted (variable replacement cancelled / empty)`);
+			return;
+		}
+		args = substituted.args;
 	}
 
 	try {
