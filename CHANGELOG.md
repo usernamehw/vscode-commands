@@ -1,3 +1,7 @@
+## 1.18.0 `08 Dec 2025`
+
+- 🐛 Fix text in status bar not properly updated
+
 ## 1.17.0 `08 Dec 2025`
 
 - ✨ Cycle commands:
