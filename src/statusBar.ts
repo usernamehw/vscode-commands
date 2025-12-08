@@ -196,12 +196,12 @@ export async function updateStatusBarTextFromEvents(variableSubstitutionEnabled:
 		if (statusBarItem.originalText === undefined) {
 			continue;
 		}
-		const newText = await substituteVariables({
+		const substituted = await substituteVariables({
 			strArg: statusBarItem.originalText,
 			inputs: statusBarItem.inputs,
 			replaceVariableValue: statusBarItem.replaceVariableValue,
 		});
-		statusBarItem.text = statusBarItem.icon + String(newText);
+		statusBarItem.text = statusBarItem.icon + String(substituted.replaced);
 	}
 }
 /**
