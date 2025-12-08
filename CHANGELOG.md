@@ -1,3 +1,22 @@
+## 1.17.0 `08 Dec 2025`
+
+- ✨ Cycle commands:
+```js
+// settings.json
+"commands.cycle": {
+	"folding": [
+		"editor.foldAll",
+		"editor.unfoldAll",
+	],
+},
+// keybindings.json
+{
+	"key": "ctrl+shift+9",
+	"command": "commands.cycle.folding",
+},
+```
+- 🐛 Cancel command execution if variable substitution input was cancelled
+
 ## 1.16.0 `03 May 2025`
 
 - ✨ Replace variable value for Status Bar text https://github.com/usernamehw/vscode-commands/issues/50
