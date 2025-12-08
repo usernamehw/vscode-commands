@@ -125,7 +125,7 @@
 <!-- COMMANDS_END -->
 
 <!-- SETTINGS_START -->
-## Settings (16)
+## Settings (18)
 
 |Setting|Default|Description|
 |-|-|-|
@@ -133,9 +133,11 @@
 |commands.variableSubstitutionEnabled|**true**|Allow `"args"` to replace variables: [📚 Docs](https://github.com/usernamehw/vscode-commands/blob/master/docs/documentation.md#variable-substitution).|
 |commands.workspaceCommands|\{\}|Commands that will be rendered in the View, specific to the workspace.|
 |commands.alias|\{\}|Use shorter command ids. Extension registers aliased commands so that they can be also used in keybindings.|
+|commands.cycle|\{\}|Register a new command (id will be `commands.cycle.${OBJECT_KEY}`) that runs one command from the list. If the last command was the last item on the list then run the first command from the list.|
 |commands.showKeybindings|**false**|Whether or not to show keyboard shortcuts assigned to command contributed by user. (Currently only displayed in Tree View).|
 |commands.treeViewCollapseFolders|**false**|Collapse folders by default. Requires reload before being applied.|
 |commands.treeViewStatusBarVisibleSymbol|"💠"|Symbol used in the tree view to indicate that command is also visible in the status bar.|
+|commands.treeViewStatusBarInvisibleSymbol|"🔶"|Symbol used in the tree view to indicate that status bar item exists but is invisible (`"hidden": true,`).|
 |commands.treeViewWorkspaceCommandSymbol|"🎯"|Symbol used in the tree view to indicate workspace command (from `#commands.workspaceCommands#`) setting.|
 |commands.statusBarDefaultText|"same"|Controls the text of Status Bar item when adding from Tree View context menu.|
 |commands.statusBarDefaultPosition|"left"|Where to put command on Status Bar (left or right).|

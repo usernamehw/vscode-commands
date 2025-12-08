@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual';
 
 /**
  * Emulate delay with async setTimeout().
@@ -61,6 +62,14 @@ function isWindowsOs(): boolean {
 	return process.platform === 'win32';
 }
 
+/**
+ * Get next item in array. If there is no next - return the first item.
+ */
+export function getNextOrFirstElement<T>(arr: T[], target: unknown): T {
+	const index = arr.findIndex(el => isEqual(el, target));
+	return index === arr.length - 1 ? arr[0] : arr[index + 1];
+}
+
 export const utils = {
 	sleep,
 	isSimpleObject,
@@ -70,4 +79,5 @@ export const utils = {
 	unique,
 	replaceAsync,
 	isWindowsOs,
+	getNextOrFirstElement,
 };

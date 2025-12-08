@@ -1,8 +1,9 @@
 import { commands, window, type Disposable } from 'vscode';
-import { $config } from './extension';
+import { $config, $state, Constants } from './extension';
 import { run } from './run';
 import { type TopLevelCommands } from './types';
 import { extUtils } from './utils/extUtils';
+import { utils } from './utils/utils';
 
 const registeredCommandsDisposables: Disposable[] = [];
 
@@ -41,6 +42,37 @@ export function updateUserCommands(items: TopLevelCommands): void {
 			registeredCommandsDisposables.push(disposable);
 		} catch (err) {
 			window.showErrorMessage(`Failed to register alias: ${(err as Error).message}`);
+		}
+	}
+
+	for (const cycle in $config.cycle) {
+		const commandList = $config.cycle[cycle];
+
+		let disposable: Disposable;
+		try {
+			disposable = commands.registerCommand(`${Constants.ExtensionSettingsPrefix}.cycle.${cycle}`, () => {
+				const lastCommandInCycle = $state.cycles[cycle];
+
+				let commandToRun;
+				if (lastCommandInCycle) {
+					commandToRun = utils.getNextOrFirstElement(commandList, lastCommandInCycle);
+				} else {
+					commandToRun = commandList[0];
+				}
+
+				if (!commandToRun) {
+					window.showErrorMessage(`No command to run`);
+					return;
+				}
+
+				run({
+					command: commandToRun,
+				});
+				$state.cycles[cycle] = commandToRun;
+			});
+			registeredCommandsDisposables.push(disposable);
+		} catch (err) {
+			window.showErrorMessage(`Failed to register cycle commands: ${(err as Error).message}`);
 		}
 	}
 }

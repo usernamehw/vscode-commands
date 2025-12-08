@@ -82,6 +82,21 @@
 					},
 					"additionalProperties": false
 				},
+				"commands.cycle": {
+					"type": "object",
+					"markdownDescription": "Register a new command (id will be `commands.cycle.${OBJECT_KEY}`) that runs one command from the list. If the last command was the last item on the list then run the first command from the list.",
+					"default": {},
+					"patternProperties": {
+						"^.*$": {
+							"type": "array",
+							"items": {
+								"type": "string",
+								"default": ""
+							}
+						}
+					},
+					"additionalProperties": false
+				},
 				"commands.showKeybindings": {
 					"type": "boolean",
 					"markdownDescription": "Whether or not to show keyboard shortcuts assigned to command contributed by user. (Currently only displayed in Tree View).",

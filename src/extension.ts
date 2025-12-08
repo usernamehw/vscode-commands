@@ -18,6 +18,7 @@ export const enum Constants {
 	ExtensionSettingsPrefix = 'commands',
 	ExtensionMainSettingId = 'commands.commands',
 	WorkspaceCommandsSettingId = 'commands.workspaceCommands',
+	CycleSettingId = 'commands.cycle',
 	WatchTerminalSettingId = 'commands.watchTerminalStatusBar',
 	/** Matches contributed profile in `package.json` file */
 	ExtensionTerminalProfileTitle = 'Commands:Watch',
@@ -43,6 +44,11 @@ export abstract class $state {
 	public static commandsTreeViewProvider: CommandsTreeViewProvider;
 	public static commandsTreeView: TreeView<FolderTreeItem | RunCommandTreeItem>;
 	public static keybindings: VsCodeKeybindingItem[] = [];
+
+	/**
+	 * Remember which command was called (separately for each list of commands).
+	 */
+	public static cycles: Record<string, string | undefined> = {};
 
 	public static statusBarUpdateEventDisposables: Disposable[] = [];
 	public static statusBarUpdateEventTimerIds: (NodeJS.Timeout | number | string | undefined)[] = [];

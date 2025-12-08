@@ -14,6 +14,10 @@ export interface ExtensionConfig {
 	 */
 	alias: Record<string, string>;
 	/**
+	 * Register a new command (id will be `commands.cycle.${OBJECT_KEY}`) that runs one command from the list. If the last command was the last item on the list then run the first command from the list.
+	 */
+	cycle: Record<string, string[]>;
+	/**
 	 * Whether or not to show keyboard shortcuts assigned to command contributed by user.
 	 */
 	showKeybindings: boolean;

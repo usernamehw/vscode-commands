@@ -1,4 +1,3 @@
-import isEqual from 'lodash/isEqual';
 import { ConfigurationTarget, window, workspace } from 'vscode';
 import { CommandId } from './commands';
 import { utils } from './utils/utils';
@@ -55,7 +54,7 @@ export async function toggleSetting(arg: ToggleSettingType | string, showNotific
 			newValue = !currentSettingValue;
 		} else if (Array.isArray(settingValues)) {
 			// Passed an object. "value" is array -> cycle through
-			newValue = getNextOrFirstElement(settingValues, currentSettingValue);
+			newValue = utils.getNextOrFirstElement(settingValues, currentSettingValue);
 		} else if (typeof settingValues === 'string') {
 			// Handle comma separated string here (assume it's an array of strings)
 			if (settingValues.indexOf(',')) {
@@ -63,7 +62,7 @@ export async function toggleSetting(arg: ToggleSettingType | string, showNotific
 				if (allValues.length === 1) {
 					newValue = allValues[0];
 				} else {
-					newValue = getNextOrFirstElement(allValues, currentSettingValue);
+					newValue = utils.getNextOrFirstElement(allValues, currentSettingValue);
 				}
 			}
 		}
@@ -138,13 +137,7 @@ export async function updateSetting(settingName: string, newValue: unknown, targ
 		vscodeUtils.showErrorNotification(e);
 	}
 }
-/**
- * Get next item in array. If there is no next - return the first item.
- */
-export function getNextOrFirstElement<T>(arr: T[], target: unknown): T {
-	const index = arr.findIndex(el => isEqual(el, target));
-	return index === arr.length - 1 ? arr[0] : arr[index + 1];
-}
+
 // commands.registerCommand(`${EXTENSION_NAME}.settingsMerge`, (arg: unknown) => {
 // 	if (!isSimpleObject(arg)) {
 // 		window.showWarningMessage('Argument must be an object');

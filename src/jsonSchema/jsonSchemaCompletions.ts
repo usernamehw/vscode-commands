@@ -86,6 +86,10 @@ export function registerJsonSchemaCompletion(context: ExtensionContext): void {
  * also somewhere inside of `commands.commands`/`commands.workspaceCommands` setting.
  */
 function isCommandIdAutocomplete(comparePath: (number | string)[]): boolean {
+	if (comparePath[0] === Constants.CycleSettingId) {
+		return true;
+	}
+
 	return (
 		comparePath[0] === Constants.ExtensionMainSettingId ||
 		comparePath[0] === Constants.WorkspaceCommandsSettingId
