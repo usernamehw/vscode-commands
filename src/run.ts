@@ -90,7 +90,8 @@ async function runObject(object: CommandObject): Promise<void> {
 	if ($config.variableSubstitutionEnabled && args !== undefined) {
 		const substituted = await substituteVariableRecursive(utils.deepCopy(args), object.inputs);
 		if (substituted.abort) {
-			console.warn(`[${Constants.ExtensionId}] Command aborted (variable replacement cancelled / empty)`);
+			console.warn(`[${Constants.ExtensionId}] Command aborted \`${commandId}\` (variable replacement cancelled / empty)`);
+			window.showWarningMessage(`[${Constants.ExtensionId}] Command aborted \`${commandId}\` (variable replacement cancelled / empty)`);
 			return;
 		}
 		args = substituted.args;

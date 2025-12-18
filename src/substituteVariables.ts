@@ -331,16 +331,24 @@ async function replaceSingleVariable({
 			}
 			if (variableName.startsWith(VariableNames.CommandVariablePrefix)) {
 				const commandVarialbeName = variableName.slice(VariableNames.CommandVariablePrefix.length);
-				replacedValue = await replaceCommandVariable(commandVarialbeName, undefined);
+				const commandVariableValue = await replaceCommandVariable(commandVarialbeName, undefined);
+
+				if (commandVariableValue.abort) {
+					abort = true;
+					break;
+				}
+				replacedValue = commandVariableValue.replaced;
 				break;
 			}
 			if (variableName.startsWith(VariableNames.InputVariablePrefix)) {
 				const inputVariableName = variableName.slice(VariableNames.InputVariablePrefix.length);
 				const inputVariableValue = await replaceInputVariable(inputVariableName, inputs);
+
 				if (inputVariableValue === undefined) {
 					abort = true;
 					break;
 				}
+
 				replacedValue = String(inputVariableValue);
 				break;
 			}
@@ -438,24 +446,25 @@ function replaceConfigurationVariable(configName: string, replaceVariableValue: 
  * Replace `command:commandId` variable with the result of
  * executing that command.
  */
-async function replaceCommandVariable(commandId: string, args: unknown): Promise<string> {
+async function replaceCommandVariable(commandId: string, args: unknown): Promise<{
+	replaced: string;
+	abort: boolean;
+}> {
 	const commandReturnValue = await commands.executeCommand(commandId, args);
 
-	// Command variables ignore everything except string return value
+	// VSCode Command variables ignore everything except string return value
 	// https://code.visualstudio.com/docs/editor/variables-reference#_command-variables
-	if (commandReturnValue === undefined || commandReturnValue === null) {
-		return extUtils.wrapVariable(VariableNames.CommandVariablePrefix + commandId);
+	if (typeof commandReturnValue !== 'string') {
+		return {
+			replaced: '',
+			abort: true,
+		};
 	}
 
-	// This extension returns Array or Object as json stringified strings, though.
-	if (
-		Array.isArray(commandReturnValue) ||
-		(commandReturnValue !== null && typeof commandReturnValue === 'object')
-	) {
-		return JSON.stringify(commandReturnValue);
-	}
-
-	return String(commandReturnValue);
+	return {
+		replaced: commandReturnValue,
+		abort: false,
+	};
 }
 async function replaceInputVariable(inputName: string, inputs: Inputs | undefined): Promise<boolean | number | string | undefined> {
 	if (!inputs) {
@@ -491,7 +500,13 @@ async function replaceInputVariable(inputName: string, inputs: Inputs | undefine
 
 		return inputResult;
 	} else if (foundInput.type === 'command') {
-		return replaceCommandVariable(foundInput.command, foundInput.args);
+		const replacedCommandValue = await replaceCommandVariable(foundInput.command, foundInput.args);
+
+		if (replacedCommandValue.abort) {
+			return undefined;
+		}
+
+		return replacedCommandValue.replaced;
 	}
 
 	return extUtils.wrapVariable(VariableNames.InputVariablePrefix + inputName);
