@@ -1,3 +1,7 @@
+## 1.19.0 `18 Dec 2025`
+
+- 🐛 Cancel command variable replacement when returned value is not a string
+
 ## 1.18.0 `08 Dec 2025`
 
 - 🐛 Fix text in status bar not properly updated
