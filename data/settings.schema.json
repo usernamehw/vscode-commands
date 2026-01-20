@@ -218,7 +218,8 @@
 				},
 				"activeEditorLanguage": {
 					"type": "string",
-					"default": "Only show this item in Tree View when active editor language matches [Language Id](https://code.visualstudio.com/docs/languages/identifiers). Example `javascript`, `markdown`, `typescriptreact`. Separate with comma `,` to match multiple languages: `javascript,typescript`."
+					"markdownDescription": "Only show this item in Tree View when active editor language matches [Language Id](https://code.visualstudio.com/docs/languages/identifiers). Example `javascript`, `markdown`, `typescriptreact`. Separate with comma `,` to match multiple languages: `javascript,typescript`.",
+					"default": ""
 				},
 				"nestedItems": {
 					"type": "object",

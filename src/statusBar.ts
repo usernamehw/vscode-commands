@@ -122,8 +122,8 @@ export function updateStatusBarItems(items: TopLevelCommands, variableSubstituti
 			arguments: [item],
 		};
 
-		newStatusBarItem.activeEditorGlob = item.statusBar.activeEditorGlob;
-		newStatusBarItem.activeEditorLanguage = item.statusBar.activeEditorLanguage;
+		newStatusBarItem.activeEditorGlob = item.statusBar.activeEditorGlob || item.activeEditorGlob;
+		newStatusBarItem.activeEditorLanguage = item.statusBar.activeEditorLanguage || item.activeEditorLanguage;
 		newStatusBarItem.inputs = extUtils.isCommandFolder(item) ? undefined : item.inputs;
 		newStatusBarItem.replaceVariableValue = item.statusBar.replaceVariableValue;
 
