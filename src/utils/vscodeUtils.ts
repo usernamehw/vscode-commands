@@ -1,4 +1,4 @@
-import { commands, env, Range, Selection, TextEditorRevealType, UIKind, Uri, window, workspace, type DocumentSymbol, type TextDocument, type TextEditor } from 'vscode';
+import { commands, env, languages, Range, Selection, TextEditorRevealType, UIKind, Uri, window, workspace, type DocumentSymbol, type TextDocument, type TextEditor } from 'vscode';
 import { utils } from './utils';
 
 /**
@@ -170,6 +170,23 @@ async function openInUntitled(content: string, language?: string): Promise<TextE
 	});
 	return window.showTextDocument(document);
 }
+/**
+ * `true` when editor matches [Glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern).
+ */
+function editorMatchesGlob(editor: TextEditor, glob: string): boolean {
+	return languages.match({
+		pattern: glob,
+	}, editor.document) !== 0;
+}
+/**
+ * `true` when editor language id matches [Language Id](https://code.visualstudio.com/docs/languages/identifiers).
+ */
+function editorLanguageIdMatches(editor: TextEditor, languageId: string): boolean {
+	const languagesAsArray = languageId
+		.split(',')
+		.map(lang => lang.trim());
+	return languagesAsArray.includes(editor.document.languageId);
+}
 
 export const vscodeUtils = {
 	getAllVscodeCommands,
@@ -186,4 +203,6 @@ export const vscodeUtils = {
 	getSelectedLineNumbers,
 	createStyledMarkdown,
 	openInUntitled,
+	editorMatchesGlob,
+	editorLanguageIdMatches,
 };

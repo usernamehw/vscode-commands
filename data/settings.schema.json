@@ -211,6 +211,15 @@
 						"$ref": "#/definitions/commandItem"
 					}
 				},
+				"activeEditorGlob": {
+					"type": "string",
+					"markdownDescription": "Only show this item in Tree View when active editor matches [Glob](https://code.visualstudio.com/api/references/vscode-api#GlobPattern). Example: `**/*.tsx`",
+					"default": ""
+				},
+				"activeEditorLanguage": {
+					"type": "string",
+					"default": "Only show this item in Tree View when active editor language matches [Language Id](https://code.visualstudio.com/docs/languages/identifiers). Example `javascript`, `markdown`, `typescriptreact`. Separate with comma `,` to match multiple languages: `javascript,typescript`."
+				},
 				"nestedItems": {
 					"type": "object",
 					"markdownDescription": "Makes this item a folder.",

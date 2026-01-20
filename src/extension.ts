@@ -1,16 +1,18 @@
-import { commands, window, workspace, type Disposable, type ExtensionContext, type TreeView } from 'vscode';
+import { commands, window, workspace, type ExtensionContext, type TreeView } from 'vscode';
 import { updateCommandPalette } from './commandPalette';
 import { registerExtensionCommands } from './commands';
 import { updateDocumentLinkProvider } from './documentLinksProvider';
+import { updateStatusBarUpdateEvents, updateTreeViewEventListeners } from './events';
 import { getKeybindings, type VsCodeKeybindingItem } from './getKeybindings';
 import { registerJsonSchemaCompletion } from './jsonSchema/jsonSchemaCompletions';
 import { registerDynamicJsonSchema } from './jsonSchema/registerDynamicJsonSchema';
 import { type VscodeCommandWithoutCategory } from './quickPick';
 import { updateUserCommands } from './registerUserCommands';
-import { updateStatusBarItems, updateStatusBarItemsVisibilityBasedOnActiveEditor, updateStatusBarTextFromEvents, type StatusBarUpdateEvents } from './statusBar';
+import { updateStatusBarItems, updateStatusBarItemsVisibilityBasedOnActiveEditor } from './statusBar';
 import { initTerminalIndicatorStatusBar } from './terminalIndicator/terminalIndicatorStatusBar';
 import { CommandsTreeViewProvider, type FolderTreeItem, type RunCommandTreeItem } from './TreeViewProvider';
 import { type CommandFolder, type ExtensionConfig, type Runnable, type TopLevelCommands } from './types';
+import { extUtils } from './utils/extUtils';
 import { addWorkspaceIdToCommands, getWorkspaceId, setWorkspaceIdToContext } from './workspaceCommands';
 
 export const enum Constants {
@@ -49,9 +51,6 @@ export abstract class $state {
 	 * Remember which command was called (separately for each list of commands).
 	 */
 	public static cycles: Record<string, string | undefined> = {};
-
-	public static statusBarUpdateEventDisposables: Disposable[] = [];
-	public static statusBarUpdateEventTimerIds: (NodeJS.Timeout | number | string | undefined)[] = [];
 }
 
 export async function activate(context: ExtensionContext): Promise<void> {
@@ -119,61 +118,15 @@ async function updateEverything(context: ExtensionContext, updateWatchTerminalRe
 	updateCommandPalette(allCommands, context);
 	updateDocumentLinkProvider();
 	updateWelcomeViewContext(Object.keys(allCommands).length === 0);
-}
 
-function updateStatusBarUpdateEvents(statusBarUpdateEvents: StatusBarUpdateEvents, variableSubstitutionEnabled: boolean): void {
-	disposeStatusBarUpdateEvents();
-	disposeIntervalTimerIds();
-
-	if (statusBarUpdateEvents.onDidConfigurationChange.length) {
-		$state.statusBarUpdateEventDisposables.push(workspace.onDidChangeConfiguration(e => {
-			const statusBarIds: string[] = [];
-			for (const conf of statusBarUpdateEvents.onDidConfigurationChange) {
-				if (conf.settings?.length) {
-					for (const setting of conf.settings) {
-						if (e.affectsConfiguration(setting)) {
-							statusBarIds.push(conf.statusBarItemId);
-						}
-					}
-				} else {
-					statusBarIds.push(conf.statusBarItemId);
-				}
-			}
-			updateStatusBarTextFromEvents(variableSubstitutionEnabled, statusBarIds);
-		}));
-	}
-
-	if (statusBarUpdateEvents.onDidChangeActiveTextEditor.length) {
-		$state.statusBarUpdateEventDisposables.push(window.onDidChangeActiveTextEditor(e => {
-			updateStatusBarTextFromEvents(variableSubstitutionEnabled, statusBarUpdateEvents.onDidChangeActiveTextEditor.map(e2 => e2.statusBarItemId));
-		}));
-	}
-
-	if (statusBarUpdateEvents.onDidChangeTextEditorSelection.length) {
-		$state.statusBarUpdateEventDisposables.push(window.onDidChangeTextEditorSelection(e => {
-			updateStatusBarTextFromEvents(variableSubstitutionEnabled, statusBarUpdateEvents.onDidChangeTextEditorSelection.map(e2 => e2.statusBarItemId));
-		}));
-	}
-
-	if (statusBarUpdateEvents.interval.length) {
-		for (const interval of statusBarUpdateEvents.interval) {
-			setInterval(() => {
-				updateStatusBarTextFromEvents(variableSubstitutionEnabled, [interval.statusBarItemId]);
-			}, interval.value);
+	let eventForTreeUpdateNeeded = false;
+	extUtils.forEachCommand((command => {
+		if (typeof command === 'object' && (command.activeEditorGlob || command.activeEditorLanguage)) {
+			eventForTreeUpdateNeeded = true;
 		}
-	}
-}
-function disposeStatusBarUpdateEvents(): void {
-	for (const disposable of $state.statusBarUpdateEventDisposables) {
-		disposable?.dispose();
-	}
-	$state.statusBarUpdateEventDisposables = [];
-}
-function disposeIntervalTimerIds(): void {
-	for (const timerId of $state.statusBarUpdateEventTimerIds) {
-		clearInterval(timerId);
-	}
-	$state.statusBarUpdateEventTimerIds = [];
+	}), allCommands);
+
+	updateTreeViewEventListeners(eventForTreeUpdateNeeded);
 }
 
 /**

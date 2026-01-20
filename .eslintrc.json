@@ -226,7 +226,7 @@
 		"@typescript-eslint/prefer-literal-enum-member": 1,
 		"@typescript-eslint/prefer-namespace-keyword": 1,
 		"@typescript-eslint/prefer-nullish-coalescing": [
-			1,
+			0,
 			{
 				"ignoreConditionalTests": false,
 				"ignoreTernaryTests": false,

@@ -162,6 +162,8 @@ interface CommandObject {
     disableTooltip?: boolean;// do not show the hover tooltip for this Tree View Item
     hidden?: boolean;// Do not show this in Tree View
     inputs?: {...}[];// Objects for input variable substitution like https://code.visualstudio.com/docs/editor/variables-reference#_input-variables
+    activeEditorGlob?: string// only show Tree View item when active editor matches glob pattern
+    activeEditorLanguage?: string;// only show Tree View item when active editor language id matches
 
     sequence?: (CommandObject | string)[];// execute multipe commands
 

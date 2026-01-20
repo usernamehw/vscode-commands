@@ -161,22 +161,17 @@ export function updateStatusBarItemsVisibilityBasedOnActiveEditor(editor?: TextE
 			continue;
 		}
 		if (statusBarItem.activeEditorLanguage) {
-			const languagesAsArray = statusBarItem.activeEditorLanguage
-				.split(',')
-				.map(languageId => languageId.trim());
-			if (languagesAsArray.includes(editor.document.languageId)) {
+			if (vscodeUtils.editorLanguageIdMatches(editor, statusBarItem.activeEditorLanguage)) {
 				statusBarItem.show();
 			} else {
 				statusBarItem.hide();
 			}
 		}
 		if (statusBarItem.activeEditorGlob) {
-			if (languages.match({
-				pattern: statusBarItem.activeEditorGlob || '',
-			}, editor.document) === 0) {
-				statusBarItem.hide();
-			} else {
+			if (vscodeUtils.editorMatchesGlob(editor, statusBarItem.activeEditorGlob)) {
 				statusBarItem.show();
+			} else {
+				statusBarItem.hide();
 			}
 		}
 	}

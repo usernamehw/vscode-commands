@@ -1,11 +1,12 @@
 /* eslint-disable max-classes-per-file */
-import { EventEmitter, MarkdownString, ThemeColor, ThemeIcon, TreeItem, TreeItemCollapsibleState, type Command, type Event, type TreeDataProvider } from 'vscode';
+import { EventEmitter, MarkdownString, ThemeColor, ThemeIcon, TreeItem, TreeItemCollapsibleState, window, type Command, type Event, type TreeDataProvider } from 'vscode';
 import { CommandId } from './commands';
 import { $config, $state } from './extension';
 import { createFolderHoverText } from './folderHoverText';
 import { type CommandFolder, type Runnable, type TopLevelCommands } from './types';
 import { extUtils } from './utils/extUtils';
 import { utils } from './utils/utils';
+import { vscodeUtils } from './utils/vscodeUtils';
 
 interface RunCommandTreeItemInit {
 	label: string;
@@ -162,6 +163,28 @@ export class CommandsTreeViewProvider implements TreeDataProvider<FolderTreeItem
 			const item = items[key];
 			if (typeof item !== 'string' && item.hidden) {
 				continue;
+			}
+
+			if (typeof item !== 'string' && item.activeEditorGlob) {
+				const activeEditor = window.activeTextEditor;
+				if (!activeEditor) {
+					continue;
+				}
+
+				if (!vscodeUtils.editorMatchesGlob(activeEditor, item.activeEditorGlob)) {
+					continue;
+				}
+			}
+
+			if (typeof item !== 'string' && item.activeEditorLanguage) {
+				const activeEditor = window.activeTextEditor;
+				if (!activeEditor) {
+					continue;
+				}
+
+				if (!vscodeUtils.editorLanguageIdMatches(activeEditor, item.activeEditorLanguage)) {
+					continue;
+				}
 			}
 
 			if (extUtils.isCommandFolder(item)) {

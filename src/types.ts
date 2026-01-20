@@ -158,6 +158,9 @@ export interface CommandObject {
 	when?: string;
 	workspace?: string;
 	inputs?: Inputs;
+
+	activeEditorGlob?: string;
+	activeEditorLanguage?: string;
 }
 /**
  * Add command/folder to status bar
@@ -194,6 +197,7 @@ interface UpdateEventInterval {
 type UpdateEvent = UpdateEventInterval | UpdateEventonDidChangeActiveTextEditor | UpdateEventonDidChangeTextEditorSelection | UpdateEventonDidConfigurationChange;
 /**
  * Folder can only have `nestedItems` property.
+ * TODO: maybe dedup same props with {@link CommandObject}
  */
 export interface CommandFolder {
 	/**
@@ -204,4 +208,7 @@ export interface CommandFolder {
 	hidden?: boolean;
 	workspace?: string;
 	when?: string;
+
+	activeEditorGlob?: string;
+	activeEditorLanguage?: string;
 }
