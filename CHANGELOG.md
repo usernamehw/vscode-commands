@@ -1,3 +1,20 @@
+## 1.20.0 `20 Jan 2026`
+
+- ✨ Show Tree View item based on active Text Editor:
+
+```js
+"commands.commands": {
+    "Match by glob (.tsx)": {
+        "command": "noop",
+        "activeEditorGlob": "**/*.tsx",
+    },
+    "Match language (OR / any) (tsx/html)": {
+        "command": "noop",
+        "activeEditorLanguage": "typescriptreact,html",
+    },
+},
+```
+
 ## 1.19.0 `18 Dec 2025`
 
 - 🐛 Cancel command variable replacement when returned value is not a string
