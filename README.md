@@ -187,7 +187,7 @@ interface CommandObject {
         updateEvents?: {// update status bar text (substitute variables)
             kind: 'onDidConfigurationChange' | 'onDidChangeActiveTextEditor' | 'onDidChangeTextEditorSelection' | 'interval';
         }[];
-        replaceVariableValue?: Record<string, Record<string, string>>;// Process variable value and replace with with your own text for Status Bar
+        replaceVariableValue?: Record<string, Record<string, string>>;// Process variable value and replace with with your own text for Status Bar https://github.com/usernamehw/vscode-commands/issues/50
     };
 }
 ```

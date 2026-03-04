@@ -178,6 +178,10 @@ export interface StatusBar {
 	activeEditorGlob?: string;
 	activeEditorLanguage?: string;
 	updateEvents?: UpdateEvent[];
+	/**
+	 * https://github.com/usernamehw/vscode-commands/issues/50
+	 * TODO: add this property to the `docs.md`
+	 */
 	replaceVariableValue?: Record<string, Record<string, string>>;
 }
 interface UpdateEventonDidConfigurationChange {

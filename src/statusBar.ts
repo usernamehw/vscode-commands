@@ -194,7 +194,7 @@ export async function updateStatusBarTextFromEvents(variableSubstitutionEnabled:
 			continue;
 		}
 		if (statusBarItem.workspace) {
-			window.showWarningMessage(`Variable Substitution is disabled for workspace status bar items. https://github.com/usernamehw/vscode-commands/issues/75`);
+			console.warn(`Variable Substitution is disabled for workspace status bar items. https://github.com/usernamehw/vscode-commands/issues/75`);
 			continue;
 		}
 		const substituted = await substituteVariables({
