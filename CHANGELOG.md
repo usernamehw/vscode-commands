@@ -1,3 +1,7 @@
+## 1.22.0 `06 Mar 2026`
+
+- 🐛 Remove notification about disabling variable substitution for workspace items (it's mostly useless since it doesn't check if a command contains any variables)
+
 ## 1.21.0 `26 Feb 2026`
 
 - 🐛 Fix Security Vulnerability: Remote Code Execution (RCE) via Status Bar Variable Substitution [Issue#75](https://github.com/usernamehw/vscode-commands/issues/75)

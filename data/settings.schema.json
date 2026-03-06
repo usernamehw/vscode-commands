@@ -30,7 +30,7 @@
 			"markdownDescription": "Show this command in [Status Bar](https://code.visualstudio.com/docs/getstarted/userinterface).",
 			"properties": {
 				"alignment": {
-					"markdownDescription": "Represents the alignment of status bar items.",
+					"markdownDescription": "Represents the alignment of status bar items. Requires editor reload to see the changes.",
 					"type": "string",
 					"enum": [
 						"left",
@@ -46,7 +46,7 @@
 					"type": "string"
 				},
 				"priority": {
-					"markdownDescription": "The priority of the item. Higher values mean the item should be shown more to the left.",
+					"markdownDescription": "The priority of the item. Higher values mean the item should be shown more to the left. Requires editor reload to see the changes.",
 					"type": "number"
 				},
 				"hidden": {
