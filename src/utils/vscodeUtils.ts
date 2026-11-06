@@ -182,6 +182,9 @@ function editorMatchesGlob(editor: TextEditor, glob: string): boolean {
  * `true` when editor language id matches [Language Id](https://code.visualstudio.com/docs/languages/identifiers).
  */
 function editorLanguageIdMatches(editor: TextEditor, languageId: string): boolean {
+	if (typeof languageId !== 'string') {
+		return false;
+	}
 	const languagesAsArray = languageId
 		.split(',')
 		.map(lang => lang.trim());
